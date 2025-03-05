@@ -1,4 +1,4 @@
-using NLog;
+ï»¿using NLog;
 using SpineViewer.Spine;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,11 +14,11 @@ namespace SpineViewer
         }
 
         /// <summary>
-        /// ³õÊ¼»¯´°¿ÚÈÕÖ¾Æ÷
+        /// åˆå§‹åŒ–çª—å£æ—¥å¿—å™¨
         /// </summary>
         private void InitializeLogConfiguration()
         {
-            // ´°¿ÚÈÕÖ¾
+            // çª—å£æ—¥å¿—
             var rtbTarget = new NLog.Windows.Forms.RichTextBoxTarget
             {
                 Name = "rtbTarget",
@@ -54,7 +54,7 @@ namespace SpineViewer
             var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
             tex.SetView(spinePreviewer.View);
             var delta = 1f / fps;
-            var frameCount = 1 + (int)(duration / delta); // ÁãÖ¡¿ªÊ¼µ¼³ö
+            var frameCount = 1 + (int)(duration / delta); // é›¶å¸§å¼€å§‹å¯¼å‡º
 
             spinePreviewer.StopPreview();
 
@@ -62,7 +62,7 @@ namespace SpineViewer
             {
                 var spinesReverse = spineListView.Spines.Reverse();
 
-                // ÖØÖÃ¶¯»­Ê±¼ä
+                // é‡ç½®åŠ¨ç”»æ—¶é—´
                 foreach (var spine in spinesReverse)
                     spine.CurrentAnimation = spine.CurrentAnimation;
 
@@ -71,9 +71,9 @@ namespace SpineViewer
                     [outputDir, duration, fps, spinesReverse.Count()]
                 );
 
-                // ÖğÖ¡µ¼³ö
+                // é€å¸§å¯¼å‡º
                 var success = 0;
-                worker.ReportProgress(0, $"ÒÑ´¦Àí 0/{frameCount}");
+                worker.ReportProgress(0, $"å·²å¤„ç† 0/{frameCount}");
                 for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
                 {
                     if (worker.CancellationPending)
@@ -94,7 +94,7 @@ namespace SpineViewer
                     }
 
                     success++;
-                    worker.ReportProgress((int)((frameIndex + 1) * 100.0) / frameCount, $"ÒÑ´¦Àí {frameIndex + 1}/{frameCount}");
+                    worker.ReportProgress((int)((frameIndex + 1) * 100.0) / frameCount, $"å·²å¤„ç† {frameIndex + 1}/{frameCount}");
                 }
 
                 Program.Logger.Info("Exporting done: {}/{}", success, frameCount);
@@ -129,7 +129,7 @@ namespace SpineViewer
             {
                 if (spineListView.Spines.Count <= 0)
                 {
-                    MessageBox.Show("ÇëÖÁÉÙ´ò¿ªÒ»¸ö¹Ç÷ÀÎÄ¼ş", "ÌáÊ¾ĞÅÏ¢", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("è¯·è‡³å°‘æ‰“å¼€ä¸€ä¸ªéª¨éª¼æ–‡ä»¶", "æç¤ºä¿¡æ¯", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
             }

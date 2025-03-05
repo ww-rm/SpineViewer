@@ -1,4 +1,4 @@
-using NLog;
+ï»¿using NLog;
 using System.Diagnostics;
 
 namespace SpineViewer
@@ -28,18 +28,18 @@ namespace SpineViewer
             catch (Exception ex)
             {
                 Logger.Fatal(ex.ToString());
-                MessageBox.Show(ex.ToString(), "³ÌĞòÒÑ±ÀÀ£", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(ex.ToString(), "ç¨‹åºå·²å´©æºƒ", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
 
         /// <summary>
-        /// ³õÊ¼»¯ÈÕÖ¾ÅäÖÃ
+        /// åˆå§‹åŒ–æ—¥å¿—é…ç½®
         /// </summary>
         private static void InitializeLogConfiguration()
         {
             var config = new NLog.Config.LoggingConfiguration();
 
-            // ÎÄ¼şÈÕÖ¾
+            // æ–‡ä»¶æ—¥å¿—
             var fileTarget = new NLog.Targets.FileTarget("fileTarget")
             {
                 Encoding = System.Text.Encoding.UTF8,
