@@ -21,6 +21,7 @@ Alternatively, you can download the zip package with the `SelfContained` suffix,
 ## Features
 
 - Supports viewing Spine files of different versions:
+    - [x] `v2.1.x`
     - [x] `v3.6.x`
     - [x] `v3.7.x`
     - [x] `v3.8.x`
