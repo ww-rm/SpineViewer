@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Spine
 {
-    public class VersionTypeConverter : EnumConverter
+    public class VersionConverter : EnumConverter
     {
-        public VersionTypeConverter() : base(typeof(Version)) { }
+        public VersionConverter() : base(typeof(Version)) { }
 
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type? destinationType)
         {
@@ -25,7 +25,7 @@ namespace SpineViewer.Spine
         }
     }
 
-    public class AnimationTypeConverter : StringConverter
+    public class AnimationConverter : StringConverter
     {
         public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
         {

@@ -136,7 +136,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 获取所属版本
         /// </summary>
-        [TypeConverter(typeof(VersionTypeConverter))]
+        [TypeConverter(typeof(VersionConverter))]
         [Category("基本信息"), DisplayName("版本")]
         public Version Version { get; }
 
@@ -164,7 +164,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 位置
         /// </summary>
-        [TypeConverter(typeof(PointFTypeConverter))]
+        [TypeConverter(typeof(PointFConverter))]
         [Category("变换"), DisplayName("位置")]
         public abstract PointF Position { get; set; }
 
@@ -202,7 +202,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 当前动画名称
         /// </summary>
-        [TypeConverter(typeof(AnimationTypeConverter))]
+        [TypeConverter(typeof(AnimationConverter))]
         [Category("动画"), DisplayName("当前动画")]
         public abstract string CurrentAnimation { get; set; }
 

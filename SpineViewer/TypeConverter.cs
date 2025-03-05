@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SpineViewer
 {
-    public class PointFTypeConverter : ExpandableObjectConverter
+    public class PointFConverter : ExpandableObjectConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
         {
@@ -48,50 +48,6 @@ namespace SpineViewer
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
         {
             return TypeDescriptor.GetProperties(typeof(PointF), attributes);
-        }
-
-        public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;
-    }
-
-    public class SizeTypeConverter : ExpandableObjectConverter
-    {
-        public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
-        {
-            return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
-        }
-
-        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
-        {
-            if (destinationType == typeof(string) && value is Size size)
-            {
-                return $"{size.Width}, {size.Height}";
-            }
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
-
-        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
-        {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
-        {
-            if (value is string str)
-            {
-                var parts = str.Split(',');
-                if (parts.Length == 2 &&
-                    int.TryParse(parts[0], out var width) &&
-                    int.TryParse(parts[1], out var height))
-                {
-                    return new Size(width, height);
-                }
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
-        {
-            return TypeDescriptor.GetProperties(typeof(Size), attributes);
         }
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;

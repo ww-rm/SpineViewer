@@ -24,11 +24,11 @@ namespace SpineViewer.Controls
 
             public PreviewerProperty(SpinePreviewer previewer) { this.previewer = previewer; }
 
-            [TypeConverter(typeof(SizeTypeConverter))]
+            [TypeConverter(typeof(SizeConverter))]
             [Category("导出"), DisplayName("分辨率")]
             public Size Resolution { get => previewer.Resolution; set => previewer.Resolution = value; }
 
-            [TypeConverter(typeof(PointFTypeConverter))]
+            [TypeConverter(typeof(PointFConverter))]
             [Category("导出"), DisplayName("画面中心点")]
             public PointF Center { get => previewer.Center; set => previewer.Center = value; }
 
