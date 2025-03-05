@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime41", "SpineRunt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime42", "SpineRuntimes\SpineRuntime42\SpineRuntime42.csproj", "{1D96AAF6-AB7B-8050-4C7E-03431778628F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime21", "SpineRuntimes\SpineRuntime21\SpineRuntime21.csproj", "{628CA98E-1D21-2282-C01E-0470CAF211E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +62,10 @@ Global
 		{1D96AAF6-AB7B-8050-4C7E-03431778628F}.Debug|x64.Build.0 = Debug|x64
 		{1D96AAF6-AB7B-8050-4C7E-03431778628F}.Release|x64.ActiveCfg = Release|x64
 		{1D96AAF6-AB7B-8050-4C7E-03431778628F}.Release|x64.Build.0 = Release|x64
+		{628CA98E-1D21-2282-C01E-0470CAF211E1}.Debug|x64.ActiveCfg = Debug|x64
+		{628CA98E-1D21-2282-C01E-0470CAF211E1}.Debug|x64.Build.0 = Debug|x64
+		{628CA98E-1D21-2282-C01E-0470CAF211E1}.Release|x64.ActiveCfg = Release|x64
+		{628CA98E-1D21-2282-C01E-0470CAF211E1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{2E19353C-9C0B-85F7-4EF4-98A778A79059} = {EA2E1399-02BC-43BC-AD9F-42E23E9C3DA8}
 		{C7B93D57-A896-38B2-1D43-25B28502F756} = {EA2E1399-02BC-43BC-AD9F-42E23E9C3DA8}
 		{1D96AAF6-AB7B-8050-4C7E-03431778628F} = {EA2E1399-02BC-43BC-AD9F-42E23E9C3DA8}
+		{628CA98E-1D21-2282-C01E-0470CAF211E1} = {EA2E1399-02BC-43BC-AD9F-42E23E9C3DA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91F0EFD1-4B07-4C3C-82D8-90432349D3A5}
