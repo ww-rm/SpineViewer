@@ -243,5 +243,11 @@ namespace SpineViewer.Spine
         /// SFML.Graphics.Drawable 接口实现
         /// </summary>
         public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
+
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
+        [Browsable(false)]
+        public bool IsSelected { get; set; } = false;
     }
 }
