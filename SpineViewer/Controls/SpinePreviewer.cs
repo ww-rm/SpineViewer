@@ -47,9 +47,6 @@ namespace SpineViewer.Controls
             [Category("预览"), DisplayName("显示坐标轴")]
             public bool ShowAxis { get => previewer.ShowAxis; set => previewer.ShowAxis = value; }
 
-            [Category("预览"), DisplayName("显示包围盒")]
-            public bool ShowBounds { get => previewer.ShowBounds; set => previewer.ShowBounds = value; }
-
             [Category("预览"), DisplayName("最大帧率")]
             public uint MaxFps { get => previewer.MaxFps; set => previewer.MaxFps = value; }
         }
@@ -84,7 +81,6 @@ namespace SpineViewer.Controls
         private readonly SFML.Graphics.RenderWindow RenderWindow;
         private readonly SFML.System.Clock Clock = new();
         private SFML.System.Vector2f? draggingSrc = null;
-        private Spine.Spine? draggingSpine = null;
 
         private Task? task = null;
         private CancellationTokenSource? cancelToken = null;
@@ -237,13 +233,6 @@ namespace SpineViewer.Controls
         public bool ShowAxis { get; set; } = true;
 
         /// <summary>
-        /// 显示包围盒
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Browsable(false)]
-        public bool ShowBounds { get; set; } = true;
-
-        /// <summary>
         /// 最大帧率
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -328,7 +317,6 @@ namespace SpineViewer.Controls
             // 右键优先级高, 进入画面拖动模式, 需要重新记录源点
             if ((e.Button & MouseButtons.Right) != 0)
             {
-                draggingSpine = null;
                 draggingSrc = RenderWindow.MapPixelToCoords(new(e.X, e.Y));
                 Cursor = Cursors.Hand;
             }
@@ -342,12 +330,41 @@ namespace SpineViewer.Controls
                 {
                     lock (SpineListView.Spines)
                     {
-                        foreach (var spine in SpineListView.Spines)
+                        var spines = SpineListView.Spines;
+
+                        // 没有按下 Ctrl 键就只选中点击的那个, 所以先清空选中列表
+                        if ((ModifierKeys & Keys.Control) == 0)
                         {
-                            if (spine.Bounds.Contains(src))
+                            bool hit = false;
+                            for (int i = 0; i < spines.Count; i++)
                             {
-                                draggingSpine = spine;
-                                break;
+                                if (spines[i].Bounds.Contains(src))
+                                {
+                                    hit = true;
+
+                                    // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
+                                    if (!SpineListView.SelectedIndices.Contains(i))
+                                    {
+                                        SpineListView.SelectedIndices.Clear();
+                                        SpineListView.SelectedIndices.Add(i);
+                                    }
+                                    break;
+                                }
+                            }
+
+                            // 如果点了空白的地方, 就清空选中列表
+                            if (!hit)
+                                SpineListView.SelectedIndices.Clear();
+                        }
+                        else
+                        {
+                            for (int i = 0; i < spines.Count; i++)
+                            {
+                                if (spines[i].Bounds.Contains(src))
+                                {
+                                    SpineListView.SelectedIndices.Add(i);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -371,8 +388,17 @@ namespace SpineViewer.Controls
             }
             else if ((e.Button & MouseButtons.Left) != 0)
             {
-                if (draggingSpine is not null)
-                    draggingSpine.Position += delta;
+                if (SpineListView is not null)
+                {
+                    lock (SpineListView.Spines)
+                    {
+                        foreach (var spine in SpineListView.Spines)
+                        {
+                            if (spine.IsSelected)
+                                spine.Position += delta;
+                        }
+                    }
+                }
                 draggingSrc = dst;
             }
         }
@@ -382,7 +408,6 @@ namespace SpineViewer.Controls
             // 右键高优先级, 结束画面拖动模式
             if ((e.Button & MouseButtons.Right) != 0)
             {
-                draggingSpine = null;
                 SpineListView?.PropertyGrid?.Refresh();
 
                 draggingSrc = null;
@@ -393,7 +418,6 @@ namespace SpineViewer.Controls
             else if ((e.Button & MouseButtons.Left) != 0 && (MouseButtons & MouseButtons.Right) == 0)
             {
                 draggingSrc = null;
-                draggingSpine = null;
                 SpineListView?.PropertyGrid?.Refresh();
             }
         }
@@ -439,7 +463,7 @@ namespace SpineViewer.Controls
                                 spine.Update(delta);
                                 RenderWindow.Draw(spine);
 
-                                if (ShowBounds)
+                                if (spine.IsSelected)
                                 {
                                     var bounds = spine.Bounds;
                                     BoundsRect[0] = BoundsRect[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
