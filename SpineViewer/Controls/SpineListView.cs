@@ -36,6 +36,11 @@ namespace SpineViewer.Controls
         }
 
         /// <summary>
+        /// listView.SelectedIndices
+        /// </summary>
+        public ListView.SelectedIndexCollection SelectedIndices { get => listView.SelectedIndices; }
+
+        /// <summary>
         /// 弹出添加对话框在指定位置之前插入一项
         /// </summary>
         private void Insert(int index = -1)
@@ -156,6 +161,10 @@ namespace SpineViewer.Controls
                         PropertyGrid.SelectedObject = spines[listView.SelectedIndices[0]];
                     else
                         PropertyGrid.SelectedObjects = listView.SelectedIndices.Cast<int>().Select(index => spines[index]).ToArray();
+
+                    // 标记选中的 Spine
+                    for (int i = 0; i < spines.Count; i++)
+                        spines[i].IsSelected = listView.SelectedIndices.Contains(i);
                 }
             }
         }
