@@ -88,6 +88,8 @@ namespace SpineViewer.Spine.Implementations
             atlas.Dispose();
         }
 
+        public override string FileVersion { get => skeletonData.Version; }
+
         public override float Scale
         {
             get

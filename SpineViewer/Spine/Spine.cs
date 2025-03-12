@@ -137,7 +137,7 @@ namespace SpineViewer.Spine
         /// 获取所属版本
         /// </summary>
         [TypeConverter(typeof(VersionConverter))]
-        [Category("基本信息"), DisplayName("版本")]
+        [Category("基本信息"), DisplayName("运行时版本")]
         public Version Version { get; }
 
         /// <summary>
@@ -154,6 +154,12 @@ namespace SpineViewer.Spine
 
         [Category("基本信息"), DisplayName("名称")]
         public string Name { get; }
+
+        /// <summary>
+        /// 获取所属文件版本
+        /// </summary>
+        [Category("基本信息"), DisplayName("文件版本")]
+        public abstract string FileVersion { get; }
 
         /// <summary>
         /// 缩放比例
