@@ -233,12 +233,14 @@
             openFileDialog_Skel.AddExtension = false;
             openFileDialog_Skel.AddToRecent = false;
             openFileDialog_Skel.Filter = "skel 文件 (*.skel; *.json)|*.skel;*.json|所有文件 (*.*)|*.*";
+            openFileDialog_Skel.Title = "选择skel文件";
             // 
             // openFileDialog_Atlas
             // 
             openFileDialog_Atlas.AddExtension = false;
             openFileDialog_Atlas.AddToRecent = false;
             openFileDialog_Atlas.Filter = "atlas 文件 (*.atlas)|*.atlas|所有文件 (*.*)|*.*";
+            openFileDialog_Atlas.Title = "选择atlas文件";
             // 
             // OpenSpineDialog
             // 
@@ -256,6 +258,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "打开骨骼";
+            Load += OpenSpineDialog_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);

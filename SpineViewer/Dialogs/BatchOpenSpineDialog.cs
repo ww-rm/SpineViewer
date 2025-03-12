@@ -25,6 +25,11 @@ namespace SpineViewer.Dialogs
             comboBox_Version.SelectedValue = Spine.Version.V38;
         }
 
+        private void BatchOpenSpineDialog_Load(object sender, EventArgs e)
+        {
+            button_SelectSkel_Click(sender, e);
+        }
+
         private void button_SelectSkel_Click(object sender, EventArgs e)
         {
             if (openFileDialog_Skel.ShowDialog() == DialogResult.OK)

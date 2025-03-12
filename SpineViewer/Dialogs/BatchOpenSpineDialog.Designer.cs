@@ -196,6 +196,7 @@
             openFileDialog_Skel.AddToRecent = false;
             openFileDialog_Skel.Filter = "skel 文件 (*.skel; *.json)|*.skel;*.json|所有文件 (*.*)|*.*";
             openFileDialog_Skel.Multiselect = true;
+            openFileDialog_Skel.Title = "批量选择skel文件";
             // 
             // BatchOpenSpineDialog
             // 
@@ -213,6 +214,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "批量打开骨骼";
+            Load += BatchOpenSpineDialog_Load;
             panel.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

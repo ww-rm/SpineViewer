@@ -26,6 +26,11 @@ namespace SpineViewer.Dialogs
             comboBox_Version.SelectedValue = Spine.Version.V38;
         }
 
+        private void OpenSpineDialog_Load(object sender, EventArgs e)
+        {
+            button_SelectSkel_Click(sender, e);
+        }
+
         private void button_SelectSkel_Click(object sender, EventArgs e)
         {
             openFileDialog_Skel.InitialDirectory = Path.GetDirectoryName(textBox_SkelPath.Text);
