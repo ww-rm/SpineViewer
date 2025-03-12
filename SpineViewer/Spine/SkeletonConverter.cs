@@ -73,14 +73,14 @@ namespace SpineViewer.Spine
         /// </summary>
         public abstract void JsonToBinary(string jsonPath, string binPath);
 
-        protected class BinaryReader
+        protected class SkeletonReader
         {
             protected byte[] buffer = new byte[32];
             protected byte[] bytesBigEndian = new byte[8];
             public readonly List<string> StringTable = new(32);
             protected Stream input;
 
-            public BinaryReader(Stream input) { this.input = input; }
+            public SkeletonReader(Stream input) { this.input = input; }
             public int Read()
             {
                 int val = input.ReadByte();
@@ -174,14 +174,14 @@ namespace SpineViewer.Spine
             }
         }
 
-        protected class BinaryWriter
+        protected class SkeletonWriter
         {
             protected byte[] buffer = new byte[32];
             protected byte[] bytesBigEndian = new byte[8];
             public readonly List<string> Strings = new(32);
             protected Stream output;
 
-            public BinaryWriter(Stream output) { this.output = output; }
+            public SkeletonWriter(Stream output) { this.output = output; }
             public void Write(int val) => output.WriteByte((byte)val);
             public void WriteByte(byte val) => output.WriteByte(val);
             public void WriteUByte(byte val) => output.WriteByte(val);
