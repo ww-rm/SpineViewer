@@ -5,14 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpineRuntime41;
+using SpineRuntime38;
+using SpineRuntime38.Attachments;
 
-namespace SpineViewer.Spine.Implementations
+namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(Version.V41)]
-    internal class Spine41 : Spine
+    [SpineImplementation(Version.V38)]
+    internal class Spine38 : SpineViewer.Spine.Spine
     {
-        private class TextureLoader : SpineRuntime41.TextureLoader
+        private class TextureLoader : SpineRuntime38.TextureLoader
         {
             public void Load(AtlasPage page, string path)
             {
@@ -46,7 +47,7 @@ namespace SpineViewer.Spine.Implementations
 
         private SkeletonClipping clipping = new();
 
-        public Spine41(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
+        public Spine38(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -197,20 +198,20 @@ namespace SpineViewer.Spine.Implementations
 
         public override void Update(float delta)
         {
-            //skeleton.Update(delta); // XXX: v4.1.x 没有 Update 方法
+            skeleton.Update(delta);
             animationState.Update(delta);
             animationState.Apply(skeleton);
             skeleton.UpdateWorldTransform();
         }
 
-        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime41.BlendMode spineBlendMode)
+        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime38.BlendMode spineBlendMode)
         {
             return spineBlendMode switch
             {
-                SpineRuntime41.BlendMode.Normal => BlendMode.Normal,
-                SpineRuntime41.BlendMode.Additive => BlendMode.Additive,
-                SpineRuntime41.BlendMode.Multiply => BlendMode.Multiply,
-                SpineRuntime41.BlendMode.Screen => BlendMode.Screen,
+                SpineRuntime38.BlendMode.Normal => BlendMode.Normal,
+                SpineRuntime38.BlendMode.Additive => BlendMode.Additive,
+                SpineRuntime38.BlendMode.Multiply => BlendMode.Multiply,
+                SpineRuntime38.BlendMode.Screen => BlendMode.Screen,
                 _ => throw new NotImplementedException($"{spineBlendMode}"),
             };
         }
@@ -239,9 +240,9 @@ namespace SpineViewer.Spine.Implementations
 
                 if (attachment is RegionAttachment regionAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.Region).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.RendererObject).page.rendererObject;
 
-                    regionAttachment.ComputeWorldVertices(slot, worldVertices, 0);
+                    regionAttachment.ComputeWorldVertices(slot.Bone, worldVertices, 0);
                     worldVerticesCount = 4;
                     worldTriangleIndices = [0, 1, 2, 2, 3, 0];
                     worldTriangleIndicesLength = 6;
@@ -253,7 +254,7 @@ namespace SpineViewer.Spine.Implementations
                 }
                 else if (attachment is MeshAttachment meshAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.Region).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.RendererObject).page.rendererObject;
 
                     if (meshAttachment.WorldVerticesLength > worldVertices.Length)
                         worldVertices = worldVerticesBuffer = new float[meshAttachment.WorldVerticesLength * 2];

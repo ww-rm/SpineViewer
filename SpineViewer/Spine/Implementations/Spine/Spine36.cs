@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime36;
 
-namespace SpineViewer.Spine.Implementations
+namespace SpineViewer.Spine.Implementations.Spine
 {
     [SpineImplementation(Version.V36)]
-    internal class Spine36 : Spine
+    internal class Spine36 : SpineViewer.Spine.Spine
     {
         private class TextureLoader : SpineRuntime36.TextureLoader
         {

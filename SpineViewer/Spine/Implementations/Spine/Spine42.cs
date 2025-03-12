@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime42;
 
-namespace SpineViewer.Spine.Implementations
+namespace SpineViewer.Spine.Implementations.Spine
 {
     [SpineImplementation(Version.V42)]
-    internal class Spine42 : Spine
+    internal class Spine42 : SpineViewer.Spine.Spine
     {
         private class TextureLoader : SpineRuntime42.TextureLoader
         {

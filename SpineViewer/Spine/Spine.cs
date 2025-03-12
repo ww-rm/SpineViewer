@@ -17,8 +17,6 @@ using System.Globalization;
 
 namespace SpineViewer.Spine
 {
-
-
     /// <summary>
     /// Spine 实现类标记
     /// </summary>
@@ -70,6 +68,8 @@ namespace SpineViewer.Spine
                 var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
                 if (attr is not null)
                 {
+                    if (ImplementationTypes.ContainsKey(attr.Version))
+                        throw new InvalidOperationException($"Multiple implementations found: {attr.Version}");
                     ImplementationTypes[attr.Version] = type;
                 }
             }

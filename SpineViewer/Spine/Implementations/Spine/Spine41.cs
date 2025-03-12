@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpineRuntime21;
+using SpineRuntime41;
 
-namespace SpineViewer.Spine.Implementations
+namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(Version.V21)]
-    internal class Spine21 : Spine
+    [SpineImplementation(Version.V41)]
+    internal class Spine41 : SpineViewer.Spine.Spine
     {
-        private class TextureLoader : SpineRuntime21.TextureLoader
+        private class TextureLoader : SpineRuntime41.TextureLoader
         {
             public void Load(AtlasPage page, string path)
             {
@@ -22,7 +21,7 @@ namespace SpineViewer.Spine.Implementations
                     texture.Smooth = true;
                 if (page.uWrap == TextureWrap.Repeat && page.vWrap == TextureWrap.Repeat)
                     texture.Repeated = true;
-
+                
                 page.rendererObject = texture;
                 page.width = (int)texture.Size.X;
                 page.height = (int)texture.Size.Y;
@@ -33,6 +32,7 @@ namespace SpineViewer.Spine.Implementations
                 ((SFML.Graphics.Texture)texture).Dispose();
             }
         }
+
         private static TextureLoader textureLoader = new();
 
         private Atlas atlas;
@@ -44,10 +44,9 @@ namespace SpineViewer.Spine.Implementations
         private Skeleton skeleton;
         private AnimationState animationState;
 
-        // 2.1.x 不支持剪裁
-        //private SkeletonClipping clipping = new(); 
+        private SkeletonClipping clipping = new();
 
-        public Spine21(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
+        public Spine41(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -79,6 +78,7 @@ namespace SpineViewer.Spine.Implementations
 
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
+
             CurrentAnimation = DefaultAnimationName;
         }
 
@@ -135,39 +135,46 @@ namespace SpineViewer.Spine.Implementations
                 if (savedTrack0 is not null)
                 {
                     var entry = animationState.SetAnimation(0, savedTrack0.Animation.Name, true);
-                    entry.Time = savedTrack0.Time;
-                    // 2.1.x 没有提供 Next 访问器，故放弃还原后续动画，问题不大，因为预览画面目前不需要连续播放不同动画，只需要循环同一个动画
-                    //var savedEntry = savedTrack0.Next;
-                    //while (savedEntry is not null)
-                    //{
-                    //    entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
-                    //    entry.Time = savedEntry.TrackTime;
-                    //    savedEntry = savedEntry.Next;
-                    //}
+                    entry.TrackTime = savedTrack0.TrackTime;
+                    var savedEntry = savedTrack0.Next;
+                    while (savedEntry is not null)
+                    {
+                        entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
+                        entry.TrackTime = savedEntry.TrackTime;
+                        savedEntry = savedEntry.Next;
+                    }
                 }
             }
         }
 
-        public override PointF Position 
-        { 
-            get => new(skeleton.X, skeleton.Y); 
-            set 
-            { 
-                skeleton.X = value.X; 
-                skeleton.Y = value.Y; 
-            } 
+        public override PointF Position
+        {
+            get => new(skeleton.X, skeleton.Y);
+            set
+            {
+                skeleton.X = value.X;
+                skeleton.Y = value.Y;
+            }
         }
 
         public override bool FlipX
         {
-            get => skeleton.FlipX;
-            set => skeleton.FlipX = value;
+            get => skeleton.ScaleX < 0;
+            set
+            {
+                if (skeleton.ScaleX > 0 && value || skeleton.ScaleX < 0 && !value)
+                    skeleton.ScaleX *= -1;
+            }
         }
 
         public override bool FlipY
         {
-            get => skeleton.FlipY;
-            set => skeleton.FlipY = value;
+            get => skeleton.ScaleY < 0;
+            set
+            {
+                if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
+                    skeleton.ScaleY *= -1;
+            }
         }
 
         public override string CurrentAnimation
@@ -180,49 +187,9 @@ namespace SpineViewer.Spine.Implementations
         {
             get
             {
-                float[] temp = new float[8];
-                var drawOrderItems = skeleton.DrawOrder;
-                float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
-                for (int i = 0, n = skeleton.DrawOrder.Count; i < n; i++)
-                {
-                    Slot slot = drawOrderItems[i];
-                    int verticesLength = 0;
-                    float[] vertices = null;
-                    Attachment attachment = slot.Attachment;
-                    var regionAttachment = attachment as RegionAttachment;
-                    if (regionAttachment != null)
-                    {
-                        verticesLength = 8;
-                        vertices = temp;
-                        if (vertices.Length < 8) vertices = temp = new float[8];
-                        regionAttachment.ComputeWorldVertices(slot.Bone, temp);
-                    }
-                    else
-                    {
-                        var meshAttachment = attachment as MeshAttachment;
-                        if (meshAttachment != null)
-                        {
-                            MeshAttachment mesh = meshAttachment;
-                            verticesLength = mesh.Vertices.Length;
-                            vertices = temp;
-                            if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
-                            mesh.ComputeWorldVertices(slot, temp);
-                        }
-                    }
-
-                    if (vertices != null)
-                    {
-                        for (int ii = 0; ii < verticesLength; ii += 2)
-                        {
-                            float vx = vertices[ii], vy = vertices[ii + 1];
-                            minX = Math.Min(minX, vx);
-                            minY = Math.Min(minY, vy);
-                            maxX = Math.Max(maxX, vx);
-                            maxY = Math.Max(maxY, vy);
-                        }
-                    }
-                }
-                return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+                float[] _ = [];
+                skeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
+                return new RectangleF(x, y, w, h);
             }
         }
 
@@ -230,23 +197,23 @@ namespace SpineViewer.Spine.Implementations
 
         public override void Update(float delta)
         {
-            skeleton.Update(delta);
+            //skeleton.Update(delta); // XXX: v4.1.x 没有 Update 方法
             animationState.Update(delta);
             animationState.Apply(skeleton);
             skeleton.UpdateWorldTransform();
         }
 
-        //private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime21.BlendMode spineBlendMode)
-        //{
-        //    return spineBlendMode switch
-        //    {
-        //        SpineRuntime21.BlendMode.Normal => BlendMode.Normal,
-        //        SpineRuntime21.BlendMode.Additive => BlendMode.Additive,
-        //        SpineRuntime21.BlendMode.Multiply => BlendMode.Multiply,
-        //        SpineRuntime21.BlendMode.Screen => BlendMode.Screen,
-        //        _ => throw new NotImplementedException($"{spineBlendMode}"),
-        //    };
-        //}
+        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime41.BlendMode spineBlendMode)
+        {
+            return spineBlendMode switch
+            {
+                SpineRuntime41.BlendMode.Normal => BlendMode.Normal,
+                SpineRuntime41.BlendMode.Additive => BlendMode.Additive,
+                SpineRuntime41.BlendMode.Multiply => BlendMode.Multiply,
+                SpineRuntime41.BlendMode.Screen => BlendMode.Screen,
+                _ => throw new NotImplementedException($"{spineBlendMode}"),
+            };
+        }
 
         public override void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
         {
@@ -259,7 +226,7 @@ namespace SpineViewer.Spine.Implementations
                 var attachment = slot.Attachment;
 
                 SFML.Graphics.Texture texture;
-
+                
                 float[] worldVertices = worldVerticesBuffer;    // 顶点世界坐标, 连续的 [x0, y0, x1, y1, ...] 坐标值
                 int worldVerticesCount;                         // 等于顶点数组的长度除以 2
                 int[] worldTriangleIndices;                     // 三角形索引, 从顶点坐标数组取的时候要乘以 2, 最大值是 worldVerticesCount - 1
@@ -272,9 +239,9 @@ namespace SpineViewer.Spine.Implementations
 
                 if (attachment is RegionAttachment regionAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.RendererObject).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.Region).page.rendererObject;
 
-                    regionAttachment.ComputeWorldVertices(slot.Bone, worldVertices);
+                    regionAttachment.ComputeWorldVertices(slot, worldVertices, 0);
                     worldVerticesCount = 4;
                     worldTriangleIndices = [0, 1, 2, 2, 3, 0];
                     worldTriangleIndicesLength = 6;
@@ -286,12 +253,12 @@ namespace SpineViewer.Spine.Implementations
                 }
                 else if (attachment is MeshAttachment meshAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.RendererObject).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.Region).page.rendererObject;
 
-                    if (meshAttachment.Vertices.Length > worldVertices.Length)
-                        worldVertices = worldVerticesBuffer = new float[meshAttachment.Vertices.Length * 2];
+                    if (meshAttachment.WorldVerticesLength > worldVertices.Length)
+                        worldVertices = worldVerticesBuffer = new float[meshAttachment.WorldVerticesLength * 2];
                     meshAttachment.ComputeWorldVertices(slot, worldVertices);
-                    worldVerticesCount = meshAttachment.Vertices.Length / 2;
+                    worldVerticesCount = meshAttachment.WorldVerticesLength / 2;
                     worldTriangleIndices = meshAttachment.Triangles;
                     worldTriangleIndicesLength = meshAttachment.Triangles.Length;
                     uvs = meshAttachment.UVs;
@@ -300,26 +267,25 @@ namespace SpineViewer.Spine.Implementations
                     tintB *= meshAttachment.B;
                     tintA *= meshAttachment.A;
                 }
-                // 2.1.x 不支持剪裁
-                //else if (attachment is ClippingAttachment clippingAttachment)
-                //{
-                //    clipping.ClipStart(slot, clippingAttachment);
-                //    continue;
-                //}
+                else if (attachment is ClippingAttachment clippingAttachment)
+                {
+                    clipping.ClipStart(slot, clippingAttachment);
+                    continue;
+                }
                 else
                 {
-                    //clipping.ClipEnd(slot);
+                    clipping.ClipEnd(slot);
                     continue;
                 }
 
-                // 似乎 2.1.x 也没有 BlendMode
-                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendMode.Additive : BlendMode.Normal;
+                SFML.Graphics.BlendMode blendMode = GetSFMLBlendMode(slot.Data.BlendMode);
 
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)
                 {
                     if (vertexArray.VertexCount > 0)
                     {
+                        // XXX: 实测不用设置 sampler2D 的值也正确
                         if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
                             states.Shader = FragmentShader;
                         else
@@ -331,16 +297,16 @@ namespace SpineViewer.Spine.Implementations
                     states.Texture = texture;
                 }
 
-                //if (clipping.IsClipping)
-                //{
-                //    // 这里必须单独记录 Count, 和 Items 的 Length 是不一致的
-                //    clipping.ClipTriangles(worldVertices, worldVerticesCount * 2, worldTriangleIndices, worldTriangleIndicesLength, uvs);
-                //    worldVertices = clipping.ClippedVertices.Items;
-                //    worldVerticesCount = clipping.ClippedVertices.Count / 2;
-                //    worldTriangleIndices = clipping.ClippedTriangles.Items;
-                //    worldTriangleIndicesLength = clipping.ClippedTriangles.Count;
-                //    uvs = clipping.ClippedUVs.Items;
-                //}
+                if (clipping.IsClipping)
+                {
+                    // 这里必须单独记录 Count, 和 Items 的 Length 是不一致的
+                    clipping.ClipTriangles(worldVertices, worldVerticesCount * 2, worldTriangleIndices, worldTriangleIndicesLength, uvs);
+                    worldVertices = clipping.ClippedVertices.Items;
+                    worldVerticesCount = clipping.ClippedVertices.Count / 2;
+                    worldTriangleIndices = clipping.ClippedTriangles.Items;
+                    worldTriangleIndicesLength = clipping.ClippedTriangles.Count;
+                    uvs = clipping.ClippedUVs.Items;
+                }
 
                 var textureSizeX = texture.Size.X;
                 var textureSizeY = texture.Size.Y;
@@ -362,7 +328,7 @@ namespace SpineViewer.Spine.Implementations
                     vertexArray.Append(vertex);
                 }
 
-                //clipping.ClipEnd(slot);
+                clipping.ClipEnd(slot);
             }
 
             if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
@@ -370,7 +336,7 @@ namespace SpineViewer.Spine.Implementations
             else
                 states.Shader = null;
             target.Draw(vertexArray, states);
-            //clipping.ClipEnd();
+            clipping.ClipEnd();
         }
     }
 }

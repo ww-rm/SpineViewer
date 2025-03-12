@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpineRuntime38;
-using SpineRuntime38.Attachments;
-using SpineViewer.Spine;
+using SpineRuntime37;
 
-namespace SpineViewer.Spine.Implementations
+namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(Version.V38)]
-    internal class Spine38 : Spine
+    [SpineImplementation(Version.V37)]
+    internal class Spine37 : SpineViewer.Spine.Spine
     {
-        private class TextureLoader : SpineRuntime38.TextureLoader
+        private class TextureLoader : SpineRuntime37.TextureLoader
         {
             public void Load(AtlasPage page, string path)
             {
@@ -23,7 +19,7 @@ namespace SpineViewer.Spine.Implementations
                     texture.Smooth = true;
                 if (page.uWrap == TextureWrap.Repeat && page.vWrap == TextureWrap.Repeat)
                     texture.Repeated = true;
-                
+
                 page.rendererObject = texture;
                 page.width = (int)texture.Size.X;
                 page.height = (int)texture.Size.Y;
@@ -48,7 +44,7 @@ namespace SpineViewer.Spine.Implementations
 
         private SkeletonClipping clipping = new();
 
-        public Spine38(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
+        public Spine37(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -205,14 +201,14 @@ namespace SpineViewer.Spine.Implementations
             skeleton.UpdateWorldTransform();
         }
 
-        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime38.BlendMode spineBlendMode)
+        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime37.BlendMode spineBlendMode)
         {
             return spineBlendMode switch
             {
-                SpineRuntime38.BlendMode.Normal => BlendMode.Normal,
-                SpineRuntime38.BlendMode.Additive => BlendMode.Additive,
-                SpineRuntime38.BlendMode.Multiply => BlendMode.Multiply,
-                SpineRuntime38.BlendMode.Screen => BlendMode.Screen,
+                SpineRuntime37.BlendMode.Normal => BlendMode.Normal,
+                SpineRuntime37.BlendMode.Additive => BlendMode.Additive,
+                SpineRuntime37.BlendMode.Multiply => BlendMode.Multiply,
+                SpineRuntime37.BlendMode.Screen => BlendMode.Screen,
                 _ => throw new NotImplementedException($"{spineBlendMode}"),
             };
         }
@@ -228,7 +224,7 @@ namespace SpineViewer.Spine.Implementations
                 var attachment = slot.Attachment;
 
                 SFML.Graphics.Texture texture;
-                
+
                 float[] worldVertices = worldVerticesBuffer;    // 顶点世界坐标, 连续的 [x0, y0, x1, y1, ...] 坐标值
                 int worldVerticesCount;                         // 等于顶点数组的长度除以 2
                 int[] worldTriangleIndices;                     // 三角形索引, 从顶点坐标数组取的时候要乘以 2, 最大值是 worldVerticesCount - 1
