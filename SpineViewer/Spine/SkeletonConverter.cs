@@ -123,26 +123,28 @@ namespace SpineViewer.Spine
             public int ReadVarInt(bool optimizePositive = true)
             {
                 byte b = ReadByte();
-                uint val = b & 0x7FU;
+                int val = b & 0x7F;
                 if ((b & 0x80) != 0)
                 {
                     b = ReadByte();
-                    val |= (b & 0x7FU) << 7;
+                    val |= (b & 0x7F) << 7;
                     if ((b & 0x80) != 0)
                     {
                         b = ReadByte();
-                        val |= (b & 0x7FU) << 14;
+                        val |= (b & 0x7F) << 14;
                         if ((b & 0x80) != 0)
                         {
                             b = ReadByte();
-                            val |= (b & 0x7FU) << 21;
+                            val |= (b & 0x7F) << 21;
                             if ((b & 0x80) != 0)
-                                val |= (ReadByte() & 0x7FU) << 28;
+                                val |= (ReadByte() & 0x7F) << 28;
                         }
                     }
                 }
-                if (!optimizePositive) val = (val >> 1) ^ (uint)-(val & 1);
-                return (int)val;
+
+                // 最低位是符号, 根据符号得到全 1 或全 0
+                // 无符号右移, 符号按原样设置在最高位, 其他位与符号异或
+                return optimizePositive ? val : (val >>> 1) ^ -(val & 1);
             }
             public string ReadString()
             {
@@ -218,30 +220,31 @@ namespace SpineViewer.Spine
             }
             public void WriteVarInt(int val, bool optimizePositive = true)
             {
+                // 有符号右移, 会变成全 1 或者全 0 符号
+                // 其他位与符号异或, 符号按原样设置在最低位
                 if (!optimizePositive) val = (val << 1) ^ (val >> 31);
-                uint v = (uint)val;
 
-                byte b = (byte)(v & 0x7F);
-                v >>= 7;
-                if (v != 0)
+                byte b = (byte)(val & 0x7F);
+                val >>>= 7;
+                if (val != 0)
                 {
                     output.WriteByte((byte)(b | 0x80));
-                    b = (byte)(v & 0x7F);
-                    v >>= 7;
-                    if (v != 0)
+                    b = (byte)(val & 0x7F);
+                    val >>>= 7;
+                    if (val != 0)
                     {
                         output.WriteByte((byte)(b | 0x80));
-                        b = (byte)(v & 0x7F);
-                        v >>= 7;
-                        if (v != 0)
+                        b = (byte)(val & 0x7F);
+                        val >>>= 7;
+                        if (val != 0)
                         {
                             output.WriteByte((byte)(b | 0x80));
-                            b = (byte)(v & 0x7F);
-                            v >>= 7;
-                            if (v != 0)
+                            b = (byte)(val & 0x7F);
+                            val >>>= 7;
+                            if (val != 0)
                             {
                                 output.WriteByte((byte)(b | 0x80));
-                                b = (byte)(v & 0x7F);
+                                b = (byte)(val & 0x7F);
                             }
                         }
                     }
