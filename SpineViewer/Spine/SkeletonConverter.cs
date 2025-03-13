@@ -7,7 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Text.Json.Nodes;
+using System.Text.Encodings.Web;
 
 namespace SpineViewer.Spine
 {
@@ -64,21 +65,62 @@ namespace SpineViewer.Spine
             return (SkeletonConverter)Activator.CreateInstance(cvterType);
         }
 
-        protected static readonly JsonWriterOptions jsonWriterOptions = new()
+        /// <summary>
+        /// Json 格式控制
+        /// </summary>
+        private static readonly JsonWriterOptions jsonWriterOptions = new()
         {
             Indented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
+
+        /// <summary>
+        /// 读取二进制骨骼文件并构造 Json 对象
+        /// </summary>
+        protected abstract JsonObject ReadBinary(string binPath);
+
+        /// <summary>
+        /// 将 Json 对象写入二进制骨骼文件
+        /// </summary>
+        protected abstract void WriteBinary(JsonObject root, string binPath);
+
+        /// <summary>
+        /// 读取 Json 对象
+        /// </summary>
+        private JsonObject ReadJson(string jsonPath)
+        {
+            using var input = File.OpenRead(jsonPath);
+            if (JsonNode.Parse(input) is JsonObject root)
+                return root;
+            else
+                throw new InvalidOperationException($"{jsonPath} is not a valid json object");
+        }
+
+        /// <summary>
+        /// 写入 Json 对象
+        /// </summary>
+        private void WriteJson(JsonObject root, string jsonPath)
+        {
+            using var output = File.Create(jsonPath);
+            using var writer = new Utf8JsonWriter(output, jsonWriterOptions);
+            root.WriteTo(writer);
+        }
 
         /// <summary>
         /// 二进制转 Json 格式
         /// </summary>
-        public abstract void BinaryToJson(string binPath, string jsonPath);
+        public void BinaryToJson(string binPath, string jsonPath)
+        {
+            WriteJson(ReadBinary(binPath), jsonPath);
+        }
 
         /// <summary>
         /// Json 转二进制格式
         /// </summary>
-        public abstract void JsonToBinary(string jsonPath, string binPath);
+        public void JsonToBinary(string jsonPath, string binPath)
+        {
+            WriteBinary(ReadJson(jsonPath), binPath);
+        }
 
         protected class SkeletonReader
         {
@@ -113,7 +155,7 @@ namespace SpineViewer.Spine
                 return (bytesBigEndian[0] << 24)
                      | (bytesBigEndian[1] << 16)
                      | (bytesBigEndian[2] << 8)
-                     |  bytesBigEndian[3];
+                     | bytesBigEndian[3];
             }
             public long ReadLong()
             {
@@ -293,6 +335,5 @@ namespace SpineViewer.Spine
             }
             public void WriteFully(byte[] buffer, int offset, int length) => output.Write(buffer, offset, length);
         }
-
     }
 }

@@ -16,12 +16,12 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private bool nonessential = false;
         private JsonObject root = null;
 
-        public override void BinaryToJson(string binPath, string jsonPath)
+        protected override JsonObject ReadBinary(string binPath)
         {
-            using var input = new FileStream(binPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var input = File.OpenRead(binPath);
             reader = new(input);
 
-            root = [];
+            var result = root = [];
             root["skeleton"] = ReadSkeleton();
             ReadStrings();
             root["bones"] = ReadBones();
@@ -33,9 +33,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             root["events"] = ReadEvents();
             root["aimations"] = ReadAnimations();
 
-            using var output = new FileStream(jsonPath, FileMode.Create, FileAccess.Write, FileShare.None);
-            using var writer = new Utf8JsonWriter(output, jsonWriterOptions);
-            root.WriteTo(writer);
+            reader = null;
+            nonessential = false;
+            root = null;
+
+            return result;
         }
 
         private JsonObject ReadSkeleton()
@@ -203,7 +205,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 throw new NotImplementedException();
             }
-
             return skins;
         }
 
@@ -232,15 +233,18 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private JsonObject ReadAnimations()
         {
             JsonObject animations = [];
-
+            int count = reader.ReadVarInt();
+            for (int i = 0; i < count; i++)
+            {
+                throw new NotImplementedException();
+            }
             return animations;
         }
 
-        public override void JsonToBinary(string jsonPath, string binPath)
+        protected override void WriteBinary(JsonObject root, string binPath)
         {
-            // 按顺序把 json 的内容写入到骨骼 binary 缓冲区
-            // 然后在文件中依次写入文件头和骨骼数据
             throw new NotImplementedException();
         }
+
     }
 }
