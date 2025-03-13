@@ -26,6 +26,9 @@ namespace SpineViewer.Spine
         }
     }
 
+    /// <summary>
+    /// SkeletonConverter 基类, 使用静态方法 New 来创建具体版本对象
+    /// </summary>
     public abstract class SkeletonConverter
     {
         /// <summary>
