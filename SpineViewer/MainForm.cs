@@ -158,6 +158,12 @@ namespace SpineViewer
             }
         }
 
+        private void toolStripMenuItem_ConvertFileFormat_Click(object sender, EventArgs e)
+        {
+
+            return;
+        }
+
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
         {
             (new Dialogs.AboutDialog()).ShowDialog();
@@ -175,5 +181,6 @@ namespace SpineViewer
         private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) { (sender as PropertyGrid)?.Refresh(); }
 
         private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) { propertyGrid_Spine.Refresh(); }
+
     }
 }
