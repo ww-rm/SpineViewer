@@ -203,14 +203,14 @@ namespace SpineViewer.Spine.Implementations.Spine
             skeleton.UpdateWorldTransform(Skeleton.Physics.Update);
         }
 
-        private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime42.BlendMode spineBlendMode)
+        private SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
         {
             return spineBlendMode switch
             {
-                SpineRuntime42.BlendMode.Normal => BlendMode.Normal,
-                SpineRuntime42.BlendMode.Additive => BlendMode.Additive,
-                SpineRuntime42.BlendMode.Multiply => BlendMode.Multiply,
-                SpineRuntime42.BlendMode.Screen => BlendMode.Screen,
+                BlendMode.Normal => BlendModeSFML.Normal,
+                BlendMode.Additive => BlendModeSFML.Additive,
+                BlendMode.Multiply => BlendModeSFML.Multiply,
+                BlendMode.Screen => BlendModeSFML.Screen,
                 _ => throw new NotImplementedException($"{spineBlendMode}"),
             };
         }
@@ -286,7 +286,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                     if (vertexArray.VertexCount > 0)
                     {
                         // XXX: 实测不用设置 sampler2D 的值也正确
-                        if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
+                        if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                             states.Shader = FragmentShader;
                         else
                             states.Shader = null;
@@ -331,7 +331,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                 clipping.ClipEnd(slot);
             }
 
-            if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
+            if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                 states.Shader = FragmentShader;
             else
                 states.Shader = null;

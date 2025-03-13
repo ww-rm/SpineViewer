@@ -236,14 +236,14 @@ namespace SpineViewer.Spine.Implementations.Spine
             skeleton.UpdateWorldTransform();
         }
 
-        //private SFML.Graphics.BlendMode GetSFMLBlendMode(SpineRuntime21.BlendMode spineBlendMode)
+        //private SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
         //{
         //    return spineBlendMode switch
         //    {
-        //        SpineRuntime21.BlendMode.Normal => BlendMode.Normal,
-        //        SpineRuntime21.BlendMode.Additive => BlendMode.Additive,
-        //        SpineRuntime21.BlendMode.Multiply => BlendMode.Multiply,
-        //        SpineRuntime21.BlendMode.Screen => BlendMode.Screen,
+        //        BlendMode.Normal => BlendMode.Normal,
+        //        BlendMode.Additive => BlendMode.Additive,
+        //        BlendMode.Multiply => BlendMode.Multiply,
+        //        BlendMode.Screen => BlendMode.Screen,
         //        _ => throw new NotImplementedException($"{spineBlendMode}"),
         //    };
         //}
@@ -313,14 +313,14 @@ namespace SpineViewer.Spine.Implementations.Spine
                 }
 
                 // 似乎 2.1.x 也没有 BlendMode
-                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendMode.Additive : BlendMode.Normal;
+                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendModeSFML.Additive : BlendModeSFML.Normal;
 
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)
                 {
                     if (vertexArray.VertexCount > 0)
                     {
-                        if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
+                        if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                             states.Shader = FragmentShader;
                         else
                             states.Shader = null;
@@ -365,7 +365,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                 //clipping.ClipEnd(slot);
             }
 
-            if (UsePremultipliedAlpha && (states.BlendMode == BlendMode.Normal || states.BlendMode == BlendMode.Additive))
+            if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                 states.Shader = FragmentShader;
             else
                 states.Shader = null;

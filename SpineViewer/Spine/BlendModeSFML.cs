@@ -9,7 +9,7 @@ namespace SpineViewer.Spine
     /// <summary>
     /// SFML 混合模式
     /// </summary>
-    public static class BlendMode
+    public static class BlendModeSFML
     {
         /// <summary>
         /// Alpha Blend
