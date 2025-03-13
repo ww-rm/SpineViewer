@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SpineViewer.Spine
@@ -37,7 +38,7 @@ namespace SpineViewer.Spine
         static SkeletonConverter()
         {
             // 遍历并缓存标记了 SkeletonConverterImplementationAttribute 的类型
-            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(Spine).IsAssignableFrom(t) && !t.IsAbstract);
+            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(SkeletonConverter).IsAssignableFrom(t) && !t.IsAbstract);
             foreach (var type in impTypes)
             {
                 var attr = type.GetCustomAttribute<SkeletonConverterImplementationAttribute>();
@@ -62,6 +63,12 @@ namespace SpineViewer.Spine
             }
             return (SkeletonConverter)Activator.CreateInstance(cvterType);
         }
+
+        protected static readonly JsonWriterOptions jsonWriterOptions = new()
+        {
+            Indented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
 
         /// <summary>
         /// 二进制转 Json 格式
