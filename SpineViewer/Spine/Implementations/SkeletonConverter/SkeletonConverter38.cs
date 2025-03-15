@@ -353,10 +353,191 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             JsonObject animations = [];
             for (int n = reader.ReadVarInt(); n > 0; n--)
             {
-                throw new NotImplementedException();
+                JsonObject data = [];
+                animations[reader.ReadString()] = data;
+                data["slots"] = ReadSlotTimelines();
+                data["bones"] = ReadBoneTimelines();
+                data["ik"] = ReadIKTimelines();
+                //data["transform"] = ReadTransformTimelines();
+                //data["path"] = ReadPathTimelines();
+                //data["deform"] = ReadDrawOrderTimelines();
+                //data["events"] = ReadEventTimelines();
             }
             return animations;
         }
+
+        private JsonObject ReadSlotTimelines()
+        {
+            JsonArray slots = root["slots"].AsArray();
+            JsonObject slotTimelines = [];
+
+            for (int count = reader.ReadVarInt(); count > 0; count--)
+            {
+                JsonObject timeline = [];
+                slotTimelines[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = timeline;
+                for (int n = reader.ReadVarInt(); n > 0; n--)
+                {
+                    JsonArray data = [];
+                    var type = reader.ReadByte();
+                    var frameCount = reader.ReadVarInt();
+                    switch (type)
+                    {
+                        case SkeletonBinary.SLOT_ATTACHMENT:
+                            timeline["attachment"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                data.Add(new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["name"] = reader.ReadStringRef(),
+                                });
+                            }
+                            break;
+                        case SkeletonBinary.SLOT_COLOR:
+                            timeline["color"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["color"] = reader.ReadInt().ToString("x8"),
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        case SkeletonBinary.SLOT_TWO_COLOR:
+                            timeline["twoColor"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["light"] = reader.ReadInt().ToString("x8"),
+                                    ["dark"] = reader.ReadInt().ToString("x6"),
+                                }; 
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentException($"Invalid slot timeline type: {type}");
+                    }
+                }
+            }
+
+            return slotTimelines;
+        }
+
+        private JsonObject ReadBoneTimelines()
+        {
+            JsonArray bones = root["bones"].AsArray();
+            JsonObject boneTimelines = [];
+
+            for (int count = reader.ReadVarInt(); count > 0; count--)
+            {
+                JsonObject timeline = [];
+                boneTimelines[bones[reader.ReadVarInt()]["name"].GetValue<string>()] = timeline;
+                for (int n = reader.ReadVarInt(); n > 0; n--)
+                {
+                    JsonArray data = [];
+                    var type = reader.ReadByte();
+                    var frameCount = reader.ReadVarInt();
+                    switch (type)
+                    {
+                        case SkeletonBinary.BONE_ROTATE:
+                            timeline["rotate"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["angle"] = reader.ReadFloat(),
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        case SkeletonBinary.BONE_TRANSLATE:
+                            timeline["translate"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["x"] = reader.ReadFloat(),
+                                    ["y"] = reader.ReadFloat(),
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        case SkeletonBinary.BONE_SCALE:
+                            timeline["scale"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["x"] = reader.ReadFloat(),
+                                    ["y"] = reader.ReadFloat(),
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        case SkeletonBinary.BONE_SHEAR:
+                            timeline["shear"] = data;
+                            while (frameCount-- > 0)
+                            {
+                                var o = new JsonObject()
+                                {
+                                    ["time"] = reader.ReadFloat(),
+                                    ["x"] = reader.ReadFloat(),
+                                    ["y"] = reader.ReadFloat(),
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                data.Add(o);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentException($"Invalid bone timeline type: {type}");
+                    }
+                }
+            }
+
+            return boneTimelines;
+        }
+
+        private JsonObject ReadIKTimelines()
+        {
+            JsonArray ik = root["ik"].AsArray();
+            JsonObject ikTimelines = [];
+
+            for (int count = reader.ReadVarInt(); count > 0; count--)
+            {
+                JsonArray data = [];
+                ikTimelines[ik[reader.ReadVarInt()]["name"].GetValue<string>()] = data;
+                for (int frameCount = reader.ReadVarInt(); frameCount > 0; frameCount--)
+                {
+                    var o = new JsonObject()
+                    {
+                        ["time"] = reader.ReadFloat(),
+                        ["mix"] = reader.ReadFloat(),
+                        ["softness"] = reader.ReadFloat(),
+                        ["bendPositive"] = reader.ReadSByte() > 0,
+                        ["compress"] = reader.ReadBoolean(),
+                        ["stretch"] = reader.ReadBoolean(),
+                    };
+                    if (frameCount > 1) ReadCurve(o);
+                    data.Add(o);
+                }
+            }
+
+            return ikTimelines;
+        }
+
+
 
         private JsonArray ReadNames(JsonArray array)
         {
@@ -401,6 +582,31 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 }
             }
             return vertices;
+        }
+
+        private void ReadCurve(JsonObject obj)
+        {
+            var type = reader.ReadByte();
+            switch (type)
+            {
+                case SkeletonBinary.CURVE_LINEAR:
+                    obj["curve"] = 0f;
+                    obj["c2"] = 0f;
+                    obj["c3"] = 1f;
+                    obj["c4"] = 1f;
+                    break;
+                case SkeletonBinary.CURVE_STEPPED:
+                    obj["curve"] = "stepped";
+                    break;
+                case SkeletonBinary.CURVE_BEZIER:
+                    obj["curve"] = reader.ReadFloat();
+                    obj["c2"] = reader.ReadFloat();
+                    obj["c3"] = reader.ReadFloat();
+                    obj["c4"] = reader.ReadFloat();
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid curve type: {type}"); ;
+            }
         }
 
         protected override void WriteBinary(JsonObject root, string binPath)
