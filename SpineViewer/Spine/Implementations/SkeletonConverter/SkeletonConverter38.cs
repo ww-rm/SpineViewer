@@ -346,8 +346,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["int"] = reader.ReadVarInt(false);
                 data["float"] = reader.ReadFloat();
                 data["string"] = reader.ReadString();
-                string audio = reader.ReadString();
-                if (audio is not null)
+                if (reader.ReadString() is string audio)
                 {
                     data["audio"] = audio;
                     data["volume"] = reader.ReadFloat();

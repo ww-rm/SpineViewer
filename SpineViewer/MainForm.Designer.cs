@@ -184,7 +184,7 @@
             // toolStripMenuItem_ManageResource
             // 
             toolStripMenuItem_ManageResource.Name = "toolStripMenuItem_ManageResource";
-            toolStripMenuItem_ManageResource.Size = new Size(270, 34);
+            toolStripMenuItem_ManageResource.Size = new Size(260, 34);
             toolStripMenuItem_ManageResource.Text = "管理下载资源(&M)...";
             // 
             // toolStripMenuItem_Help

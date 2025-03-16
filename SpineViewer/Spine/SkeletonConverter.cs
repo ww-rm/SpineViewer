@@ -35,6 +35,7 @@ namespace SpineViewer.Spine
         /// 实现类缓存
         /// </summary>
         private static readonly Dictionary<Version, Type> ImplementationTypes = [];
+        public static readonly Dictionary<Version, Type>.KeyCollection ImplementedVersions;
 
         /// <summary>
         /// 静态构造函数
@@ -54,6 +55,7 @@ namespace SpineViewer.Spine
                 }
             }
             Program.Logger.Debug("Find SkeletonConverter implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
+            ImplementedVersions = ImplementationTypes.Keys;
         }
 
         /// <summary>

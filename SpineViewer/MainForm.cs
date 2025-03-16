@@ -160,8 +160,69 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ConvertFileFormat_Click(object sender, EventArgs e)
         {
+            var openDialog = new Dialogs.ConvertFileFormatDialog();
+            if (openDialog.ShowDialog() != DialogResult.OK)
+                return;
 
-            return;
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += ConvertFileFormat_Work;
+            progressDialog.RunWorkerAsync(openDialog);
+            progressDialog.ShowDialog();
+        }
+
+        private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            var arguments = e.Argument as Dialogs.ConvertFileFormatDialog;
+            var skelPaths = arguments.SkelPaths;
+            var version = arguments.Version;
+            var convertToJson = arguments.ConvertToJson;
+            var newSuffix = convertToJson ? ".json" : ".skel";
+
+            int totalCount = skelPaths.Length;
+            int success = 0;
+            int error = 0;
+
+            SkeletonConverter cvter = SkeletonConverter.New(version);
+
+            worker.ReportProgress(0, $"已处理 0/{totalCount}");
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+
+                var skelPath = skelPaths[i];
+                var newPath = Path.ChangeExtension(skelPath, newSuffix);
+
+                try
+                {
+                    if (convertToJson)
+                        cvter.BinaryToJson(skelPath, newPath);
+                    else
+                        cvter.JsonToBinary(skelPath, newPath);
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    Program.Logger.Error(ex.ToString());
+                    Program.Logger.Error("Failed to convert {}", skelPath);
+                    error++;
+                }
+
+                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+            }
+
+            if (error > 0)
+            {
+                Program.Logger.Warn("Batch convert {} successfully, {} failed", success, error);
+            }
+            else
+            {
+                Program.Logger.Info("{} skel converted successfully", success);
+            }
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
