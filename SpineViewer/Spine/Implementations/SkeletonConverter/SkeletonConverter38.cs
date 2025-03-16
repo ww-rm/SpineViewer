@@ -17,7 +17,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private JsonObject root = null;
 
         private bool nonessential = false;
-        private List<JsonObject> idx2Event = [];
+        private readonly List<JsonObject> idx2Event = [];
 
         protected override JsonObject ReadBinary(string binPath)
         {
@@ -37,8 +37,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             root["animations"] = ReadAnimations();
 
             reader = null;
-            nonessential = false;
             root = null;
+            nonessential = false;
+            idx2Event.Clear();
 
             return result;
         }
