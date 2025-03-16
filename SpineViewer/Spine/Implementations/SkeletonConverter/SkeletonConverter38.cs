@@ -643,18 +643,15 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             JsonArray skins = root["skins"].AsArray();
             JsonObject deformTimelines = [];
 
-            //for (int skinCount = reader.ReadVarInt(); skinCount > 0; skinCount--)
-            for (int i = 0, n = reader.ReadVarInt(); i < n; i++)
+            for (int skinCount = reader.ReadVarInt(); skinCount > 0; skinCount--)
             {
                 JsonObject skinValue = [];
                 deformTimelines[skins[reader.ReadVarInt()]["name"].GetValue<string>()] = skinValue;
-                //for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
-                for (int ii = 0, nn = reader.ReadVarInt(); ii < nn; ii++)
+                for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
                 {
                     JsonObject slotValue = [];
                     skinValue[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = slotValue;
-                    //for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
-                    for (int iii = 0, nnn = reader.ReadVarInt(); iii < nnn; iii++)
+                    for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
                     {
                         JsonArray frames = [];
                         slotValue[reader.ReadStringRef()] = frames;
