@@ -61,8 +61,7 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (!Spine.Spine.ImplementedVersions.Contains(version) ||
-                !SkeletonConverter.ImplementedVersions.Contains(version))
+            if (!SkeletonConverter.ImplementedVersions.Contains(version))
             {
                 MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
