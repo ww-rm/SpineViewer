@@ -320,6 +320,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "骨骼文件格式转换";
+            Load += ConvertFileFormatDialog_Load;
             panel.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
