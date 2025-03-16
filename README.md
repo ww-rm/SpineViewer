@@ -6,7 +6,7 @@
 
 一个简单好用的 Spine 文件查看&导出程序.
 
-![previewer](img/previewer.jpg)
+![previewer](img/preview.jpg)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 功能支持
 
-| 版本 | 查看&导出 | 转换 |
+| 版本 | 查看&导出 | 格式转换 |
 | :---: | :---: | :---: |
 | `2.1.x` | :white_check_mark: |  |
 | `3.1.x` |  |  |
@@ -28,7 +28,7 @@
 | `3.5.x` |  |  |
 | `3.6.x` | :white_check_mark: |  |
 | `3.7.x` | :white_check_mark: |  |
-| `3.8.x` | :white_check_mark: |  |
+| `3.8.x` | :white_check_mark: | :white_check_mark: |
 | `4.1.x` | :white_check_mark: |  |
 | `4.2.x` | :white_check_mark: |  |
 | `4.3.x` |  |  |
@@ -37,6 +37,7 @@
 - 支持每个骨骼独立参数设置
 - 支持动画PNG帧序列导出
 - 支持缩放旋转等导出画面设置
+- 支持对独立的骨骼文件进行格式转换
 - Coming soon...
 
 ## 使用方法

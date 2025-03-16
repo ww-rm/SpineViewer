@@ -6,7 +6,7 @@
 
 A simple and user-friendly Spine file viewer and exporter.
 
-![previewer](img/previewer.jpg)
+![previewer](img/preview.jpg)
 
 ---
 
