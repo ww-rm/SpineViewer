@@ -43,6 +43,8 @@ namespace SpineViewer.Dialogs
 
         private void button_Ok_Click(object sender, EventArgs e)
         {
+            var version = (Spine.Version)comboBox_Version.SelectedValue;
+
             if (listBox_FilePath.Items.Count <= 0)
             {
                 MessageBox.Show("未选择任何文件", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -58,8 +60,14 @@ namespace SpineViewer.Dialogs
                 }
             }
 
+            if (!Spine.Spine.ImplementedVersions.Contains(version))
+            {
+                MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             SkelPaths = listBox_FilePath.Items.Cast<string>().ToArray();
-            Version = (Spine.Version)comboBox_Version.SelectedValue;
+            Version = version;
 
             DialogResult = DialogResult.OK;
         }

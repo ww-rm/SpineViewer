@@ -69,10 +69,7 @@ namespace SpineViewer.Controls
             {
                 Program.Logger.Error(ex.ToString());
                 Program.Logger.Error("Failed to load {} {}", dialog.SkelPath, dialog.AtlasPath);
-                if (ex is NotImplementedException)
-                    MessageBox.Show($"{dialog.Version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else
-                    MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");

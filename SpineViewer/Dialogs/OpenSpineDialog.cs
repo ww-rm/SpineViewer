@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace SpineViewer.Dialogs
 {
     public partial class OpenSpineDialog : Form
@@ -53,6 +52,7 @@ namespace SpineViewer.Dialogs
         {
             var skelPath = textBox_SkelPath.Text;
             var atlasPath = textBox_AtlasPath.Text;
+            var version = (Spine.Version)comboBox_Version.SelectedValue;
 
             if (!File.Exists(skelPath))
             {
@@ -78,9 +78,15 @@ namespace SpineViewer.Dialogs
                 atlasPath = Path.GetFullPath(atlasPath);
             }
 
+            if (!Spine.Spine.ImplementedVersions.Contains(version))
+            {
+                MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             SkelPath = skelPath;
             AtlasPath = atlasPath;
-            Version = (Spine.Version)comboBox_Version.SelectedValue;
+            Version = version;
 
             DialogResult = DialogResult.OK;
         }

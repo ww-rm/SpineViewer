@@ -40,6 +40,7 @@ namespace SpineViewer.Spine
         /// 实现类缓存
         /// </summary>
         private static readonly Dictionary<Version, Type> ImplementationTypes = [];
+        public static readonly Dictionary<Version, Type>.KeyCollection ImplementedVersions;
 
         /// <summary>
         /// 用于解决 PMA 和渐变动画问题的片段着色器
@@ -74,6 +75,7 @@ namespace SpineViewer.Spine
                 }
             }
             Program.Logger.Debug("Find Spine implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
+            ImplementedVersions = ImplementationTypes.Keys;
 
             // 加载 FragmentShader
             try
