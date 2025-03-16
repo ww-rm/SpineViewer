@@ -643,15 +643,18 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             JsonArray skins = root["skins"].AsArray();
             JsonObject deformTimelines = [];
 
-            for (int skinCount = reader.ReadVarInt(); skinCount > 0; skinCount--)
+            //for (int skinCount = reader.ReadVarInt(); skinCount > 0; skinCount--)
+            for (int i = 0, n = reader.ReadVarInt(); i < n; i++)
             {
                 JsonObject skinValue = [];
                 deformTimelines[skins[reader.ReadVarInt()]["name"].GetValue<string>()] = skinValue;
-                for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
+                //for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
+                for (int ii = 0, nn = reader.ReadVarInt(); ii < nn; ii++)
                 {
                     JsonObject slotValue = [];
                     skinValue[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = slotValue;
-                    for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
+                    //for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
+                    for (int iii = 0, nnn = reader.ReadVarInt(); iii < nnn; iii++)
                     {
                         JsonArray frames = [];
                         slotValue[reader.ReadStringRef()] = frames;
@@ -667,7 +670,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             {
                                 var start = reader.ReadVarInt();
                                 o["offset"] = start;
-                                o["vertices"] = ReadFloatArray(end - start);
+                                o["vertices"] = ReadFloatArray(end);
                             }
                             if (frameCount > 0) ReadCurve(o);
                             frames.Add(o);
