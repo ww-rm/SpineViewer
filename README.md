@@ -1,4 +1,4 @@
-# SpineViewer
+# [SpineViewer](https://github.com/ww-rm/SpineViewer)
 
 [![Build and Release](https://github.com/ww-rm/SpineViewer/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/ww-rm/SpineViewer/actions/workflows/dotnet-desktop.yml)
 
