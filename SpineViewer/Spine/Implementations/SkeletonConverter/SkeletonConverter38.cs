@@ -15,36 +15,38 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
     {
         private SkeletonReader reader = null;
         private JsonObject root = null;
-
         private bool nonessential = false;
-        private readonly List<JsonObject> idx2Event = [];
+
+        private readonly List<JsonObject> idx2event = [];
 
         protected override JsonObject ReadBinary(string binPath)
         {
             using var input = File.OpenRead(binPath);
+            var root = new JsonObject();
+
             reader = new(input);
+            this.root = root;
 
-            var result = root = [];
-            root["skeleton"] = ReadSkeleton();
+            ReadSkeleton();
             ReadStrings();
-            root["bones"] = ReadBones();
-            root["slots"] = ReadSlots();
-            root["ik"] = ReadIK();
-            root["transform"] = ReadTransform();
-            root["path"] = ReadPath();
-            root["skins"] = ReadSkins();
-            root["events"] = ReadEvents();
-            root["animations"] = ReadAnimations();
+            ReadBones();
+            ReadSlots();
+            ReadIK();
+            ReadTransform();
+            ReadPath();
+            ReadSkins();
+            ReadEvents();
+            ReadAnimations();
 
+            this.root = null;
             reader = null;
-            root = null;
-            nonessential = false;
-            idx2Event.Clear();
 
-            return result;
+            idx2event.Clear();
+
+            return root;
         }
 
-        private JsonObject ReadSkeleton()
+        private void ReadSkeleton()
         {
             JsonObject skeleton = [];
             skeleton["hash"] = reader.ReadString();
@@ -60,7 +62,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 skeleton["images"] = reader.ReadString();
                 skeleton["audio"] = reader.ReadString();
             }
-            return skeleton;
+            root["skeleton"] = skeleton;
         }
 
         private void ReadStrings()
@@ -69,7 +71,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 reader.StringTable.Add(reader.ReadString());
         }
 
-        private JsonArray ReadBones()
+        private void ReadBones()
         {
             JsonArray bones = [];
             for (int i = 0, n = reader.ReadVarInt(); i < n; i++)
@@ -90,10 +92,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 if (nonessential) reader.ReadInt();
                 bones.Add(data);
             }
-            return bones;
+            root["bones"] = bones;
         }
 
-        private JsonArray ReadSlots()
+        private void ReadSlots()
         {
             JsonArray bones = root["bones"].AsArray();
             JsonArray slots = [];
@@ -109,10 +111,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["blend"] = ((BlendMode)reader.ReadVarInt()).ToString();
                 slots.Add(data);
             }
-            return slots;
+            root["slots"] = slots;
         }
 
-        private JsonArray ReadIK()
+        private void ReadIK()
         {
             JsonArray bones = root["bones"].AsArray();
             JsonArray ik = [];
@@ -132,10 +134,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["uniform"] = reader.ReadBoolean();
                 ik.Add(data);
             }
-            return ik;
+            root["ik"] = ik;
         }
 
-        private JsonArray ReadTransform()
+        private void ReadTransform()
         {
             JsonArray bones = root["bones"].AsArray();
             JsonArray transform = [];
@@ -161,10 +163,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["shearMix"] = reader.ReadFloat();
                 transform.Add(data);
             }
-            return transform;
+            root["transform"] = transform;
         }
 
-        private JsonArray ReadPath()
+        private void ReadPath()
         {
             JsonArray bones = root["bones"].AsArray();
             JsonArray path = [];
@@ -186,10 +188,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["translateMix"] = reader.ReadFloat();
                 path.Add(data);
             }
-            return path;
+            root["path"] = path;
         }
 
-        private JsonArray ReadSkins()
+        private void ReadSkins()
         {
             JsonArray skins = [];
 
@@ -201,7 +203,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int n = reader.ReadVarInt(); n > 0; n--)
                 skins.Add(ReadSkin());
 
-            return skins;
+            root["skins"] = skins;
         }
 
         private JsonObject? ReadSkin(bool isDefault = false)
@@ -334,9 +336,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             return attachment;
         }
 
-        private JsonObject ReadEvents()
+        private void ReadEvents()
         {
-            idx2Event.Clear();
+            idx2event.Clear();
             JsonObject events = [];
             for (int n = reader.ReadVarInt(); n > 0; n--)
             {
@@ -353,12 +355,12 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     data["volume"] = reader.ReadFloat();
                     data["balance"] = reader.ReadFloat();
                 }
-                idx2Event.Add(data);
+                idx2event.Add(data);
             }
-            return events;
+            root["events"] = events;
         }
 
-        private JsonObject ReadAnimations()
+        private void ReadAnimations()
         {
             JsonObject animations = [];
             for (int n = reader.ReadVarInt(); n > 0; n--)
@@ -374,7 +376,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 if (ReadDrawOrderTimelines() is JsonArray draworder) data["drawOrder"] = draworder;
                 if (ReadEventTimelines() is JsonArray events) data["events"] = events;
             }
-            return animations;
+            root["animations"] = animations;
         }
 
         private JsonObject? ReadSlotTimelines()
@@ -713,7 +715,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = [];
                 data["time"] = reader.ReadFloat();
-                JsonObject eventData = idx2Event[reader.ReadVarInt()].AsObject();
+                JsonObject eventData = idx2event[reader.ReadVarInt()].AsObject();
                 data["name"] = eventData["name"].GetValue<string>();
                 data["int"] = reader.ReadVarInt();
                 data["float"] = reader.ReadFloat();
