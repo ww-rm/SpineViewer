@@ -87,7 +87,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 将 Json 对象写入二进制骨骼文件
         /// </summary>
-        protected abstract void WriteBinary(JsonObject root, string binPath);
+        protected abstract void WriteBinary(JsonObject root, string binPath, bool nonessential = false);
 
         /// <summary>
         /// 读取 Json 对象
@@ -234,7 +234,7 @@ namespace SpineViewer.Spine
         {
             protected byte[] buffer = new byte[32];
             protected byte[] bytesBigEndian = new byte[8];
-            public readonly List<string> Strings = new(32);
+            public readonly List<string> StringTable = new(32);
             protected Stream output;
 
             public SkeletonWriter(Stream output) { this.output = output; }
@@ -323,18 +323,18 @@ namespace SpineViewer.Spine
                 System.Text.Encoding.UTF8.GetBytes(val, 0, val.Length, buffer, 0);
                 WriteFully(buffer, 0, byteCount);
             }
-            public void WriteStringRef(List<string> strings, string val)
+            public void WriteStringRef(string val)
             {
                 if (val is null)
                 {
                     WriteVarInt(0);
                     return;
                 }
-                int index = strings.IndexOf(val);
+                int index = StringTable.IndexOf(val);
                 if (index < 0)
                 {
-                    strings.Add(val);
-                    index = strings.Count - 1;
+                    StringTable.Add(val);
+                    index = StringTable.Count - 1;
                 }
                 WriteVarInt(index + 1);
             }

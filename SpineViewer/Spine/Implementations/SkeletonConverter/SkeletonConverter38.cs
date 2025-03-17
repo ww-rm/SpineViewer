@@ -801,9 +801,105 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
         }
 
-        protected override void WriteBinary(JsonObject root, string binPath)
+        private SkeletonWriter writer;
+        private readonly Dictionary<string, int> bone2idx = [];
+        private readonly Dictionary<string, int> slot2idx = [];
+        private readonly Dictionary<string, int> ik2idx = [];
+        private readonly Dictionary<string, int> transform2idx = [];
+        private readonly Dictionary<string, int> path2idx = [];
+        private readonly Dictionary<string, int> event2idx = [];
+
+        protected override void WriteBinary(JsonObject root, string binPath, bool nonessential = false)
         {
-            throw new NotImplementedException();
+            this.nonessential = nonessential;
+            using var outputBody = new MemoryStream(); // 先把主体写入内存缓冲区
+
+            writer = new(outputBody);
+            this.root = root;
+
+            WriteBones();
+            WriteSlots();
+            WriteIK();
+            WriteTransform();
+            WritePath();
+            WriteSkins();
+            WriteEvents();
+            WriteAnimations();
+            
+            using var output = File.Create(binPath); // 将数据写入文件
+            writer = new(output);
+
+            WriteSkeleton();
+            WriteStrings();
+            output.Write(outputBody.GetBuffer());
+
+            writer = null;
+            this.root = null;
+        }
+
+        private void WriteSkeleton()
+        {
+            JsonObject skeleton = root["skeleton"].AsObject();
+            writer.WriteString(skeleton["hash"].GetValue<string>());
+            writer.WriteString(skeleton["spine"].GetValue<string>());
+            if (skeleton.TryGetPropertyValue("x", out var x)) writer.WriteFloat(x.GetValue<float>()); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("y", out var y)) writer.WriteFloat(y.GetValue<float>()); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("width", out var width)) writer.WriteFloat(width.GetValue<float>()); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("height", out var height)) writer.WriteFloat(height.GetValue<float>()); else writer.WriteFloat(0);
+            writer.WriteBoolean(nonessential);
+            if (nonessential)
+            {
+                if (skeleton.TryGetPropertyValue("fps", out var fps)) writer.WriteFloat(fps.GetValue<float>()); else writer.WriteFloat(30);
+                if (skeleton.TryGetPropertyValue("images", out var images)) writer.WriteString(images.GetValue<string>()); else writer.WriteString(null);
+                if (skeleton.TryGetPropertyValue("audio", out var audio)) writer.WriteString(audio.GetValue<string>()); else writer.WriteString(null);
+            }
+        }
+
+        private void WriteStrings()
+        {
+            writer.WriteVarInt(writer.StringTable.Count);
+            foreach (var s in writer.StringTable)
+                writer.WriteString(s);
+        }
+
+        private void WriteBones()
+        {
+
+        }
+
+        private void WriteSlots()
+        {
+
+        }
+
+        private void WriteIK()
+        {
+
+        }
+
+        private void WriteTransform()
+        {
+
+        }
+
+        private void WritePath()
+        {
+
+        }
+
+        private void WriteSkins()
+        {
+
+        }
+
+        private void WriteEvents()
+        {
+
+        }
+
+        private void WriteAnimations()
+        {
+
         }
 
         //public void WriteFloatArray(float[] array)
