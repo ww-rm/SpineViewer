@@ -21,11 +21,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         protected override JsonObject ReadBinary(string binPath)
         {
-            using var input = File.OpenRead(binPath);
             var root = new JsonObject();
+            using var input = File.OpenRead(binPath);
 
-            reader = new(input);
             this.root = root;
+            reader = new(input);
 
             ReadSkeleton();
             ReadStrings();
@@ -38,8 +38,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             ReadEvents();
             ReadAnimations();
 
-            this.root = null;
             reader = null;
+            this.root = null;
 
             idx2event.Clear();
 
@@ -812,10 +812,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         protected override void WriteBinary(JsonObject root, string binPath, bool nonessential = false)
         {
             this.nonessential = nonessential;
-            using var outputBody = new MemoryStream(); // 先把主体写入内存缓冲区
-
-            writer = new(outputBody);
             this.root = root;
+
+            using var outputBody = new MemoryStream(); // 先把主体写入内存缓冲区
+            writer = new(outputBody);
 
             WriteBones();
             WriteSlots();
