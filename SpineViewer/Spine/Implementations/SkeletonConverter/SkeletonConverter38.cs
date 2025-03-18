@@ -827,12 +827,12 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             WriteEvents();
             WriteAnimations();
             
-            using var output = File.Create(binPath); // 将数据写入文件
-            writer = new(output);
+            //using var output = File.Create(binPath); // 将数据写入文件
+            //writer = new(output);
 
             WriteSkeleton();
             WriteStrings();
-            output.Write(outputBody.GetBuffer());
+            //output.Write(outputBody.GetBuffer());
 
             writer = null;
             this.root = null;
@@ -872,7 +872,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             JsonArray bones = root["bones"].AsArray();
             writer.WriteVarInt(bones.Count);
-            for (int i = 0; i < bones.Count; i++)
+            for (int i = 0, n = bones.Count; i < n; i++)
             {
                 JsonObject data = bones[i].AsObject();
                 var name = (string)data["name"];
@@ -902,10 +902,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             JsonArray slots = root["slots"].AsArray();
             writer.WriteVarInt(slots.Count);
-            for (int i = slots.Count; i < slots.Count; i++)
+            for (int i = 0, n = slots.Count; i < n; i++)
             {
                 JsonObject data = slots[i].AsObject();
-                string name = (string)data["name"];
+                var name = (string)data["name"];
                 writer.WriteString(name);
                 writer.WriteVarInt(bone2idx[(string)data["bone"]]);
                 if (data.TryGetPropertyValue("color", out var color)) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(0);
@@ -918,32 +918,162 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private void WriteIK()
         {
-
+            if (!root.ContainsKey("ik"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray ik = root["ik"].AsArray();
+            writer.WriteVarInt(ik.Count);
+            for (int i = 0, n = ik.Count; i < n; i++)
+            {
+                JsonObject data = ik[i].AsObject();
+                var name = (string)data["name"];
+                writer.WriteString(name);
+                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                writer.WriteVarInt(bone2idx[(string)data["target"]]);
+                if (data.TryGetPropertyValue("mix", out var mix)) writer.WriteFloat((float)mix); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("softness", out var softness)) writer.WriteFloat((float)softness); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("bendPositive", out var bendPositive)) writer.WriteSByte((sbyte)((bool)bendPositive ? 1 : -1)); else writer.WriteSByte(1);
+                if (data.TryGetPropertyValue("compress", out var compress)) writer.WriteBoolean((bool)compress); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("stretch", out var stretch)) writer.WriteBoolean((bool)stretch); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("uniform", out var uniform)) writer.WriteBoolean((bool)uniform); else writer.WriteBoolean(false);
+                ik2idx[name] = i;
+            }
         }
 
         private void WriteTransform()
         {
-
+            if (!root.ContainsKey("transform"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray transform = root["transform"].AsArray();
+            writer.WriteVarInt(transform.Count);
+            for (int i = 0, n = transform.Count; i < n; i++)
+            {
+                JsonObject data = transform[i].AsObject();
+                var name = (string)data["name"];
+                writer.WriteString(name);
+                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                writer.WriteVarInt(bone2idx[(string)data["target"]]);
+                if (data.TryGetPropertyValue("local", out var local)) writer.WriteBoolean((bool)local); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("relative", out var relative)) writer.WriteBoolean((bool)relative); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("rotation", out var rotation)) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("scaleX", out var scaleX)) writer.WriteFloat((float)scaleX); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("scaleY", out var scaleY)) writer.WriteFloat((float)scaleY); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("shearY", out var shearY)) writer.WriteFloat((float)shearY); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("rotateMix", out var rotateMix)) writer.WriteFloat((float)rotateMix); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("translateMix", out var translateMix)) writer.WriteFloat((float)translateMix); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("scaleMix", out var scaleMix)) writer.WriteFloat((float)scaleMix); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("shearMix", out var shearMix)) writer.WriteFloat((float)shearMix); else writer.WriteFloat(1);
+                transform2idx[name] = i;
+            }
         }
 
         private void WritePath()
         {
-
+            if (!root.ContainsKey("path"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray path = root["path"].AsArray();
+            writer.WriteVarInt(path.Count);
+            for (int i = 0, n = path.Count; i < n; i++)
+            {
+                JsonObject data = path[i].AsObject();
+                var name = (string)data["name"];
+                writer.WriteString(name);
+                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                writer.WriteVarInt(bone2idx[(string)data["target"]]);
+                if (data.TryGetPropertyValue("positionMode", out var positionMode)) writer.WriteVarInt((int)Enum.Parse<PositionMode>((string)positionMode, true)); else writer.WriteVarInt((int)PositionMode.Percent);
+                if (data.TryGetPropertyValue("spacingMode", out var spacingMode)) writer.WriteVarInt((int)Enum.Parse<SpacingMode>((string)spacingMode, true)); else writer.WriteVarInt((int)SpacingMode.Length);
+                if (data.TryGetPropertyValue("rotateMode", out var rotateMode)) writer.WriteVarInt((int)Enum.Parse<RotateMode>((string)rotateMode, true)); else writer.WriteVarInt((int)RotateMode.Tangent);
+                if (data.TryGetPropertyValue("rotation", out var rotation)) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("position", out var position)) writer.WriteFloat((float)position); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("spacing", out var spacing)) writer.WriteFloat((float)spacing); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("rotateMix", out var rotateMix)) writer.WriteFloat((float)rotateMix); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("translateMix", out var translateMix)) writer.WriteFloat((float)translateMix); else writer.WriteFloat(1);
+                path2idx[name] = i;
+            }
         }
 
         private void WriteSkins()
         {
-
+            if (!root.ContainsKey("skins"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray skins = root["skins"].AsArray();
+            writer.WriteVarInt(skins.Count);
+            for (int i = 0, n = skins.Count; i < n; i++)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void WriteEvents()
         {
-
+            if (!root.ContainsKey("events"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonObject events = root["events"].AsObject();
+            writer.WriteVarInt(events.Count);
+            int i = 0;
+            foreach (var (name, _data) in events)
+            {
+                JsonObject data = _data.AsObject();
+                writer.WriteStringRef(name);
+                if (data.TryGetPropertyValue("int", out var @int)) writer.WriteVarInt((int)@int); else writer.WriteVarInt(0);
+                if (data.TryGetPropertyValue("float", out var @float)) writer.WriteFloat((float)@float); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("string", out var @string)) writer.WriteString((string)@string); else writer.WriteString("");
+                if (data.TryGetPropertyValue("audio", out var _audio))
+                {
+                    var audio = (string)_audio;
+                    writer.WriteString(audio);
+                    if (audio is not null)
+                    {
+                        if (data.TryGetPropertyValue("volume", out var volume)) writer.WriteFloat((float)volume); else writer.WriteFloat(1);
+                        if (data.TryGetPropertyValue("balance", out var balance)) writer.WriteFloat((float)balance); else writer.WriteFloat(0);
+                    }
+                }
+                event2idx[name] = i++;
+            }
         }
 
         private void WriteAnimations()
         {
+            if (!root.ContainsKey("animations"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray animations = root["animations"].AsArray();
+            writer.WriteVarInt(animations.Count);
+            for (int i = 0, n = animations.Count; i < n; i++)
+            {
+                throw new NotImplementedException();
+            }
+        }
 
+        private void WriteNames(Dictionary<string, int> name2idx, JsonArray names)
+        {
+            writer.WriteVarInt(names.Count);
+            foreach (var name in names)
+                writer.WriteVarInt(name2idx[(string)name]);
         }
 
         public override JsonObject ToVersion(JsonObject root, Version version)
