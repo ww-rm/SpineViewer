@@ -7,6 +7,7 @@ using SpineRuntime38;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using SpineRuntime38.Attachments;
+using System.Globalization;
 
 namespace SpineViewer.Spine.Implementations.SkeletonConverter
 {
@@ -78,7 +79,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = [];
                 data["name"] = reader.ReadString();
-                if (i > 0) data["parent"] = bones[reader.ReadVarInt()]["name"].GetValue<string>();
+                if (i > 0) data["parent"] = (string)bones[reader.ReadVarInt()]["name"];
                 data["rotation"] = reader.ReadFloat();
                 data["x"] = reader.ReadFloat();
                 data["y"] = reader.ReadFloat();
@@ -103,7 +104,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = [];
                 data["name"] = reader.ReadString();
-                data["bone"] = bones[reader.ReadVarInt()]["name"].GetValue<string>();
+                data["bone"] = (string)bones[reader.ReadVarInt()]["name"];
                 data["color"] = reader.ReadInt().ToString("x8"); // 0xrrggbbaa -> rrggbbaa
                 int dark = reader.ReadInt();
                 if (dark != -1) data["dark"] = dark.ToString("x6"); // 0x00rrggbb -> rrggbb
@@ -125,7 +126,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["order"] = reader.ReadVarInt();
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
-                data["target"] = bones[reader.ReadVarInt()]["name"].GetValue<string>();
+                data["target"] = (string)bones[reader.ReadVarInt()]["name"];
                 data["mix"] = reader.ReadFloat();
                 data["softness"] = reader.ReadFloat();
                 data["bendPositive"] = reader.ReadSByte() > 0;
@@ -148,7 +149,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["order"] = reader.ReadVarInt();
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
-                data["target"] = bones[reader.ReadVarInt()]["name"].GetValue<string>();
+                data["target"] = (string)bones[reader.ReadVarInt()]["name"];
                 data["local"] = reader.ReadBoolean();
                 data["relative"] = reader.ReadBoolean();
                 data["rotation"] = reader.ReadFloat();
@@ -177,7 +178,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["order"] = reader.ReadVarInt();
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
-                data["target"] = bones[reader.ReadVarInt()]["name"].GetValue<string>();
+                data["target"] = (string)bones[reader.ReadVarInt()]["name"];
                 data["positionMode"] = ((PositionMode)reader.ReadVarInt()).ToString();
                 data["spacingMode"] = ((SpacingMode)reader.ReadVarInt()).ToString();
                 data["rotateMode"] = ((RotateMode)reader.ReadVarInt()).ToString();
@@ -232,7 +233,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             while (slotCount-- > 0)
             {
                 JsonObject slotAttachments = [];
-                skinAttachments[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = slotAttachments;
+                skinAttachments[(string)slots[reader.ReadVarInt()]["name"]] = slotAttachments;
                 for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
                 {
                     var attachmentKey = reader.ReadStringRef();
@@ -324,7 +325,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     if (nonessential) reader.ReadInt();
                     break;
                 case AttachmentType.Clipping:
-                    attachment["end"] = slots[reader.ReadVarInt()]["name"].GetValue<string>();
+                    attachment["end"] = (string)slots[reader.ReadVarInt()]["name"];
                     vertexCount = reader.ReadVarInt();
                     attachment["vertexCount"] = vertexCount;
                     attachment["vertices"] = ReadVertices(vertexCount);
@@ -387,7 +388,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
             {
                 JsonObject timeline = [];
-                slotTimelines[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = timeline;
+                slotTimelines[(string)slots[reader.ReadVarInt()]["name"]] = timeline;
                 for (int timelineCount = reader.ReadVarInt(); timelineCount > 0; timelineCount--)
                 {
                     JsonArray frames = [];
@@ -450,7 +451,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int boneCount = reader.ReadVarInt(); boneCount > 0; boneCount--)
             {
                 JsonObject timeline = [];
-                boneTimelines[bones[reader.ReadVarInt()]["name"].GetValue<string>()] = timeline;
+                boneTimelines[(string)bones[reader.ReadVarInt()]["name"]] = timeline;
                 for (int timelineCount = reader.ReadVarInt(); timelineCount > 0; timelineCount--)
                 {
                     JsonArray frames = [];
@@ -530,7 +531,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int ikCount = reader.ReadVarInt(); ikCount > 0; ikCount--)
             {
                 JsonArray frames = [];
-                ikTimelines[ik[reader.ReadVarInt()]["name"].GetValue<string>()] = frames;
+                ikTimelines[(string)ik[reader.ReadVarInt()]["name"]] = frames;
                 for (int frameCount = reader.ReadVarInt(); frameCount > 0; frameCount--)
                 {
                     var o = new JsonObject()
@@ -558,7 +559,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int transformCount = reader.ReadVarInt(); transformCount > 0; transformCount--)
             {
                 JsonArray frames = [];
-                transformTimelines[transform[reader.ReadVarInt()]["name"].GetValue<string>()] = frames;
+                transformTimelines[(string)transform[reader.ReadVarInt()]["name"]] = frames;
                 for (int frameCount = reader.ReadVarInt(); frameCount > 0; frameCount--)
                 {
                     var o = new JsonObject()
@@ -585,7 +586,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int pathCount = reader.ReadVarInt(); pathCount > 0; pathCount--)
             {
                 JsonObject timeline = [];
-                pathTimelines[path[reader.ReadVarInt()]["name"].GetValue<string>()] = timeline;
+                pathTimelines[(string)path[reader.ReadVarInt()]["name"]] = timeline;
                 for (int timelineCount = reader.ReadVarInt(); timelineCount > 0; timelineCount--)
                 {
                     JsonArray frames = [];
@@ -649,11 +650,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int skinCount = reader.ReadVarInt(); skinCount > 0; skinCount--)
             {
                 JsonObject skinValue = [];
-                deformTimelines[skins[reader.ReadVarInt()]["name"].GetValue<string>()] = skinValue;
+                deformTimelines[(string)skins[reader.ReadVarInt()]["name"]] = skinValue;
                 for (int slotCount = reader.ReadVarInt(); slotCount > 0; slotCount--)
                 {
                     JsonObject slotValue = [];
-                    skinValue[slots[reader.ReadVarInt()]["name"].GetValue<string>()] = slotValue;
+                    skinValue[(string)slots[reader.ReadVarInt()]["name"]] = slotValue;
                     for (int attachmentCount = reader.ReadVarInt(); attachmentCount > 0; attachmentCount--)
                     {
                         JsonArray frames = [];
@@ -698,7 +699,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 {
                     offsets.Add(new JsonObject()
                     {
-                        ["slot"] = slots[reader.ReadVarInt()]["name"].GetValue<string>(),
+                        ["slot"] = (string)slots[reader.ReadVarInt()]["name"],
                         ["offset"] = reader.ReadVarInt(),
                     });
                 }
@@ -716,14 +717,14 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = [];
                 data["time"] = reader.ReadFloat();
                 JsonObject eventData = idx2event[reader.ReadVarInt()].AsObject();
-                data["name"] = eventData["name"].GetValue<string>();
+                data["name"] = (string)eventData["name"];
                 data["int"] = reader.ReadVarInt();
                 data["float"] = reader.ReadFloat();
-                data["string"] = reader.ReadBoolean() ? reader.ReadString() : eventData["string"].GetValue<string>();
+                data["string"] = reader.ReadBoolean() ? reader.ReadString() : (string)eventData["string"];
                 if (eventData.ContainsKey("audio"))
                 {
-                    data["volume"] = eventData["volume"].GetValue<string>();
-                    data["balance"] = eventData["balance"].GetValue<string>();
+                    data["volume"] = (string)eventData["volume"];
+                    data["balance"] = (string)eventData["balance"];
                 }
                 eventTimelines.Add(data);
             }
@@ -735,7 +736,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         {
             JsonArray names = [];
             for (int n = reader.ReadVarInt(); n > 0; n--)
-                names.Add(array[reader.ReadVarInt()]["name"].GetValue<string>());
+                names.Add((string)array[reader.ReadVarInt()]["name"]);
             return names;
         }
 
@@ -840,18 +841,18 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteSkeleton()
         {
             JsonObject skeleton = root["skeleton"].AsObject();
-            writer.WriteString(skeleton["hash"].GetValue<string>());
-            writer.WriteString(skeleton["spine"].GetValue<string>());
-            if (skeleton.TryGetPropertyValue("x", out var x)) writer.WriteFloat(x.GetValue<float>()); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("y", out var y)) writer.WriteFloat(y.GetValue<float>()); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("width", out var width)) writer.WriteFloat(width.GetValue<float>()); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("height", out var height)) writer.WriteFloat(height.GetValue<float>()); else writer.WriteFloat(0);
+            writer.WriteString((string)skeleton["hash"]);
+            writer.WriteString((string)skeleton["spine"]);
+            if (skeleton.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("width", out var width)) writer.WriteFloat((float)width); else writer.WriteFloat(0);
+            if (skeleton.TryGetPropertyValue("height", out var height)) writer.WriteFloat((float)height); else writer.WriteFloat(0);
             writer.WriteBoolean(nonessential);
             if (nonessential)
             {
-                if (skeleton.TryGetPropertyValue("fps", out var fps)) writer.WriteFloat(fps.GetValue<float>()); else writer.WriteFloat(30);
-                if (skeleton.TryGetPropertyValue("images", out var images)) writer.WriteString(images.GetValue<string>()); else writer.WriteString(null);
-                if (skeleton.TryGetPropertyValue("audio", out var audio)) writer.WriteString(audio.GetValue<string>()); else writer.WriteString(null);
+                if (skeleton.TryGetPropertyValue("fps", out var fps)) writer.WriteFloat((float)fps); else writer.WriteFloat(30);
+                if (skeleton.TryGetPropertyValue("images", out var images)) writer.WriteString((string)images); else writer.WriteString(null);
+                if (skeleton.TryGetPropertyValue("audio", out var audio)) writer.WriteString((string)audio); else writer.WriteString(null);
             }
         }
 
@@ -864,12 +865,55 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private void WriteBones()
         {
-
+            if (!root.ContainsKey("bones"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray bones = root["bones"].AsArray();
+            writer.WriteVarInt(bones.Count);
+            for (int i = 0; i < bones.Count; i++)
+            {
+                JsonObject data = bones[i].AsObject();
+                var name = (string)data["name"];
+                writer.WriteString(name);
+                if (i > 0) writer.WriteVarInt(bone2idx[(string)data["parent"]]);
+                if (data.TryGetPropertyValue("rotation", out var rotation)) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("scaleX", out var scaleX)) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("scaleY", out var scaleY)) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
+                if (data.TryGetPropertyValue("shearX", out var shearX)) writer.WriteFloat((float)shearX); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("shearY", out var shearY)) writer.WriteFloat((float)shearY); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("length", out var length)) writer.WriteFloat((float)length); else writer.WriteFloat(0);
+                if (data.TryGetPropertyValue("transform", out var transform)) writer.WriteVarInt((int)Enum.Parse<TransformMode>((string)transform, true)); else writer.WriteVarInt((int)TransformMode.Normal);
+                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (nonessential) writer.WriteInt(0);
+                bone2idx[name] = i;
+            }
         }
 
         private void WriteSlots()
         {
-
+            if (!root.ContainsKey("slots"))
+            {
+                writer.WriteVarInt(0);
+                return;
+            }
+            JsonArray slots = root["slots"].AsArray();
+            writer.WriteVarInt(slots.Count);
+            for (int i = slots.Count; i < slots.Count; i++)
+            {
+                JsonObject data = slots[i].AsObject();
+                string name = (string)data["name"];
+                writer.WriteString(name);
+                writer.WriteVarInt(bone2idx[(string)data["bone"]]);
+                if (data.TryGetPropertyValue("color", out var color)) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(0);
+                if (data.TryGetPropertyValue("dark", out var dark)) writer.WriteInt(int.Parse((string)dark, NumberStyles.HexNumber)); else writer.WriteInt(-1);
+                if (data.TryGetPropertyValue("attachment", out var attachment)) writer.WriteStringRef((string)attachment); else writer.WriteStringRef(null);
+                if (data.TryGetPropertyValue("blend", out var blend)) writer.WriteVarInt((int)Enum.Parse<BlendMode>((string)blend, true)); else writer.WriteVarInt((int)BlendMode.Normal);
+                slot2idx[name] = i;
+            }
         }
 
         private void WriteIK()
