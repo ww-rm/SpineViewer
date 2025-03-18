@@ -2,6 +2,8 @@
 using SpineViewer.Spine;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace SpineViewer
 {
@@ -235,6 +237,11 @@ namespace SpineViewer
             }
         }
 
+        private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
         {
             (new Dialogs.AboutDialog()).ShowDialog();
@@ -252,6 +259,5 @@ namespace SpineViewer
         private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) { (sender as PropertyGrid)?.Refresh(); }
 
         private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) { propertyGrid_Spine.Refresh(); }
-
     }
 }

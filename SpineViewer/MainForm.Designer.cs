@@ -170,7 +170,7 @@
             // toolStripMenuItem_ConvertFileFormat
             // 
             toolStripMenuItem_ConvertFileFormat.Name = "toolStripMenuItem_ConvertFileFormat";
-            toolStripMenuItem_ConvertFileFormat.Size = new Size(270, 34);
+            toolStripMenuItem_ConvertFileFormat.Size = new Size(254, 34);
             toolStripMenuItem_ConvertFileFormat.Text = "转换文件格式(&C)...";
             toolStripMenuItem_ConvertFileFormat.Click += toolStripMenuItem_ConvertFileFormat_Click;
             // 
@@ -184,8 +184,9 @@
             // toolStripMenuItem_ManageResource
             // 
             toolStripMenuItem_ManageResource.Name = "toolStripMenuItem_ManageResource";
-            toolStripMenuItem_ManageResource.Size = new Size(260, 34);
+            toolStripMenuItem_ManageResource.Size = new Size(270, 34);
             toolStripMenuItem_ManageResource.Text = "管理下载资源(&M)...";
+            toolStripMenuItem_ManageResource.Click += toolStripMenuItem_ManageResource_Click;
             // 
             // toolStripMenuItem_Help
             // 
