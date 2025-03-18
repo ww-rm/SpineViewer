@@ -175,15 +175,26 @@ namespace SpineViewer
             var worker = sender as BackgroundWorker;
             var arguments = e.Argument as Dialogs.ConvertFileFormatDialog;
             var skelPaths = arguments.SkelPaths;
-            var version = arguments.Version;
-            var convertToJson = arguments.ConvertToJson;
-            var newSuffix = convertToJson ? ".json" : ".skel";
+            var srcVersion = arguments.SourceVersion;
+            var tgtVersion = arguments.TargetVersion;
+            var jsonSource = arguments.JsonSource;
+            var jsonTarget = arguments.JsonTarget;
+            var newSuffix = jsonTarget ? ".json" : ".skel";
+
+            if (jsonTarget == jsonSource)
+            {
+                if (tgtVersion == srcVersion)
+                    return;
+                else
+                    newSuffix += $".{tgtVersion.ToString().ToLower()}"; // TODO: 仅转换版本的情况下考虑文件覆盖问题
+            }
 
             int totalCount = skelPaths.Length;
             int success = 0;
             int error = 0;
 
-            SkeletonConverter cvter = SkeletonConverter.New(version);
+            SkeletonConverter srcCvter = SkeletonConverter.New(srcVersion);
+            SkeletonConverter tgtCvter = tgtVersion == srcVersion ? srcCvter : SkeletonConverter.New(tgtVersion);
 
             worker.ReportProgress(0, $"已处理 0/{totalCount}");
             for (int i = 0; i < totalCount; i++)
@@ -199,10 +210,9 @@ namespace SpineViewer
 
                 try
                 {
-                    if (convertToJson)
-                        cvter.BinaryToJson(skelPath, newPath);
-                    else
-                        cvter.JsonToBinary(skelPath, newPath);
+                    var root = jsonSource ? srcCvter.ReadJson(skelPath) : srcCvter.ReadBinary(skelPath);
+                    if (tgtVersion != srcVersion) root = srcCvter.ToVersion(root, tgtVersion);
+                    if (jsonTarget) tgtCvter.WriteJson(root, newPath); else tgtCvter.WriteBinary(root, newPath);
                     success++;
                 }
                 catch (Exception ex)

@@ -37,7 +37,7 @@
             label1 = new Label();
             label4 = new Label();
             label3 = new Label();
-            comboBox_Version = new ComboBox();
+            comboBox_SourceVersion = new ComboBox();
             tableLayoutPanel2 = new TableLayoutPanel();
             button_Ok = new Button();
             button_Cancel = new Button();
@@ -75,7 +75,7 @@
             tableLayoutPanel1.Controls.Add(label1, 0, 4);
             tableLayoutPanel1.Controls.Add(label4, 0, 0);
             tableLayoutPanel1.Controls.Add(label3, 0, 3);
-            tableLayoutPanel1.Controls.Add(comboBox_Version, 1, 3);
+            tableLayoutPanel1.Controls.Add(comboBox_SourceVersion, 1, 3);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 6);
             tableLayoutPanel1.Controls.Add(listBox_FilePath, 0, 2);
             tableLayoutPanel1.Controls.Add(button_SelectSkel, 0, 1);
@@ -166,14 +166,14 @@
             // 
             // comboBox_Version
             // 
-            comboBox_Version.Anchor = AnchorStyles.Left;
-            comboBox_Version.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox_Version.FormattingEnabled = true;
-            comboBox_Version.Location = new Point(146, 303);
-            comboBox_Version.Name = "comboBox_Version";
-            comboBox_Version.Size = new Size(182, 32);
-            comboBox_Version.Sorted = true;
-            comboBox_Version.TabIndex = 13;
+            comboBox_SourceVersion.Anchor = AnchorStyles.Left;
+            comboBox_SourceVersion.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox_SourceVersion.FormattingEnabled = true;
+            comboBox_SourceVersion.Location = new Point(146, 303);
+            comboBox_SourceVersion.Name = "comboBox_Version";
+            comboBox_SourceVersion.Size = new Size(182, 32);
+            comboBox_SourceVersion.Sorted = true;
+            comboBox_SourceVersion.TabIndex = 13;
             // 
             // tableLayoutPanel2
             // 
@@ -338,7 +338,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Label label4;
         private Label label3;
-        private ComboBox comboBox_Version;
+        private ComboBox comboBox_SourceVersion;
         private TableLayoutPanel tableLayoutPanel2;
         private Button button_Ok;
         private Button button_Cancel;

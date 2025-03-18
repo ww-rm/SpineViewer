@@ -82,17 +82,17 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 读取二进制骨骼文件并构造 Json 对象
         /// </summary>
-        protected abstract JsonObject ReadBinary(string binPath);
+        public abstract JsonObject ReadBinary(string binPath);
 
         /// <summary>
         /// 将 Json 对象写入二进制骨骼文件
         /// </summary>
-        protected abstract void WriteBinary(JsonObject root, string binPath, bool nonessential = false);
+        public abstract void WriteBinary(JsonObject root, string binPath, bool nonessential = false);
 
         /// <summary>
         /// 读取 Json 对象
         /// </summary>
-        private JsonObject ReadJson(string jsonPath)
+        public JsonObject ReadJson(string jsonPath)
         {
             using var input = File.OpenRead(jsonPath);
             if (JsonNode.Parse(input) is JsonObject root)
@@ -104,7 +104,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 写入 Json 对象
         /// </summary>
-        private void WriteJson(JsonObject root, string jsonPath)
+        public void WriteJson(JsonObject root, string jsonPath)
         {
             using var output = File.Create(jsonPath);
             using var writer = new Utf8JsonWriter(output, jsonWriterOptions);
@@ -112,20 +112,9 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
-        /// 二进制转 Json 格式
+        /// 转换到目标版本
         /// </summary>
-        public void BinaryToJson(string binPath, string jsonPath)
-        {
-            WriteJson(ReadBinary(binPath), jsonPath);
-        }
-
-        /// <summary>
-        /// Json 转二进制格式
-        /// </summary>
-        public void JsonToBinary(string jsonPath, string binPath)
-        {
-            WriteBinary(ReadJson(jsonPath), binPath);
-        }
+        public abstract JsonObject ToVersion(JsonObject root, Version version);
 
         protected class SkeletonReader
         {

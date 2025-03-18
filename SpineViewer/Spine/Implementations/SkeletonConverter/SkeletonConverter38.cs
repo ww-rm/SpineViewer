@@ -19,7 +19,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private readonly List<JsonObject> idx2event = [];
 
-        protected override JsonObject ReadBinary(string binPath)
+        public override JsonObject ReadBinary(string binPath)
         {
             var root = new JsonObject();
             using var input = File.OpenRead(binPath);
@@ -809,7 +809,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private readonly Dictionary<string, int> path2idx = [];
         private readonly Dictionary<string, int> event2idx = [];
 
-        protected override void WriteBinary(JsonObject root, string binPath, bool nonessential = false)
+        public override void WriteBinary(JsonObject root, string binPath, bool nonessential = false)
         {
             this.nonessential = nonessential;
             this.root = root;
@@ -900,6 +900,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteAnimations()
         {
 
+        }
+
+        public override JsonObject ToVersion(JsonObject root, Version version)
+        {
+            root = version switch
+            {
+                Version.V38 => root.DeepClone().AsObject(),
+                _ => throw new NotImplementedException(),
+            };
+            return root;
         }
 
         //public void WriteFloatArray(float[] array)

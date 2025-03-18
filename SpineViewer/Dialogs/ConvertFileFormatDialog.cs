@@ -14,16 +14,22 @@ namespace SpineViewer.Dialogs
     public partial class ConvertFileFormatDialog : Form
     {
         public string[] SkelPaths { get; private set; }
-        public Spine.Version Version { get; private set; }
-        public bool ConvertToJson { get; private set; }
+        public Spine.Version SourceVersion { get; private set; }
+        public Spine.Version TargetVersion { get; private set; }
+        public bool JsonSource { get; private set; }
+        public bool JsonTarget { get; private set; }
 
         public ConvertFileFormatDialog()
         {
             InitializeComponent();
-            comboBox_Version.DataSource = VersionHelper.Versions.ToList();
-            comboBox_Version.DisplayMember = "Value";
-            comboBox_Version.ValueMember = "Key";
-            comboBox_Version.SelectedValue = Spine.Version.V38;
+            comboBox_SourceVersion.DataSource = VersionHelper.Versions.ToList();
+            comboBox_SourceVersion.DisplayMember = "Value";
+            comboBox_SourceVersion.ValueMember = "Key";
+            comboBox_SourceVersion.SelectedValue = Spine.Version.V38;
+            //comboBox_TargetVersion.DataSource = VersionHelper.Versions.ToList();
+            //comboBox_TargetVersion.DisplayMember = "Value";
+            //comboBox_TargetVersion.ValueMember = "Key";
+            //comboBox_TargetVersion.SelectedValue = Spine.Version.V38;
         }
 
         private void ConvertFileFormatDialog_Load(object sender, EventArgs e)
@@ -44,7 +50,10 @@ namespace SpineViewer.Dialogs
 
         private void button_Ok_Click(object sender, EventArgs e)
         {
-            var version = (Spine.Version)comboBox_Version.SelectedValue;
+            var sourceVersion = (Spine.Version)comboBox_SourceVersion.SelectedValue;
+            var targetVersion = (Spine.Version)comboBox_SourceVersion.SelectedValue;  // TODO: 增加目标版本
+            var jsonSource = radioButton_JsonSource.Checked;
+            var jsonTarget = radioButton_JsonTarget.Checked;
 
             if (listBox_FilePath.Items.Count <= 0)
             {
@@ -61,15 +70,29 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (!SkeletonConverter.ImplementedVersions.Contains(version))
+            if (!SkeletonConverter.ImplementedVersions.Contains(sourceVersion))
             {
-                MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{sourceVersion.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!SkeletonConverter.ImplementedVersions.Contains(targetVersion))
+            {
+                MessageBox.Show($"{targetVersion.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (jsonSource == jsonTarget && sourceVersion == targetVersion)
+            {
+                MessageBox.Show($"不需要转换相同的格式和版本", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             SkelPaths = listBox_FilePath.Items.Cast<string>().ToArray();
-            Version = version;
-            ConvertToJson = radioButton_BinarySource.Checked;
+            SourceVersion = sourceVersion;
+            TargetVersion = targetVersion;
+            JsonSource = jsonSource;
+            JsonTarget = jsonTarget;
 
             DialogResult = DialogResult.OK;
         }
