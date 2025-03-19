@@ -239,6 +239,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "导出PNG序列";
+            Load += ExportPngDialog_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);

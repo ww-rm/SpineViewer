@@ -239,6 +239,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "导出预览图";
+            Load += ExportPreviewDialog_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);

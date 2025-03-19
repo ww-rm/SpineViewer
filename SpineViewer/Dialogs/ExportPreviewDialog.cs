@@ -21,6 +21,11 @@ namespace SpineViewer.Dialogs
             InitializeComponent();
         }
 
+        private void ExportPreviewDialog_Load(object sender, EventArgs e)
+        {
+            button_SelectOutputDir_Click(sender, e);
+        }
+
         private void button_SelectOutputDir_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.InitialDirectory = textBox_OutputDir.Text;
