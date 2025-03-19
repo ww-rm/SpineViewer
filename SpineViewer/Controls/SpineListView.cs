@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using SpineViewer.Spine;
 using System.Reflection;
 using System.Diagnostics;
+using System.Collections.Specialized;
 
 namespace SpineViewer.Controls
 {
@@ -63,6 +64,9 @@ namespace SpineViewer.Controls
             progressDialog.ShowDialog();
         }
 
+        /// <summary>
+        /// 弹出对话框导出列表预览图
+        /// </summary>
         public void ExportPreviews()
         {
             lock (Spines)
@@ -101,19 +105,6 @@ namespace SpineViewer.Controls
                     for (int i = 0; i < spines.Count; i++)
                         spines[i].IsSelected = listView.SelectedIndices.Contains(i);
                 }
-            }
-        }
-
-        private void listView_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.A)
-            {
-                listView.BeginUpdate();
-                foreach (ListViewItem item in listView.Items)
-                {
-                    item.Selected = true;
-                }
-                listView.EndUpdate();
             }
         }
 
@@ -191,12 +182,21 @@ namespace SpineViewer.Controls
             toolStripMenuItem_MoveTop.Enabled = selectedCount == 1 && selectedIndices[0] != 0;
             toolStripMenuItem_MoveUp.Enabled = selectedCount == 1 && selectedIndices[0] != 0;
             toolStripMenuItem_MoveDown.Enabled = selectedCount == 1 && selectedIndices[0] != itemsCount - 1;
+            toolStripMenuItem_MoveBottom.Enabled = selectedCount == 1 && selectedIndices[0] != itemsCount - 1;
             toolStripMenuItem_RemoveAll.Enabled = itemsCount > 0;
 
             // 视图选项
             toolStripMenuItem_LargeIconView.Checked = listView.View == View.LargeIcon;
             toolStripMenuItem_SmallIconView.Checked = listView.View == View.SmallIcon;
             toolStripMenuItem_DetailsView.Checked = listView.View == View.Details;
+        }
+
+        private void contextMenuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            // 不显示菜单的时候需要把菜单的各项功能启用, 这样才能正常捕获快捷键
+            foreach (var item in contextMenuStrip.Items)
+                if (item is ToolStripMenuItem tsmi)
+                    tsmi.Enabled = true;
         }
 
         private void toolStripMenuItem_Add_Click(object sender, EventArgs e)
@@ -248,7 +248,12 @@ namespace SpineViewer.Controls
             var index = listView.SelectedIndices[0];
             if (index > 0)
             {
-                lock (Spines) { (spines[0], spines[index]) = (spines[index], spines[0]); }
+                lock (Spines)
+                {
+                    var spine = spines[index];
+                    spines.RemoveAt(index);
+                    spines.Insert(0, spine);
+                }
                 var item = listView.Items[index];
                 listView.Items.RemoveAt(index);
                 listView.Items.Insert(0, item);
@@ -279,9 +284,32 @@ namespace SpineViewer.Controls
             if (index < listView.Items.Count - 1)
             {
                 lock (Spines) { (spines[index], spines[index + 1]) = (spines[index + 1], spines[index]); }
-                var item = listView.Items[index + 1];
-                listView.Items.RemoveAt(index + 1);
-                listView.Items.Insert(index, item);
+                var item = listView.Items[index];
+                listView.Items.RemoveAt(index);
+                listView.Items.Insert(index + 1, item);
+            }
+        }
+
+        private void toolStripMenuItem_MoveBottom_Click(object sender, EventArgs e)
+        {
+            if (listView.SelectedIndices.Count != 1)
+                return;
+
+            var index = listView.SelectedIndices[0];
+            if (index < listView.Items.Count - 1)
+            {
+                lock (Spines)
+                {
+                    lock (Spines)
+                    {
+                        var spine = spines[index];
+                        spines.RemoveAt(index);
+                        spines.Add(spine);
+                    }
+                }
+                var item = listView.Items[index];
+                listView.Items.RemoveAt(index);
+                listView.Items.Add(item);
             }
         }
 
@@ -304,6 +332,34 @@ namespace SpineViewer.Controls
             listView.Items.Clear();
             if (PropertyGrid is not null)
                 PropertyGrid.SelectedObject = null;
+        }
+
+        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
+        {
+            listView.BeginUpdate();
+            foreach (ListViewItem item in listView.Items)
+                item.Selected = true;
+            listView.EndUpdate();
+        }
+
+        private void toolStripMenuItem_CopyPreview_Click(object sender, EventArgs e)
+        {
+            var fileDropList = new StringCollection();
+
+            lock (Spines)
+            {
+                foreach (int i in listView.SelectedIndices)
+                {
+                    var spine = spines[i];
+                    var image = spine.Preview;
+                    var path = Path.Combine(Program.TempDir, $"{spine.ID}.png");
+                    using (var clone = new Bitmap(image))
+                        clone.Save(path);
+                    fileDropList.Add(path);
+                }
+            }
+            if (fileDropList.Count > 0)
+                Clipboard.SetFileDropList(fileDropList);
         }
 
         private void toolStripMenuItem_LargeIconView_Click(object sender, EventArgs e)

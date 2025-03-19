@@ -5,6 +5,8 @@ namespace SpineViewer
 {
     internal static class Program
     {
+        public const string Name = "SpineViewer";
+        public static readonly string TempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Name)).FullName;
         public static readonly Process Process = Process.GetCurrentProcess();
         public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
