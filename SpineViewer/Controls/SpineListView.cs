@@ -58,8 +58,13 @@ namespace SpineViewer.Controls
                     index = listView.Items.Count;
 
                 // 锁定外部的读操作
-                lock (Spines) { spines.Insert(index, spine); }
-                listView.Items.Insert(index, new ListViewItem(spine.Name) { ToolTipText = spine.SkelPath });
+                lock (Spines)
+                {
+                    spines.Insert(index, spine);
+                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
+                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
+                }
+                listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
 
                 // 选中新增项
                 listView.SelectedIndices.Clear();
@@ -123,8 +128,14 @@ namespace SpineViewer.Controls
                 try
                 {
                     var spine = Spine.Spine.New(version, skelPath);
+                    var preview = spine.Preview;
                     lock (Spines) { spines.Add(spine); }
-                    listView.Invoke(() => listView.Items.Add(new ListViewItem(spine.Name) { ToolTipText = spine.SkelPath }));
+                    listView.Invoke(() =>
+                    {
+                        listView.SmallImageList.Images.Add(spine.ID, preview);
+                        listView.LargeImageList.Images.Add(spine.ID, preview);
+                        listView.Items.Add(new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
+                    });
                     success++;
                 }
                 catch (Exception ex)
@@ -255,6 +266,11 @@ namespace SpineViewer.Controls
             toolStripMenuItem_MoveUp.Enabled = selectedCount == 1 && listView.SelectedIndices[0] != 0;
             toolStripMenuItem_MoveDown.Enabled = selectedCount == 1 && listView.SelectedIndices[0] != itemsCount - 1;
             toolStripMenuItem_RemoveAll.Enabled = itemsCount > 0;
+
+            // 视图选项
+            toolStripMenuItem_LargeIconView.Checked = listView.View == View.LargeIcon;
+            toolStripMenuItem_SmallIconView.Checked = listView.View == View.SmallIcon;
+            toolStripMenuItem_DetailsView.Checked = listView.View == View.Details;
         }
 
         private void toolStripMenuItem_Add_Click(object sender, EventArgs e)
@@ -288,8 +304,11 @@ namespace SpineViewer.Controls
             {
                 lock (Spines)
                 {
-                    spines[i].Dispose();
+                    var spine = spines[i];
                     spines.RemoveAt(i);
+                    listView.SmallImageList.Images.RemoveByKey(spine.ID);
+                    listView.LargeImageList.Images.RemoveByKey(spine.ID);
+                    spine.Dispose();
                 }
                 listView.Items.RemoveAt(i);
             }
@@ -333,15 +352,32 @@ namespace SpineViewer.Controls
             if (MessageBox.Show($"确认移除所有 {listView.Items.Count} 项吗？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
-            lock (Spines) 
+            lock (Spines)
             {
                 foreach (var spine in spines)
                     spine.Dispose();
-                spines.Clear(); 
+                spines.Clear();
+                listView.SmallImageList.Images.Clear();
+                listView.LargeImageList.Images.Clear();
             }
             listView.Items.Clear();
             if (PropertyGrid is not null)
                 PropertyGrid.SelectedObject = null;
+        }
+
+        private void toolStripMenuItem_LargeIconView_Click(object sender, EventArgs e)
+        {
+            listView.View = View.LargeIcon;
+        }
+
+        private void toolStripMenuItem_SmallIconView_Click(object sender, EventArgs e)
+        {
+            listView.View = View.SmallIcon;
+        }
+
+        private void toolStripMenuItem_DetailsView_Click(object sender, EventArgs e)
+        {
+            listView.View = View.Details;
         }
     }
 }

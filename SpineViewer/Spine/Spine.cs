@@ -42,6 +42,16 @@ namespace SpineViewer.Spine
         public const string EMPTY_ANIMATION = "<Empty>";
 
         /// <summary>
+        /// 预览图大小
+        /// </summary>
+        public static readonly Size PREVIEW_SIZE = new(256, 256);
+
+        /// <summary>
+        /// 缩放最小值
+        /// </summary>
+        public const float SCALE_MIN = 0.001f;
+
+        /// <summary>
         /// 实现类缓存
         /// </summary>
         private static readonly Dictionary<Version, Type> ImplementationTypes = [];
@@ -109,6 +119,11 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
+        /// 标识符
+        /// </summary>
+        public readonly string ID = Guid.NewGuid().ToString();
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public Spine(string skelPath, string? atlasPath = null)
@@ -132,13 +147,7 @@ namespace SpineViewer.Spine
 
         ~Spine() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
-        protected virtual void Dispose(bool disposing) { }
-
-        /// <summary>
-        /// 缩放最小值
-        /// </summary>
-        [Browsable(false)]
-        public const float SCALE_MIN = 0.001f;
+        protected virtual void Dispose(bool disposing) { preview?.Dispose(); }
 
         /// <summary>
         /// 获取所属版本
@@ -230,6 +239,48 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public abstract RectangleF Bounds { get; }
+
+        /// <summary>
+        /// 骨骼预览图
+        /// </summary>
+        [Browsable(false)]
+        public Image Preview { get => preview ??= GetPreview(PREVIEW_SIZE); }
+        private Image preview = null;
+
+        public Image GetPreview(Size size)
+        {
+            var curAnimation = CurrentAnimation;
+            CurrentAnimation = EMPTY_ANIMATION;
+            var bounds = Bounds;
+
+            float viewX = size.Width;
+            float viewY = size.Height;
+            float sizeX = bounds.Width;
+            float sizeY = bounds.Height;
+
+            var scale = 1f;
+            if ((sizeY / sizeX) < (viewY / viewX))
+                scale = sizeX / viewX;// 相同的 X, 视窗 Y 更大
+            else
+                scale = sizeY / viewY;// 相同的 Y, 视窗 X 更大
+
+            viewX *= scale;
+            viewY *= scale;
+
+            var tex = new SFML.Graphics.RenderTexture((uint)size.Width, (uint)size.Height);
+            var view = tex.GetView();
+            view.Center = new(bounds.X + viewX / 2, bounds.Y + viewY / 2);
+            view.Size = new(viewX, -viewY);
+            tex.SetView(view);
+            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.Draw(this);
+            tex.Display();
+            CurrentAnimation = curAnimation;
+            using var img = tex.Texture.CopyToImage();
+            img.SaveToMemory(out var imgBuffer, "bmp");
+            using var stream = new MemoryStream(imgBuffer);
+            return new Bitmap(stream);
+        }
 
         /// <summary>
         /// 获取动画时长, 如果动画不存在则返回 0
