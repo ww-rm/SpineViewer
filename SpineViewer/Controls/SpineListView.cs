@@ -41,46 +41,6 @@ namespace SpineViewer.Controls
         public ListView.SelectedIndexCollection SelectedIndices { get => listView.SelectedIndices; }
 
         /// <summary>
-        /// 弹出添加对话框在指定位置之前插入一项
-        /// </summary>
-        private void Insert(int index = -1)
-        {
-            var dialog = new Dialogs.OpenSpineDialog();
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            try
-            {
-                var spine = Spine.Spine.New(dialog.Version, dialog.SkelPath, dialog.AtlasPath);
-
-                // 如果索引无效则在末尾添加
-                if (index < 0 || index > listView.Items.Count)
-                    index = listView.Items.Count;
-
-                // 锁定外部的读操作
-                lock (Spines)
-                {
-                    spines.Insert(index, spine);
-                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
-                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
-                }
-                listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
-
-                // 选中新增项
-                listView.SelectedIndices.Clear();
-                listView.SelectedIndices.Add(index);
-            }
-            catch (Exception ex)
-            {
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to load {} {}", dialog.SkelPath, dialog.AtlasPath);
-                MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
-        }
-
-        /// <summary>
         /// 弹出添加对话框
         /// </summary>
         public void Add()
@@ -103,61 +63,25 @@ namespace SpineViewer.Controls
             progressDialog.ShowDialog();
         }
 
-        private void BatchAdd_Work(object? sender, DoWorkEventArgs e)
+        public void ExportPreviews()
         {
-            var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.BatchOpenSpineDialog;
-            var skelPaths = arguments.SkelPaths;
-            var version = arguments.Version;
-
-            int totalCount = skelPaths.Length;
-            int success = 0;
-            int error = 0;
-
-            worker.ReportProgress(0, $"已处理 0/{totalCount}");
-            for (int i = 0; i < totalCount; i++)
+            lock (Spines)
             {
-                if (worker.CancellationPending)
+                if (spines.Count <= 0)
                 {
-                    e.Cancel = true;
-                    break;
+                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
                 }
-
-                var skelPath = skelPaths[i];
-
-                try
-                {
-                    var spine = Spine.Spine.New(version, skelPath);
-                    var preview = spine.Preview;
-                    lock (Spines) { spines.Add(spine); }
-                    listView.Invoke(() =>
-                    {
-                        listView.SmallImageList.Images.Add(spine.ID, preview);
-                        listView.LargeImageList.Images.Add(spine.ID, preview);
-                        listView.Items.Add(new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
-                    });
-                    success++;
-                }
-                catch (Exception ex)
-                {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to load {}", skelPath);
-                    error++;
-                }
-
-                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
             }
 
-            if (error > 0)
-            {
-                Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
-            }
-            else
-            {
-                Program.Logger.Info("{} skel loaded successfully", success);
-            }
+            var saveDialog = new Dialogs.ExportPreviewDialog();
+            if (saveDialog.ShowDialog() != DialogResult.OK)
+                return;
 
-            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += ExportPreview_Work;
+            progressDialog.RunWorkerAsync(saveDialog);
+            progressDialog.ShowDialog();
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
@@ -378,6 +302,156 @@ namespace SpineViewer.Controls
         private void toolStripMenuItem_DetailsView_Click(object sender, EventArgs e)
         {
             listView.View = View.Details;
+        }
+
+        /// <summary>
+        /// 弹出添加对话框在指定位置之前插入一项
+        /// </summary>
+        private void Insert(int index = -1)
+        {
+            var dialog = new Dialogs.OpenSpineDialog();
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                var spine = Spine.Spine.New(dialog.Version, dialog.SkelPath, dialog.AtlasPath);
+
+                // 如果索引无效则在末尾添加
+                if (index < 0 || index > listView.Items.Count)
+                    index = listView.Items.Count;
+
+                // 锁定外部的读操作
+                lock (Spines)
+                {
+                    spines.Insert(index, spine);
+                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
+                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
+                }
+                listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
+
+                // 选中新增项
+                listView.SelectedIndices.Clear();
+                listView.SelectedIndices.Add(index);
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex.ToString());
+                Program.Logger.Error("Failed to load {} {}", dialog.SkelPath, dialog.AtlasPath);
+                MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
+        }
+
+        private void BatchAdd_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            var arguments = e.Argument as Dialogs.BatchOpenSpineDialog;
+            var skelPaths = arguments.SkelPaths;
+            var version = arguments.Version;
+
+            int totalCount = skelPaths.Length;
+            int success = 0;
+            int error = 0;
+
+            worker.ReportProgress(0, $"已处理 0/{totalCount}");
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+
+                var skelPath = skelPaths[i];
+
+                try
+                {
+                    var spine = Spine.Spine.New(version, skelPath);
+                    var preview = spine.Preview;
+                    lock (Spines) { spines.Add(spine); }
+                    listView.Invoke(() =>
+                    {
+                        listView.SmallImageList.Images.Add(spine.ID, preview);
+                        listView.LargeImageList.Images.Add(spine.ID, preview);
+                        listView.Items.Add(new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
+                    });
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    Program.Logger.Error(ex.ToString());
+                    Program.Logger.Error("Failed to load {}", skelPath);
+                    error++;
+                }
+
+                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+            }
+
+            if (error > 0)
+            {
+                Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
+            }
+            else
+            {
+                Program.Logger.Info("{} skel loaded successfully", success);
+            }
+
+            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
+        }
+
+        private void ExportPreview_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            var arguments = e.Argument as Dialogs.ExportPreviewDialog;
+            var outputDir = arguments.OutputDir;
+            var width = arguments.PreviewWidth;
+            var height = arguments.PreviewHeight;
+
+            int success = 0;
+            int error = 0;
+            lock (Spines)
+            {
+                int totalCount = spines.Count;
+                worker.ReportProgress(0, $"已处理 0/{totalCount}");
+                for (int i = 0; i < totalCount; i++)
+                {
+                    if (worker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+
+                    var spine = spines[i];
+                    try
+                    {
+                        var preview = spine.GetPreview(width, height);
+                        var savePath = Path.Combine(outputDir, $"{spine.Name}.png");
+                        preview.SaveToFile(savePath);
+                        success++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Program.Logger.Error(ex.ToString());
+                        Program.Logger.Error("Failed to save preview {}", spine.SkelPath);
+                        error++;
+                    }
+
+                    worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+                }
+            }
+
+            if (error > 0)
+            {
+                Program.Logger.Warn("Preview save {} successfully, {} failed", success, error);
+            }
+            else
+            {
+                Program.Logger.Info("{} preview saved successfully", success);
+            }
+
+            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
         }
     }
 }

@@ -63,6 +63,7 @@
             spinePreviewer = new SpineViewer.Controls.SpinePreviewer();
             panel_MainForm = new Panel();
             toolTip = new ToolTip(components);
+            toolStripMenuItem_ExportPreview = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer_MainForm).BeginInit();
             splitContainer_MainForm.Panel1.SuspendLayout();
@@ -100,7 +101,7 @@
             // 
             // toolStripMenuItem_File
             // 
-            toolStripMenuItem_File.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_Open, toolStripMenuItem_BatchOpen, toolStripSeparator1, toolStripMenuItem_Export, toolStripSeparator2, toolStripMenuItem_Exit });
+            toolStripMenuItem_File.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_Open, toolStripMenuItem_BatchOpen, toolStripSeparator1, toolStripMenuItem_Export, toolStripMenuItem_ExportPreview, toolStripSeparator2, toolStripMenuItem_Exit });
             toolStripMenuItem_File.Name = "toolStripMenuItem_File";
             toolStripMenuItem_File.Size = new Size(84, 28);
             toolStripMenuItem_File.Text = "文件(&F)";
@@ -109,40 +110,40 @@
             // 
             toolStripMenuItem_Open.Name = "toolStripMenuItem_Open";
             toolStripMenuItem_Open.ShortcutKeys = Keys.Control | Keys.O;
-            toolStripMenuItem_Open.Size = new Size(254, 34);
+            toolStripMenuItem_Open.Size = new Size(270, 34);
             toolStripMenuItem_Open.Text = "打开(&O)...";
             toolStripMenuItem_Open.Click += toolStripMenuItem_Open_Click;
             // 
             // toolStripMenuItem_BatchOpen
             // 
             toolStripMenuItem_BatchOpen.Name = "toolStripMenuItem_BatchOpen";
-            toolStripMenuItem_BatchOpen.Size = new Size(254, 34);
+            toolStripMenuItem_BatchOpen.Size = new Size(270, 34);
             toolStripMenuItem_BatchOpen.Text = "批量打开(&B)...";
             toolStripMenuItem_BatchOpen.Click += toolStripMenuItem_BatchOpen_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(251, 6);
+            toolStripSeparator1.Size = new Size(267, 6);
             // 
             // toolStripMenuItem_Export
             // 
             toolStripMenuItem_Export.Name = "toolStripMenuItem_Export";
             toolStripMenuItem_Export.ShortcutKeys = Keys.Control | Keys.S;
-            toolStripMenuItem_Export.Size = new Size(254, 34);
+            toolStripMenuItem_Export.Size = new Size(270, 34);
             toolStripMenuItem_Export.Text = "导出(&E)...";
             toolStripMenuItem_Export.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(251, 6);
+            toolStripSeparator2.Size = new Size(267, 6);
             // 
             // toolStripMenuItem_Exit
             // 
             toolStripMenuItem_Exit.Name = "toolStripMenuItem_Exit";
             toolStripMenuItem_Exit.ShortcutKeys = Keys.Alt | Keys.F4;
-            toolStripMenuItem_Exit.Size = new Size(254, 34);
+            toolStripMenuItem_Exit.Size = new Size(270, 34);
             toolStripMenuItem_Exit.Text = "退出(&X)";
             toolStripMenuItem_Exit.Click += toolStripMenuItem_Exit_Click;
             // 
@@ -156,7 +157,7 @@
             // toolStripMenuItem_ResetAnimation
             // 
             toolStripMenuItem_ResetAnimation.Name = "toolStripMenuItem_ResetAnimation";
-            toolStripMenuItem_ResetAnimation.Size = new Size(242, 34);
+            toolStripMenuItem_ResetAnimation.Size = new Size(270, 34);
             toolStripMenuItem_ResetAnimation.Text = "重置动画时间(&R)";
             toolStripMenuItem_ResetAnimation.Click += toolStripMenuItem_ResetAnimation_Click;
             // 
@@ -170,7 +171,7 @@
             // toolStripMenuItem_ConvertFileFormat
             // 
             toolStripMenuItem_ConvertFileFormat.Name = "toolStripMenuItem_ConvertFileFormat";
-            toolStripMenuItem_ConvertFileFormat.Size = new Size(254, 34);
+            toolStripMenuItem_ConvertFileFormat.Size = new Size(270, 34);
             toolStripMenuItem_ConvertFileFormat.Text = "转换文件格式(&C)...";
             toolStripMenuItem_ConvertFileFormat.Click += toolStripMenuItem_ConvertFileFormat_Click;
             // 
@@ -184,7 +185,7 @@
             // toolStripMenuItem_ManageResource
             // 
             toolStripMenuItem_ManageResource.Name = "toolStripMenuItem_ManageResource";
-            toolStripMenuItem_ManageResource.Size = new Size(270, 34);
+            toolStripMenuItem_ManageResource.Size = new Size(260, 34);
             toolStripMenuItem_ManageResource.Text = "管理下载资源(&M)...";
             toolStripMenuItem_ManageResource.Click += toolStripMenuItem_ManageResource_Click;
             // 
@@ -424,6 +425,13 @@
             // 
             toolTip.ShowAlways = true;
             // 
+            // toolStripMenuItem_ExportPreviews
+            // 
+            toolStripMenuItem_ExportPreview.Name = "toolStripMenuItem_ExportPreviews";
+            toolStripMenuItem_ExportPreview.Size = new Size(270, 34);
+            toolStripMenuItem_ExportPreview.Text = "导出预览图(&P)...";
+            toolStripMenuItem_ExportPreview.Click += toolStripMenuItem_ExportPreview_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
@@ -501,5 +509,6 @@
         private ToolStripMenuItem toolStripMenuItem_ManageResource;
         private ToolStripMenuItem toolStripMenuItem_Tool;
         private ToolStripMenuItem toolStripMenuItem_ConvertFileFormat;
+        private ToolStripMenuItem toolStripMenuItem_ExportPreview;
     }
 }

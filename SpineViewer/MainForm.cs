@@ -43,6 +43,101 @@ namespace SpineViewer
             LogManager.ReconfigExistingLoggers();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            spinePreviewer.StartPreview();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            spinePreviewer.StopPreview();
+        }
+
+        private void toolStripMenuItem_Open_Click(object sender, EventArgs e)
+        {
+            spineListView.Add();
+        }
+
+        private void toolStripMenuItem_BatchOpen_Click(object sender, EventArgs e)
+        {
+            spineListView.BatchAdd();
+        }
+
+        private void toolStripMenuItem_Export_Click(object sender, EventArgs e)
+        {
+            lock (spineListView.Spines)
+            {
+                if (spineListView.Spines.Count <= 0)
+                {
+                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
+            var exportDialog = new Dialogs.ExportPngDialog();
+            if (exportDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += ExportPng_Work;
+            progressDialog.RunWorkerAsync(exportDialog);
+            progressDialog.ShowDialog();
+        }
+
+        private void toolStripMenuItem_ExportPreview_Click(object sender, EventArgs e)
+        {
+            spineListView.ExportPreviews();
+        }
+
+        private void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void toolStripMenuItem_ResetAnimation_Click(object sender, EventArgs e)
+        {
+            lock (spineListView.Spines)
+            {
+                foreach (var spine in spineListView.Spines)
+                    spine.CurrentAnimation = spine.CurrentAnimation;
+            }
+        }
+
+        private void toolStripMenuItem_ConvertFileFormat_Click(object sender, EventArgs e)
+        {
+            var openDialog = new Dialogs.ConvertFileFormatDialog();
+            if (openDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += ConvertFileFormat_Work;
+            progressDialog.RunWorkerAsync(openDialog);
+            progressDialog.ShowDialog();
+        }
+
+        private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void toolStripMenuItem_About_Click(object sender, EventArgs e)
+        {
+            (new Dialogs.AboutDialog()).ShowDialog();
+        }
+
+        private void toolStripMenuItem_Diagnostics_Click(object sender, EventArgs e)
+        {
+            (new Dialogs.DiagnosticsDialog()).ShowDialog();
+        }
+
+        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e) { ActiveControl = null; }
+
+        private void splitContainer_MouseUp(object sender, MouseEventArgs e) { ActiveControl = null; }
+
+        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) { (sender as PropertyGrid)?.Refresh(); }
+
+        private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) { propertyGrid_Spine.Refresh(); }
+
         private void ExportPng_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
@@ -103,73 +198,6 @@ namespace SpineViewer
             }
 
             spinePreviewer.StartPreview();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            spinePreviewer.StartPreview();
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            spinePreviewer.StopPreview();
-        }
-
-        private void toolStripMenuItem_Open_Click(object sender, EventArgs e)
-        {
-            spineListView.Add();
-        }
-
-        private void toolStripMenuItem_BatchOpen_Click(object sender, EventArgs e)
-        {
-            spineListView.BatchAdd();
-        }
-
-        private void toolStripMenuItem_Export_Click(object sender, EventArgs e)
-        {
-            lock (spineListView.Spines)
-            {
-                if (spineListView.Spines.Count <= 0)
-                {
-                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-            }
-
-            var exportDialog = new Dialogs.ExportPngDialog();
-            if (exportDialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            var progressDialog = new Dialogs.ProgressDialog();
-            progressDialog.DoWork += ExportPng_Work;
-            progressDialog.RunWorkerAsync(exportDialog);
-            progressDialog.ShowDialog();
-        }
-
-        private void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void toolStripMenuItem_ResetAnimation_Click(object sender, EventArgs e)
-        {
-            lock (spineListView.Spines)
-            {
-                foreach (var spine in spineListView.Spines)
-                    spine.CurrentAnimation = spine.CurrentAnimation;
-            }
-        }
-
-        private void toolStripMenuItem_ConvertFileFormat_Click(object sender, EventArgs e)
-        {
-            var openDialog = new Dialogs.ConvertFileFormatDialog();
-            if (openDialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            var progressDialog = new Dialogs.ProgressDialog();
-            progressDialog.DoWork += ConvertFileFormat_Work;
-            progressDialog.RunWorkerAsync(openDialog);
-            progressDialog.ShowDialog();
         }
 
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
@@ -236,28 +264,5 @@ namespace SpineViewer
                 Program.Logger.Info("{} skel converted successfully", success);
             }
         }
-
-        private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripMenuItem_About_Click(object sender, EventArgs e)
-        {
-            (new Dialogs.AboutDialog()).ShowDialog();
-        }
-
-        private void toolStripMenuItem_Diagnostics_Click(object sender, EventArgs e)
-        {
-            (new Dialogs.DiagnosticsDialog()).ShowDialog();
-        }
-
-        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e) { ActiveControl = null; }
-
-        private void splitContainer_MouseUp(object sender, MouseEventArgs e) { ActiveControl = null; }
-
-        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) { (sender as PropertyGrid)?.Refresh(); }
-
-        private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) { propertyGrid_Spine.Refresh(); }
     }
 }

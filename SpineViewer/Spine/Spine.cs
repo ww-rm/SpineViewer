@@ -244,17 +244,33 @@ namespace SpineViewer.Spine
         /// 骨骼预览图
         /// </summary>
         [Browsable(false)]
-        public Image Preview { get => preview ??= GetPreview(PREVIEW_SIZE); }
+        public Image Preview
+        {
+            get
+            {
+                if (preview is null)
+                {
+                    using var img = GetPreview((uint)PREVIEW_SIZE.Width, (uint)PREVIEW_SIZE.Height);
+                    img.SaveToMemory(out var imgBuffer, "bmp");
+                    using var stream = new MemoryStream(imgBuffer);
+                    preview = new Bitmap(stream);
+                }
+                return preview;
+            }
+        }
         private Image preview = null;
 
-        public Image GetPreview(Size size)
+        /// <summary>
+        /// 获取指定尺寸的预览图
+        /// </summary>
+        public SFML.Graphics.Image GetPreview(uint width, uint height)
         {
             var curAnimation = CurrentAnimation;
             CurrentAnimation = EMPTY_ANIMATION;
             var bounds = Bounds;
 
-            float viewX = size.Width;
-            float viewY = size.Height;
+            float viewX = width;
+            float viewY = height;
             float sizeX = bounds.Width;
             float sizeY = bounds.Height;
 
@@ -267,7 +283,7 @@ namespace SpineViewer.Spine
             viewX *= scale;
             viewY *= scale;
 
-            var tex = new SFML.Graphics.RenderTexture((uint)size.Width, (uint)size.Height);
+            using var tex = new SFML.Graphics.RenderTexture(width, height);
             var view = tex.GetView();
             view.Center = new(bounds.X + viewX / 2, bounds.Y + viewY / 2);
             view.Size = new(viewX, -viewY);
@@ -276,10 +292,7 @@ namespace SpineViewer.Spine
             tex.Draw(this);
             tex.Display();
             CurrentAnimation = curAnimation;
-            using var img = tex.Texture.CopyToImage();
-            img.SaveToMemory(out var imgBuffer, "bmp");
-            using var stream = new MemoryStream(imgBuffer);
-            return new Bitmap(stream);
+            return tex.Texture.CopyToImage();
         }
 
         /// <summary>
