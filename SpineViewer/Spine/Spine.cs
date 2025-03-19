@@ -37,6 +37,11 @@ namespace SpineViewer.Spine
     public abstract class Spine : SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
+        /// 空动画标记
+        /// </summary>
+        public const string EMPTY_ANIMATION = "<Empty>";
+
+        /// <summary>
         /// 实现类缓存
         /// </summary>
         private static readonly Dictionary<Version, Type> ImplementationTypes = [];
@@ -199,7 +204,7 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public ReadOnlyCollection<string> AnimationNames { get => animationNames.AsReadOnly(); }
-        protected List<string> animationNames = [];
+        protected List<string> animationNames = [EMPTY_ANIMATION];
 
         /// <summary>
         /// 默认动画名称

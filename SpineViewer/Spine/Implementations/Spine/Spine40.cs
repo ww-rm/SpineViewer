@@ -12,6 +12,8 @@ namespace SpineViewer.Spine.Implementations.Spine
     [SpineImplementation(Version.V40)]
     internal class Spine40 : SpineViewer.Spine.Spine
     {
+        private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
+
         private class TextureLoader : SpineRuntime40.TextureLoader
         {
             public void Load(AtlasPage page, string path)
@@ -179,8 +181,15 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string CurrentAnimation
         {
-            get => animationState.GetCurrent(0)?.Animation.Name ?? DefaultAnimationName;
-            set { if (animationNames.Contains(value)) { animationState.SetAnimation(0, value, true); Update(0); } }
+            get => animationState.GetCurrent(0)?.Animation.Name ?? EMPTY_ANIMATION;
+            set
+            {
+                if (value == EMPTY_ANIMATION)
+                    animationState.SetAnimation(0, EmptyAnimation, false);
+                else if (animationNames.Contains(value))
+                    animationState.SetAnimation(0, value, true);
+                Update(0);
+            }
         }
 
         public override RectangleF Bounds

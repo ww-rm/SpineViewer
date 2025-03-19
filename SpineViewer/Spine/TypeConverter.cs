@@ -42,11 +42,7 @@ namespace SpineViewer.Spine
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
             if (context?.Instance is Spine obj)
-            {
-                // 返回 AnimationNames 作为下拉选项
                 return new StandardValuesCollection(obj.AnimationNames);
-            }
-
             return base.GetStandardValues(context);
         }
     }
