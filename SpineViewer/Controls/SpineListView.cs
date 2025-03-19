@@ -183,12 +183,14 @@ namespace SpineViewer.Controls
 
         private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            var selectedCount = listView.SelectedIndices.Count;
+            var selectedIndices = listView.SelectedIndices;
+            var selectedCount = selectedIndices.Count;
             var itemsCount = listView.Items.Count;
             toolStripMenuItem_Insert.Enabled = selectedCount == 1;
             toolStripMenuItem_Remove.Enabled = selectedCount >= 1;
-            toolStripMenuItem_MoveUp.Enabled = selectedCount == 1 && listView.SelectedIndices[0] != 0;
-            toolStripMenuItem_MoveDown.Enabled = selectedCount == 1 && listView.SelectedIndices[0] != itemsCount - 1;
+            toolStripMenuItem_MoveTop.Enabled = selectedCount == 1 && selectedIndices[0] != 0;
+            toolStripMenuItem_MoveUp.Enabled = selectedCount == 1 && selectedIndices[0] != 0;
+            toolStripMenuItem_MoveDown.Enabled = selectedCount == 1 && selectedIndices[0] != itemsCount - 1;
             toolStripMenuItem_RemoveAll.Enabled = itemsCount > 0;
 
             // 视图选项
@@ -235,6 +237,21 @@ namespace SpineViewer.Controls
                     spine.Dispose();
                 }
                 listView.Items.RemoveAt(i);
+            }
+        }
+
+        private void toolStripMenuItem_MoveTop_Click(object sender, EventArgs e)
+        {
+            if (listView.SelectedIndices.Count != 1)
+                return;
+
+            var index = listView.SelectedIndices[0];
+            if (index > 0)
+            {
+                lock (Spines) { (spines[0], spines[index]) = (spines[index], spines[0]); }
+                var item = listView.Items[index];
+                listView.Items.RemoveAt(index);
+                listView.Items.Insert(0, item);
             }
         }
 

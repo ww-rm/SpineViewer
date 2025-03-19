@@ -48,6 +48,7 @@
             toolStripMenuItem_DetailsView = new ToolStripMenuItem();
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
+            toolStripMenuItem_MoveTop = new ToolStripMenuItem();
             contextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -82,15 +83,15 @@
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
-            contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripSeparator2, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator3, toolStripMenuItem_ChangeView });
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripSeparator2, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator3, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(188, 262);
+            contextMenuStrip.Size = new Size(241, 325);
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
             // toolStripMenuItem_Add
             // 
             toolStripMenuItem_Add.Name = "toolStripMenuItem_Add";
-            toolStripMenuItem_Add.Size = new Size(187, 30);
+            toolStripMenuItem_Add.Size = new Size(240, 30);
             toolStripMenuItem_Add.Text = "添加(&A)...";
             toolStripMenuItem_Add.Click += toolStripMenuItem_Add_Click;
             // 
@@ -98,7 +99,7 @@
             // 
             toolStripMenuItem_Insert.Enabled = false;
             toolStripMenuItem_Insert.Name = "toolStripMenuItem_Insert";
-            toolStripMenuItem_Insert.Size = new Size(187, 30);
+            toolStripMenuItem_Insert.Size = new Size(240, 30);
             toolStripMenuItem_Insert.Text = "插入(&I)...";
             toolStripMenuItem_Insert.Click += toolStripMenuItem_Insert_Click;
             // 
@@ -106,38 +107,38 @@
             // 
             toolStripMenuItem_Remove.Enabled = false;
             toolStripMenuItem_Remove.Name = "toolStripMenuItem_Remove";
-            toolStripMenuItem_Remove.Size = new Size(187, 30);
+            toolStripMenuItem_Remove.Size = new Size(240, 30);
             toolStripMenuItem_Remove.Text = "移除(&R)";
             toolStripMenuItem_Remove.Click += toolStripMenuItem_Remove_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(184, 6);
+            toolStripSeparator1.Size = new Size(237, 6);
             // 
             // toolStripMenuItem_MoveUp
             // 
             toolStripMenuItem_MoveUp.Name = "toolStripMenuItem_MoveUp";
-            toolStripMenuItem_MoveUp.Size = new Size(187, 30);
+            toolStripMenuItem_MoveUp.Size = new Size(240, 30);
             toolStripMenuItem_MoveUp.Text = "上移(&U)";
             toolStripMenuItem_MoveUp.Click += toolStripMenuItem_MoveUp_Click;
             // 
             // toolStripMenuItem_MoveDown
             // 
             toolStripMenuItem_MoveDown.Name = "toolStripMenuItem_MoveDown";
-            toolStripMenuItem_MoveDown.Size = new Size(187, 30);
+            toolStripMenuItem_MoveDown.Size = new Size(240, 30);
             toolStripMenuItem_MoveDown.Text = "下移(&D)";
             toolStripMenuItem_MoveDown.Click += toolStripMenuItem_MoveDown_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(184, 6);
+            toolStripSeparator2.Size = new Size(237, 6);
             // 
             // toolStripMenuItem_BatchAdd
             // 
             toolStripMenuItem_BatchAdd.Name = "toolStripMenuItem_BatchAdd";
-            toolStripMenuItem_BatchAdd.Size = new Size(187, 30);
+            toolStripMenuItem_BatchAdd.Size = new Size(240, 30);
             toolStripMenuItem_BatchAdd.Text = "批量添加(&B)...";
             toolStripMenuItem_BatchAdd.Click += toolStripMenuItem_BatchAdd_Click;
             // 
@@ -145,20 +146,20 @@
             // 
             toolStripMenuItem_RemoveAll.Enabled = false;
             toolStripMenuItem_RemoveAll.Name = "toolStripMenuItem_RemoveAll";
-            toolStripMenuItem_RemoveAll.Size = new Size(187, 30);
+            toolStripMenuItem_RemoveAll.Size = new Size(240, 30);
             toolStripMenuItem_RemoveAll.Text = "移除全部(&X)";
             toolStripMenuItem_RemoveAll.Click += toolStripMenuItem_RemoveAll_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(184, 6);
+            toolStripSeparator3.Size = new Size(237, 6);
             // 
             // toolStripMenuItem_ChangeView
             // 
             toolStripMenuItem_ChangeView.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_LargeIconView, toolStripMenuItem_SmallIconView, toolStripMenuItem_DetailsView });
             toolStripMenuItem_ChangeView.Name = "toolStripMenuItem_ChangeView";
-            toolStripMenuItem_ChangeView.Size = new Size(187, 30);
+            toolStripMenuItem_ChangeView.Size = new Size(240, 30);
             toolStripMenuItem_ChangeView.Text = "切换视图";
             // 
             // toolStripMenuItem_LargeIconView
@@ -194,6 +195,13 @@
             imageList_SmallIcon.ImageSize = new Size(48, 48);
             imageList_SmallIcon.TransparentColor = Color.Transparent;
             // 
+            // toolStripMenuItem_MoveTop
+            // 
+            toolStripMenuItem_MoveTop.Name = "toolStripMenuItem_MoveTop";
+            toolStripMenuItem_MoveTop.Size = new Size(240, 30);
+            toolStripMenuItem_MoveTop.Text = "置顶(&T)";
+            toolStripMenuItem_MoveTop.Click += toolStripMenuItem_MoveTop_Click;
+            // 
             // SpineListView
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
@@ -225,5 +233,6 @@
         private ToolStripMenuItem toolStripMenuItem_LargeIconView;
         private ToolStripMenuItem toolStripMenuItem_SmallIconView;
         private ToolStripMenuItem toolStripMenuItem_DetailsView;
+        private ToolStripMenuItem toolStripMenuItem_MoveTop;
     }
 }
