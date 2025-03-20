@@ -107,12 +107,14 @@ namespace SpineViewer.Controls
                 }
             }
 
-            // BUG: 图标显示的时候没法自动刷新顺序, 只能切换视图刷新, 不知道什么原理
-            listView.BeginUpdate();
-            var tmp = listView.View;
-            listView.View = View.List;
-            listView.View = tmp;
-            listView.EndUpdate();
+            // XXX: 图标显示的时候没法自动刷新顺序, 只能切换视图刷新, 不知道什么原理
+            if (listView.View == View.LargeIcon)
+            {
+                listView.BeginUpdate();
+                listView.View = View.List;
+                listView.View = View.LargeIcon;
+                listView.EndUpdate();
+            }
 
             if (listView.SelectedItems.Count > 0)
                 listView.SelectedItems[0].EnsureVisible();
