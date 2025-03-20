@@ -24,7 +24,7 @@ namespace SpineViewer.Dialogs
             InitializeComponent();
 
             // XXX: 文件格式转换暂时不支持自动检测版本
-            var impVersions = VersionHelper.Versions.ToDictionary();
+            var impVersions = VersionHelper.Names.ToDictionary();
             impVersions.Remove(Spine.Version.Auto);
 
             comboBox_SourceVersion.DataSource = impVersions.ToList();
@@ -77,13 +77,13 @@ namespace SpineViewer.Dialogs
 
             if (!SkeletonConverter.ImplementedVersions.Contains(sourceVersion))
             {
-                MessageBox.Show($"{sourceVersion.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             if (!SkeletonConverter.ImplementedVersions.Contains(targetVersion))
             {
-                MessageBox.Show($"{targetVersion.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 

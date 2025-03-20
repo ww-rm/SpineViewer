@@ -18,7 +18,7 @@ namespace SpineViewer.Spine
             if (destinationType == typeof(string) && value is Version version)
             {
                 // 调用自定义的 String() 方法
-                return version.String();
+                return version.GetName();
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

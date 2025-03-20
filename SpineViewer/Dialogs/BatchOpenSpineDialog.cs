@@ -18,7 +18,7 @@ namespace SpineViewer.Dialogs
         public BatchOpenSpineDialog()
         {
             InitializeComponent();
-            comboBox_Version.DataSource = VersionHelper.Versions.ToList();
+            comboBox_Version.DataSource = VersionHelper.Names.ToList();
             comboBox_Version.DisplayMember = "Value";
             comboBox_Version.ValueMember = "Key";
             comboBox_Version.SelectedValue = Spine.Version.Auto;
@@ -61,7 +61,7 @@ namespace SpineViewer.Dialogs
 
             if (version != Spine.Version.Auto && !Spine.Spine.ImplementedVersions.Contains(version))
             {
-                MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{version.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 

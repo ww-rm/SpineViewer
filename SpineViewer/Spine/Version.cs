@@ -12,10 +12,15 @@ namespace SpineViewer.Spine
     public static class VersionHelper
     {
         /// <summary>
-        /// 描述缓存
+        /// 版本名称
         /// </summary>
-        public static readonly ReadOnlyDictionary<Version, string> Versions;
-        private static readonly Dictionary<Version, string> versions = [];
+        public static readonly ReadOnlyDictionary<Version, string> Names;
+        private static readonly Dictionary<Version, string> names = [];
+
+        /// <summary>
+        /// Runtime 版本字符串
+        /// </summary>
+        private static readonly Dictionary<Version, string> runtimes = [];
 
         static VersionHelper()
         {
@@ -24,17 +29,33 @@ namespace SpineViewer.Spine
             {
                 var field = typeof(Version).GetField(value.ToString());
                 var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
-                versions[(Version)value] = attribute?.Description ?? value.ToString();
+                names[(Version)value] = attribute?.Description ?? value.ToString();
             }
-            Versions = versions.AsReadOnly();
+            Names = names.AsReadOnly();
+
+            runtimes[Version.V21] = Assembly.GetAssembly(typeof(SpineRuntime21.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V36] = Assembly.GetAssembly(typeof(SpineRuntime36.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V37] = Assembly.GetAssembly(typeof(SpineRuntime37.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V38] = Assembly.GetAssembly(typeof(SpineRuntime38.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V40] = Assembly.GetAssembly(typeof(SpineRuntime40.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V41] = Assembly.GetAssembly(typeof(SpineRuntime41.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[Version.V42] = Assembly.GetAssembly(typeof(SpineRuntime42.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
         }
 
         /// <summary>
-        /// 版本号字符串
+        /// 版本字符串名称
         /// </summary>
-        public static string String(this Version version)
+        public static string GetName(this Version version)
         {
-            return Versions.TryGetValue(version, out var description) ? description : version.ToString();
+            return Names.TryGetValue(version, out var val) ? val : version.ToString();
+        }
+
+        /// <summary>
+        /// Runtime 版本字符串名称
+        /// </summary>
+        public static string GetRuntime(this Version version)
+        {
+            return runtimes.TryGetValue(version, out var val) ? val : GetName(version);
         }
     }
 
