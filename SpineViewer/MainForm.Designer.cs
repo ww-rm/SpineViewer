@@ -158,13 +158,13 @@
             // 
             toolStripMenuItem_Function.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_ResetAnimation });
             toolStripMenuItem_Function.Name = "toolStripMenuItem_Function";
-            toolStripMenuItem_Function.Size = new Size(84, 28);
-            toolStripMenuItem_Function.Text = "功能(&F)";
+            toolStripMenuItem_Function.Size = new Size(87, 28);
+            toolStripMenuItem_Function.Text = "功能(&G)";
             // 
             // toolStripMenuItem_ResetAnimation
             // 
             toolStripMenuItem_ResetAnimation.Name = "toolStripMenuItem_ResetAnimation";
-            toolStripMenuItem_ResetAnimation.Size = new Size(242, 34);
+            toolStripMenuItem_ResetAnimation.Size = new Size(270, 34);
             toolStripMenuItem_ResetAnimation.Text = "重置动画时间(&R)";
             toolStripMenuItem_ResetAnimation.Click += toolStripMenuItem_ResetAnimation_Click;
             // 
