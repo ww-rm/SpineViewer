@@ -6,7 +6,7 @@
 
 一个简单好用的 Spine 文件查看&导出程序.
 
-![previewer](img/preview.jpg)
+![previewer](img/preview.webp)
 
 ---
 
