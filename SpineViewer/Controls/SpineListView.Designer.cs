@@ -49,7 +49,7 @@
             toolStripSeparator4 = new ToolStripSeparator();
             toolStripMenuItem_ChangeView = new ToolStripMenuItem();
             toolStripMenuItem_LargeIconView = new ToolStripMenuItem();
-            toolStripMenuItem_SmallIconView = new ToolStripMenuItem();
+            toolStripMenuItem_ListView = new ToolStripMenuItem();
             toolStripMenuItem_DetailsView = new ToolStripMenuItem();
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
@@ -58,8 +58,8 @@
             // 
             // listView
             // 
+            listView.Alignment = ListViewAlignment.Left;
             listView.AllowDrop = true;
-            listView.AutoArrange = false;
             listView.Columns.AddRange(new ColumnHeader[] { columnHeader_Name });
             listView.ContextMenuStrip = contextMenuStrip;
             listView.Dock = DockStyle.Fill;
@@ -90,7 +90,7 @@
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator2, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveBottom, toolStripSeparator3, toolStripMenuItem_SelectAll, toolStripMenuItem_CopyPreview, toolStripSeparator4, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(329, 421);
+            contextMenuStrip.Size = new Size(329, 388);
             contextMenuStrip.Closed += contextMenuStrip_Closed;
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
@@ -200,7 +200,7 @@
             // 
             // toolStripMenuItem_ChangeView
             // 
-            toolStripMenuItem_ChangeView.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_LargeIconView, toolStripMenuItem_SmallIconView, toolStripMenuItem_DetailsView });
+            toolStripMenuItem_ChangeView.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_LargeIconView, toolStripMenuItem_ListView, toolStripMenuItem_DetailsView });
             toolStripMenuItem_ChangeView.Name = "toolStripMenuItem_ChangeView";
             toolStripMenuItem_ChangeView.Size = new Size(328, 30);
             toolStripMenuItem_ChangeView.Text = "切换视图";
@@ -209,24 +209,24 @@
             // 
             toolStripMenuItem_LargeIconView.Name = "toolStripMenuItem_LargeIconView";
             toolStripMenuItem_LargeIconView.ShortcutKeys = Keys.Alt | Keys.D1;
-            toolStripMenuItem_LargeIconView.Size = new Size(223, 34);
+            toolStripMenuItem_LargeIconView.Size = new Size(241, 34);
             toolStripMenuItem_LargeIconView.Text = "大图标";
             toolStripMenuItem_LargeIconView.Click += toolStripMenuItem_LargeIconView_Click;
             // 
-            // toolStripMenuItem_SmallIconView
+            // toolStripMenuItem_ListView
             // 
-            toolStripMenuItem_SmallIconView.Name = "toolStripMenuItem_SmallIconView";
-            toolStripMenuItem_SmallIconView.ShortcutKeys = Keys.Alt | Keys.D2;
-            toolStripMenuItem_SmallIconView.Size = new Size(223, 34);
-            toolStripMenuItem_SmallIconView.Text = "小图标";
-            toolStripMenuItem_SmallIconView.Click += toolStripMenuItem_SmallIconView_Click;
+            toolStripMenuItem_ListView.Name = "toolStripMenuItem_ListView";
+            toolStripMenuItem_ListView.ShortcutKeys = Keys.Alt | Keys.D2;
+            toolStripMenuItem_ListView.Size = new Size(241, 34);
+            toolStripMenuItem_ListView.Text = "列表";
+            toolStripMenuItem_ListView.Click += toolStripMenuItem_ListView_Click;
             // 
             // toolStripMenuItem_DetailsView
             // 
             toolStripMenuItem_DetailsView.Name = "toolStripMenuItem_DetailsView";
             toolStripMenuItem_DetailsView.ShortcutKeys = Keys.Alt | Keys.D3;
-            toolStripMenuItem_DetailsView.Size = new Size(223, 34);
-            toolStripMenuItem_DetailsView.Text = "列表";
+            toolStripMenuItem_DetailsView.Size = new Size(241, 34);
+            toolStripMenuItem_DetailsView.Text = "详细信息";
             toolStripMenuItem_DetailsView.Click += toolStripMenuItem_DetailsView_Click;
             // 
             // imageList_LargeIcon
@@ -270,7 +270,7 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem toolStripMenuItem_ChangeView;
         private ToolStripMenuItem toolStripMenuItem_LargeIconView;
-        private ToolStripMenuItem toolStripMenuItem_SmallIconView;
+        private ToolStripMenuItem toolStripMenuItem_ListView;
         private ToolStripMenuItem toolStripMenuItem_DetailsView;
         private ToolStripMenuItem toolStripMenuItem_MoveTop;
         private ToolStripMenuItem toolStripMenuItem_MoveBottom;

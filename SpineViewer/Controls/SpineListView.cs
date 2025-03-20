@@ -107,6 +107,13 @@ namespace SpineViewer.Controls
                 }
             }
 
+            // BUG: 图标显示的时候没法自动刷新顺序, 只能切换视图刷新, 不知道什么原理
+            listView.BeginUpdate();
+            var tmp = listView.View;
+            listView.View = View.List;
+            listView.View = tmp;
+            listView.EndUpdate();
+
             if (listView.SelectedItems.Count > 0)
                 listView.SelectedItems[0].EnsureVisible();
         }
@@ -223,7 +230,7 @@ namespace SpineViewer.Controls
 
             // 视图选项
             toolStripMenuItem_LargeIconView.Checked = listView.View == View.LargeIcon;
-            toolStripMenuItem_SmallIconView.Checked = listView.View == View.SmallIcon;
+            toolStripMenuItem_ListView.Checked = listView.View == View.List;
             toolStripMenuItem_DetailsView.Checked = listView.View == View.Details;
         }
 
@@ -407,9 +414,9 @@ namespace SpineViewer.Controls
             listView.View = View.LargeIcon;
         }
 
-        private void toolStripMenuItem_SmallIconView_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_ListView_Click(object sender, EventArgs e)
         {
-            listView.View = View.SmallIcon;
+            listView.View = View.List;
         }
 
         private void toolStripMenuItem_DetailsView_Click(object sender, EventArgs e)
