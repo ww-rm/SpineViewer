@@ -120,8 +120,9 @@ namespace SpineViewer.Spine
             // try json format
             try
             {
-                if (JsonNode.Parse(input) is JsonObject root && root.TryGetPropertyValue("spine", out var node))
-                    versionString = (string)node;
+                if (JsonNode.Parse(input) is JsonObject root && root.TryGetPropertyValue("skeleton", out var node) &&
+                    node is JsonObject _skeleton && _skeleton.TryGetPropertyValue("spine", out var _version))
+                    versionString = (string)_version;
             }
             catch { }
 
