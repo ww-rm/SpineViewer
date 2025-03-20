@@ -98,7 +98,7 @@ namespace SpineViewer.Spine
             if (JsonNode.Parse(input) is JsonObject root)
                 return root;
             else
-                throw new InvalidOperationException($"{jsonPath} is not a valid json object");
+                throw new InvalidDataException($"{jsonPath} is not a valid json object");
         }
 
         /// <summary>
@@ -116,14 +116,17 @@ namespace SpineViewer.Spine
         /// </summary>
         public abstract JsonObject ToVersion(JsonObject root, Version version);
 
-        protected class SkeletonReader
+        /// <summary>
+        /// 二进制骨骼文件读
+        /// </summary>
+        public class BinaryReader
         {
             protected byte[] buffer = new byte[32];
             protected byte[] bytesBigEndian = new byte[8];
             public readonly List<string> StringTable = new(32);
             protected Stream input;
 
-            public SkeletonReader(Stream input) { this.input = input; }
+            public BinaryReader(Stream input) { this.input = input; }
             public int Read()
             {
                 int val = input.ReadByte();
@@ -219,14 +222,17 @@ namespace SpineViewer.Spine
             }
         }
 
-        protected class SkeletonWriter
+        /// <summary>
+        /// 二进制骨骼文件写
+        /// </summary>
+        protected class BinaryWriter
         {
             protected byte[] buffer = new byte[32];
             protected byte[] bytesBigEndian = new byte[8];
             public readonly List<string> StringTable = new(32);
             protected Stream output;
 
-            public SkeletonWriter(Stream output) { this.output = output; }
+            public BinaryWriter(Stream output) { this.output = output; }
             public void Write(int val) => output.WriteByte((byte)val);
             public void WriteByte(byte val) => output.WriteByte(val);
             public void WriteUByte(byte val) => output.WriteByte(val);

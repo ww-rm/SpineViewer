@@ -71,7 +71,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                 catch
                 {
                     // 都不行就报错
-                    throw new ArgumentException($"Unknown skeleton file format {SkelPath}");
+                    throw new InvalidDataException($"Unknown skeleton file format {SkelPath}");
                 }
             }
 
