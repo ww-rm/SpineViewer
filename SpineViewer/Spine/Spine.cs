@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text.Json.Nodes;
 
 namespace SpineViewer.Spine
 {
@@ -107,10 +108,78 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
+        /// 尝试检测骨骼文件版本
+        /// </summary>
+        public static Version? GetVersion(string skelPath)
+        {
+            string versionString = null;
+            Version? version = null;
+            using var input = File.OpenRead(skelPath);
+            var reader = new SkeletonConverter.BinaryReader(input);
+
+            // try json format
+            try
+            {
+                if (JsonNode.Parse(input) is JsonObject root && root.TryGetPropertyValue("spine", out var node))
+                    versionString = (string)node;
+            }
+            catch { }
+
+            // try v4 binary format
+            if (versionString is null)
+            {
+                try
+                {
+                    input.Position = 0;
+                    var hash = reader.ReadLong();
+                    var versionPosition = input.Position;
+                    var versionByteCount = reader.ReadVarInt();
+                    input.Position = versionPosition;
+                    if (versionByteCount <= 13)
+                        versionString = reader.ReadString();
+                }
+                catch { }
+            }
+
+            // try v3 binary format
+            if (versionString is null)
+            {
+                try
+                {
+                    input.Position = 0;
+                    var hash = reader.ReadString();
+                    versionString = reader.ReadString();
+                }
+                catch { }
+            }
+
+            if (versionString is not null)
+            {
+                if (versionString.StartsWith("2.1.")) version = Version.V21;
+                else if (versionString.StartsWith("3.6.")) version = Version.V36;
+                else if (versionString.StartsWith("3.7.")) version = Version.V37;
+                else if (versionString.StartsWith("3.8.")) version = Version.V38;
+                else if (versionString.StartsWith("4.0.")) version = Version.V40;
+                else if (versionString.StartsWith("4.1.")) version = Version.V41;
+                else if (versionString.StartsWith("4.2.")) version = Version.V42;
+                else if (versionString.StartsWith("4.3.")) version = Version.V43;
+            }
+
+            return version;
+        }
+
+        /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
         public static Spine New(Version version, string skelPath, string? atlasPath = null)
         {
+            if (version == Version.Auto)
+            {
+                if (GetVersion(skelPath) is Version detectedVersion)
+                    version = detectedVersion;
+                else
+                    throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version");
+            }
             if (!ImplementationTypes.TryGetValue(version, out var spineType))
             {
                 throw new NotImplementedException($"Not implemented version: {version}");
@@ -133,7 +202,7 @@ namespace SpineViewer.Spine
             var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
             if (attr is null)
             {
-                throw new InvalidOperationException($"Class {type.Name} has no SpineImplementationAttribute.");
+                throw new InvalidOperationException($"Class {type.Name} has no SpineImplementationAttribute");
             }
 
             atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");

@@ -40,6 +40,7 @@ namespace SpineViewer.Spine
     /// </summary>
     public enum Version
     {
+        [Description("<Auto>")] Auto = 0x0000,
         [Description("2.1.x")] V21 = 0x0201,
         [Description("3.6.x")] V36 = 0x0306,
         [Description("3.7.x")] V37 = 0x0307,
