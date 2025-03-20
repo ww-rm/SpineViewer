@@ -60,7 +60,7 @@ namespace SpineViewer.Controls
 
             var progressDialog = new Dialogs.ProgressDialog();
             progressDialog.DoWork += BatchAdd_Work;
-            progressDialog.RunWorkerAsync(openDialog);
+            progressDialog.RunWorkerAsync(openDialog.Result);
             progressDialog.ShowDialog();
         }
 
@@ -113,62 +113,95 @@ namespace SpineViewer.Controls
             DoDragDrop(e.Item, DragDropEffects.Move);
         }
 
+        private void listView_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Serializable))
+                e.Effect = DragDropEffects.Move;
+            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
         private void listView_DragOver(object sender, DragEventArgs e)
         {
-            // 检查拖放目标是否有效
-            e.Effect = DragDropEffects.Move;
+            if (e.Data.GetDataPresent(DataFormats.Serializable))
+            {                 
+                // 获取鼠标位置并确定目标索引
+                var point = listView.PointToClient(new(e.X, e.Y));
+                var targetItem = listView.GetItemAt(point.X, point.Y);
 
-            // 获取鼠标位置并确定目标索引
-            var point = listView.PointToClient(new(e.X, e.Y));
-            var targetItem = listView.GetItemAt(point.X, point.Y);
-
-            // 高亮目标项
-            if (targetItem != null)
-            {
-                foreach (ListViewItem item in listView.Items)
+                // 高亮目标项
+                if (targetItem != null)
                 {
-                    item.BackColor = listView.BackColor;
+                    foreach (ListViewItem item in listView.Items)
+                    {
+                        item.BackColor = listView.BackColor;
+                    }
+                    targetItem.BackColor = Color.LightGray;
                 }
-                targetItem.BackColor = Color.LightGray;
             }
         }
 
         private void listView_DragDrop(object sender, DragEventArgs e)
         {
-            // 获取拖放源项和目标项
-            var draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
-            int draggedIndex = draggedItem.Index;
-            var point = listView.PointToClient(new Point(e.X, e.Y));
-            var targetItem = listView.GetItemAt(point.X, point.Y);
-            int targetIndex = targetItem is null ? listView.Items.Count : targetItem.Index;
+            if (e.Data.GetDataPresent(DataFormats.Serializable))
+            {
+                // 获取拖放源项和目标项
+                var draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
+                int draggedIndex = draggedItem.Index;
+                var point = listView.PointToClient(new Point(e.X, e.Y));
+                var targetItem = listView.GetItemAt(point.X, point.Y);
+                int targetIndex = targetItem is null ? listView.Items.Count : targetItem.Index;
 
-            if (targetIndex <= draggedIndex)
-            {
-                lock (Spines)
+                if (targetIndex <= draggedIndex)
                 {
-                    var draggedSpine = spines[draggedIndex];
-                    spines.RemoveAt(draggedIndex);
-                    spines.Insert(targetIndex, draggedSpine);
+                    lock (Spines)
+                    {
+                        var draggedSpine = spines[draggedIndex];
+                        spines.RemoveAt(draggedIndex);
+                        spines.Insert(targetIndex, draggedSpine);
+                    }
+                    listView.Items.RemoveAt(draggedIndex);
+                    listView.Items.Insert(targetIndex, draggedItem);
                 }
-                listView.Items.RemoveAt(draggedIndex);
-                listView.Items.Insert(targetIndex, draggedItem);
-            }
-            else
-            {
-                lock (Spines)
+                else
                 {
-                    var draggedSpine = spines[draggedIndex];
-                    spines.RemoveAt(draggedIndex);
-                    spines.Insert(targetIndex - 1, draggedSpine);
+                    lock (Spines)
+                    {
+                        var draggedSpine = spines[draggedIndex];
+                        spines.RemoveAt(draggedIndex);
+                        spines.Insert(targetIndex - 1, draggedSpine);
+                    }
+                    listView.Items.RemoveAt(draggedIndex);
+                    listView.Items.Insert(targetIndex - 1, draggedItem);
                 }
-                listView.Items.RemoveAt(draggedIndex);
-                listView.Items.Insert(targetIndex - 1, draggedItem);
-            }
 
-            // 重置背景颜色
-            foreach (ListViewItem item in listView.Items)
+                // 重置背景颜色
+                foreach (ListViewItem item in listView.Items)
+                {
+                    item.BackColor = listView.BackColor;
+                }
+            }
+            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                item.BackColor = listView.BackColor;
+                var validPaths = ((string[])e.Data.GetData(DataFormats.FileDrop)).Where(
+                    path => File.Exists(path) &&
+                   (Path.GetExtension(path).Equals(".skel", StringComparison.OrdinalIgnoreCase) ||
+                    Path.GetExtension(path).Equals(".json", StringComparison.OrdinalIgnoreCase))
+                ).ToArray();
+
+                if (validPaths.Length > 1)
+                {
+                    var progressDialog = new Dialogs.ProgressDialog();
+                    progressDialog.DoWork += BatchAdd_Work;
+                    progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths));
+                    progressDialog.ShowDialog();
+                }
+                else if (validPaths.Length > 0)
+                {
+                    Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
+                }
             }
         }
 
@@ -386,9 +419,14 @@ namespace SpineViewer.Controls
             if (dialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            Insert(dialog.Result, index);
+        }
+
+        private void Insert(Dialogs.OpenSpineDialogResult result, int index = -1)
+        {
             try
             {
-                var spine = Spine.Spine.New(dialog.Version, dialog.SkelPath, dialog.AtlasPath);
+                var spine = Spine.Spine.New(result.Version, result.SkelPath, result.AtlasPath);
 
                 // 如果索引无效则在末尾添加
                 if (index < 0 || index > listView.Items.Count)
@@ -410,7 +448,7 @@ namespace SpineViewer.Controls
             catch (Exception ex)
             {
                 Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to load {} {}", dialog.SkelPath, dialog.AtlasPath);
+                Program.Logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
                 MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -420,7 +458,7 @@ namespace SpineViewer.Controls
         private void BatchAdd_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.BatchOpenSpineDialog;
+            var arguments = e.Argument as Dialogs.BatchOpenSpineDialogResult;
             var skelPaths = arguments.SkelPaths;
             var version = arguments.Version;
 

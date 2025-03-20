@@ -44,15 +44,15 @@
             toolStripMenuItem_MoveTop = new ToolStripMenuItem();
             toolStripMenuItem_MoveBottom = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
+            toolStripMenuItem_SelectAll = new ToolStripMenuItem();
             toolStripMenuItem_CopyPreview = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
             toolStripMenuItem_ChangeView = new ToolStripMenuItem();
             toolStripMenuItem_LargeIconView = new ToolStripMenuItem();
             toolStripMenuItem_SmallIconView = new ToolStripMenuItem();
             toolStripMenuItem_DetailsView = new ToolStripMenuItem();
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
-            toolStripSeparator4 = new ToolStripSeparator();
-            toolStripMenuItem_SelectAll = new ToolStripMenuItem();
             contextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -76,6 +76,7 @@
             listView.ItemDrag += listView_ItemDrag;
             listView.SelectedIndexChanged += listView_SelectedIndexChanged;
             listView.DragDrop += listView_DragDrop;
+            listView.DragEnter += listView_DragEnter;
             listView.DragOver += listView_DragOver;
             // 
             // columnHeader_Name
@@ -88,7 +89,7 @@
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator2, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveBottom, toolStripSeparator3, toolStripMenuItem_SelectAll, toolStripMenuItem_CopyPreview, toolStripSeparator4, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(329, 421);
+            contextMenuStrip.Size = new Size(329, 388);
             contextMenuStrip.Closed += contextMenuStrip_Closed;
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
@@ -174,6 +175,14 @@
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(325, 6);
             // 
+            // toolStripMenuItem_SelectAll
+            // 
+            toolStripMenuItem_SelectAll.Name = "toolStripMenuItem_SelectAll";
+            toolStripMenuItem_SelectAll.ShortcutKeys = Keys.Control | Keys.A;
+            toolStripMenuItem_SelectAll.Size = new Size(328, 30);
+            toolStripMenuItem_SelectAll.Text = "全选";
+            toolStripMenuItem_SelectAll.Click += toolStripMenuItem_SelectAll_Click;
+            // 
             // toolStripMenuItem_CopyPreview
             // 
             toolStripMenuItem_CopyPreview.Name = "toolStripMenuItem_CopyPreview";
@@ -181,6 +190,11 @@
             toolStripMenuItem_CopyPreview.Size = new Size(328, 30);
             toolStripMenuItem_CopyPreview.Text = "复制预览图 (256x256)";
             toolStripMenuItem_CopyPreview.Click += toolStripMenuItem_CopyPreview_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(325, 6);
             // 
             // toolStripMenuItem_ChangeView
             // 
@@ -193,7 +207,7 @@
             // 
             toolStripMenuItem_LargeIconView.Name = "toolStripMenuItem_LargeIconView";
             toolStripMenuItem_LargeIconView.ShortcutKeys = Keys.Alt | Keys.D1;
-            toolStripMenuItem_LargeIconView.Size = new Size(270, 34);
+            toolStripMenuItem_LargeIconView.Size = new Size(223, 34);
             toolStripMenuItem_LargeIconView.Text = "大图标";
             toolStripMenuItem_LargeIconView.Click += toolStripMenuItem_LargeIconView_Click;
             // 
@@ -201,7 +215,7 @@
             // 
             toolStripMenuItem_SmallIconView.Name = "toolStripMenuItem_SmallIconView";
             toolStripMenuItem_SmallIconView.ShortcutKeys = Keys.Alt | Keys.D2;
-            toolStripMenuItem_SmallIconView.Size = new Size(270, 34);
+            toolStripMenuItem_SmallIconView.Size = new Size(223, 34);
             toolStripMenuItem_SmallIconView.Text = "小图标";
             toolStripMenuItem_SmallIconView.Click += toolStripMenuItem_SmallIconView_Click;
             // 
@@ -209,7 +223,7 @@
             // 
             toolStripMenuItem_DetailsView.Name = "toolStripMenuItem_DetailsView";
             toolStripMenuItem_DetailsView.ShortcutKeys = Keys.Alt | Keys.D3;
-            toolStripMenuItem_DetailsView.Size = new Size(270, 34);
+            toolStripMenuItem_DetailsView.Size = new Size(223, 34);
             toolStripMenuItem_DetailsView.Text = "列表";
             toolStripMenuItem_DetailsView.Click += toolStripMenuItem_DetailsView_Click;
             // 
@@ -224,19 +238,6 @@
             imageList_SmallIcon.ColorDepth = ColorDepth.Depth32Bit;
             imageList_SmallIcon.ImageSize = new Size(48, 48);
             imageList_SmallIcon.TransparentColor = Color.Transparent;
-            // 
-            // toolStripSeparator4
-            // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(325, 6);
-            // 
-            // toolStripMenuItem_SelectAll
-            // 
-            toolStripMenuItem_SelectAll.Name = "toolStripMenuItem_SelectAll";
-            toolStripMenuItem_SelectAll.ShortcutKeys = Keys.Control | Keys.A;
-            toolStripMenuItem_SelectAll.Size = new Size(328, 30);
-            toolStripMenuItem_SelectAll.Text = "全选";
-            toolStripMenuItem_SelectAll.Click += toolStripMenuItem_SelectAll_Click;
             // 
             // SpineListView
             // 
