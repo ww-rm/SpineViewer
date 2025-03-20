@@ -92,7 +92,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 读取 Json 对象
         /// </summary>
-        public JsonObject ReadJson(string jsonPath)
+        public virtual JsonObject ReadJson(string jsonPath)
         {
             using var input = File.OpenRead(jsonPath);
             if (JsonNode.Parse(input) is JsonObject root)
@@ -104,7 +104,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 写入 Json 对象
         /// </summary>
-        public void WriteJson(JsonObject root, string jsonPath)
+        public virtual void WriteJson(JsonObject root, string jsonPath)
         {
             using var output = File.Create(jsonPath);
             using var writer = new Utf8JsonWriter(output, jsonWriterOptions);
