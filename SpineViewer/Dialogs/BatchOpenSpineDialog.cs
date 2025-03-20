@@ -13,8 +13,7 @@ namespace SpineViewer.Dialogs
 {
     public partial class BatchOpenSpineDialog : Form
     {
-        public string[] SkelPaths { get; private set; }
-        public Spine.Version Version { get; private set; }
+        public BatchOpenSpineDialogResult Result { get; private set; }
 
         public BatchOpenSpineDialog()
         {
@@ -66,9 +65,7 @@ namespace SpineViewer.Dialogs
                 return;
             }
 
-            SkelPaths = listBox_FilePath.Items.Cast<string>().ToArray();
-            Version = version;
-
+            Result = new(version, listBox_FilePath.Items.Cast<string>().ToArray());
             DialogResult = DialogResult.OK;
         }
 
@@ -76,5 +73,11 @@ namespace SpineViewer.Dialogs
         {
             DialogResult = DialogResult.Cancel;
         }
+    }
+
+    public class BatchOpenSpineDialogResult(Spine.Version version, string[] skelPaths)
+    {
+        public Spine.Version Version { get; } = version;
+        public string[] SkelPaths { get; } = skelPaths;
     }
 }

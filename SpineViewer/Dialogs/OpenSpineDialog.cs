@@ -12,9 +12,7 @@ namespace SpineViewer.Dialogs
 {
     public partial class OpenSpineDialog : Form
     {
-        public string SkelPath { get; private set; }
-        public string? AtlasPath { get; private set; }
-        public Spine.Version Version { get; private set; }
+        public OpenSpineDialogResult Result { get; private set; }        
 
         public OpenSpineDialog()
         {
@@ -84,10 +82,7 @@ namespace SpineViewer.Dialogs
                 return;
             }
 
-            SkelPath = skelPath;
-            AtlasPath = atlasPath;
-            Version = version;
-
+            Result = new(version, skelPath, atlasPath);
             DialogResult = DialogResult.OK;
         }
 
@@ -95,5 +90,12 @@ namespace SpineViewer.Dialogs
         {
             DialogResult = DialogResult.Cancel;
         }
+    }
+
+    public class OpenSpineDialogResult(Spine.Version version, string skelPath, string? atlasPath = null)
+    {
+        public Spine.Version Version { get; } = version;
+        public string SkelPath { get; } = skelPath;
+        public string? AtlasPath { get; } = atlasPath;
     }
 }
