@@ -51,7 +51,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         {
             JsonObject skeleton = [];
             skeleton["hash"] = reader.ReadString();
-            skeleton["spine"] = reader.ReadString();
+            var version = reader.ReadString();
+            if (version == "3.8.75") version = "3.8.76"; // replace 3.8.75 to another version to avoid detection in official runtime
+            skeleton["spine"] = version;
             skeleton["x"] = reader.ReadFloat();
             skeleton["y"] = reader.ReadFloat();
             skeleton["width"] = reader.ReadFloat();
@@ -842,7 +844,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         {
             JsonObject skeleton = root["skeleton"].AsObject();
             writer.WriteString((string)skeleton["hash"]);
-            writer.WriteString((string)skeleton["spine"]);
+            var version = (string)skeleton["spine"];
+            if (version == "3.8.75") version = "3.8.76"; // replace 3.8.75 to another version to avoid detection in official runtime
+            writer.WriteString(version);
             if (skeleton.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
             if (skeleton.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
             if (skeleton.TryGetPropertyValue("width", out var width)) writer.WriteFloat((float)width); else writer.WriteFloat(0);

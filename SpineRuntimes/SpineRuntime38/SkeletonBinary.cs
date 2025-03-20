@@ -129,8 +129,8 @@ namespace SpineRuntime38 {
 			if (skeletonData.hash.Length == 0) skeletonData.hash = null;
 			skeletonData.version = input.ReadString();
 			if (skeletonData.version.Length == 0) skeletonData.version = null;
-			if ("3.8.75" == skeletonData.version)
-					throw new Exception("Unsupported skeleton data, please export with a newer version of Spine.");
+			//if ("3.8.75" == skeletonData.version)
+			//		throw new Exception("Unsupported skeleton data, please export with a newer version of Spine.");
 			skeletonData.x = input.ReadFloat();
 			skeletonData.y = input.ReadFloat();
 			skeletonData.width = input.ReadFloat();
