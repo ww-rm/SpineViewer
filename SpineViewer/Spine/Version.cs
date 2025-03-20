@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +14,8 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 描述缓存
         /// </summary>
-        public static readonly Dictionary<Version, string> Versions = [];
+        public static readonly ReadOnlyDictionary<Version, string> Versions;
+        private static readonly Dictionary<Version, string> versions = [];
 
         static VersionHelper()
         {
@@ -22,8 +24,9 @@ namespace SpineViewer.Spine
             {
                 var field = typeof(Version).GetField(value.ToString());
                 var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
-                Versions[(Version)value] = attribute?.Description ?? value.ToString();
+                versions[(Version)value] = attribute?.Description ?? value.ToString();
             }
+            Versions = versions.AsReadOnly();
         }
 
         /// <summary>

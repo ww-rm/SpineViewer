@@ -22,7 +22,7 @@ namespace SpineViewer.Dialogs
             comboBox_Version.DataSource = VersionHelper.Versions.ToList();
             comboBox_Version.DisplayMember = "Value";
             comboBox_Version.ValueMember = "Key";
-            comboBox_Version.SelectedValue = Spine.Version.V38;
+            comboBox_Version.SelectedValue = Spine.Version.Auto;
         }
 
         private void BatchOpenSpineDialog_Load(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (!Spine.Spine.ImplementedVersions.Contains(version))
+            if (version != Spine.Version.Auto && !Spine.Spine.ImplementedVersions.Contains(version))
             {
                 MessageBox.Show($"{version.String()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;

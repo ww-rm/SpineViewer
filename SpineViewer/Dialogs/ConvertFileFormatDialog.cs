@@ -22,7 +22,12 @@ namespace SpineViewer.Dialogs
         public ConvertFileFormatDialog()
         {
             InitializeComponent();
-            comboBox_SourceVersion.DataSource = VersionHelper.Versions.ToList();
+
+            // XXX: 文件格式转换暂时不支持自动检测版本
+            var impVersions = VersionHelper.Versions.ToDictionary();
+            impVersions.Remove(Spine.Version.Auto);
+
+            comboBox_SourceVersion.DataSource = impVersions.ToList();
             comboBox_SourceVersion.DisplayMember = "Value";
             comboBox_SourceVersion.ValueMember = "Key";
             comboBox_SourceVersion.SelectedValue = Spine.Version.V38;
