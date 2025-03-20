@@ -14,7 +14,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
     [SkeletonConverterImplementation(Version.V38)]
     class SkeletonConverter38 : SpineViewer.Spine.SkeletonConverter
     {
-        private SkeletonReader reader = null;
+        private BinaryReader reader = null;
         private JsonObject root = null;
         private bool nonessential = false;
 
@@ -332,7 +332,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     if (nonessential) reader.ReadInt();
                     break;
                 default:
-                    throw new ArgumentException($"Invalid attachment type: {type}");
+                    throw new ArgumentOutOfRangeException($"Invalid attachment type: {type}");
             }
             return attachment;
         }
@@ -435,7 +435,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             }
                             break;
                         default:
-                            throw new ArgumentException($"Invalid slot timeline type: {type}");
+                            throw new ArgumentOutOfRangeException($"Invalid slot timeline type: {type}");
                     }
                 }
             }
@@ -515,7 +515,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             }
                             break;
                         default:
-                            throw new ArgumentException($"Invalid bone timeline type: {type}");
+                            throw new ArgumentOutOfRangeException($"Invalid bone timeline type: {type}");
                     }
                 }
             }
@@ -633,7 +633,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             }
                             break;
                         default:
-                            throw new ArgumentException($"Invalid path timeline type: {type}");
+                            throw new ArgumentOutOfRangeException($"Invalid path timeline type: {type}");
                     }
                 }
             }
@@ -798,11 +798,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     obj["c4"] = reader.ReadFloat();
                     break;
                 default:
-                    throw new ArgumentException($"Invalid curve type: {type}"); ;
+                    throw new ArgumentOutOfRangeException($"Invalid curve type: {type}"); ;
             }
         }
 
-        private SkeletonWriter writer;
+        private BinaryWriter writer;
         private readonly Dictionary<string, int> bone2idx = [];
         private readonly Dictionary<string, int> slot2idx = [];
         private readonly Dictionary<string, int> ik2idx = [];
@@ -1010,6 +1010,18 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private void WriteSkins()
         {
+            //JsonArray skins = [];
+
+            //// default skin
+            //if (ReadSkin(true) is JsonObject data)
+            //    skins.Add(data);
+
+            //// other skins
+            //for (int n = reader.ReadVarInt(); n > 0; n--)
+            //    skins.Add(ReadSkin());
+
+            //root["skins"] = skins;
+
             if (!root.ContainsKey("skins"))
             {
                 writer.WriteVarInt(0);
@@ -1022,6 +1034,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 throw new NotImplementedException();
             }
         }
+
 
         private void WriteEvents()
         {
