@@ -164,6 +164,7 @@ namespace SpineViewer.Spine
                 else if (versionString.StartsWith("4.1.")) version = Version.V41;
                 else if (versionString.StartsWith("4.2.")) version = Version.V42;
                 else if (versionString.StartsWith("4.3.")) version = Version.V43;
+                else Program.Logger.Error("Unknown verison: {}, {}", versionString, skelPath);
             }
 
             return version;
