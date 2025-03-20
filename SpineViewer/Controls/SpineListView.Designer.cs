@@ -59,6 +59,7 @@
             // listView
             // 
             listView.AllowDrop = true;
+            listView.AutoArrange = false;
             listView.Columns.AddRange(new ColumnHeader[] { columnHeader_Name });
             listView.ContextMenuStrip = contextMenuStrip;
             listView.Dock = DockStyle.Fill;
@@ -89,7 +90,7 @@
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator2, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveBottom, toolStripSeparator3, toolStripMenuItem_SelectAll, toolStripMenuItem_CopyPreview, toolStripSeparator4, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(329, 388);
+            contextMenuStrip.Size = new Size(329, 421);
             contextMenuStrip.Closed += contextMenuStrip_Closed;
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
@@ -110,6 +111,7 @@
             // toolStripMenuItem_Remove
             // 
             toolStripMenuItem_Remove.Name = "toolStripMenuItem_Remove";
+            toolStripMenuItem_Remove.ShortcutKeys = Keys.Delete;
             toolStripMenuItem_Remove.Size = new Size(328, 30);
             toolStripMenuItem_Remove.Text = "移除";
             toolStripMenuItem_Remove.Click += toolStripMenuItem_Remove_Click;

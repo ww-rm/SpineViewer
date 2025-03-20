@@ -106,6 +106,9 @@ namespace SpineViewer.Controls
                         spines[i].IsSelected = listView.SelectedIndices.Contains(i);
                 }
             }
+
+            if (listView.SelectedItems.Count > 0)
+                listView.SelectedItems[0].EnsureVisible();
         }
 
         private void listView_ItemDrag(object sender, ItemDragEventArgs e)
@@ -303,8 +306,10 @@ namespace SpineViewer.Controls
             {
                 lock (Spines) { (spines[index - 1], spines[index]) = (spines[index], spines[index - 1]); }
                 var item = listView.Items[index];
+                listView.BeginUpdate();
                 listView.Items.RemoveAt(index);
                 listView.Items.Insert(index - 1, item);
+                listView.EndUpdate();
             }
         }
 
@@ -318,8 +323,10 @@ namespace SpineViewer.Controls
             {
                 lock (Spines) { (spines[index], spines[index + 1]) = (spines[index + 1], spines[index]); }
                 var item = listView.Items[index];
+                listView.BeginUpdate();
                 listView.Items.RemoveAt(index);
                 listView.Items.Insert(index + 1, item);
+                listView.EndUpdate();
             }
         }
 
