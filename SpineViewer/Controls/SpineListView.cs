@@ -333,12 +333,9 @@ namespace SpineViewer.Controls
             {
                 lock (Spines)
                 {
-                    lock (Spines)
-                    {
-                        var spine = spines[index];
-                        spines.RemoveAt(index);
-                        spines.Add(spine);
-                    }
+                    var spine = spines[index];
+                    spines.RemoveAt(index);
+                    spines.Add(spine);
                 }
                 var item = listView.Items[index];
                 listView.Items.RemoveAt(index);
@@ -525,20 +522,38 @@ namespace SpineViewer.Controls
 
         private void AddFromFileDrop(string[] paths)
         {
-            var validPaths = paths.Where(
-                    path => File.Exists(path) &&
-                   (Path.GetExtension(path).Equals(".skel", StringComparison.OrdinalIgnoreCase) ||
-                    Path.GetExtension(path).Equals(".json", StringComparison.OrdinalIgnoreCase))
-                ).ToArray();
-
-            if (validPaths.Length > 1)
+            List<string> validPaths = [];
+            foreach (var path in paths)
             {
+                if (File.Exists(path))
+                {
+                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                        validPaths.Add(path);
+                }
+                else if (Directory.Exists(path))
+                {
+                    // 遍历该目录下所有深度文件，判断是否符合要求并ADD
+                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
+                    {
+                        if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                            validPaths.Add(file);
+                    }
+                }
+            }
+
+            if (validPaths.Count > 1)
+            {
+                if (validPaths.Count > 100)
+                {
+                    if (MessageBox.Show($"共发现 {validPaths.Count} 个可加载骨骼，数量较大，是否一次性全部加载？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                        return;
+                }
                 var progressDialog = new Dialogs.ProgressDialog();
                 progressDialog.DoWork += BatchAdd_Work;
-                progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths));
+                progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths.ToArray()));
                 progressDialog.ShowDialog();
             }
-            else if (validPaths.Length > 0)
+            else if (validPaths.Count > 0)
             {
                 Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
             }

@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Nodes;
+using System.Collections.Immutable;
 
 namespace SpineViewer.Spine
 {
@@ -37,6 +38,11 @@ namespace SpineViewer.Spine
     /// </summary>
     public abstract class Spine : SFML.Graphics.Drawable, IDisposable
     {
+        /// <summary>
+        /// 常规骨骼文件后缀集合
+        /// </summary>
+        public static readonly ImmutableHashSet<string> CommonSkelSuffix = [".skel", ".json"];
+
         /// <summary>
         /// 空动画标记
         /// </summary>
@@ -211,6 +217,7 @@ namespace SpineViewer.Spine
 
             // 设置 Version
             Version = attr.Version;
+            AssetsDir = Directory.GetParent(skelPath).FullName;
             SkelPath = Path.GetFullPath(skelPath);
             AtlasPath = Path.GetFullPath(atlasPath);
             Name = Path.GetFileNameWithoutExtension(skelPath);
@@ -228,6 +235,12 @@ namespace SpineViewer.Spine
         public Version Version { get; }
 
         /// <summary>
+        /// 资源所在完整目录
+        /// </summary>
+        [Category("基本信息"), DisplayName("资源目录")]
+        public string AssetsDir { get; }
+
+        /// <summary>
         /// skel 文件完整路径
         /// </summary>
         [Category("基本信息"), DisplayName("skel文件路径")]
@@ -239,6 +252,9 @@ namespace SpineViewer.Spine
         [Category("基本信息"), DisplayName("atlas文件路径")]
         public string AtlasPath { get; }
 
+        /// <summary>
+        /// 名称
+        /// </summary>
         [Category("基本信息"), DisplayName("名称")]
         public string Name { get; }
 
@@ -397,5 +413,23 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public bool IsSelected { get; set; } = false;
+
+        /// <summary>
+        /// 显示调试
+        /// </summary>
+        [Browsable(false)]
+        public bool IsDebug { get; set; } = false;
+
+        /// <summary>
+        /// 显示包围盒
+        /// </summary>
+        [Browsable(false)]
+        public bool DebugBounds { get; set; } = true;
+
+        /// <summary>
+        /// 显示骨骼
+        /// </summary>
+        [Browsable(false)]
+        public bool DebugBones { get; set; } = true;
     }
 }
