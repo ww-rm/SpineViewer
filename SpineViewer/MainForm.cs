@@ -223,6 +223,13 @@ namespace SpineViewer
             var outputDir = arguments.OutputDir;
             var width = arguments.PreviewWidth;
             var height = arguments.PreviewHeight;
+            // TODO: 增加填充参数
+            var paddingL = 1u;
+            var paddingR = 1u;
+            var paddingT = 1u;
+            var paddingB = 1u;
+
+            var tex = new SFML.Graphics.RenderTexture(width, height);
 
             int success = 0;
             int error = 0;
@@ -241,11 +248,19 @@ namespace SpineViewer
                     }
 
                     var spine = spines[i];
+                    var tmp = spine.CurrentAnimation;
+                    spine.CurrentAnimation = Spine.Spine.EMPTY_ANIMATION;
+                    tex.SetView(spine.GetInitView(width, height, paddingL, paddingR, paddingT, paddingB)); 
+                    tex.Clear(SFML.Graphics.Color.Transparent);
+                    tex.Draw(spine);
+                    tex.Display();
+                    spine.CurrentAnimation = tmp;
                     try
                     {
-                        var preview = spine.GetPreview(width, height);
-                        var savePath = Path.Combine(outputDir, $"{spine.Name}.png");
-                        preview.SaveToFile(savePath);
+                        using (var img = tex.Texture.CopyToImage())
+                        {
+                            img.SaveToFile(Path.Combine(outputDir, $"{spine.Name}.png"));
+                        }
                         success++;
                     }
                     catch (Exception ex)

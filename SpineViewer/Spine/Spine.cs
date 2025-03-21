@@ -49,9 +49,14 @@ namespace SpineViewer.Spine
         public const string EMPTY_ANIMATION = "<Empty>";
 
         /// <summary>
-        /// 预览图大小
+        /// 预览图宽
         /// </summary>
-        public static readonly Size PREVIEW_SIZE = new(256, 256);
+        public const uint PREVIEW_WIDTH = 256;
+
+        /// <summary>
+        /// 预览图高
+        /// </summary>
+        public const uint PREVIEW_HEIGHT = 256;
 
         /// <summary>
         /// 缩放最小值
@@ -366,7 +371,15 @@ namespace SpineViewer.Spine
             {
                 if (preview is null)
                 {
-                    using var img = GetPreview((uint)PREVIEW_SIZE.Width, (uint)PREVIEW_SIZE.Height);
+                    var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                    tex.SetView(GetInitView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                    var tmp = CurrentAnimation;
+                    CurrentAnimation = EMPTY_ANIMATION;
+                    tex.Draw(this);
+                    CurrentAnimation = tmp;
+                    tex.Display();
+
+                    using var img = tex.Texture.CopyToImage();
                     img.SaveToMemory(out var imgBuffer, "bmp");
                     using var stream = new MemoryStream(imgBuffer);
                     preview = new Bitmap(stream);
@@ -375,23 +388,6 @@ namespace SpineViewer.Spine
             }
         }
         private Image preview = null;
-
-        /// <summary>
-        /// 获取指定尺寸的预览图
-        /// </summary>
-        public SFML.Graphics.Image GetPreview(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-        {
-            // XXX: 貌似无法使用 using 或者 Dispose 主动释放 tex 资源
-            // 在批量添加的中途, 如果触发 GC? 会卡死, 目前未知原因
-            var tex = new SFML.Graphics.RenderTexture(width, height);
-            tex.SetView(GetInitView(width, height, paddingL, paddingR, paddingT, paddingB));
-            var tmp = CurrentAnimation; 
-            CurrentAnimation = EMPTY_ANIMATION;
-            tex.Draw(this);
-            CurrentAnimation = tmp;
-            tex.Display();
-            return tex.Texture.CopyToImage();
-        }
 
         /// <summary>
         /// 获取动画时长, 如果动画不存在则返回 0
