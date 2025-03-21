@@ -458,8 +458,13 @@ namespace SpineViewer.Controls
                     {
                         lock (SpineListView.Spines)
                         {
-                            foreach (var spine in SpineListView.Spines.Reverse())
+                            var spines = SpineListView.Spines;
+                            for (int i = spines.Count - 1; i >= 0; i--)
                             {
+                                if (cancelToken is not null && cancelToken.IsCancellationRequested)
+                                    break; // 提前中止
+
+                                var spine = spines[i];
                                 spine.Update(delta);
                                 RenderWindow.Draw(spine);
 
