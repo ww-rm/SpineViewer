@@ -328,6 +328,35 @@ namespace SpineViewer.Spine
         public abstract RectangleF Bounds { get; }
 
         /// <summary>
+        /// 获取初始状态下合适的 View, 参数单位为像素
+        /// </summary>
+        public SFML.Graphics.View GetInitView(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
+        {
+            var tmp = CurrentAnimation;
+            CurrentAnimation = EMPTY_ANIMATION;
+            var bounds = Bounds;
+            CurrentAnimation = tmp;
+
+            float sizeX = bounds.Width;
+            float sizeY = bounds.Height;
+            float innerW = width - paddingL - paddingR;
+            float innerH = height - paddingT - paddingB;
+
+            float scale = 1;
+            if ((sizeY / sizeX) < (innerH / innerW))
+                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
+            else
+                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
+
+            var x = bounds.X + bounds.Width / 2 + ((float)paddingL - (float)paddingR) * scale;
+            var y = bounds.Y + bounds.Height / 2 + ((float)paddingT - (float)paddingB) * scale;
+            var viewX = width * scale;
+            var viewY = height * scale;
+
+            return new(new(x, y), new(viewX, -viewY));
+        }
+
+        /// <summary>
         /// 骨骼预览图
         /// </summary>
         [Browsable(false)]
@@ -350,37 +379,17 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 获取指定尺寸的预览图
         /// </summary>
-        public SFML.Graphics.Image GetPreview(uint width, uint height)
+        public SFML.Graphics.Image GetPreview(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
         {
-            var curAnimation = CurrentAnimation;
-            CurrentAnimation = EMPTY_ANIMATION;
-            var bounds = Bounds;
-
-            float viewX = width;
-            float viewY = height;
-            float sizeX = bounds.Width;
-            float sizeY = bounds.Height;
-
-            var scale = 1f;
-            if ((sizeY / sizeX) < (viewY / viewX))
-                scale = sizeX / viewX;// 相同的 X, 视窗 Y 更大
-            else
-                scale = sizeY / viewY;// 相同的 Y, 视窗 X 更大
-
-            viewX *= scale;
-            viewY *= scale;
-
             // XXX: 貌似无法使用 using 或者 Dispose 主动释放 tex 资源
             // 在批量添加的中途, 如果触发 GC? 会卡死, 目前未知原因
             var tex = new SFML.Graphics.RenderTexture(width, height);
-            var view = tex.GetView();
-            view.Center = new(bounds.X + viewX / 2, bounds.Y + viewY / 2);
-            view.Size = new(viewX, -viewY);
-            tex.SetView(view);
-            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.SetView(GetInitView(width, height, paddingL, paddingR, paddingT, paddingB));
+            var tmp = CurrentAnimation; 
+            CurrentAnimation = EMPTY_ANIMATION;
             tex.Draw(this);
+            CurrentAnimation = tmp;
             tex.Display();
-            CurrentAnimation = curAnimation;
             return tex.Texture.CopyToImage();
         }
 
