@@ -138,7 +138,7 @@ namespace SpineViewer.Controls
         private void listView_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.Serializable))
-            {                 
+            {
                 // 获取鼠标位置并确定目标索引
                 var point = listView.PointToClient(new(e.X, e.Y));
                 var targetItem = listView.GetItemAt(point.X, point.Y);
@@ -197,23 +197,7 @@ namespace SpineViewer.Controls
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                var validPaths = ((string[])e.Data.GetData(DataFormats.FileDrop)).Where(
-                    path => File.Exists(path) &&
-                   (Path.GetExtension(path).Equals(".skel", StringComparison.OrdinalIgnoreCase) ||
-                    Path.GetExtension(path).Equals(".json", StringComparison.OrdinalIgnoreCase))
-                ).ToArray();
-
-                if (validPaths.Length > 1)
-                {
-                    var progressDialog = new Dialogs.ProgressDialog();
-                    progressDialog.DoWork += BatchAdd_Work;
-                    progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths));
-                    progressDialog.ShowDialog();
-                }
-                else if (validPaths.Length > 0)
-                {
-                    Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
-                }
+                AddFromFileDrop((string[])e.Data.GetData(DataFormats.FileDrop));
             }
         }
 
@@ -383,14 +367,6 @@ namespace SpineViewer.Controls
                 PropertyGrid.SelectedObject = null;
         }
 
-        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
-        {
-            listView.BeginUpdate();
-            foreach (ListViewItem item in listView.Items)
-                item.Selected = true;
-            listView.EndUpdate();
-        }
-
         private void toolStripMenuItem_CopyPreview_Click(object sender, EventArgs e)
         {
             var fileDropList = new StringCollection();
@@ -409,6 +385,25 @@ namespace SpineViewer.Controls
             }
             if (fileDropList.Count > 0)
                 Clipboard.SetFileDropList(fileDropList);
+        }
+
+        private void toolStripMenuItem_AddFromClipboard_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsFileDropList())
+            {
+                var fileDropList = Clipboard.GetFileDropList();
+                var paths = new string[fileDropList.Count];
+                fileDropList.CopyTo(paths, 0);
+                AddFromFileDrop(paths);
+            }
+        }
+
+        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
+        {
+            listView.BeginUpdate();
+            foreach (ListViewItem item in listView.Items)
+                item.Selected = true;
+            listView.EndUpdate();
         }
 
         private void toolStripMenuItem_LargeIconView_Click(object sender, EventArgs e)
@@ -526,6 +521,27 @@ namespace SpineViewer.Controls
             }
 
             Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
+        }
+
+        private void AddFromFileDrop(string[] paths)
+        {
+            var validPaths = paths.Where(
+                    path => File.Exists(path) &&
+                   (Path.GetExtension(path).Equals(".skel", StringComparison.OrdinalIgnoreCase) ||
+                    Path.GetExtension(path).Equals(".json", StringComparison.OrdinalIgnoreCase))
+                ).ToArray();
+
+            if (validPaths.Length > 1)
+            {
+                var progressDialog = new Dialogs.ProgressDialog();
+                progressDialog.DoWork += BatchAdd_Work;
+                progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths));
+                progressDialog.ShowDialog();
+            }
+            else if (validPaths.Length > 0)
+            {
+                Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
+            }
         }
 
         private void ExportPreview_Work(object? sender, DoWorkEventArgs e)
