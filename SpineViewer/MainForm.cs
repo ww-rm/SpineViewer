@@ -86,7 +86,23 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportPreview_Click(object sender, EventArgs e)
         {
-            spineListView.ExportPreviews();
+            lock (spineListView.Spines)
+            {
+                if (spineListView.Spines.Count <= 0)
+                {
+                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
+            var saveDialog = new Dialogs.ExportPreviewDialog();
+            if (saveDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += ExportPreview_Work;
+            progressDialog.RunWorkerAsync(saveDialog);
+            progressDialog.ShowDialog();
         }
 
         private void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
@@ -198,6 +214,62 @@ namespace SpineViewer
             }
 
             spinePreviewer.StartPreview();
+        }
+
+        private void ExportPreview_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            var arguments = e.Argument as Dialogs.ExportPreviewDialog;
+            var outputDir = arguments.OutputDir;
+            var width = arguments.PreviewWidth;
+            var height = arguments.PreviewHeight;
+
+            int success = 0;
+            int error = 0;
+            spinePreviewer.StopPreview();
+            lock (spineListView.Spines)
+            {
+                var spines = spineListView.Spines;
+                int totalCount = spines.Count;
+                worker.ReportProgress(0, $"已处理 0/{totalCount}");
+                for (int i = 0; i < totalCount; i++)
+                {
+                    if (worker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+
+                    var spine = spines[i];
+                    try
+                    {
+                        var preview = spine.GetPreview(width, height);
+                        var savePath = Path.Combine(outputDir, $"{spine.Name}.png");
+                        preview.SaveToFile(savePath);
+                        success++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Program.Logger.Error(ex.ToString());
+                        Program.Logger.Error("Failed to save preview {}", spine.SkelPath);
+                        error++;
+                    }
+
+                    worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+                }
+            }
+            spinePreviewer.StartPreview();
+
+            if (error > 0)
+            {
+                Program.Logger.Warn("Preview save {} successfully, {} failed", success, error);
+            }
+            else
+            {
+                Program.Logger.Info("{} preview saved successfully", success);
+            }
+
+            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
         }
 
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
