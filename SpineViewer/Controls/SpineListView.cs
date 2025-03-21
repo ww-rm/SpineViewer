@@ -508,7 +508,6 @@ namespace SpineViewer.Controls
                 }
                 else if (Directory.Exists(path))
                 {
-                    // 遍历该目录下所有深度文件，判断是否符合要求并ADD
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
                         if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))

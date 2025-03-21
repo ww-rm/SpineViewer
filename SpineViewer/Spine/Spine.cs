@@ -370,7 +370,9 @@ namespace SpineViewer.Spine
             viewX *= scale;
             viewY *= scale;
 
-            using var tex = new SFML.Graphics.RenderTexture(width, height);
+            // XXX: 貌似无法使用 using 或者 Dispose 主动释放 tex 资源
+            // 在批量添加的中途, 如果触发 GC? 会卡死, 目前未知原因
+            var tex = new SFML.Graphics.RenderTexture(width, height);
             var view = tex.GetView();
             view.Center = new(bounds.X + viewX / 2, bounds.Y + viewY / 2);
             view.Size = new(viewX, -viewY);
