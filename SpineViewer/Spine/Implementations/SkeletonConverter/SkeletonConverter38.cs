@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using SpineRuntime38.Attachments;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
 
 namespace SpineViewer.Spine.Implementations.SkeletonConverter
 {
@@ -225,8 +227,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 skin["name"] = reader.ReadStringRef();
                 skin["bones"] = ReadNames(root["bones"].AsArray());
                 skin["ik"] = ReadNames(root["ik"].AsArray());
-                skin["transform"] = ReadNames(root["transform"].AsArray()); ;
-                skin["path"] = ReadNames(root["path"].AsArray()); ;
+                skin["transform"] = ReadNames(root["transform"].AsArray());
+                skin["path"] = ReadNames(root["path"].AsArray());
                 slotCount = reader.ReadVarInt();
             }
 
@@ -1014,31 +1016,163 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private void WriteSkins()
         {
-            //JsonArray skins = [];
-
-            //// default skin
-            //if (ReadSkin(true) is JsonObject data)
-            //    skins.Add(data);
-
-            //// other skins
-            //for (int n = reader.ReadVarInt(); n > 0; n--)
-            //    skins.Add(ReadSkin());
-
-            //root["skins"] = skins;
-
             if (!root.ContainsKey("skins"))
+            {
+                writer.WriteVarInt(0); // default 的 slotCount
+                writer.WriteVarInt(0); // 其他皮肤数量
+                return;
+            }
+
+            JsonArray skins = root["skins"].AsArray();
+            bool hasDefault = false;
+            foreach (JsonObject skin in skins)
+            {
+                if ((string)skin["name"] == "default")
+                {
+                    hasDefault = true;
+                    WriteSkin(skin, true);
+                    break;
+                }
+            }
+
+            if (!hasDefault) writer.WriteVarInt(0);
+
+            int skinCount = hasDefault ? skins.Count - 1 : skins.Count;
+            if (skinCount <= 0)
             {
                 writer.WriteVarInt(0);
                 return;
             }
-            JsonArray skins = root["skins"].AsArray();
-            writer.WriteVarInt(skins.Count);
-            for (int i = 0, n = skins.Count; i < n; i++)
+
+            writer.WriteVarInt(skinCount);
+            foreach (JsonObject skin in skins)
             {
-                throw new NotImplementedException();
+                if ((string)skin["name"] != "default")
+                    WriteSkin(skin);
             }
         }
 
+        private void WriteSkin(JsonObject skin, bool isDefault = false)
+        {
+            JsonObject skinAttachments = null;
+            if (isDefault)
+            {
+                // 这里固定有一个给 default 的 count 值, 算是占位符, 如果是 0 则表示没有 default 的 skin
+                if (skin.TryGetPropertyValue("attachments", out var attachments)) skinAttachments = attachments.AsObject();
+                writer.WriteVarInt(skinAttachments?.Count ?? 0);
+            }
+            else
+            {
+                writer.WriteStringRef((string)skin["name"]);
+                if (skin.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                if (skin.TryGetPropertyValue("ik", out var ik)) WriteNames(ik2idx, ik.AsArray()); else writer.WriteVarInt(0);
+                if (skin.TryGetPropertyValue("transform", out var transform)) WriteNames(transform2idx, transform.AsArray()); else writer.WriteVarInt(0);
+                if (skin.TryGetPropertyValue("path", out var path)) WriteNames(path2idx, path.AsArray()); else writer.WriteVarInt(0);
+                if (skin.TryGetPropertyValue("attachments", out var attachments)) skinAttachments = attachments.AsObject();
+                writer.WriteVarInt(skinAttachments?.Count ?? 0);
+            }
+
+            if (skinAttachments is null)
+                return;
+
+            foreach (var (slotName, _slotAttachments) in skinAttachments)
+            {
+                JsonObject slotAttachments = _slotAttachments.AsObject();
+                writer.WriteVarInt(slot2idx[slotName]);
+                writer.WriteVarInt(slotAttachments.Count);
+                foreach (var (attachmentKey, attachment) in slotAttachments)
+                {
+                    writer.WriteStringRef(attachmentKey);
+                    WriteAttachment(attachment.AsObject(), attachmentKey);
+                }
+            }
+        }
+
+        private void WriteAttachment(JsonObject attachment, string keyName)
+        {
+            int vertexCount;
+
+            string name = keyName;
+            AttachmentType type = AttachmentType.Region;
+
+            if (attachment.TryGetPropertyValue("name", out var _name)) name = (string)_name;
+            if (attachment.TryGetPropertyValue("type", out var _type)) type = Enum.Parse<AttachmentType>((string)_type, true);
+            writer.WriteStringRef(name);
+            writer.WriteByte((byte)type);
+
+            switch (type)
+            {
+                case AttachmentType.Region:
+                    if (attachment.TryGetPropertyValue("path", out var path1)) writer.WriteStringRef((string)path1); else writer.WriteStringRef(null);
+                    if (attachment.TryGetPropertyValue("rotation", out var rotation1)) writer.WriteFloat((float)rotation1); else writer.WriteFloat(0);
+                    if (attachment.TryGetPropertyValue("x", out var x1)) writer.WriteFloat((float)x1); else writer.WriteFloat(0);
+                    if (attachment.TryGetPropertyValue("y", out var y1)) writer.WriteFloat((float)y1); else writer.WriteFloat(0);
+                    if (attachment.TryGetPropertyValue("scaleX", out var scaleX)) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
+                    if (attachment.TryGetPropertyValue("scaleY", out var scaleY)) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
+                    if (attachment.TryGetPropertyValue("width", out var width)) writer.WriteFloat((float)width); else writer.WriteFloat(32);
+                    if (attachment.TryGetPropertyValue("height", out var height)) writer.WriteFloat((float)height); else writer.WriteFloat(32);
+                    if (attachment.TryGetPropertyValue("color", out var color1)) writer.WriteInt(int.Parse((string)color1, NumberStyles.HexNumber)); else writer.WriteInt(0);
+                    break;
+                case AttachmentType.Boundingbox:
+                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount1)) vertexCount = (int)_vertexCount1; else vertexCount = 0;
+                    writer.WriteVarInt(vertexCount);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount);
+                    if (nonessential) writer.WriteInt(0);
+                    break;
+                case AttachmentType.Mesh:
+                    if (attachment.TryGetPropertyValue("path", out var path2)) writer.WriteStringRef((string)path2); else writer.WriteStringRef(null);
+                    if (attachment.TryGetPropertyValue("color", out var color2)) writer.WriteInt(int.Parse((string)color2, NumberStyles.HexNumber)); else writer.WriteInt(0);
+                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount2)) vertexCount = (int)_vertexCount2; else vertexCount = 0;
+                    writer.WriteVarInt(vertexCount);
+                    WriteFloatArray(attachment["uvs"].AsArray(), vertexCount << 1); // vertexCount = uvs.Length
+                    WriteShortArray(attachment["triangles"].AsArray());
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount);
+                    if (attachment.TryGetPropertyValue("hull", out var hull)) writer.WriteVarInt((int)hull); else writer.WriteVarInt(0);
+                    if (nonessential)
+                    {
+                        if (attachment.TryGetPropertyValue("edges", out var edges)) WriteShortArray(edges.AsArray()); else writer.WriteVarInt(0);
+                        if (attachment.TryGetPropertyValue("width", out var _width)) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
+                        if (attachment.TryGetPropertyValue("height", out var _height)) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
+                    }
+                    break;
+                case AttachmentType.Linkedmesh:
+                    if (attachment.TryGetPropertyValue("path", out var path3)) writer.WriteStringRef((string)path3); else writer.WriteStringRef(null);
+                    if (attachment.TryGetPropertyValue("color", out var color3)) writer.WriteInt(int.Parse((string)color3, NumberStyles.HexNumber)); else writer.WriteInt(0);
+                    if (attachment.TryGetPropertyValue("skin", out var skin)) writer.WriteStringRef((string)skin); else writer.WriteStringRef(null);
+                    if (attachment.TryGetPropertyValue("parent", out var parent)) writer.WriteStringRef((string)parent); else writer.WriteStringRef(null);
+                    if (attachment.TryGetPropertyValue("deform", out var deform)) writer.WriteBoolean((bool)deform); else writer.WriteBoolean(true);
+                    if (nonessential)
+                    {
+                        if (attachment.TryGetPropertyValue("width", out var _width)) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
+                        if (attachment.TryGetPropertyValue("height", out var _height)) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
+                    }
+                    break;
+                case AttachmentType.Path:
+                    if (attachment.TryGetPropertyValue("closed", out var closed)) writer.WriteBoolean((bool)closed); else writer.WriteBoolean(false);
+                    if (attachment.TryGetPropertyValue("constantSpeed", out var constantSpeed)) writer.WriteBoolean((bool)constantSpeed); else writer.WriteBoolean(true);
+                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount3)) vertexCount = (int)_vertexCount3; else vertexCount = 0;
+                    writer.WriteVarInt(vertexCount);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount);
+                    WriteFloatArray(attachment["lengths"].AsArray(), vertexCount / 3);
+                    if (nonessential) writer.WriteInt(0);
+                    break;
+                case AttachmentType.Point:
+                    if (attachment.TryGetPropertyValue("rotation", out var rotation2)) writer.WriteFloat((float)rotation2); else writer.WriteFloat(0);
+                    if (attachment.TryGetPropertyValue("x", out var x2)) writer.WriteFloat((float)x2); else writer.WriteFloat(0);
+                    if (attachment.TryGetPropertyValue("y", out var y2)) writer.WriteFloat((float)y2); else writer.WriteFloat(0);
+                    if (nonessential) writer.WriteInt(0);
+                    break;
+                case AttachmentType.Clipping:
+                    writer.WriteVarInt(slot2idx[(string)attachment["end"]]);
+                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount4)) vertexCount = (int)_vertexCount4; else vertexCount = 0;
+                    writer.WriteVarInt(vertexCount);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount);
+                    if (nonessential) writer.WriteInt(0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Invalid attachment type: {type}");
+            }
+        }
 
         private void WriteEvents()
         {
@@ -1089,8 +1223,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteNames(Dictionary<string, int> name2idx, JsonArray names)
         {
             writer.WriteVarInt(names.Count);
-            foreach (var name in names)
-                writer.WriteVarInt(name2idx[(string)name]);
+            foreach (string name in names)
+                writer.WriteVarInt(name2idx[name]);
         }
 
         public override JsonObject ReadJson(string jsonPath)
@@ -1122,19 +1256,46 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             return root;
         }
 
-        //public void WriteFloatArray(float[] array)
-        //{
-        //    foreach (var i in array)
-        //        writer.WriteFloat(i);
-        //}
+        public void WriteFloatArray(JsonArray array, int n)
+        {
+            for (int i = 0; i < n; i++)
+                writer.WriteFloat((float)array[i]);
+        }
 
-        //public void WriteShortArray(int[] array)
-        //{
-        //    foreach (var i in array)
-        //    {
-        //        writer.WriteByte((byte)(i >> 8)); 
-        //        writer.WriteByte((byte)i);
-        //    }
-        //}
+        public void WriteShortArray(JsonArray array)
+        {
+            writer.WriteVarInt(array.Count);
+            foreach (uint i in array)
+            {
+                writer.WriteByte((byte)(i >> 8));
+                writer.WriteByte((byte)i);
+            }
+        }
+
+        private void WriteVertices(JsonArray vertices, int vertexCount)
+        {
+            bool hasWeight = vertices.Count != (vertexCount << 1);
+            writer.WriteBoolean(hasWeight);
+            if (!hasWeight)
+            {
+                WriteFloatArray(vertices, vertexCount << 1);
+            }
+            else
+            {
+                int idx = 0;
+                for (int i = 0; i < vertexCount; i++)
+                {
+                    var bonesCount = (int)vertices[idx++];
+                    writer.WriteVarInt(bonesCount);
+                    for (int j = 0; j < bonesCount; j++)
+                    {
+                        writer.WriteVarInt((int)vertices[idx++]);
+                        writer.WriteFloat((float)vertices[idx++]);
+                        writer.WriteFloat((float)vertices[idx++]);
+                        writer.WriteFloat((float)vertices[idx++]);
+                    }
+                }
+            }
+        }
     }
 }
