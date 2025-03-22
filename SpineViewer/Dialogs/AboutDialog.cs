@@ -15,16 +15,12 @@ namespace SpineViewer.Dialogs
         public AboutDialog()
         {
             InitializeComponent();
-            this.label_Version.Text = $"v{InformationalVersion}";
+            Text = $"关于 {Program.Name}";
+            label_Version.Text = $"v{InformationalVersion}";
         }
 
-        public string InformationalVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            }
-        }
+        public string InformationalVersion => 
+            Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
         private void linkLabel_RepoUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -36,7 +32,7 @@ namespace SpineViewer.Dialogs
             else
             {
                 Clipboard.SetText(url);
-                MessageBox.Show(this, "链接已复制到剪贴板，请前往浏览器进行访问", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info("链接已复制到剪贴板，请前往浏览器进行访问");
             }
         }
     }

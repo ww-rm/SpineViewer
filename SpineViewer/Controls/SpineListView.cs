@@ -17,16 +17,19 @@ namespace SpineViewer.Controls
 {
     public partial class SpineListView : UserControl
     {
+        /// <summary>
+        /// 显示骨骼信息的属性面板
+        /// </summary>
         [Category("自定义"), Description("用于显示骨骼属性的属性页")]
         public PropertyGrid? PropertyGrid { get; set; }
 
         /// <summary>
-        /// 获取数组快照, 访问时必须使用 lock 语句锁定对象本身
+        /// Spine 列表只读视图, 访问时必须使用 lock 语句锁定视图本身
         /// </summary>
         public readonly ReadOnlyCollection<Spine.Spine> Spines;
 
         /// <summary>
-        /// Spine 列表, 访问时必须使用 lock 语句锁定 Spines
+        /// Spine 列表, 访问时必须使用 lock 语句锁定只读视图 Spines
         /// </summary>
         private readonly List<Spine.Spine> spines = [];
 
@@ -37,16 +40,60 @@ namespace SpineViewer.Controls
         }
 
         /// <summary>
-        /// listView.SelectedIndices
+        /// 选中的索引
         /// </summary>
-        public ListView.SelectedIndexCollection SelectedIndices { get => listView.SelectedIndices; }
+        public ListView.SelectedIndexCollection SelectedIndices => listView.SelectedIndices;
 
         /// <summary>
-        /// 弹出添加对话框
+        /// 弹出添加对话框在末尾添加
         /// </summary>
-        public void Add()
+        public void Add() => Insert();
+
+        /// <summary>
+        /// 弹出添加对话框在指定位置之前插入一项, 如果索引无效则在末尾添加
+        /// </summary>
+        private void Insert(int index = -1)
         {
-            Insert();
+            var dialog = new Dialogs.OpenSpineDialog();
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+            Insert(dialog.Result, index);
+        }
+
+        /// <summary>
+        /// 从结果在指定位置之前插入一项, 如果索引无效则在末尾添加
+        /// </summary>
+        private void Insert(Dialogs.OpenSpineDialogResult result, int index = -1)
+        {
+            try
+            {
+                var spine = Spine.Spine.New(result.Version, result.SkelPath, result.AtlasPath);
+
+                // 如果索引无效则在末尾添加
+                if (index < 0 || index > listView.Items.Count)
+                    index = listView.Items.Count;
+
+                // 锁定外部的读操作
+                lock (Spines)
+                {
+                    spines.Insert(index, spine);
+                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
+                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
+                }
+                listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
+
+                // 选中新增项
+                listView.SelectedIndices.Clear();
+                listView.SelectedIndices.Add(index);
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex.ToString());
+                Program.Logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
+                MessageBox.Error(ex.ToString(), "骨骼加载失败");
+            }
+
+            Program.LogCurrentMemoryUsage();
         }
 
         /// <summary>
@@ -57,11 +104,116 @@ namespace SpineViewer.Controls
             var openDialog = new Dialogs.BatchOpenSpineDialog();
             if (openDialog.ShowDialog() != DialogResult.OK)
                 return;
+            BatchAdd(openDialog.Result);
+        }
 
+        /// <summary>
+        /// 从结果批量添加
+        /// </summary>
+        public void BatchAdd(Dialogs.BatchOpenSpineDialogResult result)
+        {
             var progressDialog = new Dialogs.ProgressDialog();
             progressDialog.DoWork += BatchAdd_Work;
-            progressDialog.RunWorkerAsync(openDialog.Result);
+            progressDialog.RunWorkerAsync(result);
             progressDialog.ShowDialog();
+        }
+
+        /// <summary>
+        /// 批量添加后台任务
+        /// </summary>
+        private void BatchAdd_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = sender as BackgroundWorker;
+            var arguments = e.Argument as Dialogs.BatchOpenSpineDialogResult;
+            var skelPaths = arguments.SkelPaths;
+            var version = arguments.Version;
+
+            int totalCount = skelPaths.Length;
+            int success = 0;
+            int error = 0;
+
+            worker.ReportProgress(0, $"已处理 0/{totalCount}");
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+
+                var skelPath = skelPaths[i];
+
+                try
+                {
+                    var spine = Spine.Spine.New(version, skelPath);
+                    var preview = spine.Preview;
+                    lock (Spines) { spines.Add(spine); }
+                    listView.Invoke(() =>
+                    {
+                        listView.SmallImageList.Images.Add(spine.ID, preview);
+                        listView.LargeImageList.Images.Add(spine.ID, preview);
+                        listView.Items.Add(new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
+                    });
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    Program.Logger.Error(ex.ToString());
+                    Program.Logger.Error("Failed to load {}", skelPath);
+                    error++;
+                }
+
+                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+            }
+
+            if (error > 0)
+            {
+                Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
+            }
+            else
+            {
+                Program.Logger.Info("{} skel loaded successfully", success);
+            }
+
+            Program.LogCurrentMemoryUsage();
+        }
+
+        /// <summary>
+        /// 从拖放/复制的路径列表添加
+        /// </summary>
+        private void AddFromFileDrop(IEnumerable<string> paths)
+        {
+            List<string> validPaths = [];
+            foreach (var path in paths)
+            {
+                if (File.Exists(path))
+                {
+                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                        validPaths.Add(path);
+                }
+                else if (Directory.Exists(path))
+                {
+                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
+                    {
+                        if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                            validPaths.Add(file);
+                    }
+                }
+            }
+
+            if (validPaths.Count > 1)
+            {
+                if (validPaths.Count > 100)
+                {
+                    if (MessageBox.Quest($"共发现 {validPaths.Count} 个可加载骨骼，数量较多，是否一次性全部加载？") == DialogResult.Cancel)
+                        return;
+                }
+                BatchAdd(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths.ToArray()));
+            }
+            else if (validPaths.Count > 0)
+            {
+                Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
+            }
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
@@ -227,12 +379,13 @@ namespace SpineViewer.Controls
 
             if (listView.SelectedIndices.Count > 1)
             {
-                if (MessageBox.Show($"确定移除所选 {listView.SelectedIndices.Count} 项吗？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                if (MessageBox.Quest($"确定移除所选 {listView.SelectedIndices.Count} 项吗？") != DialogResult.OK)
                     return;
             }
 
             foreach (var i in listView.SelectedIndices.Cast<int>().OrderByDescending(x => x))
             {
+                listView.Items.RemoveAt(i);
                 lock (Spines)
                 {
                     var spine = spines[i];
@@ -241,7 +394,6 @@ namespace SpineViewer.Controls
                     listView.LargeImageList.Images.RemoveByKey(spine.ID);
                     spine.Dispose();
                 }
-                listView.Items.RemoveAt(i);
             }
         }
 
@@ -324,18 +476,17 @@ namespace SpineViewer.Controls
             if (listView.Items.Count <= 0)
                 return;
 
-            if (MessageBox.Show($"确认移除所有 {listView.Items.Count} 项吗？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+            if (MessageBox.Quest($"确认移除所有 {listView.Items.Count} 项吗？") != DialogResult.OK)
                 return;
 
+            listView.Items.Clear();
             lock (Spines)
             {
-                foreach (var spine in spines)
-                    spine.Dispose();
+                foreach (var spine in spines) spine.Dispose();
                 spines.Clear();
                 listView.SmallImageList.Images.Clear();
                 listView.LargeImageList.Images.Clear();
             }
-            listView.Items.Clear();
             if (PropertyGrid is not null)
                 PropertyGrid.SelectedObject = null;
         }
@@ -392,146 +543,6 @@ namespace SpineViewer.Controls
         private void toolStripMenuItem_DetailsView_Click(object sender, EventArgs e)
         {
             listView.View = View.Details;
-        }
-
-        /// <summary>
-        /// 弹出添加对话框在指定位置之前插入一项
-        /// </summary>
-        private void Insert(int index = -1)
-        {
-            var dialog = new Dialogs.OpenSpineDialog();
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            Insert(dialog.Result, index);
-        }
-
-        private void Insert(Dialogs.OpenSpineDialogResult result, int index = -1)
-        {
-            try
-            {
-                var spine = Spine.Spine.New(result.Version, result.SkelPath, result.AtlasPath);
-
-                // 如果索引无效则在末尾添加
-                if (index < 0 || index > listView.Items.Count)
-                    index = listView.Items.Count;
-
-                // 锁定外部的读操作
-                lock (Spines)
-                {
-                    spines.Insert(index, spine);
-                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
-                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
-                }
-                listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
-
-                // 选中新增项
-                listView.SelectedIndices.Clear();
-                listView.SelectedIndices.Add(index);
-            }
-            catch (Exception ex)
-            {
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
-                MessageBox.Show(ex.ToString(), "骨骼加载失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
-        }
-
-        private void BatchAdd_Work(object? sender, DoWorkEventArgs e)
-        {
-            var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.BatchOpenSpineDialogResult;
-            var skelPaths = arguments.SkelPaths;
-            var version = arguments.Version;
-
-            int totalCount = skelPaths.Length;
-            int success = 0;
-            int error = 0;
-
-            worker.ReportProgress(0, $"已处理 0/{totalCount}");
-            for (int i = 0; i < totalCount; i++)
-            {
-                if (worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    break;
-                }
-
-                var skelPath = skelPaths[i];
-
-                try
-                {
-                    var spine = Spine.Spine.New(version, skelPath);
-                    var preview = spine.Preview;
-                    lock (Spines) { spines.Add(spine); }
-                    listView.Invoke(() =>
-                    {
-                        listView.SmallImageList.Images.Add(spine.ID, preview);
-                        listView.LargeImageList.Images.Add(spine.ID, preview);
-                        listView.Items.Add(new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
-                    });
-                    success++;
-                }
-                catch (Exception ex)
-                {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to load {}", skelPath);
-                    error++;
-                }
-
-                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
-            }
-
-            if (error > 0)
-            {
-                Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
-            }
-            else
-            {
-                Program.Logger.Info("{} skel loaded successfully", success);
-            }
-
-            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
-        }
-
-        private void AddFromFileDrop(string[] paths)
-        {
-            List<string> validPaths = [];
-            foreach (var path in paths)
-            {
-                if (File.Exists(path))
-                {
-                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
-                        validPaths.Add(path);
-                }
-                else if (Directory.Exists(path))
-                {
-                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
-                    {
-                        if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
-                            validPaths.Add(file);
-                    }
-                }
-            }
-
-            if (validPaths.Count > 1)
-            {
-                if (validPaths.Count > 100)
-                {
-                    if (MessageBox.Show($"共发现 {validPaths.Count} 个可加载骨骼，数量较大，是否一次性全部加载？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
-                        return;
-                }
-                var progressDialog = new Dialogs.ProgressDialog();
-                progressDialog.DoWork += BatchAdd_Work;
-                progressDialog.RunWorkerAsync(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths.ToArray()));
-                progressDialog.ShowDialog();
-            }
-            else if (validPaths.Count > 0)
-            {
-                Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
-            }
         }
     }
 }

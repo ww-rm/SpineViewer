@@ -82,11 +82,11 @@ namespace SpineViewer.Dialogs
 
         private void button_Copy_Click(object sender, EventArgs e)
         {
-            var selectedObject = propertyGrid.SelectedObject as DiagnosticsInformation;
+            var selectedObject = (DiagnosticsInformation)propertyGrid.SelectedObject;
             var properties = selectedObject.GetType().GetProperties();
             var result = string.Join(Environment.NewLine, properties.Select(p => $"{p.Name}\t{p.GetValue(selectedObject)?.ToString()}"));
             Clipboard.SetText(result);
-            MessageBox.Show(this, "已复制", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Info("已复制");
         }
     }
 }

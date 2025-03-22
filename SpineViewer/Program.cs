@@ -55,7 +55,7 @@ namespace SpineViewer
             catch (Exception ex)
             {
                 Logger.Fatal(ex.ToString());
-                MessageBox.Show(ex.ToString(), "程序已崩溃", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Error(ex.ToString(), "程序已崩溃");
             }
         }
 
@@ -83,5 +83,9 @@ namespace SpineViewer
             LogManager.Configuration = config;
         }
 
+        /// <summary>
+        /// 输出当前内存使用情况
+        /// </summary>
+        public static void LogCurrentMemoryUsage() => Logger.Info("Current memory usage: {:F2} MB", Process.WorkingSet64 / 1024.0 / 1024.0);
     }
 }

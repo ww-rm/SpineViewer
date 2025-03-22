@@ -13,6 +13,8 @@ namespace SpineViewer.Dialogs
 {
     public partial class ConvertFileFormatDialog : Form
     {
+        // TODO: 增加版本转换选项
+        // TODO: 使用结果包装类
         public string[] SkelPaths { get; private set; }
         public Spine.Version SourceVersion { get; private set; }
         public Spine.Version TargetVersion { get; private set; }
@@ -62,7 +64,7 @@ namespace SpineViewer.Dialogs
 
             if (listBox_FilePath.Items.Count <= 0)
             {
-                MessageBox.Show("未选择任何文件", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info("未选择任何文件");
                 return;
             }
 
@@ -70,26 +72,26 @@ namespace SpineViewer.Dialogs
             {
                 if (!File.Exists(p))
                 {
-                    MessageBox.Show($"{p}", "skel文件不存在", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Info($"{p}", "skel文件不存在");
                     return;
                 }
             }
 
             if (!SkeletonConverter.ImplementedVersions.Contains(sourceVersion))
             {
-                MessageBox.Show($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
             if (!SkeletonConverter.ImplementedVersions.Contains(targetVersion))
             {
-                MessageBox.Show($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
             if (jsonSource == jsonTarget && sourceVersion == targetVersion)
             {
-                MessageBox.Show($"不需要转换相同的格式和版本", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"不需要转换相同的格式和版本");
                 return;
             }
 

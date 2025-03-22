@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Spine
 {
+    /// <summary>
+    /// Spine 版本静态辅助类
+    /// </summary>
     public static class VersionHelper
     {
         /// <summary>

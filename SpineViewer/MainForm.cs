@@ -1,9 +1,13 @@
-﻿using NLog;
+﻿using FFMpegCore.Pipes;
+using FFMpegCore;
+using NLog;
+using SFML.System;
 using SpineViewer.Spine;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using FFMpegCore.Enums;
 
 namespace SpineViewer
 {
@@ -65,11 +69,12 @@ namespace SpineViewer
 
         private void toolStripMenuItem_Export_Click(object sender, EventArgs e)
         {
+            // TODO: 改成统一导出调用
             lock (spineListView.Spines)
             {
                 if (spineListView.Spines.Count <= 0)
                 {
-                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Info("请至少打开一个骨骼文件");
                     return;
                 }
             }
@@ -90,7 +95,7 @@ namespace SpineViewer
             {
                 if (spineListView.Spines.Count <= 0)
                 {
-                    MessageBox.Show("请至少打开一个骨骼文件", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Info("请至少打开一个骨骼文件");
                     return;
                 }
             }
@@ -131,9 +136,70 @@ namespace SpineViewer
             progressDialog.ShowDialog();
         }
 
+        //IEnumerable<IVideoFrame> testExport(int fps)
+        //{
+        //    var duration = 2f;
+        //    var resolution = spinePreviewer.Resolution;
+        //    var delta = 1f / fps;
+        //    var frameCount = 1 + (int)(duration / delta); // 零帧开始导出
+
+        //    var spinesReverse = spineListView.Spines.Reverse();
+
+        //    // 重置动画时间
+        //    foreach (var spine in spinesReverse)
+        //        spine.CurrentAnimation = spine.CurrentAnimation;
+
+        //    // 逐帧导出
+        //    var success = 0;
+        //    for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
+        //    {
+        //        using var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
+        //        tex.SetView(spinePreviewer.View);
+        //        tex.Clear(SFML.Graphics.Color.Transparent);
+
+        //        foreach (var spine in spinesReverse)
+        //        {
+        //            tex.Draw(spine);
+        //            spine.Update(delta);
+        //        }
+
+        //        tex.Display();
+        //        Debug.WriteLine($"ThreadID: {Environment.CurrentManagedThreadId}");
+        //        var frame = tex.Texture.CopyToFrame();
+        //        tex.Dispose();
+        //        yield return frame;
+
+        //        success++;
+        //    }
+
+        //    Program.Logger.Info("Exporting done: {}/{}", success, frameCount);
+        //}
+
         private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
         {
-            
+            //spinePreviewer.StopPreview();
+
+            //lock (spineListView.Spines)
+            //{
+            //    //var fps = 24;
+            //    ////foreach (var i in testExport(fps))
+            //    ////    _ = i;
+            //    ////var t = testExport(fps).ToArray();
+            //    ////var a = testExport(fps).GetEnumerator();
+            //    ////while (a.MoveNext());
+            //    //var videoFramesSource = new RawVideoPipeSource(testExport(fps)) { FrameRate = fps };
+            //    //var outputPath = @"C:\Users\ljh\Desktop\test\a.mov";
+            //    //var task = FFMpegArguments
+            //    //    .FromPipeInput(videoFramesSource)
+            //    //    .OutputToFile(outputPath, true
+            //    //    , options => options
+            //    //    //.WithCustomArgument("-vf \"split[s0][s1];[s0]palettegen=reserve_transparent=1[p];[s1][p]paletteuse=alpha_threshold=128\""))
+            //    //    .WithCustomArgument("-c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le"))
+            //    //    .ProcessAsynchronously();
+            //    //task.Wait();
+            //}
+
+            //spinePreviewer.StartPreview();
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
@@ -146,13 +212,16 @@ namespace SpineViewer
             (new Dialogs.DiagnosticsDialog()).ShowDialog();
         }
 
-        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e) { ActiveControl = null; }
+        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e) => ActiveControl = null;
 
-        private void splitContainer_MouseUp(object sender, MouseEventArgs e) { ActiveControl = null; }
+        private void splitContainer_MouseUp(object sender, MouseEventArgs e) => ActiveControl = null;
 
-        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) { (sender as PropertyGrid)?.Refresh(); }
+        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) => (sender as PropertyGrid)?.Refresh();
 
-        private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) { propertyGrid_Spine.Refresh(); }
+        private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) 
+        { 
+            propertyGrid_Spine.Refresh(); 
+        }
 
         private void ExportPng_Work(object? sender, DoWorkEventArgs e)
         {
@@ -163,9 +232,11 @@ namespace SpineViewer
             var fps = arguments.Fps;
             var timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
-            var resolution = spinePreviewer.Resolution;
+            var frameArgs = spinePreviewer.GetFrameArgs();
+
+            var resolution = frameArgs.Resolution;
             var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
-            tex.SetView(spinePreviewer.View);
+            tex.SetView(frameArgs.View);
             var delta = 1f / fps;
             var frameCount = 1 + (int)(duration / delta); // 零帧开始导出
 
@@ -284,7 +355,7 @@ namespace SpineViewer
                 Program.Logger.Info("{} preview saved successfully", success);
             }
 
-            Program.Logger.Info($"Current memory usage: {Program.Process.WorkingSet64 / 1024.0 / 1024.0:F2} MB");
+            Program.LogCurrentMemoryUsage();
         }
 
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)

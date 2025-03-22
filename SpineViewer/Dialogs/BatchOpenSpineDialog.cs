@@ -13,6 +13,9 @@ namespace SpineViewer.Dialogs
 {
     public partial class BatchOpenSpineDialog : Form
     {
+        /// <summary>
+        /// 对话框结果, 取消时为 null
+        /// </summary>
         public BatchOpenSpineDialogResult Result { get; private set; }
 
         public BatchOpenSpineDialog()
@@ -46,7 +49,7 @@ namespace SpineViewer.Dialogs
 
             if (listBox_FilePath.Items.Count <= 0)
             {
-                MessageBox.Show("未选择任何文件", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info("未选择任何文件");
                 return;
             }
 
@@ -54,14 +57,14 @@ namespace SpineViewer.Dialogs
             {
                 if (!File.Exists(p))
                 {
-                    MessageBox.Show($"{p}", "skel文件不存在", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Info($"{p}", "skel文件不存在");
                     return;
                 }
             }
 
             if (version != Spine.Version.Auto && !Spine.Spine.ImplementedVersions.Contains(version))
             {
-                MessageBox.Show($"{version.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
@@ -75,9 +78,19 @@ namespace SpineViewer.Dialogs
         }
     }
 
+    /// <summary>
+    /// 批量打开对话框结果
+    /// </summary>
     public class BatchOpenSpineDialogResult(Spine.Version version, string[] skelPaths)
     {
-        public Spine.Version Version { get; } = version;
-        public string[] SkelPaths { get; } = skelPaths;
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public Spine.Version Version => version;
+
+        /// <summary>
+        /// 路径列表
+        /// </summary>
+        public string[] SkelPaths => skelPaths;
     }
 }

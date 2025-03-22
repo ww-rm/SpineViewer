@@ -12,15 +12,25 @@ namespace SpineViewer.Dialogs
 {
     public partial class ProgressDialog : Form
     {
+        /// <summary>
+        /// BackgroundWorker.DoWork 接口暴露
+        /// </summary>
         [Category("自定义"), Description("BackgroundWorker 的 DoWork 事件")]
         public event DoWorkEventHandler? DoWork
         {
-            add { backgroundWorker.DoWork += value; }
-            remove { backgroundWorker.DoWork -= value; }
+            add => backgroundWorker.DoWork += value;
+            remove => backgroundWorker.DoWork -= value;
         }
 
-        public void RunWorkerAsync() { backgroundWorker.RunWorkerAsync(); }
-        public void RunWorkerAsync(object? argument) { backgroundWorker.RunWorkerAsync(argument); }
+        /// <summary>
+        /// 启动后台执行
+        /// </summary>
+        public void RunWorkerAsync() => backgroundWorker.RunWorkerAsync();
+
+        /// <summary>
+        /// 使用给定参数启动后台执行
+        /// </summary>
+        public void RunWorkerAsync(object? argument) => backgroundWorker.RunWorkerAsync(argument);
 
         public ProgressDialog()
         {
@@ -38,7 +48,7 @@ namespace SpineViewer.Dialogs
             if (e.Error != null)
             {
                 Program.Logger.Error(e.Error.ToString());
-                MessageBox.Show(e.Error.ToString(), "执行出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Error(e.Error.ToString(), "执行出错");
                 DialogResult = DialogResult.Abort;
             }
             else if (e.Cancelled)

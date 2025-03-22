@@ -12,6 +12,7 @@ namespace SpineViewer.Dialogs
 {
     public partial class ExportPreviewDialog: Form
     {
+        // TODO: 用单独的结果包装类
         public string OutputDir { get; private set; }
         public uint PreviewWidth { get; private set; }
         public uint PreviewHeight { get; private set; }
@@ -40,27 +41,23 @@ namespace SpineViewer.Dialogs
             var outputDir = textBox_OutputDir.Text;
             if (File.Exists(outputDir))
             {
-                MessageBox.Show("输出文件夹无效", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info("输出文件夹无效");
                 return;
             }
 
             if (!Directory.Exists(outputDir))
             {
-                if (MessageBox.Show($"文件夹 {outputDir} 不存在，是否创建？", "操作确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Quest($"文件夹 {outputDir} 不存在，是否创建？") != DialogResult.OK)
+                    return;
+
+                try
                 {
-                    try
-                    {
-                        Directory.CreateDirectory(outputDir);
-                    }
-                    catch (Exception ex)
-                    {
-                        Program.Logger.Error(ex.ToString());
-                        MessageBox.Show(ex.ToString(), "文件夹创建失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    Directory.CreateDirectory(outputDir);
                 }
-                else
+                catch (Exception ex)
                 {
+                    Program.Logger.Error(ex.ToString());
+                    MessageBox.Error(ex.ToString(), "文件夹创建失败");
                     return;
                 }
             }

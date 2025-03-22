@@ -16,14 +16,10 @@ namespace SpineViewer.Controls
     public partial class SpinePreviewer : UserControl
     {
         /// <summary>
-        /// 包装类, 用于 PropertyGrid 显示
+        /// 包装类, 用于属性面板显示
         /// </summary>
-        private class PreviewerProperty
+        private class PreviewerProperty(SpinePreviewer previewer)
         {
-            private readonly SpinePreviewer previewer;
-
-            public PreviewerProperty(SpinePreviewer previewer) { this.previewer = previewer; }
-
             [TypeConverter(typeof(SizeConverter))]
             [Category("导出"), DisplayName("分辨率")]
             public Size Resolution { get => previewer.Resolution; set => previewer.Resolution = value; }
@@ -51,9 +47,15 @@ namespace SpineViewer.Controls
             public uint MaxFps { get => previewer.MaxFps; set => previewer.MaxFps = value; }
         }
 
+        /// <summary>
+        /// 要绑定的 Spine 列表控件
+        /// </summary>
         [Category("自定义"), Description("相关联的 SpineListView")]
         public SpineListView? SpineListView { get; set; }
 
+        /// <summary>
+        /// 属性信息面板
+        /// </summary>
         [Category("自定义"), Description("用于显示画面属性的属性页")]
         public PropertyGrid? PropertyGrid
         {
@@ -67,20 +69,59 @@ namespace SpineViewer.Controls
         }
         private PropertyGrid? propertyGrid;
 
+        /// <summary>
+        /// 画面缩放最大值
+        /// </summary>
         public const float ZOOM_MAX = 1000f;
+
+        /// <summary>
+        /// 画面缩放最小值
+        /// </summary>
         public const float ZOOM_MIN = 0.001f;
 
+        /// <summary>
+        /// 预览画面背景色
+        /// </summary>
         private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
+
+        /// <summary>
+        /// 预览画面坐标轴颜色
+        /// </summary>
         private static readonly SFML.Graphics.Color AxisColor = new(220, 220, 220);
+
+        /// <summary>
+        /// TODO: 转移到 Spine 对象
+        /// </summary>
         private static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
 
+        /// <summary>
+        /// 坐标轴顶点缓冲区
+        /// </summary>
         private readonly SFML.Graphics.VertexArray AxisVertex = new(SFML.Graphics.PrimitiveType.Lines, 2);
+
+        /// <summary>
+        /// TODO: 转移到 Spine 对象
+        /// </summary>
         private readonly SFML.Graphics.VertexArray BoundsRect = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
 
+        /// <summary>
+        /// 渲染窗口
+        /// </summary>
         private readonly SFML.Graphics.RenderWindow RenderWindow;
+
+        /// <summary>
+        /// 帧间隔计时器
+        /// </summary>
         private readonly SFML.System.Clock Clock = new();
+
+        /// <summary>
+        /// 画面拖放对象世界坐标源点
+        /// </summary>
         private SFML.System.Vector2f? draggingSrc = null;
 
+        /// <summary>
+        /// 渲染任务
+        /// </summary>
         private Task? task = null;
         private CancellationTokenSource? cancelToken = null;
 
@@ -239,13 +280,6 @@ namespace SpineViewer.Controls
         public uint MaxFps { get => maxFps; set { RenderWindow.SetFramerateLimit(value); maxFps = value; } }
         private uint maxFps = 60;
 
-        /// <summary>
-        /// RenderWindow.View
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Browsable(false)]
-        public SFML.Graphics.View View { get => RenderWindow.GetView(); }
-
         public SpinePreviewer()
         {
             InitializeComponent();
@@ -258,6 +292,11 @@ namespace SpineViewer.Controls
             FlipY = true;
             MaxFps = 30;
         }
+
+        /// <summary>
+        /// 预览画面帧参数
+        /// </summary>
+        public SpinePreviewerFrameArgs GetFrameArgs() => new(Resolution, RenderWindow.GetView());
 
         /// <summary>
         /// 开始预览
@@ -281,6 +320,75 @@ namespace SpineViewer.Controls
             task.Wait();
             cancelToken = null;
             task = null;
+        }
+
+        /// <summary>
+        /// 渲染任务
+        /// </summary>
+        private void RenderTask()
+        {
+            try
+            {
+                RenderWindow.SetActive(true);
+
+                float delta;
+                while (cancelToken is not null && !cancelToken.IsCancellationRequested)
+                {
+                    delta = Clock.ElapsedTime.AsSeconds();
+                    Clock.Restart();
+
+                    RenderWindow.Clear(BackgroundColor);
+
+                    if (ShowAxis)
+                    {
+                        // 画一个很长的坐标轴, 用 1e9 比较合适
+                        AxisVertex[0] = new(new(-1e9f, 0), AxisColor);
+                        AxisVertex[1] = new(new(1e9f, 0), AxisColor);
+                        RenderWindow.Draw(AxisVertex);
+                        AxisVertex[0] = new(new(0, -1e9f), AxisColor);
+                        AxisVertex[1] = new(new(0, 1e9f), AxisColor);
+                        RenderWindow.Draw(AxisVertex);
+                    }
+
+                    // 渲染 Spine
+                    if (SpineListView is not null)
+                    {
+                        lock (SpineListView.Spines)
+                        {
+                            var spines = SpineListView.Spines;
+                            for (int i = spines.Count - 1; i >= 0; i--)
+                            {
+                                if (cancelToken is not null && cancelToken.IsCancellationRequested)
+                                    break; // 提前中止
+
+                                var spine = spines[i];
+                                spine.Update(delta);
+
+                                spine.IsDebug = true;
+                                RenderWindow.Draw(spine);
+                                spine.IsDebug = false;
+
+                                // TODO: 增加渲染模式(仅选中), 包围盒转移到 Spine 类
+                                if (spine.IsSelected)
+                                {
+                                    var bounds = spine.Bounds;
+                                    BoundsRect[0] = BoundsRect[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
+                                    BoundsRect[1] = new(new(bounds.Right, bounds.Top), BoundsColor);
+                                    BoundsRect[2] = new(new(bounds.Right, bounds.Bottom), BoundsColor);
+                                    BoundsRect[3] = new(new(bounds.Left, bounds.Bottom), BoundsColor);
+                                    RenderWindow.Draw(BoundsRect);
+                                }
+                            }
+                        }
+                    }
+
+                    RenderWindow.Display();
+                }
+            }
+            finally
+            {
+                RenderWindow.SetActive(false);
+            }
         }
 
         private void SpinePreviewer_SizeChanged(object sender, EventArgs e)
@@ -391,11 +499,8 @@ namespace SpineViewer.Controls
                 {
                     lock (SpineListView.Spines)
                     {
-                        foreach (var spine in SpineListView.Spines)
-                        {
-                            if (spine.IsSelected)
-                                spine.Position += delta;
-                        }
+                        foreach (int i in SpineListView.SelectedIndices)
+                            SpineListView.Spines[i].Position += delta;
                     }
                 }
                 draggingSrc = dst;
@@ -426,71 +531,22 @@ namespace SpineViewer.Controls
             Zoom *= (e.Delta > 0 ? 1.1f : 0.9f);
             PropertyGrid?.Refresh();
         }
+    }
 
-        private void RenderTask()
-        {
-            try
-            {
-                RenderWindow.SetActive(true);
+    /// <summary>
+    /// 预览画面帧参数
+    /// </summary>
+    public class SpinePreviewerFrameArgs(Size resolution, SFML.Graphics.View view)
+    {
+        /// <summary>
+        /// 分辨率
+        /// </summary>
+        public Size Resolution => resolution;
 
-                float delta;
-                while (cancelToken is not null && !cancelToken.IsCancellationRequested)
-                {
-                    delta = Clock.ElapsedTime.AsSeconds();
-                    Clock.Restart();
-
-                    RenderWindow.Clear(BackgroundColor);
-
-                    if (ShowAxis)
-                    {
-                        // 画一个很长的坐标轴, 用 1e9 比较合适
-                        AxisVertex[0] = new(new(-1e9f, 0), AxisColor);
-                        AxisVertex[1] = new(new(1e9f, 0), AxisColor);
-                        RenderWindow.Draw(AxisVertex);
-                        AxisVertex[0] = new(new(0, -1e9f), AxisColor);
-                        AxisVertex[1] = new(new(0, 1e9f), AxisColor);
-                        RenderWindow.Draw(AxisVertex);
-                    }
-
-                    // 渲染 Spine
-                    if (SpineListView is not null)
-                    {
-                        lock (SpineListView.Spines)
-                        {
-                            var spines = SpineListView.Spines;
-                            for (int i = spines.Count - 1; i >= 0; i--)
-                            {
-                                if (cancelToken is not null && cancelToken.IsCancellationRequested)
-                                    break; // 提前中止
-
-                                var spine = spines[i];
-                                spine.Update(delta);
-
-                                spine.IsDebug = true;
-                                RenderWindow.Draw(spine);
-                                spine.IsDebug = false;
-
-                                if (spine.IsSelected)
-                                {
-                                    var bounds = spine.Bounds;
-                                    BoundsRect[0] = BoundsRect[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
-                                    BoundsRect[1] = new(new(bounds.Right, bounds.Top), BoundsColor);
-                                    BoundsRect[2] = new(new(bounds.Right, bounds.Bottom), BoundsColor);
-                                    BoundsRect[3] = new(new(bounds.Left, bounds.Bottom), BoundsColor);
-                                    RenderWindow.Draw(BoundsRect);
-                                }
-                            }
-                        }
-                    }
-
-                    RenderWindow.Display();
-                }
-            }
-            finally
-            {
-                RenderWindow.SetActive(false);
-            }
-        }
+        /// <summary>
+        /// 渲染视窗
+        /// </summary>
+        public SFML.Graphics.View View => view;
     }
 
 }

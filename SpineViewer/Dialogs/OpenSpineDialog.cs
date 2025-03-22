@@ -12,6 +12,9 @@ namespace SpineViewer.Dialogs
 {
     public partial class OpenSpineDialog : Form
     {
+        /// <summary>
+        /// 对话框结果
+        /// </summary>
         public OpenSpineDialogResult Result { get; private set; }        
 
         public OpenSpineDialog()
@@ -54,7 +57,7 @@ namespace SpineViewer.Dialogs
 
             if (!File.Exists(skelPath))
             {
-                MessageBox.Show($"{skelPath}", "skel文件不存在", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{skelPath}", "skel文件不存在");
                 return;
             }
             else
@@ -68,7 +71,7 @@ namespace SpineViewer.Dialogs
             }
             else if (!File.Exists(atlasPath))
             {
-                MessageBox.Show($"{atlasPath}", "atlas文件不存在", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{atlasPath}", "atlas文件不存在");
                 return;
             }
             else
@@ -78,7 +81,7 @@ namespace SpineViewer.Dialogs
 
             if (version != Spine.Version.Auto && !Spine.Spine.ImplementedVersions.Contains(version))
             {
-                MessageBox.Show($"{version.GetName()} 版本尚未实现（咕咕咕~）", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
@@ -92,10 +95,24 @@ namespace SpineViewer.Dialogs
         }
     }
 
+    /// <summary>
+    /// 打开骨骼对话框结果
+    /// </summary>
     public class OpenSpineDialogResult(Spine.Version version, string skelPath, string? atlasPath = null)
     {
-        public Spine.Version Version { get; } = version;
-        public string SkelPath { get; } = skelPath;
-        public string? AtlasPath { get; } = atlasPath;
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public Spine.Version Version => version;
+
+        /// <summary>
+        /// skel 文件路径
+        /// </summary>
+        public string SkelPath => skelPath;
+
+        /// <summary>
+        /// atlas 文件路径
+        /// </summary>
+        public string? AtlasPath => atlasPath;
     }
 }

@@ -112,7 +112,7 @@ namespace SpineViewer.Spine
                 FragmentShader = null;
                 Program.Logger.Error(ex.ToString());
                 Program.Logger.Error("Failed to load fragment shader");
-                MessageBox.Show("Fragment shader 加载失败，预乘Alpha通道属性失效", "错误信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
             }
         }
 
@@ -415,7 +415,7 @@ namespace SpineViewer.Spine
         protected SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
 
         /// <summary>
-        /// SFML.Graphics.Drawable 接口实现
+        /// SFML.Graphics.Drawable 接口实现 TODO: 增加调试内容绘制
         /// </summary>
         public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
 
