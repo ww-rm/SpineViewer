@@ -5,13 +5,38 @@ namespace SpineViewer
 {
     internal static class Program
     {
-        public const string Name = "SpineViewer";
+        /// <summary>
+        /// 程序路径
+        /// </summary>
+        public static readonly string FilePath = Environment.ProcessPath;
+
+        /// <summary>
+        /// 程序名
+        /// </summary>
+        public static readonly string Name = Path.GetFileNameWithoutExtension(FilePath);
+
+        /// <summary>
+        /// 程序目录
+        /// </summary>
+        public static readonly string RootDir = Path.GetDirectoryName(FilePath);
+
+        /// <summary>
+        /// 程序临时目录
+        /// </summary>
         public static readonly string TempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Name)).FullName;
+
+        /// <summary>
+        /// 程序进程
+        /// </summary>
         public static readonly Process Process = Process.GetCurrentProcess();
+
+        /// <summary>
+        /// 程序日志器
+        /// </summary>
         public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        ///  The main entry point for the application.
+        /// 应用入口点
         /// </summary>
         [STAThread]
         static void Main()
