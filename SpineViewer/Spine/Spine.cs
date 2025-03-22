@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 using System.Numerics;
 using System.Collections;
 using System.Collections.ObjectModel;
-using SFML.System;
-using SFML.Window;
 using System.ComponentModel;
 using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
@@ -371,8 +369,14 @@ namespace SpineViewer.Spine
             {
                 if (preview is null)
                 {
+                    // XXX: tex 没办法在这里主动 Dispose
+                    // 批量添加在获取预览图的时候极大概率会和预览线程死锁
+                    // 虽然两边不会同时调用 Draw, 但是死锁似乎和 Draw 函数有关
+                    // 除此之外, 似乎还和 tex 的 Dispose 有关
+                    // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
                     var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
                     tex.SetView(GetInitView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                    tex.Clear(SFML.Graphics.Color.Transparent);
                     var tmp = CurrentAnimation;
                     CurrentAnimation = EMPTY_ANIMATION;
                     tex.Draw(this);
@@ -437,6 +441,6 @@ namespace SpineViewer.Spine
         /// 显示骨骼
         /// </summary>
         [Browsable(false)]
-        public bool DebugBones { get; set; } = true;
+        public bool DebugBones { get; set; } = false;
     }
 }

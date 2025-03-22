@@ -466,7 +466,10 @@ namespace SpineViewer.Controls
 
                                 var spine = spines[i];
                                 spine.Update(delta);
+
+                                spine.IsDebug = true;
                                 RenderWindow.Draw(spine);
+                                spine.IsDebug = false;
 
                                 if (spine.IsSelected)
                                 {
