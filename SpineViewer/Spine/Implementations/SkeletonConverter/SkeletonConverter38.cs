@@ -1227,35 +1227,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteVarInt(name2idx[name]);
         }
 
-        public override JsonObject ReadJson(string jsonPath)
-        {
-            // replace 3.8.75 to another version to avoid detection in official runtime
-            var root = base.ReadJson(jsonPath);
-            var skeleton = root["skeleton"].AsObject();
-            var version = (string)skeleton["spine"];
-            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
-            return root;
-        }
-
-        public override void WriteJson(JsonObject root, string jsonPath)
-        {
-            // replace 3.8.75 to another version to avoid detection in official runtime
-            var skeleton = root["skeleton"].AsObject();
-            var version = (string)skeleton["spine"];
-            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
-            base.WriteJson(root, jsonPath);
-        }
-
-        public override JsonObject ToVersion(JsonObject root, Version version)
-        {
-            root = version switch
-            {
-                Version.V38 => root.DeepClone().AsObject(),
-                _ => throw new NotImplementedException(),
-            };
-            return root;
-        }
-
         public void WriteFloatArray(JsonArray array, int n)
         {
             for (int i = 0; i < n; i++)
@@ -1297,5 +1268,35 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 }
             }
         }
+
+        public override JsonObject ReadJson(string jsonPath)
+        {
+            // replace 3.8.75 to another version to avoid detection in official runtime
+            var root = base.ReadJson(jsonPath);
+            var skeleton = root["skeleton"].AsObject();
+            var version = (string)skeleton["spine"];
+            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
+            return root;
+        }
+
+        public override void WriteJson(JsonObject root, string jsonPath)
+        {
+            // replace 3.8.75 to another version to avoid detection in official runtime
+            var skeleton = root["skeleton"].AsObject();
+            var version = (string)skeleton["spine"];
+            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
+            base.WriteJson(root, jsonPath);
+        }
+
+        public override JsonObject ToVersion(JsonObject root, Version version)
+        {
+            root = version switch
+            {
+                Version.V38 => root.DeepClone().AsObject(),
+                _ => throw new NotImplementedException(),
+            };
+            return root;
+        }
+
     }
 }
