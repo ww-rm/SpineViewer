@@ -69,7 +69,6 @@ namespace SpineViewer.Controls
 
         public const float ZOOM_MAX = 1000f;
         public const float ZOOM_MIN = 0.001f;
-        public const int BACKGROUND_CELL_SIZE = 10;
 
         private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
         private static readonly SFML.Graphics.Color AxisColor = new(220, 220, 220);
