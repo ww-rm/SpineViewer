@@ -347,6 +347,17 @@ namespace SpineViewer.Spine.Implementations.Spine
                 states.Shader = null;
             target.Draw(vertexArray, states);
             clipping.ClipEnd();
+
+            // 包围盒
+            if (IsDebug && IsSelected && DebugBounds)
+            {
+                var bounds = Bounds;
+                boundsVertices[0] = boundsVertices[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
+                boundsVertices[1] = new(new(bounds.Right, bounds.Top), BoundsColor);
+                boundsVertices[2] = new(new(bounds.Right, bounds.Bottom), BoundsColor);
+                boundsVertices[3] = new(new(bounds.Left, bounds.Bottom), BoundsColor);
+                target.Draw(boundsVertices);
+            }
         }
     }
 }

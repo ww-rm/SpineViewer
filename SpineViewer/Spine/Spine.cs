@@ -435,15 +435,25 @@ namespace SpineViewer.Spine
         public bool IsDebug { get; set; } = false;
 
         /// <summary>
+        /// 包围盒颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
+
+        /// <summary>
+        /// 包围盒顶点数组
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
+
+        /// <summary>
         /// 显示包围盒
         /// </summary>
-        [Browsable(false)]
+        [Category("调试"), DisplayName("显示包围盒")]
         public bool DebugBounds { get; set; } = true;
 
         /// <summary>
         /// 显示骨骼
         /// </summary>
-        [Browsable(false)]
+        [Category("调试"), DisplayName("显示骨骼(TODO)")]
         public bool DebugBones { get; set; } = false;
 
         #region SFML.Graphics.Drawable 接口实现
@@ -456,10 +466,10 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 顶点缓冲区
         /// </summary>
-        protected SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
+        protected readonly SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
 
         /// <summary>
-        /// SFML.Graphics.Drawable 接口实现 TODO: 增加调试内容绘制
+        /// SFML.Graphics.Drawable 接口实现
         /// </summary>
         public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
 
