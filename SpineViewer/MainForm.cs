@@ -233,6 +233,7 @@ namespace SpineViewer
             var timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
             var frameArgs = spinePreviewer.GetFrameArgs();
+            var renderSelectedOnly = spinePreviewer.RenderSelectedOnly;
 
             var resolution = frameArgs.Resolution;
             var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
@@ -267,6 +268,9 @@ namespace SpineViewer
 
                     foreach (var spine in spinesReverse)
                     {
+                        if (renderSelectedOnly && !spine.IsSelected)
+                            continue;
+
                         tex.Draw(spine);
                         spine.Update(delta);
                     }
