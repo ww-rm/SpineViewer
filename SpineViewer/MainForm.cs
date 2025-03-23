@@ -132,7 +132,7 @@ namespace SpineViewer
 
             var progressDialog = new Dialogs.ProgressDialog();
             progressDialog.DoWork += ConvertFileFormat_Work;
-            progressDialog.RunWorkerAsync(openDialog);
+            progressDialog.RunWorkerAsync(openDialog.Result);
             progressDialog.ShowDialog();
         }
 
@@ -365,28 +365,19 @@ namespace SpineViewer
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.ConvertFileFormatDialog;
+            var arguments = e.Argument as Dialogs.ConvertFileFormatDialogResult;
             var skelPaths = arguments.SkelPaths;
             var srcVersion = arguments.SourceVersion;
             var tgtVersion = arguments.TargetVersion;
-            var jsonSource = arguments.JsonSource;
             var jsonTarget = arguments.JsonTarget;
             var newSuffix = jsonTarget ? ".json" : ".skel";
-
-            if (jsonTarget == jsonSource)
-            {
-                if (tgtVersion == srcVersion)
-                    return;
-                else
-                    newSuffix += $".{tgtVersion.ToString().ToLower()}"; // TODO: 仅转换版本的情况下考虑文件覆盖问题
-            }
 
             int totalCount = skelPaths.Length;
             int success = 0;
             int error = 0;
 
-            SkeletonConverter srcCvter = SkeletonConverter.New(srcVersion);
-            SkeletonConverter tgtCvter = tgtVersion == srcVersion ? srcCvter : SkeletonConverter.New(tgtVersion);
+            SkeletonConverter srcCvter = srcVersion != Spine.Version.Auto ? SkeletonConverter.New(srcVersion) : null;
+            SkeletonConverter tgtCvter = SkeletonConverter.New(tgtVersion);
 
             worker.ReportProgress(0, $"已处理 0/{totalCount}");
             for (int i = 0; i < totalCount; i++)
@@ -402,8 +393,15 @@ namespace SpineViewer
 
                 try
                 {
-                    var root = jsonSource ? srcCvter.ReadJson(skelPath) : srcCvter.ReadBinary(skelPath);
-                    if (tgtVersion != srcVersion) root = srcCvter.ToVersion(root, tgtVersion);
+                    if (srcVersion == Spine.Version.Auto)
+                    {
+                        if (Spine.Spine.GetVersion(skelPath) is Spine.Version detectedSrcVersion)
+                            srcCvter = SkeletonConverter.New(detectedSrcVersion);
+                        else
+                            throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version");
+                    }
+                    var root = srcCvter.Read(skelPath);
+                    root = srcCvter.ToVersion(root, tgtVersion);
                     if (jsonTarget) tgtCvter.WriteJson(root, newPath); else tgtCvter.WriteBinary(root, newPath);
                     success++;
                 }
