@@ -218,9 +218,9 @@ namespace SpineViewer.Controls
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (PropertyGrid is not null)
+            lock (Spines)
             {
-                lock (Spines)
+                if (PropertyGrid is not null)
                 {
                     if (listView.SelectedIndices.Count <= 0)
                         PropertyGrid.SelectedObject = null;
@@ -228,11 +228,11 @@ namespace SpineViewer.Controls
                         PropertyGrid.SelectedObject = spines[listView.SelectedIndices[0]];
                     else
                         PropertyGrid.SelectedObjects = listView.SelectedIndices.Cast<int>().Select(index => spines[index]).ToArray();
-
-                    // 标记选中的 Spine
-                    for (int i = 0; i < spines.Count; i++)
-                        spines[i].IsSelected = listView.SelectedIndices.Contains(i);
                 }
+
+                // 标记选中的 Spine
+                for (int i = 0; i < spines.Count; i++)
+                    spines[i].IsSelected = listView.SelectedIndices.Contains(i);
             }
 
             // XXX: 图标显示的时候没法自动刷新顺序, 只能切换视图刷新, 不知道什么原理
