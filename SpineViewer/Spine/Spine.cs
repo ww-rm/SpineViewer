@@ -312,7 +312,7 @@ namespace SpineViewer.Spine
         public string DefaultAnimationName { get => animationNames.Last(); }
 
         /// <summary>
-        /// 当前动画名称
+        /// 当前动画名称, 如果设置的动画不存在则忽略
         /// </summary>
         [TypeConverter(typeof(AnimationConverter))]
         [Category("动画"), DisplayName("当前动画")]
@@ -329,35 +329,6 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public abstract RectangleF Bounds { get; }
-
-        /// <summary>
-        /// 获取初始状态下合适的 View, 参数单位为像素
-        /// </summary>
-        public SFML.Graphics.View GetInitView(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-        {
-            var tmp = CurrentAnimation;
-            CurrentAnimation = EMPTY_ANIMATION;
-            var bounds = Bounds;
-            CurrentAnimation = tmp;
-
-            float sizeX = bounds.Width;
-            float sizeY = bounds.Height;
-            float innerW = width - paddingL - paddingR;
-            float innerH = height - paddingT - paddingB;
-
-            float scale = 1;
-            if ((sizeY / sizeX) < (innerH / innerW))
-                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
-            else
-                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
-
-            var x = bounds.X + bounds.Width / 2 + ((float)paddingL - (float)paddingR) * scale;
-            var y = bounds.Y + bounds.Height / 2 + ((float)paddingT - (float)paddingB) * scale;
-            var viewX = width * scale;
-            var viewY = height * scale;
-
-            return new(new(x, y), new(viewX, -viewY));
-        }
 
         /// <summary>
         /// 骨骼预览图
@@ -405,19 +376,51 @@ namespace SpineViewer.Spine
         public abstract void Update(float delta);
 
         /// <summary>
-        /// 顶点坐标缓冲区
+        /// 获取初始状态下合适的 View, 参数单位为像素
         /// </summary>
-        protected float[] worldVerticesBuffer = new float[1024];
+        public SFML.Graphics.View GetInitView(Size resolution, Padding padding) =>
+            GetInitView((uint)resolution.Width, (uint)resolution.Height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
 
         /// <summary>
-        /// 顶点缓冲区
+        /// 获取初始状态下合适的 View, 参数单位为像素
         /// </summary>
-        protected SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
+        public SFML.Graphics.View GetInitView(uint width, uint height, Padding padding) =>
+            GetInitView(width, height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
 
         /// <summary>
-        /// SFML.Graphics.Drawable 接口实现 TODO: 增加调试内容绘制
+        /// 获取初始状态下合适的 View, 参数单位为像素
         /// </summary>
-        public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
+        public SFML.Graphics.View GetInitView(Size resolution, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1) =>
+            GetInitView((uint)resolution.Width, (uint)resolution.Height, paddingL, paddingR, paddingT, paddingB);
+
+        /// <summary>
+        /// 获取初始状态下合适的 View, 参数单位为像素
+        /// </summary>
+        public SFML.Graphics.View GetInitView(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
+        {
+            var tmp = CurrentAnimation;
+            CurrentAnimation = EMPTY_ANIMATION;
+            var bounds = Bounds;
+            CurrentAnimation = tmp;
+
+            float sizeX = bounds.Width;
+            float sizeY = bounds.Height;
+            float innerW = width - paddingL - paddingR;
+            float innerH = height - paddingT - paddingB;
+
+            float scale = 1;
+            if ((sizeY / sizeX) < (innerH / innerW))
+                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
+            else
+                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
+
+            var x = bounds.X + bounds.Width / 2 + ((float)paddingL - (float)paddingR) * scale;
+            var y = bounds.Y + bounds.Height / 2 + ((float)paddingT - (float)paddingB) * scale;
+            var viewX = width * scale;
+            var viewY = height * scale;
+
+            return new(new(x, y), new(viewX, -viewY));
+        }
 
         /// <summary>
         /// 是否被选中
@@ -442,5 +445,24 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public bool DebugBones { get; set; } = false;
+
+        #region SFML.Graphics.Drawable 接口实现
+
+        /// <summary>
+        /// 顶点坐标缓冲区
+        /// </summary>
+        protected float[] worldVerticesBuffer = new float[1024];
+
+        /// <summary>
+        /// 顶点缓冲区
+        /// </summary>
+        protected SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
+
+        /// <summary>
+        /// SFML.Graphics.Drawable 接口实现 TODO: 增加调试内容绘制
+        /// </summary>
+        public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
+
+        #endregion
     }
 }
