@@ -112,6 +112,29 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
+        /// 读取骨骼文件
+        /// </summary>
+        public JsonObject Read(string path)
+        {
+            try
+            {
+                return ReadBinary(path);
+            }
+            catch
+            {
+                try
+                {
+                    return ReadJson(path);
+                }
+                catch
+                {
+                    // 都不行就报错
+                    throw new InvalidDataException($"Unknown skeleton file format {path}");
+                }
+            }
+        }
+
+        /// <summary>
         /// 转换到目标版本
         /// </summary>
         public abstract JsonObject ToVersion(JsonObject root, Version version);
