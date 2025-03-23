@@ -27,33 +27,19 @@ namespace SpineViewer.Dialogs
             comboBox_Version.SelectedValue = Spine.Version.Auto;
         }
 
-        private void BatchOpenSpineDialog_Load(object sender, EventArgs e)
-        {
-            button_SelectSkel_Click(sender, e);
-        }
-
-        private void button_SelectSkel_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog_Skel.ShowDialog() == DialogResult.OK)
-            {
-                listBox_FilePath.Items.Clear();
-                foreach (var p in openFileDialog_Skel.FileNames)
-                    listBox_FilePath.Items.Add(Path.GetFullPath(p));
-                label_Tip.Text = $"已选择 {listBox_FilePath.Items.Count} 个文件";
-            }
-        }
-
         private void button_Ok_Click(object sender, EventArgs e)
         {
             var version = (Spine.Version)comboBox_Version.SelectedValue;
 
-            if (listBox_FilePath.Items.Count <= 0)
+            var items = skelFileListBox.Items;
+
+            if (items.Count <= 0)
             {
                 MessageBox.Info("未选择任何文件");
                 return;
             }
 
-            foreach (string p in listBox_FilePath.Items)
+            foreach (string p in items)
             {
                 if (!File.Exists(p))
                 {
@@ -68,7 +54,7 @@ namespace SpineViewer.Dialogs
                 return;
             }
 
-            Result = new(version, listBox_FilePath.Items.Cast<string>().ToArray());
+            Result = new(version, items.Cast<string>().ToArray());
             DialogResult = DialogResult.OK;
         }
 

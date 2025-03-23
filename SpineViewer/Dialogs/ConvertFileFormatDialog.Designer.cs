@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConvertFileFormatDialog));
             panel = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
+            comboBox_TargetVersion = new ComboBox();
             flowLayoutPanel_TargetFormat = new FlowLayoutPanel();
             radioButton_BinaryTarget = new RadioButton();
             radioButton_JsonTarget = new RadioButton();
@@ -41,19 +42,13 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             button_Ok = new Button();
             button_Cancel = new Button();
-            listBox_FilePath = new ListBox();
-            button_SelectSkel = new Button();
-            label_Tip = new Label();
             label2 = new Label();
-            flowLayoutPanel_SourceFormat = new FlowLayoutPanel();
-            radioButton_BinarySource = new RadioButton();
-            radioButton_JsonSource = new RadioButton();
+            skelFileListBox = new SpineViewer.Controls.SkelFileListBox();
             openFileDialog_Skel = new OpenFileDialog();
             panel.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel_TargetFormat.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
-            flowLayoutPanel_SourceFormat.SuspendLayout();
             SuspendLayout();
             // 
             // panel
@@ -63,7 +58,7 @@
             panel.Location = new Point(0, 0);
             panel.Name = "panel";
             panel.Padding = new Padding(50, 15, 50, 10);
-            panel.Size = new Size(1039, 530);
+            panel.Size = new Size(1051, 538);
             panel.TabIndex = 2;
             // 
             // tableLayoutPanel1
@@ -71,30 +66,39 @@
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel_TargetFormat, 1, 5);
-            tableLayoutPanel1.Controls.Add(label1, 0, 4);
+            tableLayoutPanel1.Controls.Add(comboBox_TargetVersion, 1, 3);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel_TargetFormat, 1, 4);
+            tableLayoutPanel1.Controls.Add(label1, 0, 3);
             tableLayoutPanel1.Controls.Add(label4, 0, 0);
-            tableLayoutPanel1.Controls.Add(label3, 0, 3);
-            tableLayoutPanel1.Controls.Add(comboBox_SourceVersion, 1, 3);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 6);
-            tableLayoutPanel1.Controls.Add(listBox_FilePath, 0, 2);
-            tableLayoutPanel1.Controls.Add(button_SelectSkel, 0, 1);
-            tableLayoutPanel1.Controls.Add(label_Tip, 1, 1);
-            tableLayoutPanel1.Controls.Add(label2, 0, 5);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel_SourceFormat, 1, 4);
+            tableLayoutPanel1.Controls.Add(label3, 0, 2);
+            tableLayoutPanel1.Controls.Add(comboBox_SourceVersion, 1, 2);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 5);
+            tableLayoutPanel1.Controls.Add(label2, 0, 4);
+            tableLayoutPanel1.Controls.Add(skelFileListBox, 0, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(50, 15);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 7;
+            tableLayoutPanel1.RowCount = 6;
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(939, 505);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(951, 513);
             tableLayoutPanel1.TabIndex = 1;
+            // 
+            // comboBox_TargetVersion
+            // 
+            comboBox_TargetVersion.Anchor = AnchorStyles.Left;
+            comboBox_TargetVersion.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox_TargetVersion.FormattingEnabled = true;
+            comboBox_TargetVersion.Location = new Point(95, 356);
+            comboBox_TargetVersion.Name = "comboBox_TargetVersion";
+            comboBox_TargetVersion.Size = new Size(182, 32);
+            comboBox_TargetVersion.Sorted = true;
+            comboBox_TargetVersion.TabIndex = 21;
             // 
             // flowLayoutPanel_TargetFormat
             // 
@@ -102,9 +106,9 @@
             flowLayoutPanel_TargetFormat.Controls.Add(radioButton_BinaryTarget);
             flowLayoutPanel_TargetFormat.Controls.Add(radioButton_JsonTarget);
             flowLayoutPanel_TargetFormat.Dock = DockStyle.Fill;
-            flowLayoutPanel_TargetFormat.Location = new Point(146, 381);
+            flowLayoutPanel_TargetFormat.Location = new Point(95, 394);
             flowLayoutPanel_TargetFormat.Name = "flowLayoutPanel_TargetFormat";
-            flowLayoutPanel_TargetFormat.Size = new Size(790, 34);
+            flowLayoutPanel_TargetFormat.Size = new Size(853, 34);
             flowLayoutPanel_TargetFormat.TabIndex = 19;
             // 
             // radioButton_BinaryTarget
@@ -116,7 +120,6 @@
             radioButton_BinaryTarget.TabIndex = 17;
             radioButton_BinaryTarget.Text = "二进制 (*.skel)";
             radioButton_BinaryTarget.UseVisualStyleBackColor = true;
-            radioButton_BinaryTarget.CheckedChanged += radioButton_Target_CheckedChanged;
             // 
             // radioButton_JsonTarget
             // 
@@ -129,17 +132,16 @@
             radioButton_JsonTarget.TabStop = true;
             radioButton_JsonTarget.Text = "文本 (*.json)";
             radioButton_JsonTarget.UseVisualStyleBackColor = true;
-            radioButton_JsonTarget.CheckedChanged += radioButton_Target_CheckedChanged;
             // 
             // label1
             // 
             label1.Anchor = AnchorStyles.Right;
             label1.AutoSize = true;
-            label1.Location = new Point(72, 346);
+            label1.Location = new Point(3, 360);
             label1.Name = "label1";
-            label1.Size = new Size(68, 24);
+            label1.Size = new Size(86, 24);
             label1.TabIndex = 15;
-            label1.Text = "源格式:";
+            label1.Text = "目标版本:";
             // 
             // label4
             // 
@@ -149,7 +151,7 @@
             label4.Location = new Point(15, 15);
             label4.Margin = new Padding(15);
             label4.Name = "label4";
-            label4.Size = new Size(909, 24);
+            label4.Size = new Size(921, 24);
             label4.TabIndex = 14;
             label4.Text = "说明：将在每个文件同级目录下生成目标格式后缀的文件，会覆盖已存在文件";
             label4.TextAlign = ContentAlignment.MiddleCenter;
@@ -158,19 +160,19 @@
             // 
             label3.Anchor = AnchorStyles.Right;
             label3.AutoSize = true;
-            label3.Location = new Point(72, 307);
+            label3.Location = new Point(21, 322);
             label3.Name = "label3";
             label3.Size = new Size(68, 24);
             label3.TabIndex = 12;
             label3.Text = "源版本:";
             // 
-            // comboBox_Version
+            // comboBox_SourceVersion
             // 
             comboBox_SourceVersion.Anchor = AnchorStyles.Left;
             comboBox_SourceVersion.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox_SourceVersion.FormattingEnabled = true;
-            comboBox_SourceVersion.Location = new Point(146, 303);
-            comboBox_SourceVersion.Name = "comboBox_Version";
+            comboBox_SourceVersion.Location = new Point(95, 318);
+            comboBox_SourceVersion.Name = "comboBox_SourceVersion";
             comboBox_SourceVersion.Size = new Size(182, 32);
             comboBox_SourceVersion.Sorted = true;
             comboBox_SourceVersion.TabIndex = 13;
@@ -186,17 +188,17 @@
             tableLayoutPanel2.Controls.Add(button_Ok, 0, 0);
             tableLayoutPanel2.Controls.Add(button_Cancel, 1, 0);
             tableLayoutPanel2.Dock = DockStyle.Bottom;
-            tableLayoutPanel2.Location = new Point(3, 462);
+            tableLayoutPanel2.Location = new Point(3, 470);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle());
-            tableLayoutPanel2.Size = new Size(933, 40);
+            tableLayoutPanel2.Size = new Size(945, 40);
             tableLayoutPanel2.TabIndex = 11;
             // 
             // button_Ok
             // 
             button_Ok.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button_Ok.Location = new Point(324, 3);
+            button_Ok.Location = new Point(330, 3);
             button_Ok.Margin = new Padding(3, 3, 30, 3);
             button_Ok.Name = "button_Ok";
             button_Ok.Size = new Size(112, 34);
@@ -208,7 +210,7 @@
             // button_Cancel
             // 
             button_Cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button_Cancel.Location = new Point(496, 3);
+            button_Cancel.Location = new Point(502, 3);
             button_Cancel.Margin = new Padding(30, 3, 3, 3);
             button_Cancel.Name = "button_Cancel";
             button_Cancel.Size = new Size(112, 34);
@@ -217,84 +219,24 @@
             button_Cancel.UseVisualStyleBackColor = true;
             button_Cancel.Click += button_Cancel_Click;
             // 
-            // listBox_FilePath
-            // 
-            tableLayoutPanel1.SetColumnSpan(listBox_FilePath, 2);
-            listBox_FilePath.Dock = DockStyle.Fill;
-            listBox_FilePath.FormattingEnabled = true;
-            listBox_FilePath.HorizontalScrollbar = true;
-            listBox_FilePath.ItemHeight = 24;
-            listBox_FilePath.Location = new Point(3, 97);
-            listBox_FilePath.Name = "listBox_FilePath";
-            listBox_FilePath.Size = new Size(933, 200);
-            listBox_FilePath.TabIndex = 2;
-            // 
-            // button_SelectSkel
-            // 
-            button_SelectSkel.Anchor = AnchorStyles.None;
-            button_SelectSkel.Location = new Point(3, 57);
-            button_SelectSkel.Name = "button_SelectSkel";
-            button_SelectSkel.Size = new Size(137, 34);
-            button_SelectSkel.TabIndex = 1;
-            button_SelectSkel.Text = "选择文件...";
-            button_SelectSkel.UseVisualStyleBackColor = true;
-            button_SelectSkel.Click += button_SelectSkel_Click;
-            // 
-            // label_Tip
-            // 
-            label_Tip.AutoSize = true;
-            label_Tip.Dock = DockStyle.Fill;
-            label_Tip.Location = new Point(146, 54);
-            label_Tip.Name = "label_Tip";
-            label_Tip.Size = new Size(790, 40);
-            label_Tip.TabIndex = 0;
-            label_Tip.Text = "已选择 0 个文件";
-            label_Tip.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // label2
             // 
             label2.Anchor = AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(54, 386);
+            label2.Location = new Point(3, 399);
             label2.Name = "label2";
             label2.Size = new Size(86, 24);
             label2.TabIndex = 16;
             label2.Text = "目标格式:";
             // 
-            // flowLayoutPanel_SourceFormat
+            // skelFileListBox
             // 
-            flowLayoutPanel_SourceFormat.AutoSize = true;
-            flowLayoutPanel_SourceFormat.Controls.Add(radioButton_BinarySource);
-            flowLayoutPanel_SourceFormat.Controls.Add(radioButton_JsonSource);
-            flowLayoutPanel_SourceFormat.Dock = DockStyle.Fill;
-            flowLayoutPanel_SourceFormat.Location = new Point(146, 341);
-            flowLayoutPanel_SourceFormat.Name = "flowLayoutPanel_SourceFormat";
-            flowLayoutPanel_SourceFormat.Size = new Size(790, 34);
-            flowLayoutPanel_SourceFormat.TabIndex = 18;
-            // 
-            // radioButton_BinarySource
-            // 
-            radioButton_BinarySource.AutoSize = true;
-            radioButton_BinarySource.Checked = true;
-            radioButton_BinarySource.Location = new Point(3, 3);
-            radioButton_BinarySource.Name = "radioButton_BinarySource";
-            radioButton_BinarySource.Size = new Size(151, 28);
-            radioButton_BinarySource.TabIndex = 17;
-            radioButton_BinarySource.TabStop = true;
-            radioButton_BinarySource.Text = "二进制 (*.skel)";
-            radioButton_BinarySource.UseVisualStyleBackColor = true;
-            radioButton_BinarySource.CheckedChanged += radioButton_Source_CheckedChanged;
-            // 
-            // radioButton_JsonSource
-            // 
-            radioButton_JsonSource.AutoSize = true;
-            radioButton_JsonSource.Location = new Point(160, 3);
-            radioButton_JsonSource.Name = "radioButton_JsonSource";
-            radioButton_JsonSource.Size = new Size(135, 28);
-            radioButton_JsonSource.TabIndex = 18;
-            radioButton_JsonSource.Text = "文本 (*.json)";
-            radioButton_JsonSource.UseVisualStyleBackColor = true;
-            radioButton_JsonSource.CheckedChanged += radioButton_Source_CheckedChanged;
+            tableLayoutPanel1.SetColumnSpan(skelFileListBox, 2);
+            skelFileListBox.Dock = DockStyle.Fill;
+            skelFileListBox.Location = new Point(3, 57);
+            skelFileListBox.Name = "skelFileListBox";
+            skelFileListBox.Size = new Size(945, 255);
+            skelFileListBox.TabIndex = 20;
             // 
             // openFileDialog_Skel
             // 
@@ -310,7 +252,7 @@
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = button_Cancel;
-            ClientSize = new Size(1039, 530);
+            ClientSize = new Size(1051, 538);
             Controls.Add(panel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -320,15 +262,12 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "骨骼文件格式转换";
-            Load += ConvertFileFormatDialog_Load;
             panel.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             flowLayoutPanel_TargetFormat.ResumeLayout(false);
             flowLayoutPanel_TargetFormat.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel_SourceFormat.ResumeLayout(false);
-            flowLayoutPanel_SourceFormat.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -342,17 +281,13 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button button_Ok;
         private Button button_Cancel;
-        private ListBox listBox_FilePath;
-        private Button button_SelectSkel;
-        private Label label_Tip;
         private OpenFileDialog openFileDialog_Skel;
         private Label label1;
         private Label label2;
-        private RadioButton radioButton_BinarySource;
-        private FlowLayoutPanel flowLayoutPanel_SourceFormat;
-        private RadioButton radioButton_JsonSource;
         private FlowLayoutPanel flowLayoutPanel_TargetFormat;
         private RadioButton radioButton_BinaryTarget;
         private RadioButton radioButton_JsonTarget;
+        private Controls.SkelFileListBox skelFileListBox;
+        private ComboBox comboBox_TargetVersion;
     }
 }
