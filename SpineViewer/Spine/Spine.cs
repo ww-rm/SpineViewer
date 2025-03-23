@@ -230,6 +230,8 @@ namespace SpineViewer.Spine
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
         protected virtual void Dispose(bool disposing) { preview?.Dispose(); }
 
+        #region 属性 | 基本信息
+
         /// <summary>
         /// 获取所属版本
         /// </summary>
@@ -267,6 +269,10 @@ namespace SpineViewer.Spine
         [Category("基本信息"), DisplayName("文件版本")]
         public abstract string FileVersion { get; }
 
+        #endregion
+
+        #region 属性 | 变换
+
         /// <summary>
         /// 缩放比例
         /// </summary>
@@ -292,11 +298,17 @@ namespace SpineViewer.Spine
         [Category("变换"), DisplayName("垂直翻转")]
         public abstract bool FlipY { get; set; }
 
+        #endregion
+
+        #region 属性 | 画面
+
         /// <summary>
         /// 是否使用预乘Alpha
         /// </summary>
         [Category("画面"), DisplayName("预乘Alpha通道")]
         public bool UsePremultipliedAlpha { get; set; } = true;
+
+        #endregion
 
         /// <summary>
         /// 包含的所有动画名称
@@ -311,6 +323,8 @@ namespace SpineViewer.Spine
         [Browsable(false)]
         public string DefaultAnimationName { get => animationNames.Last(); }
 
+        #region 属性 | 动画
+
         /// <summary>
         /// 当前动画名称, 如果设置的动画不存在则忽略
         /// </summary>
@@ -323,6 +337,8 @@ namespace SpineViewer.Spine
         /// </summary>
         [Category("动画"), DisplayName("当前动画时长")]
         public float CurrentAnimationDuration { get => GetAnimationDuration(CurrentAnimation); }
+
+        #endregion
 
         /// <summary>
         /// 骨骼包围盒
