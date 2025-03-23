@@ -42,7 +42,19 @@ namespace SpineViewer.Spine
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
             if (context?.Instance is Spine obj)
+            {
                 return new StandardValuesCollection(obj.AnimationNames);
+            }
+            else if (context?.Instance is Spine[] spines)
+            {
+                if (spines.Length > 0)
+                {
+                    IEnumerable<string> common = spines[0].AnimationNames;
+                    foreach (var spine in spines.Skip(1))
+                        common = common.Intersect(spine.AnimationNames);
+                    return new StandardValuesCollection(common.ToArray());
+                }
+            }
             return base.GetStandardValues(context);
         }
     }
