@@ -40,6 +40,9 @@ namespace SpineViewer.Controls
             [Category("导出"), DisplayName("垂直翻转")]
             public bool FlipY { get => previewer.FlipY; set => previewer.FlipY = value; }
 
+            [Category("导出"), DisplayName("仅渲染选中")]
+            public bool RenderSelectedOnly { get => previewer.RenderSelectedOnly; set => previewer.RenderSelectedOnly = value; }
+
             [Category("预览"), DisplayName("显示坐标轴")]
             public bool ShowAxis { get => previewer.ShowAxis; set => previewer.ShowAxis = value; }
 
@@ -90,19 +93,9 @@ namespace SpineViewer.Controls
         private static readonly SFML.Graphics.Color AxisColor = new(220, 220, 220);
 
         /// <summary>
-        /// TODO: 转移到 Spine 对象
-        /// </summary>
-        private static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
-
-        /// <summary>
         /// 坐标轴顶点缓冲区
         /// </summary>
         private readonly SFML.Graphics.VertexArray AxisVertex = new(SFML.Graphics.PrimitiveType.Lines, 2);
-
-        /// <summary>
-        /// TODO: 转移到 Spine 对象
-        /// </summary>
-        private readonly SFML.Graphics.VertexArray BoundsRect = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
 
         /// <summary>
         /// 渲染窗口
@@ -266,6 +259,13 @@ namespace SpineViewer.Controls
         }
 
         /// <summary>
+        /// 仅渲染选中
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        public bool RenderSelectedOnly { get; set; } = false;
+
+        /// <summary>
         /// 显示坐标轴
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -296,7 +296,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 预览画面帧参数
         /// </summary>
-        public SpinePreviewerFrameArgs GetFrameArgs() => new(Resolution, RenderWindow.GetView());
+        public SpinePreviewerFrameArgs GetFrameArgs() => new(Resolution, RenderWindow.GetView(), RenderSelectedOnly);
 
         /// <summary>
         /// 开始预览
@@ -364,20 +364,12 @@ namespace SpineViewer.Controls
                                 var spine = spines[i];
                                 spine.Update(delta);
 
+                                if (RenderSelectedOnly && !spine.IsSelected)
+                                    continue;
+
                                 spine.IsDebug = true;
                                 RenderWindow.Draw(spine);
                                 spine.IsDebug = false;
-
-                                // TODO: 增加渲染模式(仅选中), 包围盒转移到 Spine 类
-                                if (spine.IsSelected)
-                                {
-                                    var bounds = spine.Bounds;
-                                    BoundsRect[0] = BoundsRect[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
-                                    BoundsRect[1] = new(new(bounds.Right, bounds.Top), BoundsColor);
-                                    BoundsRect[2] = new(new(bounds.Right, bounds.Bottom), BoundsColor);
-                                    BoundsRect[3] = new(new(bounds.Left, bounds.Bottom), BoundsColor);
-                                    RenderWindow.Draw(BoundsRect);
-                                }
                             }
                         }
                     }
@@ -433,45 +425,60 @@ namespace SpineViewer.Controls
                 draggingSrc = RenderWindow.MapPixelToCoords(new(e.X, e.Y));
                 var src = new PointF(((SFML.System.Vector2f)draggingSrc).X, ((SFML.System.Vector2f)draggingSrc).Y);
 
-                if (SpineListView is not null)
-                {
-                    lock (SpineListView.Spines)
-                    {
-                        var spines = SpineListView.Spines;
+                if (SpineListView is null)
+                    return;
 
+                lock (SpineListView.Spines)
+                {
+                    var spines = SpineListView.Spines;
+
+                    // 仅渲染选中模式禁止在画面里选择对象
+                    if (RenderSelectedOnly)
+                    {
+                        bool hit = false;
+                        foreach (int i in SpineListView.SelectedIndices)
+                        {
+                            if (!spines[i].Bounds.Contains(src)) continue;
+                            hit = true;
+                            break;
+                        }
+
+                        // 如果没点到被选中的模型, 则不允许拖动
+                        if (!hit) draggingSrc = null;
+                    }
+                    else
+                    {
                         // 没有按下 Ctrl 键就只选中点击的那个, 所以先清空选中列表
                         if ((ModifierKeys & Keys.Control) == 0)
                         {
                             bool hit = false;
                             for (int i = 0; i < spines.Count; i++)
                             {
-                                if (spines[i].Bounds.Contains(src))
-                                {
-                                    hit = true;
+                                if (!spines[i].Bounds.Contains(src)) continue;
 
-                                    // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
-                                    if (!SpineListView.SelectedIndices.Contains(i))
-                                    {
-                                        SpineListView.SelectedIndices.Clear();
-                                        SpineListView.SelectedIndices.Add(i);
-                                    }
-                                    break;
+                                hit = true;
+
+                                // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
+                                if (!SpineListView.SelectedIndices.Contains(i))
+                                {
+                                    SpineListView.SelectedIndices.Clear();
+                                    SpineListView.SelectedIndices.Add(i);
                                 }
+                                break;
                             }
 
                             // 如果点了空白的地方, 就清空选中列表
-                            if (!hit)
-                                SpineListView.SelectedIndices.Clear();
+                            if (!hit) SpineListView.SelectedIndices.Clear();
                         }
                         else
                         {
                             for (int i = 0; i < spines.Count; i++)
                             {
-                                if (spines[i].Bounds.Contains(src))
-                                {
-                                    SpineListView.SelectedIndices.Add(i);
-                                    break;
-                                }
+                                if (!spines[i].Bounds.Contains(src))
+                                    continue;
+
+                                SpineListView.SelectedIndices.Add(i);
+                                break;
                             }
                         }
                     }
@@ -536,7 +543,7 @@ namespace SpineViewer.Controls
     /// <summary>
     /// 预览画面帧参数
     /// </summary>
-    public class SpinePreviewerFrameArgs(Size resolution, SFML.Graphics.View view)
+    public class SpinePreviewerFrameArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
     {
         /// <summary>
         /// 分辨率
@@ -547,6 +554,11 @@ namespace SpineViewer.Controls
         /// 渲染视窗
         /// </summary>
         public SFML.Graphics.View View => view;
+
+        /// <summary>
+        /// 是否仅渲染/导出选中骨骼
+        /// </summary>
+        public bool RenderSelectedOnly => renderSelectedOnly;
     }
 
 }
