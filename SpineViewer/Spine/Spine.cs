@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Collections.Immutable;
+using SpineViewer.ExportHelper;
 
 namespace SpineViewer.Spine
 {
@@ -347,6 +348,26 @@ namespace SpineViewer.Spine
         public abstract RectangleF Bounds { get; }
 
         /// <summary>
+        /// 初始状态下的骨骼包围盒
+        /// </summary>
+        [Browsable(false)]
+        public RectangleF InitBounds
+        {
+            get
+            {
+                if (initBounds is null)
+                {
+                    var tmp = CurrentAnimation;
+                    CurrentAnimation = EMPTY_ANIMATION;
+                    initBounds = Bounds;
+                    CurrentAnimation = tmp;
+                }
+                return (RectangleF)initBounds;
+            }
+        }
+        private RectangleF? initBounds = null;
+
+        /// <summary>
         /// 骨骼预览图
         /// </summary>
         [Browsable(false)]
@@ -362,7 +383,7 @@ namespace SpineViewer.Spine
                     // 除此之外, 似乎还和 tex 的 Dispose 有关
                     // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
                     var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-                    tex.SetView(GetInitView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                    tex.SetView(InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
                     tex.Clear(SFML.Graphics.Color.Transparent);
                     var tmp = CurrentAnimation;
                     CurrentAnimation = EMPTY_ANIMATION;
@@ -390,53 +411,6 @@ namespace SpineViewer.Spine
         /// </summary>
         /// <param name="delta">时间间隔</param>
         public abstract void Update(float delta);
-
-        /// <summary>
-        /// 获取初始状态下合适的 View, 参数单位为像素
-        /// </summary>
-        public SFML.Graphics.View GetInitView(Size resolution, Padding padding) =>
-            GetInitView((uint)resolution.Width, (uint)resolution.Height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取初始状态下合适的 View, 参数单位为像素
-        /// </summary>
-        public SFML.Graphics.View GetInitView(uint width, uint height, Padding padding) =>
-            GetInitView(width, height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取初始状态下合适的 View, 参数单位为像素
-        /// </summary>
-        public SFML.Graphics.View GetInitView(Size resolution, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1) =>
-            GetInitView((uint)resolution.Width, (uint)resolution.Height, paddingL, paddingR, paddingT, paddingB);
-
-        /// <summary>
-        /// 获取初始状态下合适的 View, 参数单位为像素
-        /// </summary>
-        public SFML.Graphics.View GetInitView(uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-        {
-            var tmp = CurrentAnimation;
-            CurrentAnimation = EMPTY_ANIMATION;
-            var bounds = Bounds;
-            CurrentAnimation = tmp;
-
-            float sizeX = bounds.Width;
-            float sizeY = bounds.Height;
-            float innerW = width - paddingL - paddingR;
-            float innerH = height - paddingT - paddingB;
-
-            float scale = 1;
-            if ((sizeY / sizeX) < (innerH / innerW))
-                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
-            else
-                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
-
-            var x = bounds.X + bounds.Width / 2 + ((float)paddingL - (float)paddingR) * scale;
-            var y = bounds.Y + bounds.Height / 2 + ((float)paddingT - (float)paddingB) * scale;
-            var viewX = width * scale;
-            var viewY = height * scale;
-
-            return new(new(x, y), new(viewX, -viewY));
-        }
 
         /// <summary>
         /// 是否被选中

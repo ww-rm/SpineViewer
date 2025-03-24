@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Policy;
 using System.Diagnostics;
-using NLog.Targets;
 
 namespace SpineViewer.Controls
 {
@@ -246,6 +245,11 @@ namespace SpineViewer.Controls
         public uint MaxFps { get => maxFps; set { RenderWindow.SetFramerateLimit(value); maxFps = value; } }
         private uint maxFps = 60;
 
+        /// <summary>
+        /// 获取 View
+        /// </summary>
+        public SFML.Graphics.View GetView() => RenderWindow.GetView();
+
         #endregion
 
         public SpinePreviewer()
@@ -260,11 +264,6 @@ namespace SpineViewer.Controls
             FlipY = true;
             MaxFps = 30;
         }
-
-        /// <summary>
-        /// 预览画面帧参数, TODO: 转移到统一导出参数
-        /// </summary>
-        public SpinePreviewerFrameArgs GetFrameArgs() => new(Resolution, RenderWindow.GetView(), RenderSelectedOnly);
 
         #region 渲染线程管理
 
@@ -595,26 +594,4 @@ namespace SpineViewer.Controls
             PauseUpdate();
         }
     }
-
-    /// <summary>
-    /// 预览画面帧参数
-    /// </summary>
-    public class SpinePreviewerFrameArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
-    {
-        /// <summary>
-        /// 分辨率
-        /// </summary>
-        public Size Resolution => resolution;
-
-        /// <summary>
-        /// 渲染视窗
-        /// </summary>
-        public SFML.Graphics.View View => view;
-
-        /// <summary>
-        /// 是否仅渲染/导出选中骨骼
-        /// </summary>
-        public bool RenderSelectedOnly => renderSelectedOnly;
-    }
-
 }
