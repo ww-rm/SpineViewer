@@ -115,15 +115,6 @@ namespace SpineViewer
             Close();
         }
 
-        private void toolStripMenuItem_ResetAnimation_Click(object sender, EventArgs e)
-        {
-            lock (spineListView.Spines)
-            {
-                foreach (var spine in spineListView.Spines)
-                    spine.CurrentAnimation = spine.CurrentAnimation;
-            }
-        }
-
         private void toolStripMenuItem_ConvertFileFormat_Click(object sender, EventArgs e)
         {
             var openDialog = new Dialogs.ConvertFileFormatDialog();

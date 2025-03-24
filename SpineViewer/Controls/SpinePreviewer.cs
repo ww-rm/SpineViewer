@@ -16,6 +16,45 @@ namespace SpineViewer.Controls
     public partial class SpinePreviewer : UserControl
     {
         /// <summary>
+        /// 画面拖放对象世界坐标源点
+        /// </summary>
+        private SFML.System.Vector2f? draggingSrc = null;
+
+        /// <summary>
+        /// 要绑定的 Spine 列表控件
+        /// </summary>
+        [Category("自定义"), Description("相关联的 SpineListView")]
+        public SpineListView? SpineListView { get; set; }
+
+        /// <summary>
+        /// 属性信息面板
+        /// </summary>
+        [Category("自定义"), Description("用于显示画面属性的属性页")]
+        public PropertyGrid? PropertyGrid
+        {
+            get => propertyGrid;
+            set
+            {
+                propertyGrid = value;
+                if (propertyGrid is not null)
+                    propertyGrid.SelectedObject = new PreviewerProperty(this);
+            }
+        }
+        private PropertyGrid? propertyGrid;
+
+        #region 画面参数
+
+        /// <summary>
+        /// 画面缩放最大值
+        /// </summary>
+        public const float ZOOM_MAX = 1000f;
+
+        /// <summary>
+        /// 画面缩放最小值
+        /// </summary>
+        public const float ZOOM_MIN = 0.001f;
+
+        /// <summary>
         /// 包装类, 用于属性面板显示
         /// </summary>
         private class PreviewerProperty(SpinePreviewer previewer)
@@ -49,74 +88,6 @@ namespace SpineViewer.Controls
             [Category("预览"), DisplayName("最大帧率")]
             public uint MaxFps { get => previewer.MaxFps; set => previewer.MaxFps = value; }
         }
-
-        /// <summary>
-        /// 要绑定的 Spine 列表控件
-        /// </summary>
-        [Category("自定义"), Description("相关联的 SpineListView")]
-        public SpineListView? SpineListView { get; set; }
-
-        /// <summary>
-        /// 属性信息面板
-        /// </summary>
-        [Category("自定义"), Description("用于显示画面属性的属性页")]
-        public PropertyGrid? PropertyGrid
-        {
-            get => propertyGrid;
-            set
-            {
-                propertyGrid = value;
-                if (propertyGrid is not null)
-                    propertyGrid.SelectedObject = new PreviewerProperty(this);
-            }
-        }
-        private PropertyGrid? propertyGrid;
-
-        /// <summary>
-        /// 画面缩放最大值
-        /// </summary>
-        public const float ZOOM_MAX = 1000f;
-
-        /// <summary>
-        /// 画面缩放最小值
-        /// </summary>
-        public const float ZOOM_MIN = 0.001f;
-
-        /// <summary>
-        /// 预览画面背景色
-        /// </summary>
-        private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
-
-        /// <summary>
-        /// 预览画面坐标轴颜色
-        /// </summary>
-        private static readonly SFML.Graphics.Color AxisColor = new(220, 220, 220);
-
-        /// <summary>
-        /// 坐标轴顶点缓冲区
-        /// </summary>
-        private readonly SFML.Graphics.VertexArray AxisVertex = new(SFML.Graphics.PrimitiveType.Lines, 2);
-
-        /// <summary>
-        /// 渲染窗口
-        /// </summary>
-        private readonly SFML.Graphics.RenderWindow RenderWindow;
-
-        /// <summary>
-        /// 帧间隔计时器
-        /// </summary>
-        private readonly SFML.System.Clock Clock = new();
-
-        /// <summary>
-        /// 画面拖放对象世界坐标源点
-        /// </summary>
-        private SFML.System.Vector2f? draggingSrc = null;
-
-        /// <summary>
-        /// 渲染任务
-        /// </summary>
-        private Task? task = null;
-        private CancellationTokenSource? cancelToken = null;
 
         /// <summary>
         /// 分辨率
@@ -280,6 +251,8 @@ namespace SpineViewer.Controls
         public uint MaxFps { get => maxFps; set { RenderWindow.SetFramerateLimit(value); maxFps = value; } }
         private uint maxFps = 60;
 
+        #endregion
+
         public SpinePreviewer()
         {
             InitializeComponent();
@@ -294,14 +267,27 @@ namespace SpineViewer.Controls
         }
 
         /// <summary>
-        /// 预览画面帧参数
+        /// 预览画面帧参数, TODO: 转移到统一导出参数
         /// </summary>
         public SpinePreviewerFrameArgs GetFrameArgs() => new(Resolution, RenderWindow.GetView(), RenderSelectedOnly);
 
+        #region 渲染线程管理
+
         /// <summary>
-        /// 开始预览
+        /// 渲染窗口
         /// </summary>
-        public void StartPreview()
+        private readonly SFML.Graphics.RenderWindow RenderWindow;
+
+        /// <summary>
+        /// 渲染任务
+        /// </summary>
+        private Task? task = null;
+        private CancellationTokenSource? cancelToken = null;
+
+        /// <summary>
+        /// 开始渲染
+        /// </summary>
+        public void StartRender()
         {
             if (task is not null)
                 return;
@@ -310,9 +296,9 @@ namespace SpineViewer.Controls
         }
 
         /// <summary>
-        /// 停止预览
+        /// 停止渲染
         /// </summary>
-        public void StopPreview()
+        public void StopRender()
         {
             if (task is null || cancelToken is null)
                 return;
@@ -321,6 +307,56 @@ namespace SpineViewer.Controls
             cancelToken = null;
             task = null;
         }
+
+        #endregion
+
+        /// <summary>
+        /// 是否还在更新画面
+        /// </summary>
+        public bool IsUpdating { get; private set; } = true;
+
+        /// <summary>
+        /// 开始更新
+        /// </summary>
+        public void StartUpdate() => IsUpdating = true;
+
+        /// <summary>
+        /// 暂停更新
+        /// </summary>
+        public void PauseUpdate() => IsUpdating = false;
+
+        /// <summary>
+        /// 停止更新, 将所有模型动画时间重置到 0 时刻
+        /// </summary>
+        public void StopUpdate()
+        {
+            IsUpdating = false;
+            lock (SpineListView.Spines)
+            {
+                foreach (var spine in SpineListView.Spines)
+                    spine.CurrentAnimation = spine.CurrentAnimation;
+            }
+        }
+
+        /// <summary>
+        /// 预览画面背景色
+        /// </summary>
+        private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
+
+        /// <summary>
+        /// 预览画面坐标轴颜色
+        /// </summary>
+        private static readonly SFML.Graphics.Color AxisColor = new(220, 220, 220);
+
+        /// <summary>
+        /// 坐标轴顶点缓冲区
+        /// </summary>
+        private readonly SFML.Graphics.VertexArray AxisVertex = new(SFML.Graphics.PrimitiveType.Lines, 2);
+
+        /// <summary>
+        /// 帧间隔计时器
+        /// </summary>
+        private readonly SFML.System.Clock Clock = new();
 
         /// <summary>
         /// 渲染任务
@@ -362,7 +398,8 @@ namespace SpineViewer.Controls
                                     break; // 提前中止
 
                                 var spine = spines[i];
-                                spine.Update(delta);
+
+                                spine.Update(IsUpdating ? delta : 0);
 
                                 if (RenderSelectedOnly && !spine.IsSelected)
                                     continue;
@@ -388,8 +425,8 @@ namespace SpineViewer.Controls
             if (RenderWindow is null)
                 return;
 
-            float parentX = Width;
-            float parentY = Height;
+            float parentX = panel.Parent.Width;
+            float parentY = panel.Parent.Height;
             float sizeX = panel.Width;
             float sizeY = panel.Height;
 
@@ -537,6 +574,21 @@ namespace SpineViewer.Controls
         {
             Zoom *= (e.Delta > 0 ? 1.1f : 0.9f);
             PropertyGrid?.Refresh();
+        }
+
+        private void button_Stop_Click(object sender, EventArgs e)
+        {
+            StopUpdate();
+        }
+
+        private void button_Start_Click(object sender, EventArgs e)
+        {
+            StartUpdate();
+        }
+
+        private void button_Pause_Click(object sender, EventArgs e)
+        {
+            PauseUpdate();
         }
     }
 
