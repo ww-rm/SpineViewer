@@ -80,12 +80,11 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 6;
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(951, 513);
             tableLayoutPanel1.TabIndex = 1;
             // 
@@ -94,7 +93,7 @@
             comboBox_TargetVersion.Anchor = AnchorStyles.Left;
             comboBox_TargetVersion.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox_TargetVersion.FormattingEnabled = true;
-            comboBox_TargetVersion.Location = new Point(95, 356);
+            comboBox_TargetVersion.Location = new Point(95, 365);
             comboBox_TargetVersion.Name = "comboBox_TargetVersion";
             comboBox_TargetVersion.Size = new Size(182, 32);
             comboBox_TargetVersion.Sorted = true;
@@ -106,7 +105,7 @@
             flowLayoutPanel_TargetFormat.Controls.Add(radioButton_BinaryTarget);
             flowLayoutPanel_TargetFormat.Controls.Add(radioButton_JsonTarget);
             flowLayoutPanel_TargetFormat.Dock = DockStyle.Fill;
-            flowLayoutPanel_TargetFormat.Location = new Point(95, 394);
+            flowLayoutPanel_TargetFormat.Location = new Point(95, 403);
             flowLayoutPanel_TargetFormat.Name = "flowLayoutPanel_TargetFormat";
             flowLayoutPanel_TargetFormat.Size = new Size(853, 34);
             flowLayoutPanel_TargetFormat.TabIndex = 19;
@@ -137,7 +136,7 @@
             // 
             label1.Anchor = AnchorStyles.Right;
             label1.AutoSize = true;
-            label1.Location = new Point(3, 360);
+            label1.Location = new Point(3, 369);
             label1.Name = "label1";
             label1.Size = new Size(86, 24);
             label1.TabIndex = 15;
@@ -160,7 +159,7 @@
             // 
             label3.Anchor = AnchorStyles.Right;
             label3.AutoSize = true;
-            label3.Location = new Point(21, 322);
+            label3.Location = new Point(21, 331);
             label3.Name = "label3";
             label3.Size = new Size(68, 24);
             label3.TabIndex = 12;
@@ -171,7 +170,7 @@
             comboBox_SourceVersion.Anchor = AnchorStyles.Left;
             comboBox_SourceVersion.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox_SourceVersion.FormattingEnabled = true;
-            comboBox_SourceVersion.Location = new Point(95, 318);
+            comboBox_SourceVersion.Location = new Point(95, 327);
             comboBox_SourceVersion.Name = "comboBox_SourceVersion";
             comboBox_SourceVersion.Size = new Size(182, 32);
             comboBox_SourceVersion.Sorted = true;
@@ -187,8 +186,9 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(button_Ok, 0, 0);
             tableLayoutPanel2.Controls.Add(button_Cancel, 1, 0);
-            tableLayoutPanel2.Dock = DockStyle.Bottom;
+            tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(3, 470);
+            tableLayoutPanel2.Margin = new Padding(3, 30, 3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle());
@@ -223,7 +223,7 @@
             // 
             label2.Anchor = AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(3, 399);
+            label2.Location = new Point(3, 408);
             label2.Name = "label2";
             label2.Size = new Size(86, 24);
             label2.TabIndex = 16;
@@ -235,7 +235,7 @@
             skelFileListBox.Dock = DockStyle.Fill;
             skelFileListBox.Location = new Point(3, 57);
             skelFileListBox.Name = "skelFileListBox";
-            skelFileListBox.Size = new Size(945, 255);
+            skelFileListBox.Size = new Size(945, 264);
             skelFileListBox.TabIndex = 20;
             // 
             // openFileDialog_Skel
