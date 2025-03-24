@@ -37,7 +37,7 @@ namespace SpineViewer.Dialogs
             var outputDir = textBox_OutputDir.Text;
             if (string.IsNullOrEmpty(outputDir))
             {
-                Result.OutputDir = null;
+                outputDir = null;
             }
             else
             {
@@ -63,9 +63,16 @@ namespace SpineViewer.Dialogs
                         return;
                     }
                 }
-                Result.OutputDir = Path.GetFullPath(outputDir);
+                outputDir = Path.GetFullPath(outputDir);
             }
 
+            if (outputDir is null && string.IsNullOrEmpty(Result.NameSuffix))
+            {
+                MessageBox.Info("输出文件夹和名称后缀不可同时为空，存在文件覆盖风险");
+                return;
+            }
+
+            Result.OutputDir = outputDir;
             DialogResult = DialogResult.OK;
         }
 
@@ -87,7 +94,7 @@ namespace SpineViewer.Dialogs
         /// 预览图格式
         /// </summary>
         [TypeConverter(typeof(ImageFormatConverter))]
-        [Category("导出参数"), DisplayName("预览图格式")]
+        [Category("图像"), DisplayName("预览图格式")]
         public ImageFormat ImageFormat
         {
             get => imageFormat;
@@ -103,7 +110,7 @@ namespace SpineViewer.Dialogs
         /// 预览图分辨率
         /// </summary>
         [TypeConverter(typeof(SizeConverter))]
-        [Category("导出参数"), DisplayName("分辨率")]
+        [Category("图像"), DisplayName("分辨率")]
         public Size Resolution
         {
             get => resolution;
@@ -120,7 +127,7 @@ namespace SpineViewer.Dialogs
         /// 四周填充像素值
         /// </summary>
         [TypeConverter(typeof(PaddingConverter))]
-        [Category("导出参数"), DisplayName("四周填充像素值")]
+        [Category("图像"), DisplayName("四周填充像素值")]
         public Padding Padding
         {
             get => padding;
@@ -139,7 +146,7 @@ namespace SpineViewer.Dialogs
         /// DPI
         /// </summary>
         [TypeConverter(typeof(SizeFConverter))]
-        [Category("导出参数"), DisplayName("DPI")]
+        [Category("图像"), DisplayName("DPI")]
         public SizeF DPI
         {
             get => dpi;
@@ -151,6 +158,12 @@ namespace SpineViewer.Dialogs
             }
         }
         private SizeF dpi = new(144, 144);
+
+        /// <summary>
+        /// 名称后缀
+        /// </summary>
+        [Category("其他"), DisplayName("名称后缀")]
+        public string NameSuffix { get; set; } = "(preview)";
     }
 
 }
