@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FFMpegCore.Pipes;
 
-namespace SpineViewer.ExportHelper
+namespace SpineViewer.Exporter
 {
     /// <summary>
     /// SFML.Graphics.Image 帧对象包装类

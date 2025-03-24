@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FFMpegCore.Enums;
-using SpineViewer.ExportHelper;
+using SpineViewer.Exporter;
 
 namespace SpineViewer
 {
@@ -296,6 +296,7 @@ namespace SpineViewer
             spinePreviewer.StartRender();
         }
 
+        // TODO: 转移到 Exporter 里面
         private void ExportFrame_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;

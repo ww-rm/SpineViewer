@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.ExportHelper
+namespace SpineViewer.Exporter
 {
     /// <summary>
     /// 导出参数基类
