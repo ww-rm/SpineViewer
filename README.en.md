@@ -4,7 +4,7 @@
 
 [中文](README.md) | [English](README.en.md)
 
-A simple and user-friendly Spine file viewer and exporter.
+A simple and user-friendly tool for viewing and exporting Spine files.
 
 ![previewer](img/preview.webp)
 
@@ -12,59 +12,81 @@ A simple and user-friendly Spine file viewer and exporter.
 
 ## Installation
 
-Download the zip package from the [Releases](https://github.com/ww-rm/SpineViewer/releases) page.
+Go to the [Release](https://github.com/ww-rm/SpineViewer/releases) page to download the compressed package.
 
-The application requires the [.NET Desktop Runtime 8.0.x](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+The software requires the dependency framework [.NET Desktop Runtime 8.0.x](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 
-Alternatively, you can download the zip package with the `SelfContained` suffix, which can run independently.
+You can also download the package with the `SelfContained` suffix, which can run independently.
 
-## Features
+## Version Support
 
-- Supports viewing Spine files of different versions:
-    - [x] `v2.1.x`
-    - [x] `v3.6.x`
-    - [x] `v3.7.x`
-    - [x] `v3.8.x`
-    - [x] `v4.0.x`
-    - [x] `v4.1.x`
-    - [x] `v4.2.x`
-    - [ ] `v4.3.x`
-- Supports animation preview for multi-skeleton files
-- Allows independent parameter settings for each skeleton
-- Supports exporting animation as PNG frame sequences
-- Provides export settings such as zoom and rotation
-- More features coming soon...
+| Version   | View & Export          | Format Conversion      | Version Conversion |
+| :-------: | :--------------------: | :--------------------: | :----------------: |
+| `2.1.x`   | :white_check_mark:     |                        |                    |
+| `3.1.x`   |                        |                        |                    |
+| `3.4.x`   |                        |                        |                    |
+| `3.5.x`   |                        |                        |                    |
+| `3.6.x`   | :white_check_mark:     |                        |                    |
+| `3.7.x`   | :white_check_mark:     |                        |                    |
+| `3.8.x`   | :white_check_mark:     | :white_check_mark:     |                    |
+| `4.1.x`   | :white_check_mark:     |                        |                    |
+| `4.2.x`   | :white_check_mark:     |                        |                    |
+| `4.3.x`   |                        |                        |                    |
 
 ## Usage
 
 ### Importing Skeletons
 
-Use the **File** menu to select **Open** or **Batch Open** to import skeleton files.
+There are 3 ways to import skeleton files:
 
-### Adjusting Skeletons
+- **Drag & Drop/Paste:**  
+  Drag and drop or paste the skeleton file/directory into the model list.  
+  This method automatically searches through the provided files and subdirectories. Although convenient, it relies on the file structure and has its limitations.
+  
+  - Only standard files with `*.json`, `*.skel`, or `.atlas` extensions are automatically detected.
+  - The skeleton file and atlas file must have the same name.
+  - The version string in the skeleton file must not be modified.
 
-Select one or more items in the **Model List** to display adjustable parameters in the **Model Parameters** panel.
+- **Batch Open from the File Menu:**  
+  This method offers more file flexibility. You can drag and drop or paste files into the file selection dialog, and additional options are available.
+  
+  - The filename restrictions are similar to the above, but you can use the panel’s file selection button to choose skeleton files with non-standard extensions.
+  - You can set a fixed load version to handle cases where the version number has been modified.
 
-Right-clicking in the **Model List** allows you to add, delete, or adjust list items. You can also drag items with the left mouse button to rearrange them.
+- **Open a Single Model:**  
+  This method offers the highest degree of freedom, allowing you to select any skeleton file and atlas file without filename restrictions. You can also set the load version.
 
-### Adjusting the View
+### Adjusting Preview Content
 
-Mouse operations supported in the **Preview** window:
+The model list supports right-click menus and various shortcut keys, and you can select multiple models to adjust their parameters in bulk.
 
-- Left-click to drag the skeleton
-- Right-click to drag the view
-- Scroll wheel to zoom in/out
+In addition to the parameter panel, the preview area supports several mouse actions:
 
-Additionally, you can adjust export and preview parameters through the **View Parameters** panel.
+- **Left-click:** Select and drag models. Holding down the `Ctrl` key enables multi-selection, which syncs with the model list.
+- **Right-click:** Drag the overall canvas.
+- **Scroll wheel:** Zoom the view.
+- **Selective Rendering:** The preview area supports a mode to render only the selected models. In this mode, only the selected models are displayed, and selection changes must be made through the model list.
 
-In the **Functions** menu, you can reset and synchronize the animation time for all skeletons.
+In the function menu, you can reset and synchronize the animation time for all skeletons.
 
-### Exporting Animations
+### Exporting Preview Content
 
-Select **Export** from the **File** menu to export all loaded skeleton animations as PNG frame sequences, based on the current preview settings.
+Both preview images and videos can be exported.
 
-You can view the full duration of each animation in the **Model Parameters** of each skeleton.
+- **Preview Image:**  
+  The exported preview image shows the model in its default state, with one image per model.
+  
+- **Video (TODO: Currently only supports frame sequence export):**  
+  The complete animation duration for each skeleton can be viewed in the model parameters.
+  
+When the preview area is set to render only the selected models, the exported content will include only the models that are displayed.
+
+### Format & Version Conversion
+
+You can use the tools menu to convert skeleton files. This feature supports conversion between binary and text formats, as well as between different versions.
+
+Currently under development, it only supports converting `3.8.x` binary format to text format.
 
 ---
 
-*If you find this project helpful, please give it a :star: and share it with others! :)*
+*If you like this project, please give it a :star: and share it with more people! :)*
