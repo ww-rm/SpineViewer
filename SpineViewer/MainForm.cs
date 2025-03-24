@@ -106,7 +106,7 @@ namespace SpineViewer
 
             var progressDialog = new Dialogs.ProgressDialog();
             progressDialog.DoWork += ExportPreview_Work;
-            progressDialog.RunWorkerAsync(saveDialog);
+            progressDialog.RunWorkerAsync(saveDialog.Result);
             progressDialog.ShowDialog();
         }
 
@@ -294,17 +294,15 @@ namespace SpineViewer
         private void ExportPreview_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.ExportPreviewDialog;
-            var outputDir = arguments.OutputDir;
-            var width = arguments.PreviewWidth;
-            var height = arguments.PreviewHeight;
-            // TODO: 增加填充参数
-            var paddingL = 1u;
-            var paddingR = 1u;
-            var paddingT = 1u;
-            var paddingB = 1u;
+            var arguments = e.Argument as Dialogs.ExportPreviewDialogResult;
 
-            var tex = new SFML.Graphics.RenderTexture(width, height);
+            var outputDir = arguments.OutputDir;
+            var imageFormat = arguments.ImageFormat;
+            var resolution = arguments.Resolution;
+            var padding = arguments.Padding;
+            var dpi = arguments.DPI;
+
+            var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
 
             int success = 0;
             int error = 0;
@@ -323,18 +321,23 @@ namespace SpineViewer
                     }
 
                     var spine = spines[i];
+                    var filename = $"(preview) {spine.Name}{imageFormat.GetSuffix()}"; // 加上 preview 是为了防止覆盖同名的 png 文件
+                    var savePath = outputDir is null ? Path.Combine(spine.AssetsDir, filename) : Path.Combine(outputDir, filename);
+
                     var tmp = spine.CurrentAnimation;
                     spine.CurrentAnimation = Spine.Spine.EMPTY_ANIMATION;
-                    tex.SetView(spine.GetInitView(width, height, paddingL, paddingR, paddingT, paddingB)); 
+                    tex.SetView(spine.GetInitView(resolution, padding)); 
                     tex.Clear(SFML.Graphics.Color.Transparent);
                     tex.Draw(spine);
                     tex.Display();
                     spine.CurrentAnimation = tmp;
+
                     try
                     {
-                        using (var img = tex.Texture.CopyToImage())
+                        using (var img = new Bitmap(tex.Texture.CopyToBitmap()))
                         {
-                            img.SaveToFile(Path.Combine(outputDir, $"{spine.Name}.png"));
+                            img.SetResolution(dpi.Width, dpi.Height);
+                            img.Save(savePath, imageFormat);
                         }
                         success++;
                     }
