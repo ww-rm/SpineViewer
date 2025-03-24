@@ -301,6 +301,7 @@ namespace SpineViewer
             var resolution = arguments.Resolution;
             var padding = arguments.Padding;
             var dpi = arguments.DPI;
+            var renderSelectedOnly = spinePreviewer.RenderSelectedOnly;
 
             var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
 
@@ -321,6 +322,9 @@ namespace SpineViewer
                     }
 
                     var spine = spines[i];
+                    if (renderSelectedOnly && !spine.IsSelected)
+                        continue;
+
                     var filename = $"(preview) {spine.Name}{imageFormat.GetSuffix()}"; // 加上 preview 是为了防止覆盖同名的 png 文件
                     var savePath = outputDir is null ? Path.Combine(spine.AssetsDir, filename) : Path.Combine(outputDir, filename);
 
