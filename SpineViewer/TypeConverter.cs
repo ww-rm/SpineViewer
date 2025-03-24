@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SpineViewer
 {
-    public class PointFConverter : ExpandableObjectConverter
+    public class PointFConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
         {
