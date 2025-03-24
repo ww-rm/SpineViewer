@@ -16,11 +16,6 @@ namespace SpineViewer.Controls
     public partial class SpinePreviewer : UserControl
     {
         /// <summary>
-        /// 画面拖放对象世界坐标源点
-        /// </summary>
-        private SFML.System.Vector2f? draggingSrc = null;
-
-        /// <summary>
         /// 要绑定的 Spine 列表控件
         /// </summary>
         [Category("自定义"), Description("相关联的 SpineListView")]
@@ -310,6 +305,8 @@ namespace SpineViewer.Controls
 
         #endregion
 
+        #region 渲染更新管理
+
         /// <summary>
         /// 是否还在更新画面
         /// </summary>
@@ -399,7 +396,7 @@ namespace SpineViewer.Controls
 
                                 var spine = spines[i];
 
-                                spine.Update(IsUpdating ? delta : 0);
+                                spine.Update(IsUpdating ? delta : 0); // 只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
 
                                 if (RenderSelectedOnly && !spine.IsSelected)
                                     continue;
@@ -419,6 +416,13 @@ namespace SpineViewer.Controls
                 RenderWindow.SetActive(false);
             }
         }
+
+        #endregion
+
+        /// <summary>
+        /// 画面拖放对象世界坐标源点
+        /// </summary>
+        private SFML.System.Vector2f? draggingSrc = null;
 
         private void SpinePreviewer_SizeChanged(object sender, EventArgs e)
         {
