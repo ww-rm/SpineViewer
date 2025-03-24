@@ -30,6 +30,7 @@ namespace SpineViewer.ExportHelper
         /// <summary>
         /// 画面分辨率
         /// </summary>
+        [ReadOnly(true)]
         [TypeConverter(typeof(SizeConverter))]
         [Category("导出"), DisplayName("分辨率"), Description("画面的宽高像素大小")]
         public required Size Resolution { get; init; }
@@ -43,6 +44,7 @@ namespace SpineViewer.ExportHelper
         /// <summary>
         /// 是否仅渲染选中
         /// </summary>
+        [ReadOnly(true)]
         [Category("导出"), DisplayName("仅渲染选中"), Description("是否仅导出选中的模型")]
         public required bool RenderSelectedOnly { get; init; }
 
