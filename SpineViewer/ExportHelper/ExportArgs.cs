@@ -49,7 +49,6 @@ namespace SpineViewer.ExportHelper
         /// <summary>
         /// 检查参数是否合法并规范化参数值, 否则返回用户错误原因
         /// </summary>
-        /// <returns></returns>
         public virtual string? Validate()
         {
             if (!string.IsNullOrEmpty(OutputDir) && File.Exists(OutputDir))
