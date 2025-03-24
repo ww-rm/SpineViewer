@@ -28,13 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpinePreviewer));
             panel = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel_Container = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button_Stop = new Button();
             button_Start = new Button();
-            button_Pause = new Button();
+            imageList = new ImageList(components);
+            button_Stop = new Button();
+            toolTip = new ToolTip(components);
             tableLayoutPanel1.SuspendLayout();
             panel_Container.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
@@ -43,7 +46,7 @@
             // panel
             // 
             panel.BackColor = SystemColors.ControlDarkDark;
-            panel.Location = new Point(143, 124);
+            panel.Location = new Point(151, 136);
             panel.Margin = new Padding(0);
             panel.Name = "panel";
             panel.Size = new Size(320, 320);
@@ -77,7 +80,7 @@
             panel_Container.Location = new Point(0, 0);
             panel_Container.Margin = new Padding(0);
             panel_Container.Name = "panel_Container";
-            panel_Container.Size = new Size(641, 596);
+            panel_Container.Size = new Size(641, 594);
             panel_Container.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -85,44 +88,53 @@
             flowLayoutPanel1.Anchor = AnchorStyles.None;
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel1.Controls.Add(button_Stop);
             flowLayoutPanel1.Controls.Add(button_Start);
-            flowLayoutPanel1.Controls.Add(button_Pause);
-            flowLayoutPanel1.Location = new Point(143, 596);
+            flowLayoutPanel1.Controls.Add(button_Stop);
+            flowLayoutPanel1.Location = new Point(254, 594);
             flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(354, 40);
+            flowLayoutPanel1.Size = new Size(132, 42);
             flowLayoutPanel1.TabIndex = 1;
-            // 
-            // button_Stop
-            // 
-            button_Stop.Location = new Point(3, 3);
-            button_Stop.Name = "button_Stop";
-            button_Stop.Size = new Size(112, 34);
-            button_Stop.TabIndex = 0;
-            button_Stop.Text = "停止";
-            button_Stop.UseVisualStyleBackColor = true;
-            button_Stop.Click += button_Stop_Click;
             // 
             // button_Start
             // 
-            button_Start.Location = new Point(121, 3);
+            button_Start.AutoSize = true;
+            button_Start.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_Start.BackgroundImageLayout = ImageLayout.Center;
+            button_Start.ImageKey = "pause";
+            button_Start.ImageList = imageList;
+            button_Start.Location = new Point(3, 3);
             button_Start.Name = "button_Start";
-            button_Start.Size = new Size(112, 34);
+            button_Start.Padding = new Padding(15, 3, 15, 3);
+            button_Start.Size = new Size(60, 36);
             button_Start.TabIndex = 1;
-            button_Start.Text = "开始";
+            toolTip.SetToolTip(button_Start, "开始/暂停");
             button_Start.UseVisualStyleBackColor = true;
             button_Start.Click += button_Start_Click;
             // 
-            // button_Pause
+            // imageList
             // 
-            button_Pause.Location = new Point(239, 3);
-            button_Pause.Name = "button_Pause";
-            button_Pause.Size = new Size(112, 34);
-            button_Pause.TabIndex = 2;
-            button_Pause.Text = "暂停";
-            button_Pause.UseVisualStyleBackColor = true;
-            button_Pause.Click += button_Pause_Click;
+            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
+            imageList.TransparentColor = Color.Transparent;
+            imageList.Images.SetKeyName(0, "start");
+            imageList.Images.SetKeyName(1, "pause");
+            imageList.Images.SetKeyName(2, "stop");
+            // 
+            // button_Stop
+            // 
+            button_Stop.AutoSize = true;
+            button_Stop.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_Stop.ImageKey = "stop";
+            button_Stop.ImageList = imageList;
+            button_Stop.Location = new Point(69, 3);
+            button_Stop.Name = "button_Stop";
+            button_Stop.Padding = new Padding(15, 3, 15, 3);
+            button_Stop.Size = new Size(60, 36);
+            button_Stop.TabIndex = 0;
+            toolTip.SetToolTip(button_Stop, "停止更新并重置时间到初始");
+            button_Stop.UseVisualStyleBackColor = true;
+            button_Stop.Click += button_Stop_Click;
             // 
             // SpinePreviewer
             // 
@@ -136,6 +148,7 @@
             tableLayoutPanel1.PerformLayout();
             panel_Container.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -147,6 +160,7 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Button button_Stop;
         private Button button_Start;
-        private Button button_Pause;
+        private ImageList imageList;
+        private ToolTip toolTip;
     }
 }

@@ -309,17 +309,40 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 是否还在更新画面
         /// </summary>
-        public bool IsUpdating { get; private set; } = true;
+        public bool IsUpdating
+        {
+            get => isUpdating;
+            private set
+            {
+                if (value == isUpdating) return;
+                if (value)
+                {
+                    button_Start.ImageKey = "pause";
+                }
+                else
+                {
+                    button_Start.ImageKey = "start";
+                }
+                isUpdating = value;
+            }
+        }
+        private bool isUpdating = true;
 
         /// <summary>
         /// 开始更新
         /// </summary>
-        public void StartUpdate() => IsUpdating = true;
+        public void StartUpdate()
+        {
+            IsUpdating = true;
+        }
 
         /// <summary>
         /// 暂停更新
         /// </summary>
-        public void PauseUpdate() => IsUpdating = false;
+        public void PauseUpdate()
+        {
+            IsUpdating = false;
+        }
 
         /// <summary>
         /// 停止更新, 将所有模型动画时间重置到 0 时刻
@@ -327,10 +350,13 @@ namespace SpineViewer.Controls
         public void StopUpdate()
         {
             IsUpdating = false;
-            lock (SpineListView.Spines)
+            if (SpineListView is not null)
             {
-                foreach (var spine in SpineListView.Spines)
-                    spine.CurrentAnimation = spine.CurrentAnimation;
+                lock (SpineListView.Spines)
+                {
+                    foreach (var spine in SpineListView.Spines)
+                        spine.CurrentAnimation = spine.CurrentAnimation;
+                }
             }
         }
 
@@ -586,12 +612,10 @@ namespace SpineViewer.Controls
 
         private void button_Start_Click(object sender, EventArgs e)
         {
-            StartUpdate();
-        }
-
-        private void button_Pause_Click(object sender, EventArgs e)
-        {
-            PauseUpdate();
+            if (IsUpdating)
+                PauseUpdate();
+            else
+                StartUpdate();
         }
     }
 }

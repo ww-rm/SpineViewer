@@ -12,6 +12,7 @@
         <OutputType>WinExe</OutputType>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>appicon.ico</ApplicationIcon>
+        <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
     </PropertyGroup>
 
     <ItemGroup>
