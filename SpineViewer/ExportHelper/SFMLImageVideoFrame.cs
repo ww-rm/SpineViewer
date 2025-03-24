@@ -1,13 +1,11 @@
-﻿using FFMpegCore.Pipes;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using FFMpegCore.Pipes;
 
-namespace SpineViewer
+namespace SpineViewer.ExportHelper
 {
     /// <summary>
     /// SFML.Graphics.Image 帧对象包装类
@@ -37,28 +35,5 @@ namespace SpineViewer
         /// <param name="format">Encoding format to use</param>
         /// <returns>True if saving was successful</returns>
         public bool SaveToMemory(out byte[] output, string format) => image.SaveToMemory(out output, format);
-    }
-
-    /// <summary>
-    /// 为帧导出创建的辅助类
-    /// </summary>
-    public static class ExportHelper
-    {
-        public static Bitmap CopyToBitmap(this SFML.Graphics.Texture tex)
-        {
-            using var img = tex.CopyToImage();
-            img.SaveToMemory(out var imgBuffer, "bmp");
-            using var stream = new MemoryStream(imgBuffer);
-            return new Bitmap(stream);
-        }
-
-        public static SFMLImageVideoFrame CopyToFrame(this SFML.Graphics.Texture tex) => new(tex.CopyToImage());
-
-        public static string GetSuffix(this ImageFormat imageFormat)
-        {
-            if (imageFormat == ImageFormat.Icon) return ".ico";
-            else if (imageFormat == ImageFormat.Exif) return ".jpg";
-            else return $".{imageFormat.ToString().ToLower()}";
-        }
     }
 }
