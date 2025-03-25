@@ -13,20 +13,6 @@ using System.Text.Encodings.Web;
 namespace SpineViewer.Spine
 {
     /// <summary>
-    /// SkeletonConverter 实现类标记
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SkeletonConverterImplementationAttribute : Attribute
-    {
-        public Version Version { get; }
-
-        public SkeletonConverterImplementationAttribute(Version version)
-        {
-            Version = version;
-        }
-    }
-
-    /// <summary>
     /// SkeletonConverter 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
     public abstract class SkeletonConverter
@@ -42,11 +28,11 @@ namespace SpineViewer.Spine
         /// </summary>
         static SkeletonConverter()
         {
-            // 遍历并缓存标记了 SkeletonConverterImplementationAttribute 的类型
+            // 遍历并缓存标记了 SpineImplementationAttribute 的类型
             var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(SkeletonConverter).IsAssignableFrom(t) && !t.IsAbstract);
             foreach (var type in impTypes)
             {
-                var attr = type.GetCustomAttribute<SkeletonConverterImplementationAttribute>();
+                var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
                 if (attr is not null)
                 {
                     if (ImplementationTypes.ContainsKey(attr.Version))

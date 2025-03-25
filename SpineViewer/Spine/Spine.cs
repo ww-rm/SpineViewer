@@ -19,20 +19,6 @@ using SpineViewer.Exporter;
 namespace SpineViewer.Spine
 {
     /// <summary>
-    /// Spine 实现类标记
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SpineImplementationAttribute : Attribute
-    {
-        public Version Version { get; }
-
-        public SpineImplementationAttribute(Version version)
-        {
-            Version = version;
-        }
-    }
-
-    /// <summary>
     /// Spine 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
     public abstract class Spine : SFML.Graphics.Drawable, IDisposable

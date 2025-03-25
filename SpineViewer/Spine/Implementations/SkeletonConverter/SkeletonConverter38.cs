@@ -8,12 +8,10 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using SpineRuntime38.Attachments;
 using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.IO;
 
 namespace SpineViewer.Spine.Implementations.SkeletonConverter
 {
-    [SkeletonConverterImplementation(Version.V38)]
+    [SpineImplementation(Version.V38)]
     class SkeletonConverter38 : SpineViewer.Spine.SkeletonConverter
     {
         private BinaryReader reader = null;
