@@ -9,35 +9,89 @@ using System.Threading.Tasks;
 namespace SpineViewer.Exporter
 {
     /// <summary>
+    /// 导出类型
+    /// </summary>
+    public enum ExportType
+    {
+        Frame,
+        FrameSequence,
+        GIF,
+        MKV,
+        MP4,
+        MOV,
+        WebM
+    }
+
+    /// <summary>
+    /// 导出实现类标记
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class ExportImplementationAttribute : Attribute
+    {
+        public ExportType ExportType { get; }
+
+        public ExportImplementationAttribute(ExportType exportType)
+        {
+            ExportType = exportType;
+        }
+    }
+
+    /// <summary>
+    /// SFML.Graphics.Image 帧对象包装类
+    /// </summary>
+    public class SFMLImageVideoFrame(SFML.Graphics.Image image) : IVideoFrame, IDisposable
+    {
+        public int Width => (int)image.Size.X;
+        public int Height => (int)image.Size.Y;
+        public string Format => "rgba";
+        public void Serialize(Stream pipe) => pipe.Write(image.Pixels);
+        public async Task SerializeAsync(Stream pipe, CancellationToken token) => await pipe.WriteAsync(image.Pixels, token);
+        public void Dispose() => image.Dispose();
+
+        /// <summary>
+        /// Save the contents of the image to a file
+        /// </summary>
+        /// <param name="filename">Path of the file to save (overwritten if already exist)</param>
+        /// <returns>True if saving was successful</returns>
+        public bool SaveToFile(string filename) => image.SaveToFile(filename);
+
+        /// <summary>
+        /// Save the image to a buffer in memory The format of the image must be specified.
+        /// The supported image formats are bmp, png, tga and jpg. This function fails if
+        /// the image is empty, or if the format was invalid.
+        /// </summary>
+        /// <param name="output">Byte array filled with encoded data</param>
+        /// <param name="format">Encoding format to use</param>
+        /// <returns>True if saving was successful</returns>
+        public bool SaveToMemory(out byte[] output, string format) => image.SaveToMemory(out output, format);
+
+        /// <summary>
+        /// 获取 Winforms Bitmap 对象
+        /// </summary>
+        public Bitmap CopyToBitmap()
+        {
+            image.SaveToMemory(out var imgBuffer, "bmp");
+            using var stream = new MemoryStream(imgBuffer);
+            return new(new Bitmap(stream));
+        }
+    }
+
+    /// <summary>
     /// 为帧导出创建的辅助类
     /// </summary>
     public static class ExportHelper
     {
         /// <summary>
-        /// 从纹理对象获取 Winforms Bitmap 对象
-        /// </summary>
-        public static Bitmap CopyToBitmap(this SFML.Graphics.Texture tex)
-        {
-            using var img = tex.CopyToImage();
-            img.SaveToMemory(out var imgBuffer, "bmp");
-            using var stream = new MemoryStream(imgBuffer);
-            return new Bitmap(stream);
-        }
-
-        /// <summary>
-        /// 从纹理获取适合 FFMpegCore 的帧对象
-        /// </summary>
-        public static SFMLImageVideoFrame CopyToFrame(this SFML.Graphics.Texture tex) => new(tex.CopyToImage());
-
-        /// <summary>
-        /// 根据文件格式获取合适的文件后缀
+        /// 根据 Bitmap 文件格式获取合适的文件后缀
         /// </summary>
         public static string GetSuffix(this ImageFormat imageFormat)
         {
             if (imageFormat == ImageFormat.Icon) return ".ico";
-            else if (imageFormat == ImageFormat.Exif) return ".jpg";
+            else if (imageFormat == ImageFormat.Exif) return ".jpeg";
             else return $".{imageFormat.ToString().ToLower()}";
         }
+
+        #region 包围盒辅助函数
 
         /// <summary>
         /// 获取某个包围盒下合适的视图
@@ -80,5 +134,7 @@ namespace SpineViewer.Exporter
 
             return new(new(x, y), new(viewX, -viewY));
         }
+
+        #endregion
     }
 }

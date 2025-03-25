@@ -18,6 +18,10 @@ namespace SpineViewer
         {
             InitializeComponent();
             InitializeLogConfiguration();
+
+            // 在此处将导出菜单需要的类绑定起来
+            toolStripMenuItem_ExportFrame.Tag = ExportType.Frame;
+            toolStripMenuItem_ExportFrameSequence.Tag = ExportType.FrameSequence;
         }
 
         /// <summary>
@@ -68,43 +72,16 @@ namespace SpineViewer
             spineListView.BatchAdd();
         }
 
-        private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_Export_Click(object sender, EventArgs e)
         {
-            lock (spineListView.Spines)
-            {
-                if (spineListView.Spines.Count <= 0)
-                {
-                    MessageBox.Info("请至少打开一个骨骼文件");
-                    return;
-                }
-            }
+            ExportType type = (ExportType)((ToolStripMenuItem)sender).Tag;
 
-            if (spinePreviewer.IsUpdating)
+            if (type == ExportType.Frame && spinePreviewer.IsUpdating)
             {
                 if (MessageBox.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
                     return;
             }
 
-            var exportDialog = new Dialogs.ExportDialog()
-            {
-                ExportArgs = new FrameExportArgs()
-                {
-                    Resolution = spinePreviewer.Resolution,
-                    View = spinePreviewer.GetView(),
-                    RenderSelectedOnly = spinePreviewer.RenderSelectedOnly,
-                }
-            };
-            if (exportDialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            var progressDialog = new Dialogs.ProgressDialog();
-            progressDialog.DoWork += ExportFrame_Work;
-            progressDialog.RunWorkerAsync(exportDialog.ExportArgs);
-            progressDialog.ShowDialog();
-        }
-
-        private void toolStripMenuItem_ExportFrameSequence_Click(object sender, EventArgs e)
-        {
             lock (spineListView.Spines)
             {
                 if (spineListView.Spines.Count <= 0)
@@ -114,21 +91,16 @@ namespace SpineViewer
                 }
             }
 
-            var exportDialog = new Dialogs.ExportDialog()
-            {
-                ExportArgs = new FrameSequenceExportArgs()
-                {
-                    Resolution = spinePreviewer.Resolution,
-                    View = spinePreviewer.GetView(),
-                    RenderSelectedOnly = spinePreviewer.RenderSelectedOnly,
-                }
-            };
+            var exportArgs = ExportArgs.New(type, spinePreviewer.Resolution, spinePreviewer.GetView(), spinePreviewer.RenderSelectedOnly);
+            var exportDialog = new Dialogs.ExportDialog() { ExportArgs = exportArgs };
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            var exporter = Exporter.Exporter.New(type, exportArgs);
+
             var progressDialog = new Dialogs.ProgressDialog();
-            progressDialog.DoWork += ExportFrameSequence_Work;
-            progressDialog.RunWorkerAsync(exportDialog.ExportArgs);
+            progressDialog.DoWork += Export_Work;
+            progressDialog.RunWorkerAsync(exporter);
             progressDialog.ShowDialog();
         }
 
@@ -236,22 +208,12 @@ namespace SpineViewer
             propertyGrid_Spine.Refresh(); 
         }
 
-        private void ExportFrame_Work(object? sender, DoWorkEventArgs e)
+        private void Export_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;
-            var exporter = new FrameExporter() { ExportArgs = (ExportArgs)e.Argument };
+            var exporter = (Exporter.Exporter)e.Argument;
             spinePreviewer.StopRender();
-            lock (spineListView.Spines) { exporter.Export(spineListView.Spines, (BackgroundWorker)sender); }
-            e.Cancel = worker.CancellationPending;
-            spinePreviewer.StartRender();
-        }
-
-        private void ExportFrameSequence_Work(object? sender, DoWorkEventArgs e)
-        {
-            var worker = (BackgroundWorker)sender;
-            var exporter = new FrameSequenceExporter() { ExportArgs = (ExportArgs)e.Argument };
-            spinePreviewer.StopRender();
-            lock (spineListView.Spines) { exporter.Export(spineListView.Spines, (BackgroundWorker)sender); }
+            lock (spineListView.Spines) { exporter.Export(spineListView.Spines.ToArray(), (BackgroundWorker)sender); }
             e.Cancel = worker.CancellationPending;
             spinePreviewer.StartRender();
         }

@@ -142,14 +142,14 @@
             toolStripMenuItem_ExportFrame.Name = "toolStripMenuItem_ExportFrame";
             toolStripMenuItem_ExportFrame.Size = new Size(270, 34);
             toolStripMenuItem_ExportFrame.Text = "单帧画面...";
-            toolStripMenuItem_ExportFrame.Click += toolStripMenuItem_ExportFrame_Click;
+            toolStripMenuItem_ExportFrame.Click += toolStripMenuItem_Export_Click;
             // 
-            // toolStripMenuItem_ExportFrames
+            // toolStripMenuItem_ExportFrameSequence
             // 
-            toolStripMenuItem_ExportFrameSequence.Name = "toolStripMenuItem_ExportFrames";
+            toolStripMenuItem_ExportFrameSequence.Name = "toolStripMenuItem_ExportFrameSequence";
             toolStripMenuItem_ExportFrameSequence.Size = new Size(270, 34);
             toolStripMenuItem_ExportFrameSequence.Text = "帧序列...";
-            toolStripMenuItem_ExportFrameSequence.Click += toolStripMenuItem_ExportFrameSequence_Click;
+            toolStripMenuItem_ExportFrameSequence.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportGif
             // 
