@@ -201,7 +201,11 @@ namespace SpineViewer
 
         private void splitContainer_MouseUp(object sender, MouseEventArgs e) => ActiveControl = null;
 
-        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) => (sender as PropertyGrid)?.Refresh();
+        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            // 用来解决对面板某些值修改之后, 其他被联动修改的值不会实时刷新的问题
+            (sender as PropertyGrid)?.Refresh();
+        }
 
         private void Export_Work(object? sender, DoWorkEventArgs e)
         {
