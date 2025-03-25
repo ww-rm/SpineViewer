@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Exporter.Implementations.ExportArgs;
+using SpineViewer.Spine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,9 +23,12 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             int frameIdx = 0;
             foreach (var frame in GetFrames(spinesToRender, worker))
             {
-                // 导出单个时必定提供输出文件夹
+                // 导出单个时必定提供输出文件夹, 
+                var saveDir = Path.Combine(args.OutputDir, $"frames_{timestamp}_{args.FPS:f0}");
+                Directory.CreateDirectory(saveDir);
+
                 var filename = $"frames_{timestamp}_{args.FPS:f0}_{frameIdx:d6}{args.FileSuffix}";
-                var savePath = Path.Combine(args.OutputDir, filename);
+                var savePath = Path.Combine(saveDir, filename);
 
                 try
                 {
