@@ -380,7 +380,7 @@ namespace SpineViewer.Spine
                     using var img = tex.Texture.CopyToImage();
                     img.SaveToMemory(out var imgBuffer, "bmp");
                     using var stream = new MemoryStream(imgBuffer);
-                    preview = new Bitmap(stream);
+                    preview = new Bitmap(new Bitmap(stream)); // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
                 }
                 return preview;
             }

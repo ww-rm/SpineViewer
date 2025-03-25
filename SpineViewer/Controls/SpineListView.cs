@@ -500,10 +500,8 @@ namespace SpineViewer.Controls
                 foreach (int i in listView.SelectedIndices)
                 {
                     var spine = spines[i];
-                    var image = spine.Preview;
                     var path = Path.Combine(Program.TempDir, $"{spine.ID}.png");
-                    using (var clone = new Bitmap(image))
-                        clone.Save(path);
+                    spine.Preview.Save(path);
                     fileDropList.Add(path);
                 }
             }
