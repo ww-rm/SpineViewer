@@ -81,7 +81,7 @@ namespace SpineViewer
 
             if (spinePreviewer.IsUpdating)
             {
-                if (MessageBox.Quest("画面仍在更新，是否手动暂停画面后再导出画面帧？") == DialogResult.OK)
+                if (MessageBox.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
                     return;
             }
 
