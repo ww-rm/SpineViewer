@@ -287,6 +287,7 @@ namespace SpineViewer.Controls
                 return;
             cancelToken = new();
             task = Task.Run(RenderTask, cancelToken.Token);
+            IsUpdating = true;
         }
 
         /// <summary>
@@ -294,6 +295,7 @@ namespace SpineViewer.Controls
         /// </summary>
         public void StopRender()
         {
+            IsUpdating = false;
             if (task is null || cancelToken is null)
                 return;
             cancelToken.Cancel();
@@ -307,7 +309,7 @@ namespace SpineViewer.Controls
         #region 渲染更新管理
 
         /// <summary>
-        /// 是否还在更新画面
+        /// 是否更新画面
         /// </summary>
         public bool IsUpdating
         {
@@ -329,36 +331,10 @@ namespace SpineViewer.Controls
         private bool isUpdating = true;
 
         /// <summary>
-        /// 开始更新
+        /// 快进时间量
         /// </summary>
-        public void StartUpdate()
-        {
-            IsUpdating = true;
-        }
-
-        /// <summary>
-        /// 暂停更新
-        /// </summary>
-        public void PauseUpdate()
-        {
-            IsUpdating = false;
-        }
-
-        /// <summary>
-        /// 停止更新, 将所有模型动画时间重置到 0 时刻
-        /// </summary>
-        public void StopUpdate()
-        {
-            IsUpdating = false;
-            if (SpineListView is not null)
-            {
-                lock (SpineListView.Spines)
-                {
-                    foreach (var spine in SpineListView.Spines)
-                        spine.CurrentAnimation = spine.CurrentAnimation;
-                }
-            }
-        }
+        private float forwardDelta = 0;
+        private object _forwardDeltaLock = new();
 
         /// <summary>
         /// 预览画面背景色
@@ -421,7 +397,17 @@ namespace SpineViewer.Controls
 
                                 var spine = spines[i];
 
-                                spine.Update(IsUpdating ? delta : 0); // 只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
+                                // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
+                                if (!IsUpdating) delta = 0;
+
+                                // 加上要快进的量
+                                lock (_forwardDeltaLock)
+                                {
+                                    delta += forwardDelta;
+                                    forwardDelta = 0;
+                                }
+
+                                spine.Update(delta);
 
                                 if (RenderSelectedOnly && !spine.IsSelected)
                                     continue;
@@ -607,15 +593,55 @@ namespace SpineViewer.Controls
 
         private void button_Stop_Click(object sender, EventArgs e)
         {
-            StopUpdate();
+            IsUpdating = false;
+            if (SpineListView is not null)
+            {
+                lock (SpineListView.Spines)
+                {
+                    foreach (var spine in SpineListView.Spines)
+                        spine.CurrentAnimation = spine.CurrentAnimation;
+                }
+            }
+        }
+
+        private void button_Restart_Click(object sender, EventArgs e)
+        {
+            if (SpineListView is not null)
+            {
+                lock (SpineListView.Spines)
+                {
+                    foreach (var spine in SpineListView.Spines)
+                        spine.CurrentAnimation = spine.CurrentAnimation;
+                }
+            }
+            IsUpdating = true;
         }
 
         private void button_Start_Click(object sender, EventArgs e)
         {
-            if (IsUpdating)
-                PauseUpdate();
-            else
-                StartUpdate();
+            IsUpdating = !IsUpdating;
         }
+
+        private void button_ForwardStep_Click(object sender, EventArgs e)
+        {
+            lock (_forwardDeltaLock)
+            {
+                forwardDelta += 1f / maxFps;
+            }
+        }
+
+        private void button_ForwardFast_Click(object sender, EventArgs e)
+        {
+            lock (_forwardDeltaLock)
+            {
+                forwardDelta += 10f / maxFps;
+            }
+        }
+
+        //public void ClickStopButton() => button_Stop_Click(button_Stop, EventArgs.Empty);
+        //public void ClickRestartButton() => button_Restart_Click(button_Restart, EventArgs.Empty);
+        //public void ClickStartButton() => button_Start_Click(button_Start, EventArgs.Empty);
+        //public void ClickForwardStepButton() => button_ForwardStep_Click(button_ForwardStep, EventArgs.Empty);
+        //public void ClickForwardFastButton() => button_ForwardFast_Click(button_ForwardFast, EventArgs.Empty);
     }
 }

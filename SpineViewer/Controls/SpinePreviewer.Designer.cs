@@ -34,9 +34,12 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             panel_Container = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button_Start = new Button();
-            imageList = new ImageList(components);
             button_Stop = new Button();
+            imageList = new ImageList(components);
+            button_Restart = new Button();
+            button_Start = new Button();
+            button_ForwardStep = new Button();
+            button_ForwardFast = new Button();
             toolTip = new ToolTip(components);
             tableLayoutPanel1.SuspendLayout();
             panel_Container.SuspendLayout();
@@ -46,7 +49,7 @@
             // panel
             // 
             panel.BackColor = SystemColors.ControlDarkDark;
-            panel.Location = new Point(151, 136);
+            panel.Location = new Point(157, 136);
             panel.Margin = new Padding(0);
             panel.Name = "panel";
             panel.Size = new Size(320, 320);
@@ -88,13 +91,58 @@
             flowLayoutPanel1.Anchor = AnchorStyles.None;
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel1.Controls.Add(button_Start);
             flowLayoutPanel1.Controls.Add(button_Stop);
-            flowLayoutPanel1.Location = new Point(254, 594);
+            flowLayoutPanel1.Controls.Add(button_Restart);
+            flowLayoutPanel1.Controls.Add(button_Start);
+            flowLayoutPanel1.Controls.Add(button_ForwardStep);
+            flowLayoutPanel1.Controls.Add(button_ForwardFast);
+            flowLayoutPanel1.Location = new Point(138, 594);
             flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(132, 42);
+            flowLayoutPanel1.Size = new Size(365, 42);
             flowLayoutPanel1.TabIndex = 1;
+            // 
+            // button_Stop
+            // 
+            button_Stop.AutoSize = true;
+            button_Stop.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_Stop.ImageKey = "stop";
+            button_Stop.ImageList = imageList;
+            button_Stop.Location = new Point(3, 3);
+            button_Stop.Name = "button_Stop";
+            button_Stop.Padding = new Padding(15, 3, 15, 3);
+            button_Stop.Size = new Size(67, 36);
+            button_Stop.TabIndex = 0;
+            toolTip.SetToolTip(button_Stop, "停止播放并重置时间到初始");
+            button_Stop.UseVisualStyleBackColor = true;
+            button_Stop.Click += button_Stop_Click;
+            // 
+            // imageList
+            // 
+            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
+            imageList.TransparentColor = Color.Transparent;
+            imageList.Images.SetKeyName(0, "stop");
+            imageList.Images.SetKeyName(1, "restart");
+            imageList.Images.SetKeyName(2, "start");
+            imageList.Images.SetKeyName(3, "pause");
+            imageList.Images.SetKeyName(4, "forward-step");
+            imageList.Images.SetKeyName(5, "forward-fast");
+            // 
+            // button_Restart
+            // 
+            button_Restart.AutoSize = true;
+            button_Restart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_Restart.ImageKey = "restart";
+            button_Restart.ImageList = imageList;
+            button_Restart.Location = new Point(76, 3);
+            button_Restart.Name = "button_Restart";
+            button_Restart.Padding = new Padding(15, 3, 15, 3);
+            button_Restart.Size = new Size(67, 36);
+            button_Restart.TabIndex = 1;
+            toolTip.SetToolTip(button_Restart, "从头开始播放");
+            button_Restart.UseVisualStyleBackColor = true;
+            button_Restart.Click += button_Restart_Click;
             // 
             // button_Start
             // 
@@ -103,38 +151,44 @@
             button_Start.BackgroundImageLayout = ImageLayout.Center;
             button_Start.ImageKey = "pause";
             button_Start.ImageList = imageList;
-            button_Start.Location = new Point(3, 3);
+            button_Start.Location = new Point(149, 3);
             button_Start.Name = "button_Start";
             button_Start.Padding = new Padding(15, 3, 15, 3);
-            button_Start.Size = new Size(60, 36);
-            button_Start.TabIndex = 1;
+            button_Start.Size = new Size(67, 36);
+            button_Start.TabIndex = 2;
             toolTip.SetToolTip(button_Start, "开始/暂停");
             button_Start.UseVisualStyleBackColor = true;
             button_Start.Click += button_Start_Click;
             // 
-            // imageList
+            // button_ForwardStep
             // 
-            imageList.ColorDepth = ColorDepth.Depth32Bit;
-            imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
-            imageList.TransparentColor = Color.Transparent;
-            imageList.Images.SetKeyName(0, "start");
-            imageList.Images.SetKeyName(1, "pause");
-            imageList.Images.SetKeyName(2, "stop");
+            button_ForwardStep.AutoSize = true;
+            button_ForwardStep.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_ForwardStep.ImageKey = "forward-step";
+            button_ForwardStep.ImageList = imageList;
+            button_ForwardStep.Location = new Point(222, 3);
+            button_ForwardStep.Name = "button_ForwardStep";
+            button_ForwardStep.Padding = new Padding(15, 3, 15, 3);
+            button_ForwardStep.Size = new Size(67, 36);
+            button_ForwardStep.TabIndex = 3;
+            toolTip.SetToolTip(button_ForwardStep, "快进 1 帧");
+            button_ForwardStep.UseVisualStyleBackColor = true;
+            button_ForwardStep.Click += button_ForwardStep_Click;
             // 
-            // button_Stop
+            // button_ForwardFast
             // 
-            button_Stop.AutoSize = true;
-            button_Stop.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button_Stop.ImageKey = "stop";
-            button_Stop.ImageList = imageList;
-            button_Stop.Location = new Point(69, 3);
-            button_Stop.Name = "button_Stop";
-            button_Stop.Padding = new Padding(15, 3, 15, 3);
-            button_Stop.Size = new Size(60, 36);
-            button_Stop.TabIndex = 0;
-            toolTip.SetToolTip(button_Stop, "停止更新并重置时间到初始");
-            button_Stop.UseVisualStyleBackColor = true;
-            button_Stop.Click += button_Stop_Click;
+            button_ForwardFast.AutoSize = true;
+            button_ForwardFast.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            button_ForwardFast.ImageKey = "forward-fast";
+            button_ForwardFast.ImageList = imageList;
+            button_ForwardFast.Location = new Point(295, 3);
+            button_ForwardFast.Name = "button_ForwardFast";
+            button_ForwardFast.Padding = new Padding(15, 3, 15, 3);
+            button_ForwardFast.Size = new Size(67, 36);
+            button_ForwardFast.TabIndex = 4;
+            toolTip.SetToolTip(button_ForwardFast, "快进 10 帧");
+            button_ForwardFast.UseVisualStyleBackColor = true;
+            button_ForwardFast.Click += button_ForwardFast_Click;
             // 
             // SpinePreviewer
             // 
@@ -162,5 +216,8 @@
         private Button button_Start;
         private ImageList imageList;
         private ToolTip toolTip;
+        private Button button_ForwardStep;
+        private Button button_ForwardFast;
+        private Button button_Restart;
     }
 }

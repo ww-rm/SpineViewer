@@ -203,11 +203,6 @@ namespace SpineViewer
 
         private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e) => (sender as PropertyGrid)?.Refresh();
 
-        private void spinePreviewer_MouseUp(object sender, MouseEventArgs e) 
-        { 
-            propertyGrid_Spine.Refresh(); 
-        }
-
         private void Export_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;
@@ -280,5 +275,28 @@ namespace SpineViewer
                 Program.Logger.Info("{} skel converted successfully", success);
             }
         }
+
+        //private void spinePreviewer_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    switch (e.KeyCode)
+        //    {
+        //        case Keys.Space:
+        //            if ((ModifierKeys & Keys.Alt) != 0)
+        //                spinePreviewer.ClickStopButton();
+        //            else
+        //                spinePreviewer.ClickStartButton();
+        //            break;
+        //        case Keys.Right:
+        //            if ((ModifierKeys & Keys.Alt) != 0)
+        //                spinePreviewer.ClickForwardFastButton();
+        //            else
+        //                spinePreviewer.ClickForwardStepButton();
+        //            break;
+        //        case Keys.Left:
+        //            if ((ModifierKeys & Keys.Alt) != 0)
+        //                spinePreviewer.ClickRestartButton();
+        //            break;
+        //    }
+        //}
     }
 }
