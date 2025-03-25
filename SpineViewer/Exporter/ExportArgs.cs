@@ -67,21 +67,15 @@ namespace SpineViewer.Exporter
     }
 
     /// <summary>
-    /// 画面帧导出参数
+    /// 单帧画面导出参数
     /// </summary>
-    public class ExportFrameArgs : ExportArgs
+    public class FrameExportArgs : ExportArgs
     {
         /// <summary>
-        /// 名称后缀
-        /// </summary>
-        [Category("画面帧"), DisplayName("名称后缀"), Description("逐个导出时必须提供该值，否则存在文件覆盖风险")]
-        public string NameSuffix { get; set; } = "(preview)";
-
-        /// <summary>
-        /// 画面帧格式
+        /// 单帧画面格式
         /// </summary>
         [TypeConverter(typeof(ImageFormatConverter))]
-        [Category("画面帧"), DisplayName("图像格式")]
+        [Category("单帧画面"), DisplayName("图像格式")]
         public ImageFormat ImageFormat
         {
             get => imageFormat;
@@ -96,14 +90,14 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 文件名后缀
         /// </summary>
-        [Category("画面帧"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
+        [Category("单帧画面"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
         public string FileSuffix { get => imageFormat.GetSuffix(); }
 
         /// <summary>
         /// 四周填充像素值
         /// </summary>
         [TypeConverter(typeof(PaddingConverter))]
-        [Category("画面帧"), DisplayName("四周填充像素值"), Description("在图内四周留出来的透明像素区域, 画面内容的可用范围是分辨率裁去填充区域")]
+        [Category("单帧画面"), DisplayName("四周填充像素值"), Description("在图内四周留出来的透明像素区域, 画面内容的可用范围是分辨率裁去填充区域")]
         public Padding Padding
         {
             get => padding;
@@ -122,7 +116,7 @@ namespace SpineViewer.Exporter
         /// DPI
         /// </summary>
         [TypeConverter(typeof(SizeFConverter))]
-        [Category("画面帧"), DisplayName("DPI"), Description("导出图像的每英寸像素数，用于调整图像的物理尺寸")]
+        [Category("单帧画面"), DisplayName("DPI"), Description("导出图像的每英寸像素数，用于调整图像的物理尺寸")]
         public SizeF DPI
         {
             get => dpi;
@@ -134,21 +128,45 @@ namespace SpineViewer.Exporter
             }
         }
         private SizeF dpi = new(144, 144);
-
-        public override string? Validate()
-        {
-            if (base.Validate() is string error)
-                return error;
-            if (string.IsNullOrEmpty(OutputDir) && string.IsNullOrEmpty(NameSuffix))
-                return "输出文件夹和名称后缀不可同时为空，存在文件覆盖风险";
-            return null;
-        }
     }
 
     /// <summary>
     /// 视频导出参数基类
     /// </summary>
-    public abstract class ExportVideoArgs:ExportArgs
+    public abstract class VideoExportArgs : ExportArgs
+    {
+        /// <summary>
+        /// 导出时长
+        /// </summary>
+        [Category("视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长")]
+        public float Duration { get => duration; set => duration = Math.Max(0, value); }
+        private float duration = 1;
+
+        /// <summary>
+        /// 帧率
+        /// </summary>
+        [Category("视频参数"), DisplayName("帧率"), Description("每秒画面数")]
+        public float FPS { get; set; } = 60;
+    }
+
+    /// <summary>
+    /// 帧序列导出参数
+    /// </summary>
+    public class FrameSequenceExportArgs : VideoExportArgs
+    {
+        /// <summary>
+        /// 文件名后缀
+        /// </summary>
+        [TypeConverter(typeof(SFMLImageFileSuffixConverter))]
+        [Category("帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
+        public string FileSuffix { get; set; } = ".png";
+
+    }
+
+    /// <summary>
+    /// GIF 导出参数
+    /// </summary>
+    public class GifExportArgs : VideoExportArgs
     {
 
     }

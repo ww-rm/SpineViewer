@@ -37,7 +37,7 @@
             toolStripSeparator1 = new ToolStripSeparator();
             toolStripMenuItem_Export = new ToolStripMenuItem();
             toolStripMenuItem_ExportFrame = new ToolStripMenuItem();
-            toolStripMenuItem_ExportFrames = new ToolStripMenuItem();
+            toolStripMenuItem_ExportFrameSequence = new ToolStripMenuItem();
             toolStripMenuItem_ExportGif = new ToolStripMenuItem();
             toolStripMenuItem_ExportMkv = new ToolStripMenuItem();
             toolStripMenuItem_ExportMp4 = new ToolStripMenuItem();
@@ -132,7 +132,7 @@
             // 
             // toolStripMenuItem_Export
             // 
-            toolStripMenuItem_Export.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_ExportFrame, toolStripMenuItem_ExportFrames, toolStripMenuItem_ExportGif, toolStripMenuItem_ExportMkv, toolStripMenuItem_ExportMp4, toolStripMenuItem_ExportMov, toolStripMenuItem_ExportWebm });
+            toolStripMenuItem_Export.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_ExportFrame, toolStripMenuItem_ExportFrameSequence, toolStripMenuItem_ExportGif, toolStripMenuItem_ExportMkv, toolStripMenuItem_ExportMp4, toolStripMenuItem_ExportMov, toolStripMenuItem_ExportWebm });
             toolStripMenuItem_Export.Name = "toolStripMenuItem_Export";
             toolStripMenuItem_Export.Size = new Size(270, 34);
             toolStripMenuItem_Export.Text = "导出(&E)";
@@ -146,10 +146,10 @@
             // 
             // toolStripMenuItem_ExportFrames
             // 
-            toolStripMenuItem_ExportFrames.Name = "toolStripMenuItem_ExportFrames";
-            toolStripMenuItem_ExportFrames.Size = new Size(270, 34);
-            toolStripMenuItem_ExportFrames.Text = "帧序列...";
-            toolStripMenuItem_ExportFrames.Click += toolStripMenuItem_ExportPng_Click;
+            toolStripMenuItem_ExportFrameSequence.Name = "toolStripMenuItem_ExportFrames";
+            toolStripMenuItem_ExportFrameSequence.Size = new Size(270, 34);
+            toolStripMenuItem_ExportFrameSequence.Text = "帧序列...";
+            toolStripMenuItem_ExportFrameSequence.Click += toolStripMenuItem_ExportFrameSequence_Click;
             // 
             // toolStripMenuItem_ExportGif
             // 
@@ -533,7 +533,7 @@
         private ToolStripMenuItem toolStripMenuItem_ConvertFileFormat;
         private ToolStripMenuItem toolStripMenuItem_Export;
         private ToolStripMenuItem toolStripMenuItem_ExportFrame;
-        private ToolStripMenuItem toolStripMenuItem_ExportFrames;
+        private ToolStripMenuItem toolStripMenuItem_ExportFrameSequence;
         private ToolStripMenuItem toolStripMenuItem_ExportGif;
         private ToolStripMenuItem toolStripMenuItem_ExportMp4;
         private ToolStripMenuItem toolStripMenuItem_ExportMov;

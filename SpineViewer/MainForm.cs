@@ -87,7 +87,7 @@ namespace SpineViewer
 
             var exportDialog = new Dialogs.ExportDialog()
             {
-                ExportArgs = new ExportFrameArgs()
+                ExportArgs = new FrameExportArgs()
                 {
                     Resolution = spinePreviewer.Resolution,
                     View = spinePreviewer.GetView(),
@@ -103,9 +103,8 @@ namespace SpineViewer
             progressDialog.ShowDialog();
         }
 
-        private void toolStripMenuItem_ExportPng_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_ExportFrameSequence_Click(object sender, EventArgs e)
         {
-            // TODO: 改成统一导出调用
             lock (spineListView.Spines)
             {
                 if (spineListView.Spines.Count <= 0)
@@ -115,13 +114,21 @@ namespace SpineViewer
                 }
             }
 
-            var exportDialog = new Dialogs.ExportPngDialog();
+            var exportDialog = new Dialogs.ExportDialog()
+            {
+                ExportArgs = new FrameSequenceExportArgs()
+                {
+                    Resolution = spinePreviewer.Resolution,
+                    View = spinePreviewer.GetView(),
+                    RenderSelectedOnly = spinePreviewer.RenderSelectedOnly,
+                }
+            };
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
             var progressDialog = new Dialogs.ProgressDialog();
-            progressDialog.DoWork += ExportPng_Work;
-            progressDialog.RunWorkerAsync(exportDialog);
+            progressDialog.DoWork += ExportFrameSequence_Work;
+            progressDialog.RunWorkerAsync(exportDialog.ExportArgs);
             progressDialog.ShowDialog();
         }
 
@@ -229,171 +236,24 @@ namespace SpineViewer
             propertyGrid_Spine.Refresh(); 
         }
 
-        private void ExportPng_Work(object? sender, DoWorkEventArgs e)
-        {
-            var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.ExportPngDialog;
-            var outputDir = arguments.OutputDir;
-            var duration = arguments.Duration;
-            var fps = arguments.Fps;
-            var timestamp = DateTime.Now.ToString("yyMMddHHmmss");
-
-            var renderSelectedOnly = spinePreviewer.RenderSelectedOnly;
-
-            var resolution = spinePreviewer.Resolution;
-            var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
-            tex.SetView(spinePreviewer.GetView());
-            var delta = 1f / fps;
-            var frameCount = 1 + (int)(duration / delta); // 零帧开始导出
-
-            spinePreviewer.StopRender();
-
-            lock (spineListView.Spines)
-            {
-                var spinesReverse = spineListView.Spines.Reverse();
-
-                // 重置动画时间
-                foreach (var spine in spinesReverse)
-                    spine.CurrentAnimation = spine.CurrentAnimation;
-
-                Program.Logger.Info(
-                    "Begin exporting png frames to output dir {}, duration: {}, fps: {}, totally {} spines",
-                    [outputDir, duration, fps, spinesReverse.Count()]
-                );
-
-                // 逐帧导出
-                var success = 0;
-                worker.ReportProgress(0, $"已处理 0/{frameCount}");
-                for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
-                {
-                    if (worker.CancellationPending)
-                        break;
-
-                    tex.Clear(SFML.Graphics.Color.Transparent);
-
-                    foreach (var spine in spinesReverse)
-                    {
-                        if (renderSelectedOnly && !spine.IsSelected)
-                            continue;
-
-                        tex.Draw(spine);
-                        spine.Update(delta);
-                    }
-
-                    tex.Display();
-                    using (var img = tex.Texture.CopyToImage())
-                    {
-                        img.SaveToFile(Path.Combine(outputDir, $"{timestamp}_{fps}_{frameIndex:d6}.png"));
-                    }
-
-                    success++;
-                    worker.ReportProgress((int)((frameIndex + 1) * 100.0) / frameCount, $"已处理 {frameIndex + 1}/{frameCount}");
-                }
-
-                Program.Logger.Info("Exporting done: {}/{}", success, frameCount);
-            }
-
-            spinePreviewer.StartRender();
-        }
-
-        // TODO: 转移到 Exporter 里面
         private void ExportFrame_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;
-            var args = (ExportFrameArgs)e.Argument;
-
-            using var tex = new SFML.Graphics.RenderTexture((uint)args.Resolution.Width, (uint)args.Resolution.Height);
-            tex.Clear(SFML.Graphics.Color.Transparent);
-            tex.SetView(args.View);
-
-            int success = 0;
-            int error = 0;
+            var exporter = new FrameExporter() { ExportArgs = (ExportArgs)e.Argument };
             spinePreviewer.StopRender();
-            lock (spineListView.Spines)
-            {
-                // 根据是否仅渲染选中得到要渲染的模型数组
-                var spines = spineListView.Spines.Where(sp => !args.RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
-
-                int totalCount = spines.Length;
-                worker.ReportProgress(0, $"已处理 0/{totalCount}");
-                for (int i = 0; i < totalCount; i++)
-                {
-                    if (worker.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        break;
-                    }
-
-                    var spine = spines[i];
-                    tex.Draw(spine);
-
-                    if (args.ExportSingle)
-                    {
-                        // 导出单个则直接算成功
-                        success++; 
-                    }
-                    else
-                    {
-                        // 逐个导出则立即渲染, 并且保存完之后需要清除画面
-                        tex.Display();
-
-                        var filename = $"{spine.Name}{args.NameSuffix}{args.FileSuffix}";
-                        var savePath = args.OutputDir is null ? Path.Combine(spine.AssetsDir, filename) : Path.Combine(args.OutputDir, filename);
-                        try
-                        {
-                            using (var img = new Bitmap(tex.Texture.CopyToBitmap()))
-                            {
-                                img.SetResolution(args.DPI.Width, args.DPI.Height);
-                                img.Save(savePath, args.ImageFormat);
-                            }
-                            success++;
-                        }
-                        catch (Exception ex)
-                        {
-                            Program.Logger.Error(ex.ToString());
-                            Program.Logger.Error("Failed to save frame {}", spine.SkelPath);
-                            error++;
-                        }
-
-                        tex.Clear(SFML.Graphics.Color.Transparent);
-                    }
-
-                    worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
-                }
-
-                // 导出单个
-                if (args.ExportSingle)
-                {
-                    tex.Display();
-
-                    var filename = $"{DateTime.Now:yyMMddHHmmss}{args.NameSuffix}{args.FileSuffix}";
-                    var savePath = Path.Combine(args.OutputDir, filename);
-
-                    try
-                    {
-                        using (var img = new Bitmap(tex.Texture.CopyToBitmap()))
-                        {
-                            img.SetResolution(args.DPI.Width, args.DPI.Height);
-                            img.Save(savePath, args.ImageFormat);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Program.Logger.Error(ex.ToString());
-                        Program.Logger.Error("Failed to save single frame");
-                    }
-                }
-                else
-                {
-                    if (error > 0)
-                        Program.Logger.Warn("Frames save {} successfully, {} failed", success, error);
-                    else
-                        Program.Logger.Info("{} frames saved successfully", success);
-                }
-            }
+            lock (spineListView.Spines) { exporter.Export(spineListView.Spines, (BackgroundWorker)sender); }
+            e.Cancel = worker.CancellationPending;
             spinePreviewer.StartRender();
+        }
 
-            Program.LogCurrentMemoryUsage();
+        private void ExportFrameSequence_Work(object? sender, DoWorkEventArgs e)
+        {
+            var worker = (BackgroundWorker)sender;
+            var exporter = new FrameSequenceExporter() { ExportArgs = (ExportArgs)e.Argument };
+            spinePreviewer.StopRender();
+            lock (spineListView.Spines) { exporter.Export(spineListView.Spines, (BackgroundWorker)sender); }
+            e.Cancel = worker.CancellationPending;
+            spinePreviewer.StartRender();
         }
 
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
