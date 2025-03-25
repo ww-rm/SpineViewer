@@ -73,6 +73,7 @@
             propertyGrid_ExportArgs.Dock = DockStyle.Fill;
             propertyGrid_ExportArgs.Location = new Point(3, 3);
             propertyGrid_ExportArgs.Name = "propertyGrid_ExportArgs";
+            propertyGrid_ExportArgs.PropertySort = PropertySort.Categorized;
             propertyGrid_ExportArgs.Size = new Size(604, 594);
             propertyGrid_ExportArgs.TabIndex = 1;
             propertyGrid_ExportArgs.ToolbarVisible = false;

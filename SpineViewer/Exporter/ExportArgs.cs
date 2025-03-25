@@ -22,7 +22,7 @@ namespace SpineViewer.Exporter
         public string? OutputDir { get; set; } = null;
 
         /// <summary>
-        /// 逐个导出
+        /// 导出单个
         /// </summary>
         [Category("导出"), DisplayName("导出单个"), Description("是否将模型在同一个画面上导出单个文件，否则逐个导出模型")]
         public bool ExportSingle { get; set; } = false;
@@ -32,20 +32,21 @@ namespace SpineViewer.Exporter
         /// </summary>
         [ReadOnly(true)]
         [TypeConverter(typeof(SizeConverter))]
-        [Category("导出"), DisplayName("分辨率"), Description("画面的宽高像素大小")]
+        [Category("导出"), DisplayName("分辨率"), Description("画面的宽高像素大小，请在预览画面参数面板进行调整")]
         public required Size Resolution { get; init; }
 
         /// <summary>
         /// 渲染视窗
         /// </summary>
-        [Browsable(false)]
+        [ReadOnly(true)]
+        [Category("导出"), DisplayName("视图"), Description("画面的视图参数，请在预览画面参数面板进行调整")]
         public required SFML.Graphics.View View { get; init; }
 
         /// <summary>
         /// 是否仅渲染选中
         /// </summary>
         [ReadOnly(true)]
-        [Category("导出"), DisplayName("仅渲染选中"), Description("是否仅导出选中的模型")]
+        [Category("导出"), DisplayName("仅渲染选中"), Description("是否仅导出选中的模型，请在预览画面参数面板进行调整")]
         public required bool RenderSelectedOnly { get; init; }
 
         /// <summary>
