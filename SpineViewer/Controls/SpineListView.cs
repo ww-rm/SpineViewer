@@ -12,7 +12,6 @@ using SpineViewer.Spine;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Specialized;
-
 namespace SpineViewer.Controls
 {
     public partial class SpineListView : UserControl
@@ -166,14 +165,20 @@ namespace SpineViewer.Controls
                 worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
             }
 
+            // 选中最后一项
+            listView.Invoke(() =>
+            {
+                if (listView.Items.Count > 0)
+                {
+                    listView.SelectedIndices.Clear();
+                    listView.SelectedIndices.Add(listView.Items.Count - 1);
+                }
+            });
+
             if (error > 0)
-            {
                 Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
-            }
             else
-            {
                 Program.Logger.Info("{} skel loaded successfully", success);
-            }
 
             Program.LogCurrentMemoryUsage();
         }
