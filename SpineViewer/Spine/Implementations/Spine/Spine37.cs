@@ -204,9 +204,9 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override void Update(float delta)
         {
-            skeleton.Update(delta);
             animationState.Update(delta);
             animationState.Apply(skeleton);
+            skeleton.Update(delta);
             skeleton.UpdateWorldTransform();
         }
 

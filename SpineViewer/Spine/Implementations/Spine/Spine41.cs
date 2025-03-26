@@ -206,9 +206,9 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override void Update(float delta)
         {
-            //skeleton.Update(delta); // XXX: v4.1.x 没有 Update 方法
             animationState.Update(delta);
             animationState.Apply(skeleton);
+            //skeleton.Update(delta); // XXX: v4.1.x 没有 Update 方法
             skeleton.UpdateWorldTransform();
         }
 
