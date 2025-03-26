@@ -54,11 +54,6 @@ namespace SpineViewer.Exporter
         public ExportArgs ExportArgs { get; }
 
         /// <summary>
-        /// 渲染目标
-        /// </summary>
-        private SFML.Graphics.RenderTexture tex;
-
-        /// <summary>
         /// 可用于文件名的时间戳字符串
         /// </summary>
         protected readonly string timestamp;
@@ -70,10 +65,23 @@ namespace SpineViewer.Exporter
         }
 
         /// <summary>
+        /// 获取供渲染的 SFML.Graphics.RenderTexture
+        /// </summary>
+        private SFML.Graphics.RenderTexture GetRenderTexture()
+        {
+            var tex = new SFML.Graphics.RenderTexture((uint)ExportArgs.Resolution.Width, (uint)ExportArgs.Resolution.Height);
+            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.SetView(ExportArgs.View);
+            return tex;
+        }
+
+        /// <summary>
         /// 获取单个模型的单帧画面
         /// </summary>
         protected SFMLImageVideoFrame GetFrame(Spine.Spine spine)
         {
+            // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
+            using var tex = GetRenderTexture();
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(spine);
             tex.Display();
@@ -85,6 +93,8 @@ namespace SpineViewer.Exporter
         /// </summary>
         protected SFMLImageVideoFrame GetFrame(Spine.Spine[] spinesToRender)
         {
+            // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
+            using var tex = GetRenderTexture();
             tex.Clear(SFML.Graphics.Color.Transparent);
             foreach (var spine in spinesToRender) tex.Draw(spine);
             tex.Display();
@@ -110,15 +120,8 @@ namespace SpineViewer.Exporter
         {
             var spinesToRender = spines.Where(sp => !ExportArgs.RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
 
-            // tex 必须临时创建, 防止出现跨线程的情况
-            using (tex = new SFML.Graphics.RenderTexture((uint)ExportArgs.Resolution.Width, (uint)ExportArgs.Resolution.Height))
-            {
-                tex.Clear(SFML.Graphics.Color.Transparent);
-                tex.SetView(ExportArgs.View);
-                if (ExportArgs.ExportSingle) ExportSingle(spinesToRender, worker);
-                else ExportIndividual(spinesToRender, worker);
-            }
-            tex = null;
+            if (ExportArgs.ExportSingle) ExportSingle(spinesToRender, worker);
+            else ExportIndividual(spinesToRender, worker);
 
             Program.LogCurrentMemoryUsage();
         }
