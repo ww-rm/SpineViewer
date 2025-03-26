@@ -99,7 +99,7 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_File, toolStripMenuItem_Tool, toolStripMenuItem_Download, toolStripMenuItem_Help });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1748, 32);
+            menuStrip.Size = new Size(1778, 32);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "菜单";
             // 
@@ -263,7 +263,7 @@
             rtbLog.Margin = new Padding(3, 2, 3, 2);
             rtbLog.Name = "rtbLog";
             rtbLog.ReadOnly = true;
-            rtbLog.Size = new Size(1728, 110);
+            rtbLog.Size = new Size(1758, 130);
             rtbLog.TabIndex = 0;
             rtbLog.Text = "";
             rtbLog.WordWrap = false;
@@ -272,6 +272,7 @@
             // 
             splitContainer_MainForm.Cursor = Cursors.SizeNS;
             splitContainer_MainForm.Dock = DockStyle.Fill;
+            splitContainer_MainForm.FixedPanel = FixedPanel.Panel2;
             splitContainer_MainForm.Location = new Point(10, 5);
             splitContainer_MainForm.Name = "splitContainer_MainForm";
             splitContainer_MainForm.Orientation = Orientation.Horizontal;
@@ -285,8 +286,8 @@
             // 
             splitContainer_MainForm.Panel2.Controls.Add(rtbLog);
             splitContainer_MainForm.Panel2.Cursor = Cursors.Default;
-            splitContainer_MainForm.Size = new Size(1728, 997);
-            splitContainer_MainForm.SplitterDistance = 879;
+            splitContainer_MainForm.Size = new Size(1758, 1097);
+            splitContainer_MainForm.SplitterDistance = 959;
             splitContainer_MainForm.SplitterWidth = 8;
             splitContainer_MainForm.TabIndex = 3;
             splitContainer_MainForm.TabStop = false;
@@ -297,6 +298,7 @@
             // 
             splitContainer_Functional.Cursor = Cursors.SizeWE;
             splitContainer_Functional.Dock = DockStyle.Fill;
+            splitContainer_Functional.FixedPanel = FixedPanel.Panel1;
             splitContainer_Functional.Location = new Point(0, 0);
             splitContainer_Functional.Name = "splitContainer_Functional";
             // 
@@ -309,8 +311,8 @@
             // 
             splitContainer_Functional.Panel2.Controls.Add(groupBox_Preview);
             splitContainer_Functional.Panel2.Cursor = Cursors.Default;
-            splitContainer_Functional.Size = new Size(1728, 879);
-            splitContainer_Functional.SplitterDistance = 747;
+            splitContainer_Functional.Size = new Size(1758, 959);
+            splitContainer_Functional.SplitterDistance = 759;
             splitContainer_Functional.SplitterWidth = 8;
             splitContainer_Functional.TabIndex = 2;
             splitContainer_Functional.TabStop = false;
@@ -333,8 +335,8 @@
             // 
             splitContainer_Information.Panel2.Controls.Add(splitContainer_Config);
             splitContainer_Information.Panel2.Cursor = Cursors.Default;
-            splitContainer_Information.Size = new Size(747, 879);
-            splitContainer_Information.SplitterDistance = 399;
+            splitContainer_Information.Size = new Size(759, 959);
+            splitContainer_Information.SplitterDistance = 354;
             splitContainer_Information.SplitterWidth = 8;
             splitContainer_Information.TabIndex = 1;
             splitContainer_Information.TabStop = false;
@@ -347,7 +349,7 @@
             groupBox_SkelList.Dock = DockStyle.Fill;
             groupBox_SkelList.Location = new Point(0, 0);
             groupBox_SkelList.Name = "groupBox_SkelList";
-            groupBox_SkelList.Size = new Size(399, 879);
+            groupBox_SkelList.Size = new Size(354, 959);
             groupBox_SkelList.TabIndex = 0;
             groupBox_SkelList.TabStop = false;
             groupBox_SkelList.Text = "模型列表";
@@ -358,7 +360,7 @@
             spineListView.Location = new Point(3, 26);
             spineListView.Name = "spineListView";
             spineListView.PropertyGrid = propertyGrid_Spine;
-            spineListView.Size = new Size(393, 850);
+            spineListView.Size = new Size(348, 930);
             spineListView.TabIndex = 0;
             // 
             // propertyGrid_Spine
@@ -367,7 +369,7 @@
             propertyGrid_Spine.HelpVisible = false;
             propertyGrid_Spine.Location = new Point(3, 26);
             propertyGrid_Spine.Name = "propertyGrid_Spine";
-            propertyGrid_Spine.Size = new Size(334, 519);
+            propertyGrid_Spine.Size = new Size(391, 596);
             propertyGrid_Spine.TabIndex = 0;
             propertyGrid_Spine.ToolbarVisible = false;
             propertyGrid_Spine.PropertyValueChanged += propertyGrid_PropertyValueChanged;
@@ -376,6 +378,7 @@
             // 
             splitContainer_Config.Cursor = Cursors.SizeNS;
             splitContainer_Config.Dock = DockStyle.Fill;
+            splitContainer_Config.FixedPanel = FixedPanel.Panel1;
             splitContainer_Config.Location = new Point(0, 0);
             splitContainer_Config.Name = "splitContainer_Config";
             splitContainer_Config.Orientation = Orientation.Horizontal;
@@ -389,8 +392,8 @@
             // 
             splitContainer_Config.Panel2.Controls.Add(groupBox_SkelConfig);
             splitContainer_Config.Panel2.Cursor = Cursors.Default;
-            splitContainer_Config.Size = new Size(340, 879);
-            splitContainer_Config.SplitterDistance = 323;
+            splitContainer_Config.Size = new Size(397, 959);
+            splitContainer_Config.SplitterDistance = 326;
             splitContainer_Config.SplitterWidth = 8;
             splitContainer_Config.TabIndex = 0;
             splitContainer_Config.TabStop = false;
@@ -403,7 +406,7 @@
             groupBox_PreviewConfig.Dock = DockStyle.Fill;
             groupBox_PreviewConfig.Location = new Point(0, 0);
             groupBox_PreviewConfig.Name = "groupBox_PreviewConfig";
-            groupBox_PreviewConfig.Size = new Size(340, 323);
+            groupBox_PreviewConfig.Size = new Size(397, 326);
             groupBox_PreviewConfig.TabIndex = 1;
             groupBox_PreviewConfig.TabStop = false;
             groupBox_PreviewConfig.Text = "画面参数";
@@ -414,7 +417,7 @@
             propertyGrid_Previewer.HelpVisible = false;
             propertyGrid_Previewer.Location = new Point(3, 26);
             propertyGrid_Previewer.Name = "propertyGrid_Previewer";
-            propertyGrid_Previewer.Size = new Size(334, 294);
+            propertyGrid_Previewer.Size = new Size(391, 297);
             propertyGrid_Previewer.TabIndex = 1;
             propertyGrid_Previewer.ToolbarVisible = false;
             propertyGrid_Previewer.PropertyValueChanged += propertyGrid_PropertyValueChanged;
@@ -425,7 +428,7 @@
             groupBox_SkelConfig.Dock = DockStyle.Fill;
             groupBox_SkelConfig.Location = new Point(0, 0);
             groupBox_SkelConfig.Name = "groupBox_SkelConfig";
-            groupBox_SkelConfig.Size = new Size(340, 548);
+            groupBox_SkelConfig.Size = new Size(397, 625);
             groupBox_SkelConfig.TabIndex = 0;
             groupBox_SkelConfig.TabStop = false;
             groupBox_SkelConfig.Text = "模型参数";
@@ -436,7 +439,7 @@
             groupBox_Preview.Dock = DockStyle.Fill;
             groupBox_Preview.Location = new Point(0, 0);
             groupBox_Preview.Name = "groupBox_Preview";
-            groupBox_Preview.Size = new Size(973, 879);
+            groupBox_Preview.Size = new Size(991, 959);
             groupBox_Preview.TabIndex = 1;
             groupBox_Preview.TabStop = false;
             groupBox_Preview.Text = "预览画面";
@@ -447,7 +450,7 @@
             spinePreviewer.Location = new Point(3, 26);
             spinePreviewer.Name = "spinePreviewer";
             spinePreviewer.PropertyGrid = propertyGrid_Previewer;
-            spinePreviewer.Size = new Size(967, 850);
+            spinePreviewer.Size = new Size(985, 930);
             spinePreviewer.SpineListView = spineListView;
             spinePreviewer.TabIndex = 0;
             // 
@@ -458,7 +461,7 @@
             panel_MainForm.Location = new Point(0, 32);
             panel_MainForm.Name = "panel_MainForm";
             panel_MainForm.Padding = new Padding(10, 5, 10, 10);
-            panel_MainForm.Size = new Size(1748, 1012);
+            panel_MainForm.Size = new Size(1778, 1112);
             panel_MainForm.TabIndex = 4;
             // 
             // toolTip
@@ -469,7 +472,7 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1748, 1044);
+            ClientSize = new Size(1778, 1144);
             Controls.Add(panel_MainForm);
             Controls.Add(menuStrip);
             Icon = (Icon)resources.GetObject("$this.Icon");

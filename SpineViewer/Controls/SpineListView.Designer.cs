@@ -44,8 +44,9 @@
             toolStripMenuItem_MoveTop = new ToolStripMenuItem();
             toolStripMenuItem_MoveBottom = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
-            toolStripMenuItem_SelectAll = new ToolStripMenuItem();
             toolStripMenuItem_CopyPreview = new ToolStripMenuItem();
+            toolStripMenuItem_AddFromClipboard = new ToolStripMenuItem();
+            toolStripMenuItem_SelectAll = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             toolStripMenuItem_ChangeView = new ToolStripMenuItem();
             toolStripMenuItem_LargeIconView = new ToolStripMenuItem();
@@ -53,7 +54,6 @@
             toolStripMenuItem_DetailsView = new ToolStripMenuItem();
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
-            toolStripMenuItem_AddFromClipboard = new ToolStripMenuItem();
             contextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -84,14 +84,14 @@
             // columnHeader_Name
             // 
             columnHeader_Name.Text = "名称";
-            columnHeader_Name.Width = 220;
+            columnHeader_Name.Width = 300;
             // 
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator2, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveBottom, toolStripSeparator3, toolStripMenuItem_CopyPreview, toolStripMenuItem_AddFromClipboard, toolStripMenuItem_SelectAll, toolStripSeparator4, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(329, 451);
+            contextMenuStrip.Size = new Size(329, 418);
             contextMenuStrip.Closed += contextMenuStrip_Closed;
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
@@ -178,14 +178,6 @@
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(325, 6);
             // 
-            // toolStripMenuItem_SelectAll
-            // 
-            toolStripMenuItem_SelectAll.Name = "toolStripMenuItem_SelectAll";
-            toolStripMenuItem_SelectAll.ShortcutKeys = Keys.Control | Keys.A;
-            toolStripMenuItem_SelectAll.Size = new Size(328, 30);
-            toolStripMenuItem_SelectAll.Text = "全选";
-            toolStripMenuItem_SelectAll.Click += toolStripMenuItem_SelectAll_Click;
-            // 
             // toolStripMenuItem_CopyPreview
             // 
             toolStripMenuItem_CopyPreview.Name = "toolStripMenuItem_CopyPreview";
@@ -193,6 +185,22 @@
             toolStripMenuItem_CopyPreview.Size = new Size(328, 30);
             toolStripMenuItem_CopyPreview.Text = "复制预览图 (256x256)";
             toolStripMenuItem_CopyPreview.Click += toolStripMenuItem_CopyPreview_Click;
+            // 
+            // toolStripMenuItem_AddFromClipboard
+            // 
+            toolStripMenuItem_AddFromClipboard.Name = "toolStripMenuItem_AddFromClipboard";
+            toolStripMenuItem_AddFromClipboard.ShortcutKeys = Keys.Control | Keys.V;
+            toolStripMenuItem_AddFromClipboard.Size = new Size(328, 30);
+            toolStripMenuItem_AddFromClipboard.Text = "从剪贴板添加";
+            toolStripMenuItem_AddFromClipboard.Click += toolStripMenuItem_AddFromClipboard_Click;
+            // 
+            // toolStripMenuItem_SelectAll
+            // 
+            toolStripMenuItem_SelectAll.Name = "toolStripMenuItem_SelectAll";
+            toolStripMenuItem_SelectAll.ShortcutKeys = Keys.Control | Keys.A;
+            toolStripMenuItem_SelectAll.Size = new Size(328, 30);
+            toolStripMenuItem_SelectAll.Text = "全选";
+            toolStripMenuItem_SelectAll.Click += toolStripMenuItem_SelectAll_Click;
             // 
             // toolStripSeparator4
             // 
@@ -241,14 +249,6 @@
             imageList_SmallIcon.ColorDepth = ColorDepth.Depth32Bit;
             imageList_SmallIcon.ImageSize = new Size(48, 48);
             imageList_SmallIcon.TransparentColor = Color.Transparent;
-            // 
-            // toolStripMenuItem_AddFromClipboard
-            // 
-            toolStripMenuItem_AddFromClipboard.Name = "toolStripMenuItem_AddFromClipboard";
-            toolStripMenuItem_AddFromClipboard.ShortcutKeys = Keys.Control | Keys.V;
-            toolStripMenuItem_AddFromClipboard.Size = new Size(328, 30);
-            toolStripMenuItem_AddFromClipboard.Text = "从剪贴板添加";
-            toolStripMenuItem_AddFromClipboard.Click += toolStripMenuItem_AddFromClipboard_Click;
             // 
             // SpineListView
             // 
