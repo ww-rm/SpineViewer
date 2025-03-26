@@ -186,11 +186,6 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
-        /// 标识符
-        /// </summary>
-        public readonly string ID = Guid.NewGuid().ToString();
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         public Spine(string skelPath, string? atlasPath = null)
@@ -217,7 +212,7 @@ namespace SpineViewer.Spine
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
         protected virtual void Dispose(bool disposing) { preview?.Dispose(); }
 
-        #region 属性 | 基本信息
+        #region 属性 | [0] 基本信息
 
         /// <summary>
         /// 获取所属版本
@@ -258,52 +253,52 @@ namespace SpineViewer.Spine
 
         #endregion
 
-        #region 属性 | 变换
+        #region 属性 | [1] 设置
+
+        /// <summary>
+        /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
+        /// </summary>
+        [Category("[1] 设置"), DisplayName("是否隐藏")]
+        public bool IsHidden { get; set; } = false;
+
+        /// <summary>
+        /// 是否使用预乘Alpha
+        /// </summary>
+        [Category("[1] 设置"), DisplayName("预乘Alpha通道")]
+        public bool UsePremultipliedAlpha { get; set; } = true;
+
+        #endregion
+
+        #region 属性 | [2] 变换
 
         /// <summary>
         /// 缩放比例
         /// </summary>
-        [Category("[1] 变换"), DisplayName("缩放比例")]
+        [Category("[2] 变换"), DisplayName("缩放比例")]
         public abstract float Scale { get; set; }
 
         /// <summary>
         /// 位置
         /// </summary>
         [TypeConverter(typeof(PointFConverter))]
-        [Category("[1] 变换"), DisplayName("位置")]
+        [Category("[2] 变换"), DisplayName("位置")]
         public abstract PointF Position { get; set; }
 
         /// <summary>
         /// 水平翻转
         /// </summary>
-        [Category("[1] 变换"), DisplayName("水平翻转")]
+        [Category("[2] 变换"), DisplayName("水平翻转")]
         public abstract bool FlipX { get; set; }
 
         /// <summary>
         /// 垂直翻转
         /// </summary>
-        [Category("[1] 变换"), DisplayName("垂直翻转")]
+        [Category("[2] 变换"), DisplayName("垂直翻转")]
         public abstract bool FlipY { get; set; }
 
         #endregion
 
-        #region 属性 | 渲染
-
-        /// <summary>
-        /// 是否使用预乘Alpha
-        /// </summary>
-        [Category("[3] 渲染"), DisplayName("预乘Alpha通道")]
-        public bool UsePremultipliedAlpha { get; set; } = true;
-
-        /// <summary>
-        /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
-        /// </summary>
-        [Category("[3] 渲染"), DisplayName("是否隐藏")]
-        public bool IsHidden { get; set; } = false;
-
-        #endregion
-
-        #region 属性 | 动画
+        #region 属性 | [3] 动画
 
         /// <summary>
         /// 包含的所有动画名称
@@ -316,13 +311,13 @@ namespace SpineViewer.Spine
         /// 当前动画名称, 如果设置的动画不存在则忽略
         /// </summary>
         [TypeConverter(typeof(AnimationConverter))]
-        [Category("[2] 动画"), DisplayName("当前动画")]
+        [Category("[3] 动画"), DisplayName("当前动画")]
         public abstract string CurrentAnimation { get; set; }
 
         /// <summary>
         /// 当前动画时长
         /// </summary>
-        [Category("[2] 动画"), DisplayName("当前动画时长")]
+        [Category("[3] 动画"), DisplayName("当前动画时长")]
         public float CurrentAnimationDuration { get => GetAnimationDuration(CurrentAnimation); }
 
         /// <summary>
@@ -336,10 +331,59 @@ namespace SpineViewer.Spine
         /// 当前皮肤名称, 如果设置的皮肤不存在则忽略
         /// </summary>
         [TypeConverter(typeof(SkinConverter))]
-        [Category("[2] 动画"), DisplayName("当前皮肤")]
+        [Category("[3] 动画"), DisplayName("当前皮肤")]
         public abstract string CurrentSkin { get; set; }
 
         #endregion
+
+        #region 属性 | [4] 调试
+
+        /// <summary>
+        /// 显示调试
+        /// </summary>
+        [Browsable(false)]
+        public bool IsDebug { get; set; } = false;
+
+        /// <summary>
+        /// 包围盒颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
+
+        /// <summary>
+        /// 包围盒顶点数组
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
+
+        /// <summary>
+        /// 显示纹理
+        /// </summary>
+        [Category("[4] 调试"), DisplayName("显示纹理")]
+        public bool DebugTexture { get; set; } = true;
+
+        /// <summary>
+        /// 显示包围盒
+        /// </summary>
+        [Category("[4] 调试"), DisplayName("显示包围盒")]
+        public bool DebugBounds { get; set; } = true;
+
+        /// <summary>
+        /// 显示骨骼
+        /// </summary>
+        [Category("[4] 调试"), DisplayName("显示骨骼")]
+        public bool DebugBones { get; set; } = false;
+
+        #endregion
+
+        /// <summary>
+        /// 标识符
+        /// </summary>
+        public readonly string ID = Guid.NewGuid().ToString();
+
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
+        [Browsable(false)]
+        public bool IsSelected { get; set; } = false;
 
         /// <summary>
         /// 骨骼包围盒
@@ -409,42 +453,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 更新内部状态
         /// </summary>
-        /// <param name="delta">时间间隔</param>
         public abstract void Update(float delta);
-
-        /// <summary>
-        /// 是否被选中
-        /// </summary>
-        [Browsable(false)]
-        public bool IsSelected { get; set; } = false;
-
-        /// <summary>
-        /// 显示调试
-        /// </summary>
-        [Browsable(false)]
-        public bool IsDebug { get; set; } = false;
-
-        /// <summary>
-        /// 包围盒颜色
-        /// </summary>
-        protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
-
-        /// <summary>
-        /// 包围盒顶点数组
-        /// </summary>
-        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
-
-        /// <summary>
-        /// 显示包围盒
-        /// </summary>
-        [Category("[4] 调试"), DisplayName("显示包围盒")]
-        public bool DebugBounds { get; set; } = true;
-
-        /// <summary>
-        /// 显示骨骼
-        /// </summary>
-        [Category("[4] 调试"), DisplayName("显示骨骼(TODO)")]
-        public bool DebugBones { get; set; } = false;
 
         #region SFML.Graphics.Drawable 接口实现
 
