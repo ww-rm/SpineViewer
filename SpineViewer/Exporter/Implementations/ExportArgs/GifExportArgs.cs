@@ -22,14 +22,14 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// <summary>
         /// 调色板最大颜色数量
         /// </summary>
-        [Category("GIF 参数"), DisplayName("调色板最大颜色数量"), Description("设置调色板使用的最大颜色数量, 越多则色彩保留程度越高")]
+        [Category("[3] GIF 参数"), DisplayName("调色板最大颜色数量"), Description("设置调色板使用的最大颜色数量, 越多则色彩保留程度越高")]
         public uint MaxColors { get => maxColors; set => maxColors = Math.Clamp(value, 2, 256); }
         private uint maxColors = 256;
 
         /// <summary>
         /// 透明度阈值
         /// </summary>
-        [Category("GIF 参数"), DisplayName("透明度阈值"), Description("小于该值的像素点会被认为是透明像素")]
+        [Category("[3] GIF 参数"), DisplayName("透明度阈值"), Description("小于该值的像素点会被认为是透明像素")]
         public byte AlphaThreshold { get => alphaThreshold; set => alphaThreshold = value; }
         private byte alphaThreshold = 128;
 

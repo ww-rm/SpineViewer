@@ -20,7 +20,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// 文件名后缀
         /// </summary>
         [TypeConverter(typeof(SFMLImageFileSuffixConverter))]
-        [Category("帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
+        [Category("[3] 帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
         public string FileSuffix { get; set; } = ".png";
     }
 }
