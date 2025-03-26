@@ -25,7 +25,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
 
             // 独立导出时如果 args.Duration 小于 0 则使用自己的动画时长
             var duration = args.Duration;
-            if (duration < 0) duration = spine.GetAnimationDuration(spine.CurrentAnimation);
+            if (duration < 0) duration = spine.CurrentAnimationDuration;
 
             float delta = 1f / args.FPS;
             int total = Math.Max(1, (int)(duration * args.FPS)); // 至少导出 1 帧
