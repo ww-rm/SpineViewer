@@ -341,6 +341,7 @@ namespace SpineViewer.Controls
             toolStripMenuItem_MoveDown.Enabled = selectedCount == 1 && selectedIndices[0] != itemsCount - 1;
             toolStripMenuItem_MoveBottom.Enabled = selectedCount == 1 && selectedIndices[0] != itemsCount - 1;
             toolStripMenuItem_RemoveAll.Enabled = itemsCount > 0;
+            toolStripMenuItem_CopyPreview.Enabled = selectedCount > 0;
 
             // 视图选项
             toolStripMenuItem_LargeIconView.Checked = listView.View == View.LargeIcon;
