@@ -371,6 +371,16 @@ namespace SpineViewer.Controls
                     delta = Clock.ElapsedTime.AsSeconds();
                     Clock.Restart();
 
+                    // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
+                    if (!IsUpdating) delta = 0;
+
+                    // 加上要快进的量
+                    lock (_forwardDeltaLock)
+                    {
+                        delta += forwardDelta;
+                        forwardDelta = 0;
+                    }
+
                     RenderWindow.Clear(BackgroundColor);
 
                     if (ShowAxis)
@@ -389,23 +399,13 @@ namespace SpineViewer.Controls
                     {
                         lock (SpineListView.Spines)
                         {
-                            var spines = SpineListView.Spines;
-                            for (int i = spines.Count - 1; i >= 0; i--)
+                            var spines = SpineListView.Spines.Where(sp => !sp.IsHidden).ToArray();
+                            for (int i = spines.Length - 1; i >= 0; i--)
                             {
                                 if (cancelToken is not null && cancelToken.IsCancellationRequested)
                                     break; // 提前中止
 
                                 var spine = spines[i];
-
-                                // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
-                                if (!IsUpdating) delta = 0;
-
-                                // 加上要快进的量
-                                lock (_forwardDeltaLock)
-                                {
-                                    delta += forwardDelta;
-                                    forwardDelta = 0;
-                                }
 
                                 spine.Update(delta);
 
@@ -487,9 +487,11 @@ namespace SpineViewer.Controls
                     // 仅渲染选中模式禁止在画面里选择对象
                     if (RenderSelectedOnly)
                     {
+                        // 只在被选中的对象里判断是否有效命中
                         bool hit = false;
                         foreach (int i in SpineListView.SelectedIndices)
                         {
+                            if (spines[i].IsHidden) continue;
                             if (!spines[i].Bounds.Contains(src)) continue;
                             hit = true;
                             break;
@@ -500,12 +502,13 @@ namespace SpineViewer.Controls
                     }
                     else
                     {
-                        // 没有按下 Ctrl 键就只选中点击的那个, 所以先清空选中列表
                         if ((ModifierKeys & Keys.Control) == 0)
                         {
+                            // 没按 Ctrl 的情况下, 如果命中了已选中对象, 则就算普通命中
                             bool hit = false;
                             for (int i = 0; i < spines.Count; i++)
                             {
+                                if (spines[i].IsHidden) continue;
                                 if (!spines[i].Bounds.Contains(src)) continue;
 
                                 hit = true;
@@ -524,10 +527,11 @@ namespace SpineViewer.Controls
                         }
                         else
                         {
+                            // 按下 Ctrl 的情况就执行多选, 并且点空白处也不会清空选中
                             for (int i = 0; i < spines.Count; i++)
                             {
-                                if (!spines[i].Bounds.Contains(src))
-                                    continue;
+                                if (spines[i].IsHidden) continue;
+                                if (!spines[i].Bounds.Contains(src)) continue;
 
                                 SpineListView.SelectedIndices.Add(i);
                                 break;
@@ -558,8 +562,12 @@ namespace SpineViewer.Controls
                 {
                     lock (SpineListView.Spines)
                     {
+                        var spines = SpineListView.Spines;
                         foreach (int i in SpineListView.SelectedIndices)
-                            SpineListView.Spines[i].Position += delta;
+                        {
+                            if (spines[i].IsHidden) continue;
+                            spines[i].Position += delta;
+                        }
                     }
                 }
                 draggingSrc = dst;

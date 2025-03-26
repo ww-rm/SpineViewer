@@ -147,7 +147,7 @@ namespace SpineViewer
             var worker = (BackgroundWorker)sender;
             var exporter = (Exporter.Exporter)e.Argument;
             spinePreviewer.StopRender();
-            lock (spineListView.Spines) { exporter.Export(spineListView.Spines.ToArray(), (BackgroundWorker)sender); }
+            lock (spineListView.Spines) { exporter.Export(spineListView.Spines.Where(sp => !sp.IsHidden).ToArray(), (BackgroundWorker)sender); }
             e.Cancel = worker.CancellationPending;
             spinePreviewer.StartRender();
         }
