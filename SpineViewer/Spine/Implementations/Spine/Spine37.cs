@@ -197,11 +197,10 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string CurrentSkin
         {
-            get => skeleton.Skin.Name;
+            get => skeleton.Skin?.Name ?? "default";
             set
             {
-                if (!skinNames.Contains(value))
-                    return;
+                if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
                 skeleton.SetToSetupPose();
                 Update(0);

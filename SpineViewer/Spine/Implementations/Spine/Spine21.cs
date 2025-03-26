@@ -115,7 +115,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 var position = Position;
                 var flipX = FlipX;
                 var flipY = FlipY;
-                var savedTrack0 = animationState.GetCurrent(0);
+                var animation = CurrentAnimation;
+                var skin = CurrentSkin;
 
                 var val = Math.Max(value, SCALE_MIN);
                 if (skeletonBinary is not null)
@@ -138,21 +139,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 Position = position;
                 FlipX = flipX;
                 FlipY = flipY;
-
-                // 恢复原本 Track0 上所有动画
-                if (savedTrack0 is not null)
-                {
-                    var entry = animationState.SetAnimation(0, savedTrack0.Animation.Name, true);
-                    entry.Time = savedTrack0.Time;
-                    // 2.1.x 没有提供 Next 访问器，故放弃还原后续动画，问题不大，因为预览画面目前不需要连续播放不同动画，只需要循环同一个动画
-                    //var savedEntry = savedTrack0.Next;
-                    //while (savedEntry is not null)
-                    //{
-                    //    entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
-                    //    entry.Time = savedEntry.TrackTime;
-                    //    savedEntry = savedEntry.Next;
-                    //}
-                }
+                CurrentAnimation = animation;
+                CurrentSkin = skin;
             }
         }
 
@@ -193,11 +181,10 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string CurrentSkin
         {
-            get => skeleton.Skin.Name;
+            get => skeleton.Skin?.Name ?? "default";
             set
             {
-                if (!skinNames.Contains(value))
-                    return;
+                if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
                 skeleton.SetToSetupPose();
                 Update(0);

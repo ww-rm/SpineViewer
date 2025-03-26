@@ -114,7 +114,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 var position = Position;
                 var flipX = FlipX;
                 var flipY = FlipY;
-                var savedTrack0 = animationState.GetCurrent(0);
+                var animation = CurrentAnimation;
+                var skin = CurrentSkin;
 
                 var val = Math.Max(value, SCALE_MIN);
                 if (skeletonBinary is not null)
@@ -137,20 +138,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 Position = position;
                 FlipX = flipX;
                 FlipY = flipY;
-
-                // 恢复原本 Track0 上所有动画
-                if (savedTrack0 is not null)
-                {
-                    var entry = animationState.SetAnimation(0, savedTrack0.Animation.Name, true);
-                    entry.TrackTime = savedTrack0.TrackTime;
-                    var savedEntry = savedTrack0.Next;
-                    while (savedEntry is not null)
-                    {
-                        entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
-                        entry.TrackTime = savedEntry.TrackTime;
-                        savedEntry = savedEntry.Next;
-                    }
-                }
+                CurrentAnimation = animation;
+                CurrentSkin = skin;
             }
         }
 
@@ -191,11 +180,10 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string CurrentSkin
         {
-            get => skeleton.Skin.Name;
+            get => skeleton.Skin?.Name ?? "default";
             set
             {
-                if (!skinNames.Contains(value))
-                    return;
+                if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
                 skeleton.SetToSetupPose();
                 Update(0);

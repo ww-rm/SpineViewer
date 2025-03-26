@@ -100,58 +100,11 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override float Scale
         {
-            get
-            {
-                if (skeletonBinary is not null)
-                    return skeletonBinary.Scale;
-                else if (skeletonJson is not null)
-                    return skeletonJson.Scale;
-                else
-                    return 1f;
-            }
+            get => Math.Abs(skeleton.ScaleX);
             set
             {
-                // 保存状态
-                var position = Position;
-                var flipX = FlipX;
-                var flipY = FlipY;
-                var savedTrack0 = animationState.GetCurrent(0);
-
-                var val = Math.Max(value, SCALE_MIN);
-                if (skeletonBinary is not null)
-                {
-                    skeletonBinary.Scale = val;
-                    skeletonData = skeletonBinary.ReadSkeletonData(SkelPath);
-                }
-                else if (skeletonJson is not null)
-                {
-                    skeletonJson.Scale = val;
-                    skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
-                }
-
-                // reload skel-dependent data
-                animationStateData = new AnimationStateData(skeletonData) { DefaultMix = animationStateData.DefaultMix };
-                skeleton = new Skeleton(skeletonData);
-                animationState = new AnimationState(animationStateData);
-
-                // 恢复状态
-                Position = position;
-                FlipX = flipX;
-                FlipY = flipY;
-
-                // 恢复原本 Track0 上所有动画
-                if (savedTrack0 is not null)
-                {
-                    var entry = animationState.SetAnimation(0, savedTrack0.Animation.Name, true);
-                    entry.TrackTime = savedTrack0.TrackTime;
-                    var savedEntry = savedTrack0.Next;
-                    while (savedEntry is not null)
-                    {
-                        entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
-                        entry.TrackTime = savedEntry.TrackTime;
-                        savedEntry = savedEntry.Next;
-                    }
-                }
+                skeleton.ScaleX = Math.Sign(skeleton.ScaleX) * value;
+                skeleton.ScaleY = Math.Sign(skeleton.ScaleY) * value;
             }
         }
 
@@ -200,11 +153,10 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string CurrentSkin
         {
-            get => skeleton.Skin.Name;
+            get => skeleton.Skin?.Name ?? "default";
             set
             {
-                if (!skinNames.Contains(value))
-                    return;
+                if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
                 skeleton.SetToSetupPose();
                 Update(0);
