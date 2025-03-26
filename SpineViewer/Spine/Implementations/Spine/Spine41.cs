@@ -267,7 +267,11 @@ namespace SpineViewer.Spine.Implementations.Spine
                             states.Shader = FragmentShader;
                         else
                             states.Shader = null;
-                        target.Draw(vertexArray, states);
+
+                        // 调试纹理
+                        if (!IsDebug || DebugTexture)
+                            target.Draw(vertexArray, states);
+
                         vertexArray.Clear();
                     }
                     states.BlendMode = blendMode;
@@ -307,13 +311,16 @@ namespace SpineViewer.Spine.Implementations.Spine
 
                 clipping.ClipEnd(slot);
             }
+            clipping.ClipEnd();
 
             if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                 states.Shader = FragmentShader;
             else
                 states.Shader = null;
-            target.Draw(vertexArray, states);
-            clipping.ClipEnd();
+
+            // 调试纹理
+            if (!IsDebug || DebugTexture)
+                target.Draw(vertexArray, states);
 
             // 包围盒
             if (IsDebug && IsSelected && DebugBounds)
