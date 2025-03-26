@@ -8,7 +8,7 @@
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.11.2</Version>
+        <Version>0.11.3</Version>
         <OutputType>WinExe</OutputType>
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationIcon>appicon.ico</ApplicationIcon>
