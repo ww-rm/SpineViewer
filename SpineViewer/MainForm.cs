@@ -87,15 +87,6 @@ namespace SpineViewer
                     return;
             }
 
-            lock (spineListView.Spines)
-            {
-                if (spineListView.Spines.Count <= 0)
-                {
-                    MessageBox.Info("请至少打开一个骨骼文件");
-                    return;
-                }
-            }
-
             var exportArgs = ExportArgs.New(type, spinePreviewer.Resolution, spinePreviewer.GetView(), spinePreviewer.RenderSelectedOnly);
             var exportDialog = new Dialogs.ExportDialog() { ExportArgs = exportArgs };
             if (exportDialog.ShowDialog() != DialogResult.OK)
