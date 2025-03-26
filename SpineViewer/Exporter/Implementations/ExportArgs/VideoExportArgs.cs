@@ -17,14 +17,27 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// <summary>
         /// 导出时长
         /// </summary>
-        [Category("视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长")]
-        public float Duration { get => duration; set => duration = Math.Max(0, value); }
-        private float duration = 1;
+        [Category("视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的当前动画时长")]
+        public float Duration 
+        { 
+            get => duration;
+            set => duration = value < 0 ? -1 : value;
+        }
+        private float duration = -1;
 
         /// <summary>
         /// 帧率
         /// </summary>
         [Category("视频参数"), DisplayName("帧率"), Description("每秒画面数")]
         public float FPS { get; set; } = 60;
+
+        public override string? Validate()
+        {
+            if (base.Validate() is string error)
+                return error;
+            if (ExportSingle && Duration < 0)
+                return "导出单个时导出时长不能为负数";
+            return null;
+        }
     }
 }
