@@ -25,8 +25,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                     texture.Repeated = true;
                 
                 page.rendererObject = texture;
-                page.width = (int)texture.Size.X;
-                page.height = (int)texture.Size.Y;
             }
 
             public void Unload(object texture)

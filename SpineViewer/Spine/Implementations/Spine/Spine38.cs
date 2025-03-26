@@ -26,8 +26,9 @@ namespace SpineViewer.Spine.Implementations.Spine
                     texture.Repeated = true;
                 
                 page.rendererObject = texture;
-                page.width = (int)texture.Size.X;
-                page.height = (int)texture.Size.Y;
+                // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
+                // page.width = (int)texture.Size.X;
+                // page.height = (int)texture.Size.Y;
             }
 
             public void Unload(object texture)
