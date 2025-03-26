@@ -58,4 +58,38 @@ namespace SpineViewer.Spine
             return base.GetStandardValues(context);
         }
     }
+
+    public class SkinConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
+        {
+            // 支持标准值列表
+            return true;
+        }
+
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
+        {
+            // 排他模式，只有下拉列表中的值可选
+            return true;
+        }
+
+        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
+        {
+            if (context?.Instance is Spine obj)
+            {
+                return new StandardValuesCollection(obj.SkinNames);
+            }
+            else if (context?.Instance is Spine[] spines)
+            {
+                if (spines.Length > 0)
+                {
+                    IEnumerable<string> common = spines[0].SkinNames;
+                    foreach (var spine in spines.Skip(1))
+                        common = common.Intersect(spine.SkinNames);
+                    return new StandardValuesCollection(common.ToArray());
+                }
+            }
+            return base.GetStandardValues(context);
+        }
+    }
 }

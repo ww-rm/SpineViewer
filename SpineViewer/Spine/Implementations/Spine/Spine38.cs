@@ -75,6 +75,9 @@ namespace SpineViewer.Spine.Implementations.Spine
                 }
             }
 
+            foreach (var skin in skeletonData.Skins)
+                skinNames.Add(skin.Name);
+
             animationStateData = new AnimationStateData(skeletonData);
             skeleton = new Skeleton(skeletonData);
             animationState = new AnimationState(animationStateData);
@@ -82,7 +85,9 @@ namespace SpineViewer.Spine.Implementations.Spine
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
 
-            CurrentAnimation = DefaultAnimationName;
+            // 取最后一个作为初始, 尽可能去显示非默认的内容
+            CurrentAnimation = animationNames.Last();
+            CurrentSkin = skinNames.Last();
         }
 
         protected override void Dispose(bool disposing)
@@ -189,6 +194,18 @@ namespace SpineViewer.Spine.Implementations.Spine
                     animationState.SetAnimation(0, EmptyAnimation, false);
                 else if (animationNames.Contains(value))
                     animationState.SetAnimation(0, value, true);
+                Update(0);
+            }
+        }
+
+        public override string CurrentSkin
+        {
+            get => skeleton.Skin.Name;
+            set
+            {
+                if (!skinNames.Contains(value))
+                    return;
+                skeleton.SetSkin(value);
                 Update(0);
             }
         }

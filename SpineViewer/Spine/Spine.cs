@@ -287,15 +287,17 @@ namespace SpineViewer.Spine
 
         #endregion
 
-        #region 属性 | 画面
+        #region 属性 | 渲染
 
         /// <summary>
         /// 是否使用预乘Alpha
         /// </summary>
-        [Category("画面"), DisplayName("预乘Alpha通道")]
+        [Category("渲染"), DisplayName("预乘Alpha通道")]
         public bool UsePremultipliedAlpha { get; set; } = true;
 
         #endregion
+
+        #region 属性 | 动画
 
         /// <summary>
         /// 包含的所有动画名称
@@ -303,14 +305,6 @@ namespace SpineViewer.Spine
         [Browsable(false)]
         public ReadOnlyCollection<string> AnimationNames { get => animationNames.AsReadOnly(); }
         protected List<string> animationNames = [EMPTY_ANIMATION];
-
-        /// <summary>
-        /// 默认动画名称
-        /// </summary>
-        [Browsable(false)]
-        public string DefaultAnimationName { get => animationNames.Last(); }
-
-        #region 属性 | 动画
 
         /// <summary>
         /// 当前动画名称, 如果设置的动画不存在则忽略
@@ -324,6 +318,20 @@ namespace SpineViewer.Spine
         /// </summary>
         [Category("动画"), DisplayName("当前动画时长")]
         public float CurrentAnimationDuration { get => GetAnimationDuration(CurrentAnimation); }
+
+        /// <summary>
+        /// 包含的所有皮肤名称
+        /// </summary>
+        [Browsable(false)]
+        public ReadOnlyCollection<string> SkinNames { get => skinNames.AsReadOnly(); }
+        protected List<string> skinNames = [];
+
+        /// <summary>
+        /// 当前皮肤名称, 如果设置的皮肤不存在则忽略
+        /// </summary>
+        [TypeConverter(typeof(SkinConverter))]
+        [Category("动画"), DisplayName("当前皮肤")]
+        public abstract string CurrentSkin { get; set; }
 
         #endregion
 
