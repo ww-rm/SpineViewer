@@ -114,83 +114,88 @@
             // 
             toolStripMenuItem_Open.Name = "toolStripMenuItem_Open";
             toolStripMenuItem_Open.ShortcutKeys = Keys.Control | Keys.O;
-            toolStripMenuItem_Open.Size = new Size(254, 34);
+            toolStripMenuItem_Open.Size = new Size(270, 34);
             toolStripMenuItem_Open.Text = "打开(&O)...";
             toolStripMenuItem_Open.Click += toolStripMenuItem_Open_Click;
             // 
             // toolStripMenuItem_BatchOpen
             // 
             toolStripMenuItem_BatchOpen.Name = "toolStripMenuItem_BatchOpen";
-            toolStripMenuItem_BatchOpen.Size = new Size(254, 34);
+            toolStripMenuItem_BatchOpen.Size = new Size(270, 34);
             toolStripMenuItem_BatchOpen.Text = "批量打开(&B)...";
             toolStripMenuItem_BatchOpen.Click += toolStripMenuItem_BatchOpen_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(251, 6);
+            toolStripSeparator1.Size = new Size(267, 6);
             // 
             // toolStripMenuItem_Export
             // 
             toolStripMenuItem_Export.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_ExportFrame, toolStripMenuItem_ExportFrameSequence, toolStripMenuItem_ExportGif, toolStripMenuItem_ExportMkv, toolStripMenuItem_ExportMp4, toolStripMenuItem_ExportMov, toolStripMenuItem_ExportWebm });
             toolStripMenuItem_Export.Name = "toolStripMenuItem_Export";
-            toolStripMenuItem_Export.Size = new Size(254, 34);
+            toolStripMenuItem_Export.Size = new Size(270, 34);
             toolStripMenuItem_Export.Text = "导出(&E)";
             // 
             // toolStripMenuItem_ExportFrame
             // 
             toolStripMenuItem_ExportFrame.Name = "toolStripMenuItem_ExportFrame";
-            toolStripMenuItem_ExportFrame.Size = new Size(194, 34);
+            toolStripMenuItem_ExportFrame.Size = new Size(270, 34);
             toolStripMenuItem_ExportFrame.Text = "单帧画面...";
             toolStripMenuItem_ExportFrame.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportFrameSequence
             // 
             toolStripMenuItem_ExportFrameSequence.Name = "toolStripMenuItem_ExportFrameSequence";
-            toolStripMenuItem_ExportFrameSequence.Size = new Size(194, 34);
+            toolStripMenuItem_ExportFrameSequence.Size = new Size(270, 34);
             toolStripMenuItem_ExportFrameSequence.Text = "帧序列...";
             toolStripMenuItem_ExportFrameSequence.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportGif
             // 
             toolStripMenuItem_ExportGif.Name = "toolStripMenuItem_ExportGif";
-            toolStripMenuItem_ExportGif.Size = new Size(194, 34);
+            toolStripMenuItem_ExportGif.Size = new Size(270, 34);
             toolStripMenuItem_ExportGif.Text = "GIF...";
+            toolStripMenuItem_ExportGif.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportMkv
             // 
             toolStripMenuItem_ExportMkv.Name = "toolStripMenuItem_ExportMkv";
-            toolStripMenuItem_ExportMkv.Size = new Size(194, 34);
+            toolStripMenuItem_ExportMkv.Size = new Size(270, 34);
             toolStripMenuItem_ExportMkv.Text = "MKV";
+            toolStripMenuItem_ExportMkv.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportMp4
             // 
             toolStripMenuItem_ExportMp4.Name = "toolStripMenuItem_ExportMp4";
-            toolStripMenuItem_ExportMp4.Size = new Size(194, 34);
+            toolStripMenuItem_ExportMp4.Size = new Size(270, 34);
             toolStripMenuItem_ExportMp4.Text = "MP4...";
+            toolStripMenuItem_ExportMp4.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportMov
             // 
             toolStripMenuItem_ExportMov.Name = "toolStripMenuItem_ExportMov";
-            toolStripMenuItem_ExportMov.Size = new Size(194, 34);
+            toolStripMenuItem_ExportMov.Size = new Size(270, 34);
             toolStripMenuItem_ExportMov.Text = "MOV...";
+            toolStripMenuItem_ExportMov.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripMenuItem_ExportWebm
             // 
             toolStripMenuItem_ExportWebm.Name = "toolStripMenuItem_ExportWebm";
-            toolStripMenuItem_ExportWebm.Size = new Size(194, 34);
+            toolStripMenuItem_ExportWebm.Size = new Size(270, 34);
             toolStripMenuItem_ExportWebm.Text = "WebM...";
+            toolStripMenuItem_ExportWebm.Click += toolStripMenuItem_Export_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(251, 6);
+            toolStripSeparator2.Size = new Size(267, 6);
             // 
             // toolStripMenuItem_Exit
             // 
             toolStripMenuItem_Exit.Name = "toolStripMenuItem_Exit";
             toolStripMenuItem_Exit.ShortcutKeys = Keys.Alt | Keys.F4;
-            toolStripMenuItem_Exit.Size = new Size(254, 34);
+            toolStripMenuItem_Exit.Size = new Size(270, 34);
             toolStripMenuItem_Exit.Text = "退出(&X)";
             toolStripMenuItem_Exit.Click += toolStripMenuItem_Exit_Click;
             // 

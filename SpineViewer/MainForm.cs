@@ -22,6 +22,11 @@ namespace SpineViewer
             // 在此处将导出菜单需要的类绑定起来
             toolStripMenuItem_ExportFrame.Tag = ExportType.Frame;
             toolStripMenuItem_ExportFrameSequence.Tag = ExportType.FrameSequence;
+            toolStripMenuItem_ExportGif.Tag = ExportType.GIF;
+            toolStripMenuItem_ExportMkv.Tag = ExportType.MKV;
+            toolStripMenuItem_ExportMp4.Tag = ExportType.MP4;
+            toolStripMenuItem_ExportMov.Tag = ExportType.MOV;
+            toolStripMenuItem_ExportWebm.Tag = ExportType.WebM;
         }
 
         /// <summary>
@@ -121,70 +126,9 @@ namespace SpineViewer
             progressDialog.ShowDialog();
         }
 
-        //IEnumerable<IVideoFrame> testExport(int fps)
-        //{
-        //    var duration = 2f;
-        //    var resolution = spinePreviewer.Resolution;
-        //    var delta = 1f / fps;
-        //    var frameCount = 1 + (int)(duration / delta); // 零帧开始导出
-
-        //    var spinesReverse = spineListView.Spines.Reverse();
-
-        //    // 重置动画时间
-        //    foreach (var spine in spinesReverse)
-        //        spine.CurrentAnimation = spine.CurrentAnimation;
-
-        //    // 逐帧导出
-        //    var success = 0;
-        //    for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
-        //    {
-        //        using var tex = new SFML.Graphics.RenderTexture((uint)resolution.Width, (uint)resolution.Height);
-        //        tex.SetView(spinePreviewer.View);
-        //        tex.Clear(SFML.Graphics.Color.Transparent);
-
-        //        foreach (var spine in spinesReverse)
-        //        {
-        //            tex.Draw(spine);
-        //            spine.Update(delta);
-        //        }
-
-        //        tex.Display();
-        //        Debug.WriteLine($"ThreadID: {Environment.CurrentManagedThreadId}");
-        //        var frame = tex.Texture.CopyToFrame();
-        //        tex.Dispose();
-        //        yield return frame;
-
-        //        success++;
-        //    }
-
-        //    Program.Logger.Info("Exporting done: {}/{}", success, frameCount);
-        //}
-
         private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
         {
-            //spinePreviewer.StopPreview();
 
-            //lock (spineListView.Spines)
-            //{
-            //    //var fps = 24;
-            //    ////foreach (var i in testExport(fps))
-            //    ////    _ = i;
-            //    ////var t = testExport(fps).ToArray();
-            //    ////var a = testExport(fps).GetEnumerator();
-            //    ////while (a.MoveNext());
-            //    //var videoFramesSource = new RawVideoPipeSource(testExport(fps)) { FrameRate = fps };
-            //    //var outputPath = @"C:\Users\ljh\Desktop\test\a.mov";
-            //    //var task = FFMpegArguments
-            //    //    .FromPipeInput(videoFramesSource)
-            //    //    .OutputToFile(outputPath, true
-            //    //    , options => options
-            //    //    //.WithCustomArgument("-vf \"split[s0][s1];[s0]palettegen=reserve_transparent=1[p];[s1][p]paletteuse=alpha_threshold=128\""))
-            //    //    .WithCustomArgument("-c:v prores_ks -profile:v 4444 -pix_fmt yuva444p10le"))
-            //    //    .ProcessAsynchronously();
-            //    //task.Wait();
-            //}
-
-            //spinePreviewer.StartPreview();
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
