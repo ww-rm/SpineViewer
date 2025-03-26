@@ -223,37 +223,37 @@ namespace SpineViewer.Spine
         /// 获取所属版本
         /// </summary>
         [TypeConverter(typeof(VersionConverter))]
-        [Category("基本信息"), DisplayName("运行时版本")]
+        [Category("[0] 基本信息"), DisplayName("运行时版本")]
         public Version Version { get; }
 
         /// <summary>
         /// 资源所在完整目录
         /// </summary>
-        [Category("基本信息"), DisplayName("资源目录")]
+        [Category("[0] 基本信息"), DisplayName("资源目录")]
         public string AssetsDir { get; }
 
         /// <summary>
         /// skel 文件完整路径
         /// </summary>
-        [Category("基本信息"), DisplayName("skel文件路径")]
+        [Category("[0] 基本信息"), DisplayName("skel文件路径")]
         public string SkelPath { get; }
 
         /// <summary>
         /// atlas 文件完整路径
         /// </summary>
-        [Category("基本信息"), DisplayName("atlas文件路径")]
+        [Category("[0] 基本信息"), DisplayName("atlas文件路径")]
         public string AtlasPath { get; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        [Category("基本信息"), DisplayName("名称")]
+        [Category("[0] 基本信息"), DisplayName("名称")]
         public string Name { get; }
 
         /// <summary>
         /// 获取所属文件版本
         /// </summary>
-        [Category("基本信息"), DisplayName("文件版本")]
+        [Category("[0] 基本信息"), DisplayName("文件版本")]
         public abstract string FileVersion { get; }
 
         #endregion
@@ -263,26 +263,26 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 缩放比例
         /// </summary>
-        [Category("变换"), DisplayName("缩放比例")]
+        [Category("[1] 变换"), DisplayName("缩放比例")]
         public abstract float Scale { get; set; }
 
         /// <summary>
         /// 位置
         /// </summary>
         [TypeConverter(typeof(PointFConverter))]
-        [Category("变换"), DisplayName("位置")]
+        [Category("[1] 变换"), DisplayName("位置")]
         public abstract PointF Position { get; set; }
 
         /// <summary>
         /// 水平翻转
         /// </summary>
-        [Category("变换"), DisplayName("水平翻转")]
+        [Category("[1] 变换"), DisplayName("水平翻转")]
         public abstract bool FlipX { get; set; }
 
         /// <summary>
         /// 垂直翻转
         /// </summary>
-        [Category("变换"), DisplayName("垂直翻转")]
+        [Category("[1] 变换"), DisplayName("垂直翻转")]
         public abstract bool FlipY { get; set; }
 
         #endregion
@@ -292,8 +292,14 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 是否使用预乘Alpha
         /// </summary>
-        [Category("渲染"), DisplayName("预乘Alpha通道")]
+        [Category("[3] 渲染"), DisplayName("预乘Alpha通道")]
         public bool UsePremultipliedAlpha { get; set; } = true;
+
+        /// <summary>
+        /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
+        /// </summary>
+        [Category("[3] 渲染"), DisplayName("是否隐藏")]
+        public bool IsHidden { get; set; } = false;
 
         #endregion
 
@@ -310,13 +316,13 @@ namespace SpineViewer.Spine
         /// 当前动画名称, 如果设置的动画不存在则忽略
         /// </summary>
         [TypeConverter(typeof(AnimationConverter))]
-        [Category("动画"), DisplayName("当前动画")]
+        [Category("[2] 动画"), DisplayName("当前动画")]
         public abstract string CurrentAnimation { get; set; }
 
         /// <summary>
         /// 当前动画时长
         /// </summary>
-        [Category("动画"), DisplayName("当前动画时长")]
+        [Category("[2] 动画"), DisplayName("当前动画时长")]
         public float CurrentAnimationDuration { get => GetAnimationDuration(CurrentAnimation); }
 
         /// <summary>
@@ -330,7 +336,7 @@ namespace SpineViewer.Spine
         /// 当前皮肤名称, 如果设置的皮肤不存在则忽略
         /// </summary>
         [TypeConverter(typeof(SkinConverter))]
-        [Category("动画"), DisplayName("当前皮肤")]
+        [Category("[2] 动画"), DisplayName("当前皮肤")]
         public abstract string CurrentSkin { get; set; }
 
         #endregion
@@ -431,13 +437,13 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 显示包围盒
         /// </summary>
-        [Category("调试"), DisplayName("显示包围盒")]
+        [Category("[4] 调试"), DisplayName("显示包围盒")]
         public bool DebugBounds { get; set; } = true;
 
         /// <summary>
         /// 显示骨骼
         /// </summary>
-        [Category("调试"), DisplayName("显示骨骼(TODO)")]
+        [Category("[4] 调试"), DisplayName("显示骨骼(TODO)")]
         public bool DebugBones { get; set; } = false;
 
         #region SFML.Graphics.Drawable 接口实现

@@ -39,7 +39,7 @@ namespace SpineViewer.Dialogs
                     PropertyInfo? labelProp = category.GetType().GetProperty("Label", BindingFlags.Instance | BindingFlags.Public);
                     if (labelProp == null) continue;
                     string? label = labelProp.GetValue(category) as string;
-                    if (label != "[1] 导出") continue;
+                    if (label != "[0] 导出") continue;
 
                     // 获取该分组下的所有属性项
                     PropertyInfo? gridItemsProp = category.GetType().GetProperty("GridItems", BindingFlags.Instance | BindingFlags.Public);

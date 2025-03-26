@@ -20,7 +20,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// 单帧画面格式
         /// </summary>
         [TypeConverter(typeof(ImageFormatConverter))]
-        [Category("[2] 单帧画面"), DisplayName("图像格式")]
+        [Category("[1] 单帧画面"), DisplayName("图像格式")]
         public ImageFormat ImageFormat
         {
             get => imageFormat;
@@ -35,14 +35,14 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// <summary>
         /// 文件名后缀
         /// </summary>
-        [Category("[2] 单帧画面"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
+        [Category("[1] 单帧画面"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
         public string FileSuffix { get => imageFormat.GetSuffix(); }
 
         /// <summary>
         /// DPI
         /// </summary>
         [TypeConverter(typeof(SizeFConverter))]
-        [Category("[2] 单帧画面"), DisplayName("DPI"), Description("导出图像的每英寸像素数，用于调整图像的物理尺寸")]
+        [Category("[1] 单帧画面"), DisplayName("DPI"), Description("导出图像的每英寸像素数，用于调整图像的物理尺寸")]
         public SizeF DPI
         {
             get => dpi;
