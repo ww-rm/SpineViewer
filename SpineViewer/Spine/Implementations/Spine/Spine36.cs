@@ -147,20 +147,21 @@ namespace SpineViewer.Spine.Implementations.Spine
             set 
             { 
                 skeleton.X = value.X; 
-                skeleton.Y = value.Y; 
+                skeleton.Y = value.Y;
+                Update(0);
             } 
         }
 
         public override bool FlipX
         {
             get => skeleton.FlipX;
-            set => skeleton.FlipX = value;
+            set { skeleton.FlipX = value; Update(0); }
         }
 
         public override bool FlipY
         {
             get => skeleton.FlipY;
-            set => skeleton.FlipY = value;
+            set { skeleton.FlipY = value; Update(0); }
         }
 
         public override string CurrentAnimation

@@ -106,6 +106,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 skeleton.ScaleX = Math.Sign(skeleton.ScaleX) * value;
                 skeleton.ScaleY = Math.Sign(skeleton.ScaleY) * value;
+                Update(0);
             }
         }
 
@@ -116,6 +117,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 skeleton.X = value.X;
                 skeleton.Y = value.Y;
+                Update(0);
             }
         }
 
@@ -126,6 +128,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 if (skeleton.ScaleX > 0 && value || skeleton.ScaleX < 0 && !value)
                     skeleton.ScaleX *= -1;
+                Update(0);
             }
         }
 
@@ -136,6 +139,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
                     skeleton.ScaleY *= -1;
+                Update(0);
             }
         }
 

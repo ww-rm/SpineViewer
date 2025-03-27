@@ -95,58 +95,12 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override float Scale
         {
-            get
-            {
-                if (skeletonBinary is not null)
-                    return skeletonBinary.Scale;
-                else if (skeletonJson is not null)
-                    return skeletonJson.Scale;
-                else
-                    return 1f;
-            }
+            get => Math.Abs(skeleton.ScaleX);
             set
             {
-                // 保存状态
-                var position = Position;
-                var flipX = FlipX;
-                var flipY = FlipY;
-                var savedTrack0 = animationState.GetCurrent(0);
-
-                var val = Math.Max(value, SCALE_MIN);
-                if (skeletonBinary is not null)
-                {
-                    skeletonBinary.Scale = val;
-                    skeletonData = skeletonBinary.ReadSkeletonData(SkelPath);
-                }
-                else if (skeletonJson is not null)
-                {
-                    skeletonJson.Scale = val;
-                    skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
-                }
-
-                // reload skel-dependent data
-                animationStateData = new AnimationStateData(skeletonData) { DefaultMix = animationStateData.DefaultMix };
-                skeleton = new Skeleton(skeletonData);
-                animationState = new AnimationState(animationStateData);
-
-                // 恢复状态
-                Position = position;
-                FlipX = flipX;
-                FlipY = flipY;
-
-                // 恢复原本 Track0 上所有动画
-                if (savedTrack0 is not null)
-                {
-                    var entry = animationState.SetAnimation(0, savedTrack0.Animation.Name, true);
-                    entry.TrackTime = savedTrack0.TrackTime;
-                    var savedEntry = savedTrack0.Next;
-                    while (savedEntry is not null)
-                    {
-                        entry = animationState.AddAnimation(0, savedEntry.Animation.Name, true, 0);
-                        entry.TrackTime = savedEntry.TrackTime;
-                        savedEntry = savedEntry.Next;
-                    }
-                }
+                skeleton.ScaleX = Math.Sign(skeleton.ScaleX) * value;
+                skeleton.ScaleY = Math.Sign(skeleton.ScaleY) * value;
+                Update(0);
             }
         }
 
@@ -157,6 +111,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 skeleton.X = value.X;
                 skeleton.Y = value.Y;
+                Update(0);
             }
         }
 
@@ -167,6 +122,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 if (skeleton.ScaleX > 0 && value || skeleton.ScaleX < 0 && !value)
                     skeleton.ScaleX *= -1;
+                Update(0);
             }
         }
 
@@ -177,6 +133,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
                     skeleton.ScaleY *= -1;
+                Update(0);
             }
         }
 
