@@ -81,10 +81,6 @@ namespace SpineViewer.Spine.Implementations.Spine
 
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
-
-            // 取最后一个作为初始, 尽可能去显示非默认的内容
-            CurrentAnimation = animationNames.Last();
-            CurrentSkin = skinNames.Last();
         }
 
         protected override void Dispose(bool disposing)
@@ -112,8 +108,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 var position = Position;
                 var flipX = FlipX;
                 var flipY = FlipY;
-                var animation = CurrentAnimation;
-                var skin = CurrentSkin;
+                var animation = Track0Animation; // TODO: 适配多轨道
+                var skin = Skin;
 
                 var val = Math.Max(value, SCALE_MIN);
                 if (skeletonBinary is not null)
@@ -136,8 +132,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 Position = position;
                 FlipX = flipX;
                 FlipY = flipY;
-                CurrentAnimation = animation;
-                CurrentSkin = skin;
+                Track0Animation = animation; // TODO: 适配多轨道
+                Skin = skin;
             }
         }
 
@@ -164,7 +160,19 @@ namespace SpineViewer.Spine.Implementations.Spine
             set { skeleton.FlipY = value; Update(0); }
         }
 
-        public override string CurrentAnimation
+        public override string Skin
+        {
+            get => skeleton.Skin?.Name ?? "default";
+            set
+            {
+                if (!skinNames.Contains(value)) return;
+                skeleton.SetSkin(value);
+                skeleton.SetSlotsToSetupPose();
+                Update(0);
+            }
+        }
+
+        public override string Track0Animation
         {
             get => animationState.GetCurrent(0)?.Animation.Name ?? EMPTY_ANIMATION;
             set
@@ -173,18 +181,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                     animationState.SetAnimation(0, EmptyAnimation, false);
                 else if (animationNames.Contains(value))
                     animationState.SetAnimation(0, value, true);
-                Update(0);
-            }
-        }
-
-        public override string CurrentSkin
-        {
-            get => skeleton.Skin?.Name ?? "default";
-            set
-            {
-                if (!skinNames.Contains(value)) return;
-                skeleton.SetSkin(value);
-                skeleton.SetSlotsToSetupPose();
                 Update(0);
             }
         }

@@ -182,7 +182,38 @@ namespace SpineViewer.Spine
             {
                 throw new NotImplementedException($"Not implemented version: {version}");
             }
-            return (Spine)Activator.CreateInstance(spineType, skelPath, atlasPath);
+
+            var spine = (Spine)Activator.CreateInstance(spineType, skelPath, atlasPath);
+
+            // 统一初始化
+            spine.initBounds = spine.Bounds;
+
+            // XXX: tex 没办法在这里主动 Dispose
+            // 批量添加在获取预览图的时候极大概率会和预览线程死锁
+            // 虽然两边不会同时调用 Draw, 但是死锁似乎和 Draw 函数有关
+            // 除此之外, 似乎还和 tex 的 Dispose 有关
+            // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
+            var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            tex.SetView(spine.InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.Draw(spine);
+            tex.Display();
+
+            using (var img = tex.Texture.CopyToImage())
+            {
+                img.SaveToMemory(out var imgBuffer, "bmp");
+                using (var stream = new MemoryStream(imgBuffer))
+                {
+                    // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
+                    spine.preview = new Bitmap(new Bitmap(stream));
+                }
+            }
+
+            // 取最后一个作为初始, 尽可能去显示非默认的内容
+            spine.Skin = spine.SkinNames.Last();
+            spine.Track0Animation = spine.AnimationNames.Last();
+
+            return spine;
         }
 
         /// <summary>
@@ -301,26 +332,6 @@ namespace SpineViewer.Spine
         #region 属性 | [3] 动画
 
         /// <summary>
-        /// 包含的所有动画名称
-        /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> AnimationNames { get => animationNames.AsReadOnly(); }
-        protected List<string> animationNames = [EMPTY_ANIMATION];
-
-        /// <summary>
-        /// 当前动画名称, 如果设置的动画不存在则忽略
-        /// </summary>
-        [TypeConverter(typeof(AnimationConverter))]
-        [Category("[3] 动画"), DisplayName("当前动画")]
-        public abstract string CurrentAnimation { get; set; }
-
-        /// <summary>
-        /// 当前动画时长
-        /// </summary>
-        [Category("[3] 动画"), DisplayName("当前动画时长")]
-        public float CurrentAnimationDuration { get => GetAnimationDuration(CurrentAnimation); }
-
-        /// <summary>
         /// 包含的所有皮肤名称
         /// </summary>
         [Browsable(false)]
@@ -328,11 +339,31 @@ namespace SpineViewer.Spine
         protected List<string> skinNames = [];
 
         /// <summary>
-        /// 当前皮肤名称, 如果设置的皮肤不存在则忽略
+        /// 使用的皮肤名称, 如果设置的皮肤不存在则忽略
         /// </summary>
         [TypeConverter(typeof(SkinConverter))]
-        [Category("[3] 动画"), DisplayName("当前皮肤")]
-        public abstract string CurrentSkin { get; set; }
+        [Category("[3] 动画"), DisplayName("皮肤")]
+        public abstract string Skin { get; set; }
+
+        /// <summary>
+        /// 包含的所有动画名称
+        /// </summary>
+        [Browsable(false)]
+        public ReadOnlyCollection<string> AnimationNames { get => animationNames.AsReadOnly(); }
+        protected List<string> animationNames = [EMPTY_ANIMATION];
+
+        /// <summary>
+        /// 默认轨道动画名称, 如果设置的动画不存在则忽略
+        /// </summary>
+        [TypeConverter(typeof(AnimationConverter))]
+        [Category("[3] 动画"), DisplayName("默认轨道动画")]
+        public abstract string Track0Animation { get; set; }
+
+        /// <summary>
+        /// 默认轨道动画时长
+        /// </summary>
+        [Category("[3] 动画"), DisplayName("默认轨道动画时长")]
+        public float Track0AnimationDuration { get => GetAnimationDuration(Track0Animation); } // TODO: 动画时长变成伪属性在面板显示
 
         #endregion
 
@@ -395,55 +426,15 @@ namespace SpineViewer.Spine
         /// 初始状态下的骨骼包围盒
         /// </summary>
         [Browsable(false)]
-        public RectangleF InitBounds
-        {
-            get
-            {
-                if (initBounds is null)
-                {
-                    var tmp = CurrentAnimation;
-                    CurrentAnimation = EMPTY_ANIMATION;
-                    initBounds = Bounds;
-                    CurrentAnimation = tmp;
-                }
-                return (RectangleF)initBounds;
-            }
-        }
-        private RectangleF? initBounds = null;
+        public RectangleF InitBounds { get => initBounds; }
+        private RectangleF initBounds;
 
         /// <summary>
         /// 骨骼预览图
         /// </summary>
         [Browsable(false)]
-        public Image Preview
-        {
-            get
-            {
-                if (preview is null)
-                {
-                    // XXX: tex 没办法在这里主动 Dispose
-                    // 批量添加在获取预览图的时候极大概率会和预览线程死锁
-                    // 虽然两边不会同时调用 Draw, 但是死锁似乎和 Draw 函数有关
-                    // 除此之外, 似乎还和 tex 的 Dispose 有关
-                    // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
-                    var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-                    tex.SetView(InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
-                    tex.Clear(SFML.Graphics.Color.Transparent);
-                    var tmp = CurrentAnimation;
-                    CurrentAnimation = EMPTY_ANIMATION;
-                    tex.Draw(this);
-                    CurrentAnimation = tmp;
-                    tex.Display();
-
-                    using var img = tex.Texture.CopyToImage();
-                    img.SaveToMemory(out var imgBuffer, "bmp");
-                    using var stream = new MemoryStream(imgBuffer);
-                    preview = new Bitmap(new Bitmap(stream)); // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
-                }
-                return preview;
-            }
-        }
-        private Image preview = null;
+        public Image Preview { get => preview; }
+        private Image preview;
 
         /// <summary>
         /// 获取动画时长, 如果动画不存在则返回 0

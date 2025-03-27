@@ -607,7 +607,7 @@ namespace SpineViewer.Controls
                 lock (SpineListView.Spines)
                 {
                     foreach (var spine in SpineListView.Spines)
-                        spine.CurrentAnimation = spine.CurrentAnimation;
+                        spine.Track0Animation = spine.Track0Animation; // TODO: 多轨道重置
                 }
             }
         }
@@ -619,7 +619,7 @@ namespace SpineViewer.Controls
                 lock (SpineListView.Spines)
                 {
                     foreach (var spine in SpineListView.Spines)
-                        spine.CurrentAnimation = spine.CurrentAnimation;
+                        spine.Track0Animation = spine.Track0Animation; // TODO: 多轨道重置
                 }
             }
             IsUpdating = true;
