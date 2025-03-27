@@ -44,7 +44,6 @@
             button_Cancel = new Button();
             label2 = new Label();
             skelFileListBox = new SpineViewer.Controls.SkelFileListBox();
-            openFileDialog_Skel = new OpenFileDialog();
             panel.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel_TargetFormat.SuspendLayout();
@@ -238,14 +237,6 @@
             skelFileListBox.Size = new Size(945, 264);
             skelFileListBox.TabIndex = 20;
             // 
-            // openFileDialog_Skel
-            // 
-            openFileDialog_Skel.AddExtension = false;
-            openFileDialog_Skel.AddToRecent = false;
-            openFileDialog_Skel.Filter = "skel 文件 (*.skel; *.json)|*.skel;*.json|二进制文件 (*.skel)|*.skel|文本文件 (*.json)|*.json|所有文件 (*.*)|*.*";
-            openFileDialog_Skel.Multiselect = true;
-            openFileDialog_Skel.Title = "批量选择skel文件";
-            // 
             // ConvertFileFormatDialog
             // 
             AcceptButton = button_Ok;
@@ -281,7 +272,6 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button button_Ok;
         private Button button_Cancel;
-        private OpenFileDialog openFileDialog_Skel;
         private Label label1;
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel_TargetFormat;
