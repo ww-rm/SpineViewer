@@ -201,11 +201,12 @@ namespace SpineViewer.Spine
 
             using (var img = tex.Texture.CopyToImage())
             {
-                img.SaveToMemory(out var imgBuffer, "bmp");
-                using (var stream = new MemoryStream(imgBuffer))
+                if (img.SaveToMemory(out var imgBuffer, "bmp"))
                 {
                     // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
-                    spine.preview = new Bitmap(new Bitmap(stream));
+                    using var stream = new MemoryStream(imgBuffer);
+                    using var bitmap = new Bitmap(stream);
+                    spine.preview = new Bitmap(bitmap);
                 }
             }
 
