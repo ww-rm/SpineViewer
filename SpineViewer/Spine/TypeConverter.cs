@@ -16,28 +16,16 @@ namespace SpineViewer.Spine
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type? destinationType)
         {
             if (destinationType == typeof(string) && value is Version version)
-            {
-                // 调用自定义的 String() 方法
                 return version.GetName();
-            }
-
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
 
     public class AnimationConverter : StringConverter
     {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
-        {
-            // 支持标准值列表
-            return true;
-        }
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
 
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
-        {
-            // 排他模式，只有下拉列表中的值可选
-            return true;
-        }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
@@ -61,17 +49,9 @@ namespace SpineViewer.Spine
 
     public class SkinConverter : StringConverter
     {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
-        {
-            // 支持标准值列表
-            return true;
-        }
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
 
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
-        {
-            // 排他模式，只有下拉列表中的值可选
-            return true;
-        }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {

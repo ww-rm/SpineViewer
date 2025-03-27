@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SpineViewer
 {
-    public class PointFConverter : TypeConverter
+    public class PointFConverter : ExpandableObjectConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
         {
@@ -44,12 +44,5 @@ namespace SpineViewer
             }
             return base.ConvertFrom(context, culture, value);
         }
-
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
-        {
-            return TypeDescriptor.GetProperties(typeof(PointF), attributes);
-        }
-
-        public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;
     }
 }
