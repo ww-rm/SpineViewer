@@ -81,7 +81,7 @@ namespace SpineViewer.Exporter
         {
             // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
             using var tex = GetRenderTexture();
-            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.Clear(ExportArgs.BackgroundColor);
             tex.Draw(spine);
             tex.Display();
             return new(tex.Texture.CopyToImage());
@@ -94,7 +94,7 @@ namespace SpineViewer.Exporter
         {
             // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
             using var tex = GetRenderTexture();
-            tex.Clear(SFML.Graphics.Color.Transparent);
+            tex.Clear(ExportArgs.BackgroundColor);
             foreach (var spine in spinesToRender) tex.Draw(spine);
             tex.Display();
             return new(tex.Texture.CopyToImage());
