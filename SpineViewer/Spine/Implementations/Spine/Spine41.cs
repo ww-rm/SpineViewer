@@ -155,7 +155,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             {
                 if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
-                skeleton.SetToSetupPose();
+                skeleton.SetSlotsToSetupPose();
                 Update(0);
             }
         }
