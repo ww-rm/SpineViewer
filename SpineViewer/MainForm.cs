@@ -146,10 +146,12 @@ namespace SpineViewer
         {
             var worker = (BackgroundWorker)sender;
             var exporter = (Exporter.Exporter)e.Argument;
+            Invoke(() => TaskbarManager.SetProgressState(Handle, TBPFLAG.TBPF_INDETERMINATE));
             spinePreviewer.StopRender();
             lock (spineListView.Spines) { exporter.Export(spineListView.Spines.Where(sp => !sp.IsHidden).ToArray(), (BackgroundWorker)sender); }
             e.Cancel = worker.CancellationPending;
             spinePreviewer.StartRender();
+            Invoke(() => TaskbarManager.SetProgressState(Handle, TBPFLAG.TBPF_NOPROGRESS));
         }
 
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
