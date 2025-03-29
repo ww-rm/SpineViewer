@@ -26,23 +26,22 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 空动画标记
         /// </summary>
-        public const string EMPTY_ANIMATION = "<Empty>";
+        protected const string EMPTY_ANIMATION = "<Empty>";
 
         /// <summary>
         /// 预览图宽
         /// </summary>
-        public const uint PREVIEW_WIDTH = 256;
+        protected const uint PREVIEW_WIDTH = 256;
 
         /// <summary>
         /// 预览图高
         /// </summary>
-        public const uint PREVIEW_HEIGHT = 256;
+        protected const uint PREVIEW_HEIGHT = 256;
 
         /// <summary>
         /// 缩放最小值
         /// </summary>
-        public const float SCALE_MIN = 0.001f;
-
+        protected const float SCALE_MIN = 0.001f;
 
         /// <summary>
         /// 创建特定版本的 Spine
@@ -50,10 +49,31 @@ namespace SpineViewer.Spine
         public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
         {
             if (version == SpineVersion.Auto) version = SpineHelper.GetVersion(skelPath);
-            var spine = New(version, [skelPath, atlasPath]);
+            atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");
+            return New(version, [skelPath, atlasPath]).PostInit();
+        }
 
-            // 统一初始化
-            spine.initBounds = spine.Bounds;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public Spine(string skelPath, string atlasPath)
+        {
+            Version = GetType().GetCustomAttribute<SpineImplementationAttribute>().ImplementationKey;
+            AssetsDir = Directory.GetParent(skelPath).FullName;
+            SkelPath = Path.GetFullPath(skelPath);
+            AtlasPath = Path.GetFullPath(atlasPath);
+            Name = Path.GetFileNameWithoutExtension(skelPath);
+        }
+
+        /// <summary>
+        /// 构造函数之后的初始化工作
+        /// </summary>
+        private Spine PostInit()
+        {
+            SkinNames = skinNames.AsReadOnly();
+            AnimationNames = animationNames.AsReadOnly();
+
+            InitBounds = Bounds;
 
             // XXX: tex 没办法在这里主动 Dispose
             // 批量添加在获取预览图的时候极大概率会和预览线程死锁
@@ -61,9 +81,9 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            tex.SetView(spine.InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+            tex.SetView(InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
             tex.Clear(SFML.Graphics.Color.Transparent);
-            tex.Draw(spine);
+            tex.Draw(this);
             tex.Display();
 
             using (var img = tex.Texture.CopyToImage())
@@ -73,50 +93,27 @@ namespace SpineViewer.Spine
                     // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
                     using var stream = new MemoryStream(imgBuffer);
                     using var bitmap = new Bitmap(stream);
-                    spine.preview = new Bitmap(bitmap);
+                    Preview = new Bitmap(bitmap);
                 }
             }
 
             // 取最后一个作为初始, 尽可能去显示非默认的内容
-            spine.Skin = spine.SkinNames.Last();
-            spine.Track0Animation = spine.AnimationNames.Last();
+            Skin = SkinNames.Last();
+            Track0Animation = AnimationNames.Last();
 
-            return spine;
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public Spine(string skelPath, string? atlasPath = null)
-        {
-            // 获取子类类型
-            var type = GetType();
-            var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
-            if (attr is null)
-            {
-                throw new InvalidOperationException($"Class {type.Name} has no SpineImplementationAttribute");
-            }
-
-            atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");
-
-            // 设置 Version
-            Version = attr.ImplementationKey;
-            AssetsDir = Directory.GetParent(skelPath).FullName;
-            SkelPath = Path.GetFullPath(skelPath);
-            AtlasPath = Path.GetFullPath(atlasPath);
-            Name = Path.GetFileNameWithoutExtension(skelPath);
+            return this;
         }
 
         ~Spine() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
-        protected virtual void Dispose(bool disposing) { preview?.Dispose(); }
+        protected virtual void Dispose(bool disposing) { Preview?.Dispose(); }
 
         #region 属性 | [0] 基本信息
 
         /// <summary>
         /// 获取所属版本
         /// </summary>
-        [TypeConverter(typeof(VersionConverter))]
+        [TypeConverter(typeof(SpineVersionConverter))]
         [Category("[0] 基本信息"), DisplayName("运行时版本")]
         public SpineVersion Version { get; }
 
@@ -202,8 +199,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 包含的所有皮肤名称
         /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> SkinNames { get => skinNames.AsReadOnly(); }
+        public ReadOnlyCollection<string> SkinNames { get; private set; }
         protected List<string> skinNames = [];
 
         /// <summary>
@@ -216,8 +212,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 包含的所有动画名称
         /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> AnimationNames { get => animationNames.AsReadOnly(); }
+        public ReadOnlyCollection<string> AnimationNames { get; private set; }
         protected List<string> animationNames = [EMPTY_ANIMATION];
 
         /// <summary>
@@ -244,16 +239,6 @@ namespace SpineViewer.Spine
         public bool IsDebug { get; set; } = false;
 
         /// <summary>
-        /// 包围盒颜色
-        /// </summary>
-        protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
-
-        /// <summary>
-        /// 包围盒顶点数组
-        /// </summary>
-        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
-
-        /// <summary>
         /// 显示纹理
         /// </summary>
         [Category("[4] 调试"), DisplayName("显示纹理")]
@@ -268,7 +253,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 显示骨骼
         /// </summary>
-        [Category("[4] 调试"), DisplayName("显示骨骼")]
+        [Category("[4] 调试"), DisplayName("显示骨架")]
         public bool DebugBones { get; set; } = false;
 
         #endregion
@@ -294,15 +279,13 @@ namespace SpineViewer.Spine
         /// 初始状态下的骨骼包围盒
         /// </summary>
         [Browsable(false)]
-        public RectangleF InitBounds { get => initBounds; }
-        private RectangleF initBounds;
+        public RectangleF InitBounds { get; private set; }
 
         /// <summary>
         /// 骨骼预览图
         /// </summary>
         [Browsable(false)]
-        public Image Preview { get => preview; }
-        private Image preview;
+        public Image Preview { get; private set; }
 
         /// <summary>
         /// 获取动画时长, 如果动画不存在则返回 0
@@ -325,6 +308,16 @@ namespace SpineViewer.Spine
         /// 顶点缓冲区
         /// </summary>
         protected readonly SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
+
+        /// <summary>
+        /// 包围盒颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
+
+        /// <summary>
+        /// 包围盒顶点数组
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
 
         /// <summary>
         /// SFML.Graphics.Drawable 接口实现

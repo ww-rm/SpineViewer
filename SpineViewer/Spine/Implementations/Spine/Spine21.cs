@@ -47,7 +47,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         // 2.1.x 不支持剪裁
         //private SkeletonClipping clipping = new(); 
 
-        public Spine21(string skelPath, string? atlasPath = null) : base(skelPath, atlasPath)
+        public Spine21(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -76,12 +76,12 @@ namespace SpineViewer.Spine.Implementations.Spine
             foreach (var skin in skeletonData.Skins)
                 skinNames.Add(skin.Name);
 
-            animationStateData = new AnimationStateData(skeletonData);
-            skeleton = new Skeleton(skeletonData);
-            animationState = new AnimationState(animationStateData);
-
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
+
+            skeleton = new Skeleton(skeletonData);
+            animationStateData = new AnimationStateData(skeletonData);
+            animationState = new AnimationState(animationStateData);
         }
 
         protected override void Dispose(bool disposing)

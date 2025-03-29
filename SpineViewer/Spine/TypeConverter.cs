@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Spine
 {
-    public class VersionConverter : EnumConverter
+    public class SpineVersionConverter : EnumConverter
     {
-        public VersionConverter() : base(typeof(SpineVersion)) { }
+        public SpineVersionConverter() : base(typeof(SpineVersion)) { }
 
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type? destinationType)
         {
