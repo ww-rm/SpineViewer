@@ -67,10 +67,12 @@ namespace SpineViewer.Exporter
         public bool RenderSelectedOnly { get; }
 
         /// <summary>
-        /// 背景颜色 TODO: 提供颜色编辑
+        /// 背景颜色
         /// </summary>
+        [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(SFMLColorConverter))]
         [Category("[0] 导出"), DisplayName("背景颜色"), Description("要使用的背景色, 格式为 #RRGGBBAA")]
-        public SFML.Graphics.Color BackgroundColor { get; set; } = SFML.Graphics.Color.Transparent;
+        public SFML.Graphics.Color BackgroundColor { get; set; } = new(0, 255, 0, 0);
 
         /// <summary>
         /// 检查参数是否合法并规范化参数值, 否则返回用户错误原因
