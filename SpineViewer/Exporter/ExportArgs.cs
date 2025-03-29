@@ -14,40 +14,18 @@ namespace SpineViewer.Exporter
     /// <summary>
     /// 导出参数基类
     /// </summary>
-    public abstract class ExportArgs
+    public abstract class ExportArgs : ImplementationResolver<ExportArgs, ExportImplementationAttribute, ExportType>
     {
-        /// <summary>
-        /// 实现类缓存
-        /// </summary>
-        private static readonly Dictionary<ExportType, Type> ImplementationTypes = [];
-
-        static ExportArgs()
-        {
-            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ExportArgs).IsAssignableFrom(t) && !t.IsAbstract);
-            foreach (var type in impTypes)
-            {
-                var attr = type.GetCustomAttribute<ExportImplementationAttribute>();
-                if (attr is not null)
-                {
-                    if (ImplementationTypes.ContainsKey(attr.ExportType))
-                        throw new InvalidOperationException($"Multiple implementations found: {attr.ExportType}");
-                    ImplementationTypes[attr.ExportType] = type;
-                }
-            }
-            Program.Logger.Debug("Find export args implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
-        }
-
         /// <summary>
         /// 创建指定类型导出参数
         /// </summary>
+        /// <param name="exportType">导出类型</param>
+        /// <param name="resolution">分辨率</param>
+        /// <param name="view">导出视图</param>
+        /// <param name="renderSelectedOnly">仅渲染选中</param>
+        /// <returns>返回与指定 <paramref name="exportType"/> 匹配的导出参数实例</returns>
         public static ExportArgs New(ExportType exportType, Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
-        {
-            if (!ImplementationTypes.TryGetValue(exportType, out var type))
-            {
-                throw new NotImplementedException($"Not implemented type: {exportType}");
-            }
-            return (ExportArgs)Activator.CreateInstance(type, resolution, view, renderSelectedOnly);
-        }
+            => New(exportType, resolution, view, renderSelectedOnly);
 
         public ExportArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
         {

@@ -79,7 +79,7 @@ namespace SpineViewer.Dialogs
                 atlasPath = Path.GetFullPath(atlasPath);
             }
 
-            if (version != Spine.Version.Auto && !Spine.Spine.ImplementedVersions.Contains(version))
+            if (version != Spine.Version.Auto && !Spine.Spine.HasImplementation(version))
             {
                 MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;

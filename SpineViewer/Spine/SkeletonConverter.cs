@@ -15,46 +15,12 @@ namespace SpineViewer.Spine
     /// <summary>
     /// SkeletonConverter 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
-    public abstract class SkeletonConverter
+    public abstract class SkeletonConverter : ImplementationResolver<SkeletonConverter, SpineImplementationAttribute, Version>
     {
-        /// <summary>
-        /// 实现类缓存
-        /// </summary>
-        private static readonly Dictionary<Version, Type> ImplementationTypes = [];
-        public static readonly Dictionary<Version, Type>.KeyCollection ImplementedVersions;
-
-        /// <summary>
-        /// 静态构造函数
-        /// </summary>
-        static SkeletonConverter()
-        {
-            // 遍历并缓存标记了 SpineImplementationAttribute 的类型
-            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(SkeletonConverter).IsAssignableFrom(t) && !t.IsAbstract);
-            foreach (var type in impTypes)
-            {
-                var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
-                if (attr is not null)
-                {
-                    if (ImplementationTypes.ContainsKey(attr.Version))
-                        throw new InvalidOperationException($"Multiple implementations found: {attr.Version}");
-                    ImplementationTypes[attr.Version] = type;
-                }
-            }
-            Program.Logger.Debug("Find SkeletonConverter implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
-            ImplementedVersions = ImplementationTypes.Keys;
-        }
-
         /// <summary>
         /// 创建特定版本的 SkeletonConverter
         /// </summary>
-        public static SkeletonConverter New(Version version)
-        {
-            if (!ImplementationTypes.TryGetValue(version, out var cvterType))
-            {
-                throw new NotImplementedException($"Not implemented version: {version}");
-            }
-            return (SkeletonConverter)Activator.CreateInstance(cvterType);
-        }
+        public static SkeletonConverter New(Version version) => New(version);
 
         /// <summary>
         /// Json 格式控制

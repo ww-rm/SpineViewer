@@ -59,13 +59,13 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (sourceVersion != Spine.Version.Auto && !SkeletonConverter.ImplementedVersions.Contains(sourceVersion))
+            if (sourceVersion != Spine.Version.Auto && !SkeletonConverter.HasImplementation(sourceVersion))
             {
                 MessageBox.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
-            if (!SkeletonConverter.ImplementedVersions.Contains(targetVersion))
+            if (!SkeletonConverter.HasImplementation(targetVersion))
             {
                 MessageBox.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;

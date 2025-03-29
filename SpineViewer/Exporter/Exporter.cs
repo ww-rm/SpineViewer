@@ -12,56 +12,25 @@ namespace SpineViewer.Exporter
     /// <summary>
     /// 导出器基类
     /// </summary>
-    public abstract class Exporter
+    public abstract class Exporter(ExportArgs exportArgs) : ImplementationResolver<Exporter, ExportImplementationAttribute, ExportType>
     {
         /// <summary>
-        /// 实现类缓存
+        /// 创建指定类型导出器
         /// </summary>
-        private static readonly Dictionary<ExportType, Type> ImplementationTypes = [];
-
-        static Exporter()
-        {
-            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(Exporter).IsAssignableFrom(t) && !t.IsAbstract);
-            foreach (var type in impTypes)
-            {
-                var attr = type.GetCustomAttribute<ExportImplementationAttribute>();
-                if (attr is not null)
-                {
-                    if (ImplementationTypes.ContainsKey(attr.ExportType))
-                        throw new InvalidOperationException($"Multiple implementations found: {attr.ExportType}");
-                    ImplementationTypes[attr.ExportType] = type;
-                }
-            }
-            Program.Logger.Debug("Find exporter implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
-        }
-
-        /// <summary>
-        /// 创建指定类型导出参数
-        /// </summary>
-        public static Exporter New(ExportType exportType, ExportArgs exportArgs)
-        {
-            if (!ImplementationTypes.TryGetValue(exportType, out var type))
-            {
-                throw new NotImplementedException($"Not implemented type: {exportType}");
-            }
-            return (Exporter)Activator.CreateInstance(type, exportArgs);
-        }
+        /// <param name="exportType">导出类型</param>
+        /// <param name="exportArgs">与 <paramref name="exportType"/> 匹配的导出参数</param>
+        /// <returns>与 <paramref name="exportType"/> 匹配的导出器</returns>
+        public static Exporter New(ExportType exportType, ExportArgs exportArgs) => New(exportType, exportArgs);
 
         /// <summary>
         /// 导出参数
         /// </summary>
-        public ExportArgs ExportArgs { get; }
+        public ExportArgs ExportArgs { get; } = exportArgs;
 
         /// <summary>
         /// 可用于文件名的时间戳字符串
         /// </summary>
-        protected readonly string timestamp;
-
-        public Exporter(ExportArgs exportArgs)
-        {
-            ExportArgs = exportArgs;
-            timestamp = DateTime.Now.ToString("yyMMddHHmmss");
-        }
+        protected readonly string timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
         /// <summary>
         /// 获取供渲染的 SFML.Graphics.RenderTexture

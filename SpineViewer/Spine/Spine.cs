@@ -21,7 +21,7 @@ namespace SpineViewer.Spine
     /// <summary>
     /// Spine 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
-    public abstract class Spine : SFML.Graphics.Drawable, IDisposable
+    public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, Version>, SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
         /// 常规骨骼文件后缀集合
@@ -49,12 +49,6 @@ namespace SpineViewer.Spine
         public const float SCALE_MIN = 0.001f;
 
         /// <summary>
-        /// 实现类缓存
-        /// </summary>
-        private static readonly Dictionary<Version, Type> ImplementationTypes = [];
-        public static readonly Dictionary<Version, Type>.KeyCollection ImplementedVersions;
-
-        /// <summary>
         /// 用于解决 PMA 和渐变动画问题的片段着色器
         /// </summary>
         private const string FRAGMENT_SHADER = (
@@ -74,21 +68,6 @@ namespace SpineViewer.Spine
         /// </summary>
         static Spine()
         {
-            // 遍历并缓存标记了 SpineImplementationAttribute 的类型
-            var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(Spine).IsAssignableFrom(t) && !t.IsAbstract);
-            foreach (var type in impTypes)
-            {
-                var attr = type.GetCustomAttribute<SpineImplementationAttribute>();
-                if (attr is not null)
-                {
-                    if (ImplementationTypes.ContainsKey(attr.Version))
-                        throw new InvalidOperationException($"Multiple implementations found: {attr.Version}");
-                    ImplementationTypes[attr.Version] = type;
-                }
-            }
-            Program.Logger.Debug("Find Spine implementations: [{}]", string.Join(", ", ImplementationTypes.Keys));
-            ImplementedVersions = ImplementationTypes.Keys;
-
             // 加载 FragmentShader
             try
             {
@@ -178,12 +157,7 @@ namespace SpineViewer.Spine
                 else
                     throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version");
             }
-            if (!ImplementationTypes.TryGetValue(version, out var spineType))
-            {
-                throw new NotImplementedException($"Not implemented version: {version}");
-            }
-
-            var spine = (Spine)Activator.CreateInstance(spineType, skelPath, atlasPath);
+            var spine = New(version, skelPath, atlasPath);
 
             // 统一初始化
             spine.initBounds = spine.Bounds;
@@ -233,7 +207,7 @@ namespace SpineViewer.Spine
             atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");
 
             // 设置 Version
-            Version = attr.Version;
+            Version = attr.ImplementationKey;
             AssetsDir = Directory.GetParent(skelPath).FullName;
             SkelPath = Path.GetFullPath(skelPath);
             AtlasPath = Path.GetFullPath(atlasPath);

@@ -29,14 +29,9 @@ namespace SpineViewer.Spine
     /// Spine 实现类标记
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SpineImplementationAttribute : Attribute
+    public class SpineImplementationAttribute(Version version) : Attribute, IImplementationKey<Version>
     {
-        public Version Version { get; }
-
-        public SpineImplementationAttribute(Version version)
-        {
-            Version = version;
-        }
+        public Version ImplementationKey { get; private set; } = version;
     }
 
     /// <summary>
