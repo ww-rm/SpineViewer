@@ -204,7 +204,7 @@ namespace SpineViewer
                     {
                         try
                         {
-                            srcCvter = SkeletonConverter.New(Spine.Spine.GetVersion(skelPath));
+                            srcCvter = SkeletonConverter.New(SpineHelper.GetVersion(skelPath));
                         }
                         catch (Exception ex)
                         {

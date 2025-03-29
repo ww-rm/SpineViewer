@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace SpineViewer.Spine
@@ -87,14 +89,62 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
-        /// 获取字符串对应的版本号
+        /// 常规骨骼文件后缀集合
         /// </summary>
-        /// <param name="versionString"></param>
+        public static readonly ImmutableHashSet<string> CommonSkelSuffix = [".skel", ".json"];
+
+        /// <summary>
+        /// 尝试检测骨骼文件版本
+        /// </summary>
+        /// <param name="skelPath"></param>
         /// <returns></returns>
         /// <exception cref="InvalidDataException"></exception>
-        public static SpineVersion GetVersion(string versionString)
+        public static SpineVersion GetVersion(string skelPath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(versionString);
+            string versionString = null;
+            using var input = File.OpenRead(skelPath);
+            var reader = new SkeletonConverter.BinaryReader(input);
+
+            // try json format
+            try
+            {
+                if (JsonNode.Parse(input) is JsonObject root && root.TryGetPropertyValue("skeleton", out var node) &&
+                    node is JsonObject _skeleton && _skeleton.TryGetPropertyValue("spine", out var _version))
+                    versionString = (string)_version;
+            }
+            catch { }
+
+            // try v4 binary format
+            if (versionString is null)
+            {
+                try
+                {
+                    input.Position = 0;
+                    var hash = reader.ReadLong();
+                    var versionPosition = input.Position;
+                    var versionByteCount = reader.ReadVarInt();
+                    input.Position = versionPosition;
+                    if (versionByteCount <= 13)
+                        versionString = reader.ReadString();
+                }
+                catch { }
+            }
+
+            // try v3 binary format
+            if (versionString is null)
+            {
+                try
+                {
+                    input.Position = 0;
+                    var hash = reader.ReadString();
+                    versionString = reader.ReadString();
+                }
+                catch { }
+            }
+
+            if (versionString is null)
+                throw new InvalidDataException($"No verison detected: {skelPath}");
+
             if (versionString.StartsWith("2.1.")) return SpineVersion.V21;
             else if (versionString.StartsWith("3.6.")) return SpineVersion.V36;
             else if (versionString.StartsWith("3.7.")) return SpineVersion.V37;

@@ -24,11 +24,6 @@ namespace SpineViewer.Spine
     public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
-        /// 常规骨骼文件后缀集合
-        /// </summary>
-        public static readonly ImmutableHashSet<string> CommonSkelSuffix = [".skel", ".json"];
-
-        /// <summary>
         /// 空动画标记
         /// </summary>
         public const string EMPTY_ANIMATION = "<Empty>";
@@ -48,66 +43,13 @@ namespace SpineViewer.Spine
         /// </summary>
         public const float SCALE_MIN = 0.001f;
 
-        /// <summary>
-        /// 尝试检测骨骼文件版本
-        /// </summary>
-        /// <param name="skelPath"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidDataException"></exception>
-        public static SpineVersion GetVersion(string skelPath)
-        {
-            string versionString = null;
-            using var input = File.OpenRead(skelPath);
-            var reader = new SkeletonConverter.BinaryReader(input);
-
-            // try json format
-            try
-            {
-                if (JsonNode.Parse(input) is JsonObject root && root.TryGetPropertyValue("skeleton", out var node) &&
-                    node is JsonObject _skeleton && _skeleton.TryGetPropertyValue("spine", out var _version))
-                    versionString = (string)_version;
-            }
-            catch { }
-
-            // try v4 binary format
-            if (versionString is null)
-            {
-                try
-                {
-                    input.Position = 0;
-                    var hash = reader.ReadLong();
-                    var versionPosition = input.Position;
-                    var versionByteCount = reader.ReadVarInt();
-                    input.Position = versionPosition;
-                    if (versionByteCount <= 13)
-                        versionString = reader.ReadString();
-                }
-                catch { }
-            }
-
-            // try v3 binary format
-            if (versionString is null)
-            {
-                try
-                {
-                    input.Position = 0;
-                    var hash = reader.ReadString();
-                    versionString = reader.ReadString();
-                }
-                catch { }
-            }
-
-            if (versionString is null)
-                throw new InvalidDataException($"No verison detected: {skelPath}");
-            return SpineHelper.GetVersion(versionString);
-        }
 
         /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
         public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
         {
-            if (version == SpineVersion.Auto) version = GetVersion(skelPath);
+            if (version == SpineVersion.Auto) version = SpineHelper.GetVersion(skelPath);
             var spine = New(version, [skelPath, atlasPath]);
 
             // 统一初始化

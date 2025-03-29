@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using SpineViewer.Spine;
 
 namespace SpineViewer.Controls
 {
@@ -33,14 +34,14 @@ namespace SpineViewer.Controls
             {
                 if (File.Exists(path))
                 {
-                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
                         listBox.Items.Add(Path.GetFullPath(path));
                 }
                 else if (Directory.Exists(path))
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
-                        if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                        if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                             listBox.Items.Add(file);
                     }
                 }
@@ -57,7 +58,7 @@ namespace SpineViewer.Controls
             {
                 foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                 {
-                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                         listBox.Items.Add(file);
                 }
             }

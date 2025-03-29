@@ -199,14 +199,14 @@ namespace SpineViewer.Controls
             {
                 if (File.Exists(path))
                 {
-                    if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
                         validPaths.Add(path);
                 }
                 else if (Directory.Exists(path))
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
-                        if (Spine.Spine.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                        if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                             validPaths.Add(file);
                     }
                 }
