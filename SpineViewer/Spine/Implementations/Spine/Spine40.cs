@@ -264,7 +264,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                     {
                         // XXX: 实测不用设置 sampler2D 的值也正确
                         if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                            states.Shader = FragmentShader;
+                            states.Shader = Shader.FragmentShader;
                         else
                             states.Shader = null;
 
@@ -314,7 +314,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             clipping.ClipEnd();
 
             if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                states.Shader = FragmentShader;
+                states.Shader = Shader.FragmentShader;
             else
                 states.Shader = null;
 

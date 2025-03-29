@@ -288,7 +288,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                     if (vertexArray.VertexCount > 0)
                     {
                         if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                            states.Shader = FragmentShader;
+                            states.Shader = Shader.FragmentShader;
                         else
                             states.Shader = null;
 
@@ -338,7 +338,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             clipping.ClipEnd();
 
             if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                states.Shader = FragmentShader;
+                states.Shader = Shader.FragmentShader;
             else
                 states.Shader = null;
 

@@ -12,7 +12,7 @@ using SpineViewer.Exporter;
 
 namespace SpineViewer
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         private Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -29,6 +29,19 @@ namespace SpineViewer
             toolStripMenuItem_ExportMp4.Tag = ExportType.MP4;
             toolStripMenuItem_ExportMov.Tag = ExportType.MOV;
             toolStripMenuItem_ExportWebm.Tag = ExportType.WebM;
+
+            // 执行一些初始化工作
+            try
+            {
+                Spine.Shader.Init();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                logger.Error("Failed to load fragment shader");
+                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
+            }
+
         }
 
         /// <summary>

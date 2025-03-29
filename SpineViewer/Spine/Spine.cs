@@ -49,41 +49,6 @@ namespace SpineViewer.Spine
         public const float SCALE_MIN = 0.001f;
 
         /// <summary>
-        /// 用于解决 PMA 和渐变动画问题的片段着色器
-        /// </summary>
-        private const string FRAGMENT_SHADER = (
-            "uniform sampler2D t;" +
-            "void main() { vec4 p = texture2D(t, gl_TexCoord[0].xy);" +
-            "if (p.a > 0) p.rgb /= max(max(max(p.r, p.g), p.b), p.a);" +
-            "gl_FragColor = gl_Color * p; }"
-        );
-
-        /// <summary>
-        /// 用于解决 PMA 和渐变动画问题的片段着色器
-        /// </summary>
-        protected static readonly SFML.Graphics.Shader? FragmentShader = null;
-
-        /// <summary>
-        /// 静态构造函数
-        /// </summary>
-        static Spine()
-        {
-            // 加载 FragmentShader
-            try
-            {
-                FragmentShader = SFML.Graphics.Shader.FromString(null, null, FRAGMENT_SHADER);
-            }
-            catch (Exception ex)
-            {
-                FragmentShader = null;
-                var logger = NLog.LogManager.GetCurrentClassLogger();
-                logger.Error(ex.ToString());
-                logger.Error("Failed to load fragment shader");
-                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效"); // TODO: 去除对窗体的调用
-            }
-        }
-
-        /// <summary>
         /// 尝试检测骨骼文件版本
         /// </summary>
         /// <param name="skelPath"></param>
