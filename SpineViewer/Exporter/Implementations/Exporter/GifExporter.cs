@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FFMpegCore.Arguments;
+using System.Diagnostics;
 
 namespace SpineViewer.Exporter.Implementations.Exporter
 {
@@ -30,12 +31,14 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             var videoFramesSource = new RawVideoPipeSource(GetFrames(spinesToRender, worker)) { FrameRate = args.FPS };
             try
             {
-                FFMpegArguments
+                var ffmpegArgs = FFMpegArguments
                 .FromPipeInput(videoFramesSource)
                 .OutputToFile(savePath, true, options => options
                 .ForceFormat("gif")
-                .WithCustomArgument(args.FFMpegCoreCustomArguments))
-                .ProcessSynchronously();
+                .WithCustomArgument(args.FFMpegCoreCustomArguments));
+
+                logger.Info("FFMpeg arguments: {}", ffmpegArgs.Arguments);
+                ffmpegArgs.ProcessSynchronously();
             }
             catch (Exception ex)
             {
@@ -58,12 +61,14 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 var videoFramesSource = new RawVideoPipeSource(GetFrames(spine, worker)) { FrameRate = args.FPS };
                 try
                 {
-                    FFMpegArguments
+                    var ffmpegArgs = FFMpegArguments
                     .FromPipeInput(videoFramesSource)
                     .OutputToFile(savePath, true, options => options
                     .ForceFormat("gif")
-                    .WithCustomArgument(args.FFMpegCoreCustomArguments))
-                    .ProcessSynchronously();
+                    .WithCustomArgument(args.FFMpegCoreCustomArguments));
+
+                    logger.Info("FFMpeg arguments: {}", ffmpegArgs.Arguments);
+                    ffmpegArgs.ProcessSynchronously();
                 }
                 catch (Exception ex)
                 {
