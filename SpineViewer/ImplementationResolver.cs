@@ -41,7 +41,7 @@ namespace SpineViewer
                     ImplementationTypes[key] = type;
                 }
             }
-            Program.Logger.Debug("Found implementations for {}: {}", baseType, string.Join(", ", ImplementationTypes.Keys));
+            NLog.LogManager.GetCurrentClassLogger().Debug("Found implementations for {}: {}", baseType, string.Join(", ", ImplementationTypes.Keys));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SpineViewer
         /// <param name="args"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        protected static TBase New(TKey impKey, params object?[]? args)
+        protected static TBase New(TKey impKey, object?[] args)
         {
             if (!ImplementationTypes.TryGetValue(impKey, out var type))
                 throw new NotImplementedException($"Not implemented type for {typeof(TBase)}: {impKey}");

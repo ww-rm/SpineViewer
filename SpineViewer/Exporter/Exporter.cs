@@ -1,4 +1,5 @@
-﻿using SpineViewer.Spine;
+﻿using NLog;
+using SpineViewer.Spine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,12 @@ namespace SpineViewer.Exporter
         /// <param name="exportType">导出类型</param>
         /// <param name="exportArgs">与 <paramref name="exportType"/> 匹配的导出参数</param>
         /// <returns>与 <paramref name="exportType"/> 匹配的导出器</returns>
-        public static Exporter New(ExportType exportType, ExportArgs exportArgs) => New(exportType, exportArgs);
+        public static Exporter New(ExportType exportType, ExportArgs exportArgs) => New(exportType, [exportArgs]);
+
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        protected Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 导出参数
@@ -91,7 +97,7 @@ namespace SpineViewer.Exporter
             if (ExportArgs.ExportSingle) ExportSingle(spinesToRender, worker);
             else ExportIndividual(spinesToRender, worker);
 
-            Program.LogCurrentMemoryUsage();
+            logger.LogCurrentProcessMemoryUsage();
         }
     }
 }

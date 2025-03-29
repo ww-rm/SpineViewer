@@ -25,7 +25,7 @@ namespace SpineViewer.Exporter
         /// <param name="renderSelectedOnly">仅渲染选中</param>
         /// <returns>返回与指定 <paramref name="exportType"/> 匹配的导出参数实例</returns>
         public static ExportArgs New(ExportType exportType, Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
-            => New(exportType, resolution, view, renderSelectedOnly);
+            => New(exportType, [resolution, view, renderSelectedOnly]);
 
         public ExportArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly)
         {

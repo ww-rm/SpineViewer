@@ -35,8 +35,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             }
             catch (Exception ex)
             {
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to save single frame");
+                logger.Error(ex.ToString());
+                logger.Error("Failed to save single frame");
             }
             worker?.ReportProgress(100, $"已处理 1/1");
         }
@@ -68,8 +68,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 }
                 catch (Exception ex)
                 {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to save frame {} {}", savePath, spine.SkelPath);
+                    logger.Error(ex.ToString());
+                    logger.Error("Failed to save frame {} {}", savePath, spine.SkelPath);
                     error++;
                 }
 
@@ -77,9 +77,9 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             }
 
             if (error > 0)
-                Program.Logger.Warn("Frames save {} successfully, {} failed", success, error);
+                logger.Warn("Frames save {} successfully, {} failed", success, error);
             else
-                Program.Logger.Info("{} frames saved successfully", success);
+                logger.Info("{} frames saved successfully", success);
         }
     }
 

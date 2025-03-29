@@ -20,7 +20,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 创建特定版本的 SkeletonConverter
         /// </summary>
-        public static SkeletonConverter New(Version version) => New(version);
+        public static SkeletonConverter New(Version version) => New(version, []);
 
         /// <summary>
         /// Json 格式控制

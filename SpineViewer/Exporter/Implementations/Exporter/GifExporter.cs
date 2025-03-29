@@ -39,8 +39,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             }
             catch (Exception ex)
             {
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to export gif {}", savePath);
+                logger.Error(ex.ToString());
+                logger.Error("Failed to export gif {}", savePath);
             }
         }
 
@@ -67,8 +67,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 }
                 catch (Exception ex)
                 {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to export gif {} {}", savePath, spine.SkelPath);
+                    logger.Error(ex.ToString());
+                    logger.Error("Failed to export gif {} {}", savePath, spine.SkelPath);
                 }
             }
         }

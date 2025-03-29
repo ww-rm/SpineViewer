@@ -14,6 +14,8 @@ namespace SpineViewer
 {
     public partial class MainForm : Form
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
         public MainForm()
         {
             InitializeComponent();
@@ -187,10 +189,14 @@ namespace SpineViewer
                 {
                     if (srcVersion == Spine.Version.Auto)
                     {
-                        if (Spine.Spine.GetVersion(skelPath) is Spine.Version detectedSrcVersion)
-                            srcCvter = SkeletonConverter.New(detectedSrcVersion);
-                        else
-                            throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version");
+                        try
+                        {
+                            srcCvter = SkeletonConverter.New(Spine.Spine.GetVersion(skelPath));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version", ex);
+                        }
                     }
                     var root = srcCvter.Read(skelPath);
                     root = srcCvter.ToVersion(root, tgtVersion);
@@ -199,8 +205,8 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to convert {}", skelPath);
+                    logger.Error(ex.ToString());
+                    logger.Error("Failed to convert {}", skelPath);
                     error++;
                 }
 
@@ -209,11 +215,11 @@ namespace SpineViewer
 
             if (error > 0)
             {
-                Program.Logger.Warn("Batch convert {} successfully, {} failed", success, error);
+                logger.Warn("Batch convert {} successfully, {} failed", success, error);
             }
             else
             {
-                Program.Logger.Info("{} skel converted successfully", success);
+                logger.Info("{} skel converted successfully", success);
             }
         }
 

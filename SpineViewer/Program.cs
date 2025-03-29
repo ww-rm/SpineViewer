@@ -5,35 +5,30 @@ namespace SpineViewer
 {
     internal static class Program
     {
-        /// <summary>
-        /// 程序路径
-        /// </summary>
-        public static readonly string FilePath = Environment.ProcessPath;
+        ///// <summary>
+        ///// 程序路径
+        ///// </summary>
+        //public static readonly string FilePath = Environment.ProcessPath;
 
-        /// <summary>
-        /// 程序名
-        /// </summary>
-        public static readonly string Name = Path.GetFileNameWithoutExtension(FilePath);
+        ///// <summary>
+        ///// 程序名
+        ///// </summary>
+        //public static readonly string Name = Path.GetFileNameWithoutExtension(FilePath);
 
-        /// <summary>
-        /// 程序目录
-        /// </summary>
-        public static readonly string RootDir = Path.GetDirectoryName(FilePath);
+        ///// <summary>
+        ///// 程序目录
+        ///// </summary>
+        //public static readonly string RootDir = Path.GetDirectoryName(FilePath);
 
-        /// <summary>
-        /// 程序临时目录
-        /// </summary>
-        public static readonly string TempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Name)).FullName;
-
-        /// <summary>
-        /// 程序进程
-        /// </summary>
-        public static readonly Process Process = Process.GetCurrentProcess();
+        ///// <summary>
+        ///// 程序临时目录
+        ///// </summary>
+        //public static readonly string TempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Name)).FullName;
 
         /// <summary>
         /// 程序日志器
         /// </summary>
-        public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 应用入口点
@@ -41,8 +36,9 @@ namespace SpineViewer
         [STAThread]
         static void Main()
         {
+            // 此处先初始化全局配置再触发静态字段 Logger 引用构造, 才能将配置应用到新的日志器上
             InitializeLogConfiguration();
-            Logger.Info("Program Started");
+            logger.Info("Program Started");
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -54,7 +50,7 @@ namespace SpineViewer
             }
             catch (Exception ex)
             {
-                Logger.Fatal(ex.ToString());
+                logger.Fatal(ex.ToString());
                 MessageBox.Error(ex.ToString(), "程序已崩溃");
             }
         }
@@ -82,10 +78,5 @@ namespace SpineViewer
             config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
             LogManager.Configuration = config;
         }
-
-        /// <summary>
-        /// 输出当前内存使用情况
-        /// </summary>
-        public static void LogCurrentMemoryUsage() => Logger.Info("Current memory usage: {:F2} MB", Process.WorkingSet64 / 1024.0 / 1024.0);
     }
 }

@@ -12,16 +12,11 @@ using SpineViewer.Spine;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Specialized;
+using NLog;
 namespace SpineViewer.Controls
 {
     public partial class SpineListView : UserControl
     {
-        /// <summary>
-        /// 显示骨骼信息的属性面板
-        /// </summary>
-        [Category("自定义"), Description("用于显示骨骼属性的属性页")]
-        public PropertyGrid? PropertyGrid { get; set; }
-
         /// <summary>
         /// Spine 列表只读视图, 访问时必须使用 lock 语句锁定视图本身
         /// </summary>
@@ -32,11 +27,22 @@ namespace SpineViewer.Controls
         /// </summary>
         private readonly List<Spine.Spine> spines = [];
 
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        protected readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public SpineListView()
         {
             InitializeComponent();
             Spines = spines.AsReadOnly();
         }
+
+        /// <summary>
+        /// 显示骨骼信息的属性面板
+        /// </summary>
+        [Category("自定义"), Description("用于显示骨骼属性的属性页")]
+        public PropertyGrid? PropertyGrid { get; set; }
 
         /// <summary>
         /// 选中的索引
@@ -87,12 +93,12 @@ namespace SpineViewer.Controls
             }
             catch (Exception ex)
             {
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
+                logger.Error(ex.ToString());
+                logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
                 MessageBox.Error(ex.ToString(), "骨骼加载失败");
             }
 
-            Program.LogCurrentMemoryUsage();
+            logger.LogCurrentProcessMemoryUsage();
         }
 
         /// <summary>
@@ -109,7 +115,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 从结果批量添加
         /// </summary>
-        public void BatchAdd(Dialogs.BatchOpenSpineDialogResult result)
+        private void BatchAdd(Dialogs.BatchOpenSpineDialogResult result)
         {
             var progressDialog = new Dialogs.ProgressDialog();
             progressDialog.DoWork += BatchAdd_Work;
@@ -157,8 +163,8 @@ namespace SpineViewer.Controls
                 }
                 catch (Exception ex)
                 {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to load {}", skelPath);
+                    logger.Error(ex.ToString());
+                    logger.Error("Failed to load {}", skelPath);
                     error++;
                 }
 
@@ -176,11 +182,11 @@ namespace SpineViewer.Controls
             });
 
             if (error > 0)
-                Program.Logger.Warn("Batch load {} successfully, {} failed", success, error);
+                logger.Warn("Batch load {} successfully, {} failed", success, error);
             else
-                Program.Logger.Info("{} skel loaded successfully", success);
+                logger.Info("{} skel loaded successfully", success);
 
-            Program.LogCurrentMemoryUsage();
+            logger.LogCurrentProcessMemoryUsage();
         }
 
         /// <summary>
@@ -500,13 +506,16 @@ namespace SpineViewer.Controls
         private void toolStripMenuItem_CopyPreview_Click(object sender, EventArgs e)
         {
             var fileDropList = new StringCollection();
+            var tempDir = Path.Combine(Path.GetTempPath(), Process.GetCurrentProcess().ProcessName);
+            Directory.CreateDirectory(tempDir);
 
             lock (Spines)
             {
                 foreach (int i in listView.SelectedIndices)
                 {
+                    var a = Process.GetCurrentProcess();
                     var spine = spines[i];
-                    var path = Path.Combine(Program.TempDir, $"{spine.ID}.png");
+                    var path = Path.Combine(tempDir, $"{spine.ID}.png");
                     spine.Preview.Save(path);
                     fileDropList.Add(path);
                 }

@@ -37,8 +37,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 }
                 catch (Exception ex)
                 {
-                    Program.Logger.Error(ex.ToString());
-                    Program.Logger.Error("Failed to save frame {}", savePath);
+                    logger.Error(ex.ToString());
+                    logger.Error("Failed to save frame {}", savePath);
                 }
                 finally
                 {
@@ -72,8 +72,8 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                     }
                     catch (Exception ex)
                     {
-                        Program.Logger.Error(ex.ToString());
-                        Program.Logger.Error("Failed to save frame {} {}", savePath, spine.SkelPath);
+                        logger.Error(ex.ToString());
+                        logger.Error("Failed to save frame {} {}", savePath, spine.SkelPath);
                     }
                     finally
                     {

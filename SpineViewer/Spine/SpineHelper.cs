@@ -37,7 +37,7 @@ namespace SpineViewer.Spine
     /// <summary>
     /// Spine 版本静态辅助类
     /// </summary>
-    public static class VersionHelper
+    public static class SpineHelper
     {
         /// <summary>
         /// 版本名称
@@ -50,7 +50,7 @@ namespace SpineViewer.Spine
         /// </summary>
         private static readonly Dictionary<Version, string> runtimes = [];
 
-        static VersionHelper()
+        static SpineHelper()
         {
             // 初始化缓存
             foreach (var value in Enum.GetValues(typeof(Version)))
@@ -84,6 +84,26 @@ namespace SpineViewer.Spine
         public static string GetRuntime(this Version version)
         {
             return runtimes.TryGetValue(version, out var val) ? val : GetName(version);
+        }
+
+        /// <summary>
+        /// 获取字符串对应的版本号
+        /// </summary>
+        /// <param name="versionString"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidDataException"></exception>
+        public static Version GetVersion(string versionString)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(versionString);
+            if (versionString.StartsWith("2.1.")) return Version.V21;
+            else if (versionString.StartsWith("3.6.")) return Version.V36;
+            else if (versionString.StartsWith("3.7.")) return Version.V37;
+            else if (versionString.StartsWith("3.8.")) return Version.V38;
+            else if (versionString.StartsWith("4.0.")) return Version.V40;
+            else if (versionString.StartsWith("4.1.")) return Version.V41;
+            else if (versionString.StartsWith("4.2.")) return Version.V42;
+            else if (versionString.StartsWith("4.3.")) return Version.V43;
+            else throw new InvalidDataException($"Unknown verison: {versionString}");
         }
     }
 }

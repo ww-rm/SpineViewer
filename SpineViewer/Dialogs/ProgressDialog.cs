@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,13 @@ namespace SpineViewer.Dialogs
 {
     public partial class ProgressDialog : Form
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
+        public ProgressDialog()
+        {
+            InitializeComponent();
+        }
+
         /// <summary>
         /// BackgroundWorker.DoWork 接口暴露
         /// </summary>
@@ -32,11 +40,6 @@ namespace SpineViewer.Dialogs
         /// </summary>
         public void RunWorkerAsync(object? argument) => backgroundWorker.RunWorkerAsync(argument);
 
-        public ProgressDialog()
-        {
-            InitializeComponent();
-        }
-
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             label_Tip.Text = e.UserState as string;
@@ -47,7 +50,7 @@ namespace SpineViewer.Dialogs
         {
             if (e.Error != null)
             {
-                Program.Logger.Error(e.Error.ToString());
+                logger.Error(e.Error.ToString());
                 MessageBox.Error(e.Error.ToString(), "执行出错");
                 DialogResult = DialogResult.Abort;
             }

@@ -35,7 +35,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             {
                 if (worker?.CancellationPending == true)
                 {
-                    Program.Logger.Info("Export cancelled");
+                    logger.Info("Export cancelled");
                     break;
                 }
 
@@ -61,7 +61,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             {
                 if (worker?.CancellationPending == true)
                 {
-                    Program.Logger.Info("Export cancelled");
+                    logger.Info("Export cancelled");
                     break;
                 }
 

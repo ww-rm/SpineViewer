@@ -15,12 +15,20 @@ namespace SpineViewer.Dialogs
         public AboutDialog()
         {
             InitializeComponent();
-            Text = $"关于 {Program.Name}";
+            Text = $"关于 {ProgramName}";
             label_Version.Text = $"v{InformationalVersion}";
         }
 
-        public string InformationalVersion => 
-            Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        public string ProgramName => Process.GetCurrentProcess().ProcessName;
+
+        public string InformationalVersion
+            => Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
+        public string ProgramUrl
+        {
+            get => linkLabel_RepoUrl.Text;
+            set => linkLabel_RepoUrl.Text = value;
+        }
 
         private void linkLabel_RepoUrl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

@@ -76,19 +76,22 @@ namespace SpineViewer.Spine
             catch (Exception ex)
             {
                 FragmentShader = null;
-                Program.Logger.Error(ex.ToString());
-                Program.Logger.Error("Failed to load fragment shader");
-                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
+                var logger = NLog.LogManager.GetCurrentClassLogger();
+                logger.Error(ex.ToString());
+                logger.Error("Failed to load fragment shader");
+                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效"); // TODO: 去除对窗体的调用
             }
         }
 
         /// <summary>
         /// 尝试检测骨骼文件版本
         /// </summary>
-        public static Version? GetVersion(string skelPath)
+        /// <param name="skelPath"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidDataException"></exception>
+        public static Version GetVersion(string skelPath)
         {
             string versionString = null;
-            Version? version = null;
             using var input = File.OpenRead(skelPath);
             var reader = new SkeletonConverter.BinaryReader(input);
 
@@ -129,20 +132,9 @@ namespace SpineViewer.Spine
                 catch { }
             }
 
-            if (versionString is not null)
-            {
-                if (versionString.StartsWith("2.1.")) version = Version.V21;
-                else if (versionString.StartsWith("3.6.")) version = Version.V36;
-                else if (versionString.StartsWith("3.7.")) version = Version.V37;
-                else if (versionString.StartsWith("3.8.")) version = Version.V38;
-                else if (versionString.StartsWith("4.0.")) version = Version.V40;
-                else if (versionString.StartsWith("4.1.")) version = Version.V41;
-                else if (versionString.StartsWith("4.2.")) version = Version.V42;
-                else if (versionString.StartsWith("4.3.")) version = Version.V43;
-                else Program.Logger.Error("Unknown verison: {}, {}", versionString, skelPath);
-            }
-
-            return version;
+            if (versionString is null)
+                throw new InvalidDataException($"No verison detected: {skelPath}");
+            return SpineHelper.GetVersion(versionString);
         }
 
         /// <summary>
@@ -150,14 +142,8 @@ namespace SpineViewer.Spine
         /// </summary>
         public static Spine New(Version version, string skelPath, string? atlasPath = null)
         {
-            if (version == Version.Auto)
-            {
-                if (GetVersion(skelPath) is Version detectedVersion)
-                    version = detectedVersion;
-                else
-                    throw new InvalidDataException($"Auto version detection failed for {skelPath}, try to use a specific version");
-            }
-            var spine = New(version, skelPath, atlasPath);
+            if (version == Version.Auto) version = GetVersion(skelPath);
+            var spine = New(version, [skelPath, atlasPath]);
 
             // 统一初始化
             spine.initBounds = spine.Bounds;

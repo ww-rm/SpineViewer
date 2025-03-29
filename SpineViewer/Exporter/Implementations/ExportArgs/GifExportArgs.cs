@@ -16,7 +16,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         public GifExportArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly) : base(resolution, view, renderSelectedOnly) 
         {
             // GIF 的帧率不能太高, 超过 50 帧反而会变慢
-            FPS = 25;
+            FPS = 12;
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace SpineViewer.Dialogs
         public BatchOpenSpineDialog()
         {
             InitializeComponent();
-            comboBox_Version.DataSource = VersionHelper.Names.ToList();
+            comboBox_Version.DataSource = SpineHelper.Names.ToList();
             comboBox_Version.DisplayMember = "Value";
             comboBox_Version.ValueMember = "Key";
             comboBox_Version.SelectedValue = Spine.Version.Auto;
