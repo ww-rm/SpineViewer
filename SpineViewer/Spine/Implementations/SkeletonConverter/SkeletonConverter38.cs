@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace SpineViewer.Spine.Implementations.SkeletonConverter
 {
-    [SpineImplementation(Version.V38)]
+    [SpineImplementation(SpineVersion.V38)]
     class SkeletonConverter38 : SpineViewer.Spine.SkeletonConverter
     {
         private BinaryReader reader = null;
@@ -1286,11 +1286,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             base.WriteJson(root, jsonPath);
         }
 
-        public override JsonObject ToVersion(JsonObject root, Version version)
+        public override JsonObject ToVersion(JsonObject root, SpineVersion version)
         {
             root = version switch
             {
-                Version.V38 => root.DeepClone().AsObject(),
+                SpineVersion.V38 => root.DeepClone().AsObject(),
                 _ => throw new NotImplementedException(),
             };
             return root;

@@ -25,21 +25,21 @@ namespace SpineViewer.Dialogs
             comboBox_SourceVersion.DataSource = SpineHelper.Names.ToList();
             comboBox_SourceVersion.DisplayMember = "Value";
             comboBox_SourceVersion.ValueMember = "Key";
-            comboBox_SourceVersion.SelectedValue = Spine.Version.Auto;
+            comboBox_SourceVersion.SelectedValue = SpineVersion.Auto;
 
             // 目标版本不包含自动
             var versionsWithoutAuto = SpineHelper.Names.ToDictionary();
-            versionsWithoutAuto.Remove(Spine.Version.Auto);
+            versionsWithoutAuto.Remove(SpineVersion.Auto);
             comboBox_TargetVersion.DataSource = versionsWithoutAuto.ToList();
             comboBox_TargetVersion.DisplayMember = "Value";
             comboBox_TargetVersion.ValueMember = "Key";
-            comboBox_TargetVersion.SelectedValue = Spine.Version.V38;
+            comboBox_TargetVersion.SelectedValue = SpineVersion.V38;
         }
 
         private void button_Ok_Click(object sender, EventArgs e)
         {
-            var sourceVersion = (Spine.Version)comboBox_SourceVersion.SelectedValue;
-            var targetVersion = (Spine.Version)comboBox_TargetVersion.SelectedValue;
+            var sourceVersion = (SpineVersion)comboBox_SourceVersion.SelectedValue;
+            var targetVersion = (SpineVersion)comboBox_TargetVersion.SelectedValue;
             var jsonTarget = radioButton_JsonTarget.Checked;
 
             var items = skelFileListBox.Items;
@@ -59,7 +59,7 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (sourceVersion != Spine.Version.Auto && !SkeletonConverter.HasImplementation(sourceVersion))
+            if (sourceVersion != SpineVersion.Auto && !SkeletonConverter.HasImplementation(sourceVersion))
             {
                 MessageBox.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
@@ -84,7 +84,7 @@ namespace SpineViewer.Dialogs
     /// <summary>
     /// 文件格式转换对话框结果包装类
     /// </summary>
-    public class ConvertFileFormatDialogResult(string[] skelPaths, Spine.Version sourceVersion, Spine.Version targetVersion, bool jsonTarget)
+    public class ConvertFileFormatDialogResult(string[] skelPaths, SpineVersion sourceVersion, SpineVersion targetVersion, bool jsonTarget)
     {
         /// <summary>
         /// 骨骼文件路径列表
@@ -94,12 +94,12 @@ namespace SpineViewer.Dialogs
         /// <summary>
         /// 源版本
         /// </summary>
-        public Spine.Version SourceVersion => sourceVersion;
+        public SpineVersion SourceVersion => sourceVersion;
 
         /// <summary>
         /// 目标版本
         /// </summary>
-        public Spine.Version TargetVersion => targetVersion;
+        public SpineVersion TargetVersion => targetVersion;
 
         /// <summary>
         /// 目标格式是否为 Json

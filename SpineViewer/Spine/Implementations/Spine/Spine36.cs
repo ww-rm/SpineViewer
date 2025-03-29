@@ -10,7 +10,7 @@ using SpineRuntime36;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(Version.V36)]
+    [SpineImplementation(SpineVersion.V36)]
     internal class Spine36 : SpineViewer.Spine.Spine
     {
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);

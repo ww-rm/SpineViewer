@@ -23,7 +23,7 @@ namespace SpineViewer.Dialogs
             comboBox_Version.DataSource = SpineHelper.Names.ToList();
             comboBox_Version.DisplayMember = "Value";
             comboBox_Version.ValueMember = "Key";
-            comboBox_Version.SelectedValue = Spine.Version.Auto;
+            comboBox_Version.SelectedValue = SpineVersion.Auto;
         }
 
         private void OpenSpineDialog_Load(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace SpineViewer.Dialogs
         {
             var skelPath = textBox_SkelPath.Text;
             var atlasPath = textBox_AtlasPath.Text;
-            var version = (Spine.Version)comboBox_Version.SelectedValue;
+            var version = (SpineVersion)comboBox_Version.SelectedValue;
 
             if (!File.Exists(skelPath))
             {
@@ -79,7 +79,7 @@ namespace SpineViewer.Dialogs
                 atlasPath = Path.GetFullPath(atlasPath);
             }
 
-            if (version != Spine.Version.Auto && !Spine.Spine.HasImplementation(version))
+            if (version != SpineVersion.Auto && !Spine.Spine.HasImplementation(version))
             {
                 MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
@@ -98,12 +98,12 @@ namespace SpineViewer.Dialogs
     /// <summary>
     /// 打开骨骼对话框结果
     /// </summary>
-    public class OpenSpineDialogResult(Spine.Version version, string skelPath, string? atlasPath = null)
+    public class OpenSpineDialogResult(SpineVersion version, string skelPath, string? atlasPath = null)
     {
         /// <summary>
         /// 版本
         /// </summary>
-        public Spine.Version Version => version;
+        public SpineVersion Version => version;
 
         /// <summary>
         /// skel 文件路径

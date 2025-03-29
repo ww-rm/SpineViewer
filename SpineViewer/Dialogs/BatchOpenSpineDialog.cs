@@ -24,12 +24,12 @@ namespace SpineViewer.Dialogs
             comboBox_Version.DataSource = SpineHelper.Names.ToList();
             comboBox_Version.DisplayMember = "Value";
             comboBox_Version.ValueMember = "Key";
-            comboBox_Version.SelectedValue = Spine.Version.Auto;
+            comboBox_Version.SelectedValue = SpineVersion.Auto;
         }
 
         private void button_Ok_Click(object sender, EventArgs e)
         {
-            var version = (Spine.Version)comboBox_Version.SelectedValue;
+            var version = (SpineVersion)comboBox_Version.SelectedValue;
 
             var items = skelFileListBox.Items;
 
@@ -48,7 +48,7 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (version != Spine.Version.Auto && !Spine.Spine.HasImplementation(version))
+            if (version != SpineVersion.Auto && !Spine.Spine.HasImplementation(version))
             {
                 MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
@@ -67,12 +67,12 @@ namespace SpineViewer.Dialogs
     /// <summary>
     /// 批量打开对话框结果
     /// </summary>
-    public class BatchOpenSpineDialogResult(Spine.Version version, string[] skelPaths)
+    public class BatchOpenSpineDialogResult(SpineVersion version, string[] skelPaths)
     {
         /// <summary>
         /// 版本
         /// </summary>
-        public Spine.Version Version => version;
+        public SpineVersion Version => version;
 
         /// <summary>
         /// 路径列表

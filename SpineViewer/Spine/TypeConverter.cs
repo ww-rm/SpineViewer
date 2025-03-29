@@ -11,11 +11,11 @@ namespace SpineViewer.Spine
 {
     public class VersionConverter : EnumConverter
     {
-        public VersionConverter() : base(typeof(Version)) { }
+        public VersionConverter() : base(typeof(SpineVersion)) { }
 
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type? destinationType)
         {
-            if (destinationType == typeof(string) && value is Version version)
+            if (destinationType == typeof(string) && value is SpineVersion version)
                 return version.GetName();
             return base.ConvertTo(context, culture, value, destinationType);
         }

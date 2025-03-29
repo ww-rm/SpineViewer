@@ -15,12 +15,12 @@ namespace SpineViewer.Spine
     /// <summary>
     /// SkeletonConverter 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
-    public abstract class SkeletonConverter : ImplementationResolver<SkeletonConverter, SpineImplementationAttribute, Version>
+    public abstract class SkeletonConverter : ImplementationResolver<SkeletonConverter, SpineImplementationAttribute, SpineVersion>
     {
         /// <summary>
         /// 创建特定版本的 SkeletonConverter
         /// </summary>
-        public static SkeletonConverter New(Version version) => New(version, []);
+        public static SkeletonConverter New(SpineVersion version) => New(version, []);
 
         /// <summary>
         /// Json 格式控制
@@ -89,7 +89,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 转换到目标版本
         /// </summary>
-        public abstract JsonObject ToVersion(JsonObject root, Version version);
+        public abstract JsonObject ToVersion(JsonObject root, SpineVersion version);
 
         /// <summary>
         /// 二进制骨骼文件读

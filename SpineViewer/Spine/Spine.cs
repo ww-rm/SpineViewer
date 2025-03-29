@@ -21,7 +21,7 @@ namespace SpineViewer.Spine
     /// <summary>
     /// Spine 基类, 使用静态方法 New 来创建具体版本对象
     /// </summary>
-    public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, Version>, SFML.Graphics.Drawable, IDisposable
+    public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
         /// 常规骨骼文件后缀集合
@@ -54,7 +54,7 @@ namespace SpineViewer.Spine
         /// <param name="skelPath"></param>
         /// <returns></returns>
         /// <exception cref="InvalidDataException"></exception>
-        public static Version GetVersion(string skelPath)
+        public static SpineVersion GetVersion(string skelPath)
         {
             string versionString = null;
             using var input = File.OpenRead(skelPath);
@@ -105,9 +105,9 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
-        public static Spine New(Version version, string skelPath, string? atlasPath = null)
+        public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
         {
-            if (version == Version.Auto) version = GetVersion(skelPath);
+            if (version == SpineVersion.Auto) version = GetVersion(skelPath);
             var spine = New(version, [skelPath, atlasPath]);
 
             // 统一初始化
@@ -176,7 +176,7 @@ namespace SpineViewer.Spine
         /// </summary>
         [TypeConverter(typeof(VersionConverter))]
         [Category("[0] 基本信息"), DisplayName("运行时版本")]
-        public Version Version { get; }
+        public SpineVersion Version { get; }
 
         /// <summary>
         /// 资源所在完整目录

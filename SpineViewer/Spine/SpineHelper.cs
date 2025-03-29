@@ -12,7 +12,7 @@ namespace SpineViewer.Spine
     /// <summary>
     /// 支持的 Spine 版本
     /// </summary>
-    public enum Version
+    public enum SpineVersion
     {
         [Description("<Auto>")] Auto = 0x0000,
         [Description("2.1.x")] V21 = 0x0201,
@@ -29,9 +29,9 @@ namespace SpineViewer.Spine
     /// Spine 实现类标记
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SpineImplementationAttribute(Version version) : Attribute, IImplementationKey<Version>
+    public class SpineImplementationAttribute(SpineVersion version) : Attribute, IImplementationKey<SpineVersion>
     {
-        public Version ImplementationKey { get; private set; } = version;
+        public SpineVersion ImplementationKey { get; private set; } = version;
     }
 
     /// <summary>
@@ -42,38 +42,38 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 版本名称
         /// </summary>
-        public static readonly ReadOnlyDictionary<Version, string> Names;
-        private static readonly Dictionary<Version, string> names = [];
+        public static readonly ReadOnlyDictionary<SpineVersion, string> Names;
+        private static readonly Dictionary<SpineVersion, string> names = [];
 
         /// <summary>
         /// Runtime 版本字符串
         /// </summary>
-        private static readonly Dictionary<Version, string> runtimes = [];
+        private static readonly Dictionary<SpineVersion, string> runtimes = [];
 
         static SpineHelper()
         {
             // 初始化缓存
-            foreach (var value in Enum.GetValues(typeof(Version)))
+            foreach (var value in Enum.GetValues(typeof(SpineVersion)))
             {
-                var field = typeof(Version).GetField(value.ToString());
+                var field = typeof(SpineVersion).GetField(value.ToString());
                 var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
-                names[(Version)value] = attribute?.Description ?? value.ToString();
+                names[(SpineVersion)value] = attribute?.Description ?? value.ToString();
             }
             Names = names.AsReadOnly();
 
-            runtimes[Version.V21] = Assembly.GetAssembly(typeof(SpineRuntime21.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V36] = Assembly.GetAssembly(typeof(SpineRuntime36.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V37] = Assembly.GetAssembly(typeof(SpineRuntime37.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V38] = Assembly.GetAssembly(typeof(SpineRuntime38.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V40] = Assembly.GetAssembly(typeof(SpineRuntime40.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V41] = Assembly.GetAssembly(typeof(SpineRuntime41.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            runtimes[Version.V42] = Assembly.GetAssembly(typeof(SpineRuntime42.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V21] = Assembly.GetAssembly(typeof(SpineRuntime21.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V36] = Assembly.GetAssembly(typeof(SpineRuntime36.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V37] = Assembly.GetAssembly(typeof(SpineRuntime37.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V38] = Assembly.GetAssembly(typeof(SpineRuntime38.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V40] = Assembly.GetAssembly(typeof(SpineRuntime40.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V41] = Assembly.GetAssembly(typeof(SpineRuntime41.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            runtimes[SpineVersion.V42] = Assembly.GetAssembly(typeof(SpineRuntime42.Skeleton)).GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
         }
 
         /// <summary>
         /// 版本字符串名称
         /// </summary>
-        public static string GetName(this Version version)
+        public static string GetName(this SpineVersion version)
         {
             return Names.TryGetValue(version, out var val) ? val : version.ToString();
         }
@@ -81,7 +81,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// Runtime 版本字符串名称
         /// </summary>
-        public static string GetRuntime(this Version version)
+        public static string GetRuntime(this SpineVersion version)
         {
             return runtimes.TryGetValue(version, out var val) ? val : GetName(version);
         }
@@ -92,17 +92,17 @@ namespace SpineViewer.Spine
         /// <param name="versionString"></param>
         /// <returns></returns>
         /// <exception cref="InvalidDataException"></exception>
-        public static Version GetVersion(string versionString)
+        public static SpineVersion GetVersion(string versionString)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(versionString);
-            if (versionString.StartsWith("2.1.")) return Version.V21;
-            else if (versionString.StartsWith("3.6.")) return Version.V36;
-            else if (versionString.StartsWith("3.7.")) return Version.V37;
-            else if (versionString.StartsWith("3.8.")) return Version.V38;
-            else if (versionString.StartsWith("4.0.")) return Version.V40;
-            else if (versionString.StartsWith("4.1.")) return Version.V41;
-            else if (versionString.StartsWith("4.2.")) return Version.V42;
-            else if (versionString.StartsWith("4.3.")) return Version.V43;
+            if (versionString.StartsWith("2.1.")) return SpineVersion.V21;
+            else if (versionString.StartsWith("3.6.")) return SpineVersion.V36;
+            else if (versionString.StartsWith("3.7.")) return SpineVersion.V37;
+            else if (versionString.StartsWith("3.8.")) return SpineVersion.V38;
+            else if (versionString.StartsWith("4.0.")) return SpineVersion.V40;
+            else if (versionString.StartsWith("4.1.")) return SpineVersion.V41;
+            else if (versionString.StartsWith("4.2.")) return SpineVersion.V42;
+            else if (versionString.StartsWith("4.3.")) return SpineVersion.V43;
             else throw new InvalidDataException($"Unknown verison: {versionString}");
         }
     }

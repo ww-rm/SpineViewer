@@ -183,7 +183,7 @@ namespace SpineViewer
             int success = 0;
             int error = 0;
 
-            SkeletonConverter srcCvter = srcVersion != Spine.Version.Auto ? SkeletonConverter.New(srcVersion) : null;
+            SkeletonConverter srcCvter = srcVersion != SpineVersion.Auto ? SkeletonConverter.New(srcVersion) : null;
             SkeletonConverter tgtCvter = SkeletonConverter.New(tgtVersion);
 
             worker.ReportProgress(0, $"已处理 0/{totalCount}");
@@ -200,7 +200,7 @@ namespace SpineViewer
 
                 try
                 {
-                    if (srcVersion == Spine.Version.Auto)
+                    if (srcVersion == SpineVersion.Auto)
                     {
                         try
                         {

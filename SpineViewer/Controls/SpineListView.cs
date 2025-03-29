@@ -219,11 +219,11 @@ namespace SpineViewer.Controls
                     if (MessageBox.Quest($"共发现 {validPaths.Count} 个可加载骨骼，数量较多，是否一次性全部加载？") == DialogResult.Cancel)
                         return;
                 }
-                BatchAdd(new Dialogs.BatchOpenSpineDialogResult(Spine.Version.Auto, validPaths.ToArray()));
+                BatchAdd(new Dialogs.BatchOpenSpineDialogResult(SpineVersion.Auto, validPaths.ToArray()));
             }
             else if (validPaths.Count > 0)
             {
-                Insert(new Dialogs.OpenSpineDialogResult(Spine.Version.Auto, validPaths[0]));
+                Insert(new Dialogs.OpenSpineDialogResult(SpineVersion.Auto, validPaths[0]));
             }
         }
 
