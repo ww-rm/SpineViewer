@@ -73,6 +73,9 @@ namespace SpineViewer.Spine
             SkinNames = skinNames.AsReadOnly();
             AnimationNames = animationNames.AsReadOnly();
 
+            // 必须 Update 一次否则包围盒还没有值
+            Update(0);
+
             InitBounds = Bounds;
 
             // XXX: tex 没办法在这里主动 Dispose
