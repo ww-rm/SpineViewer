@@ -15,6 +15,9 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
     {
         public GifExportArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly) : base(resolution, view, renderSelectedOnly) 
         {
+            // 给一个纯白的背景
+            BackgroundColor = new(255, 255, 255, 0);
+
             // GIF 的帧率不能太高, 超过 50 帧反而会变慢
             FPS = 12;
         }
