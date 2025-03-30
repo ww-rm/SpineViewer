@@ -270,6 +270,7 @@
             statusStrip.Location = new Point(0, 414);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(336, 31);
+            statusStrip.SizingGrip = false;
             statusStrip.TabIndex = 2;
             statusStrip.Text = "statusStrip1";
             // 
