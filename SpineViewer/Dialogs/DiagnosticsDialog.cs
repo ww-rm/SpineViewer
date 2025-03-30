@@ -26,7 +26,29 @@ namespace SpineViewer.Dialogs
 
         private class DiagnosticsInformation
         {
-            [Category("Versions")]
+            [Category("Hardware")]
+            public string CPU
+            {
+                get => Registry.GetValue(@"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "ProcessorNameString", "Unknown").ToString();
+            }
+
+            [Category("Hardware")]
+            public string Memory
+            {
+                get => $"{new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / 1024f / 1024f / 1024f:F1} GB";
+            }
+
+            [Category("Hardware")]
+            public string GPU
+            {
+                get
+                {
+                    var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController");
+                    return string.Join("; ", searcher.Get().Cast<ManagementObject>().Select(mo => mo["Name"].ToString()));
+                }
+            }
+
+            [Category("Software")]
             public string WindowsVersion
             {
                 get
@@ -39,44 +61,28 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            [Category("Versions")]
+            [Category("Software")]
             public string Version
             {
                 get => Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
             }
 
-            [Category("Versions")]
+            [Category("Software")]
             public string DotNetVersion
             {
                 get => Environment.Version.ToString();
             }
 
-            [Category("Versions")]
+            [Category("Software")]
             public string SFMLVersion
             {
                 get => typeof(SFML.ObjectBase).Assembly.GetName().Version.ToString();
             }
 
-            [Category("Hardwares")]
-            public string CPU
+            [Category("Software")]
+            public string FFMpegCoreVersion
             {
-                get => Registry.GetValue(@"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "ProcessorNameString", "Unknown").ToString();
-            }
-
-            [Category("Hardwares")]
-            public string Memory
-            {
-                get => $"{new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / 1024f / 1024f / 1024f:F1} GB";
-            }
-
-            [Category("Hardwares")]
-            public string GPU
-            {
-                get
-                {
-                    var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController");
-                    return string.Join("; ", searcher.Get().Cast<ManagementObject>().Select(mo => mo["Name"].ToString()));
-                }
+                get => typeof(FFMpegCore.FFMpeg).Assembly.GetName().Version.ToString();
             }
         }
 
