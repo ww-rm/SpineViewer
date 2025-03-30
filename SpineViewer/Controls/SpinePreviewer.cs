@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Policy;
 using System.Diagnostics;
+using NLog;
 
 namespace SpineViewer.Controls
 {
@@ -252,6 +253,11 @@ namespace SpineViewer.Controls
 
         #endregion
 
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
         public SpinePreviewer()
         {
             InitializeComponent();
@@ -422,9 +428,11 @@ namespace SpineViewer.Controls
                     RenderWindow.Display();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                logger.Fatal(ex);
+                logger.Fatal("Render task stopped");
+                MessageBox.Error(ex.ToString(), "预览画面已停止渲染");
             }
             finally
             {
