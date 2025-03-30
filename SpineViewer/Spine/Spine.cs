@@ -199,6 +199,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 包含的所有皮肤名称
         /// </summary>
+        [Browsable(false)]
         public ReadOnlyCollection<string> SkinNames { get; private set; }
         protected List<string> skinNames = [];
 
@@ -212,6 +213,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 包含的所有动画名称
         /// </summary>
+        [Browsable(false)]
         public ReadOnlyCollection<string> AnimationNames { get; private set; }
         protected List<string> animationNames = [EMPTY_ANIMATION];
 
