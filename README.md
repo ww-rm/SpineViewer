@@ -18,6 +18,8 @@
 
 也可以下载带有 `SelfContained` 后缀的压缩包, 可以独立运行.
 
+导出 GIF 等视频格式需要在本地安装 ffmpeg 命令行, 并且添加至环境变量, [点击前往 FFmpeg-Windows 下载页面](https://ffmpeg.org/download.html#build-windows), 也可以点这个下载最新版本 [ffmpeg-release-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z).
+
 ## 导出格式支持
 
 - [x] 单帧画面
