@@ -54,6 +54,7 @@
             toolStripMenuItem_DetailsView = new ToolStripMenuItem();
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
+            timer_SelectedIndexChangedDebounce = new System.Windows.Forms.Timer(components);
             contextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -250,6 +251,11 @@
             imageList_SmallIcon.ImageSize = new Size(48, 48);
             imageList_SmallIcon.TransparentColor = Color.Transparent;
             // 
+            // timer_SelectedIndexChangedDebounce
+            // 
+            timer_SelectedIndexChangedDebounce.Interval = 30;
+            timer_SelectedIndexChangedDebounce.Tick += timer_SelectedIndexChangedDebounce_Tick;
+            // 
             // SpineListView
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
@@ -287,5 +293,6 @@
         private ToolStripMenuItem toolStripMenuItem_SelectAll;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem toolStripMenuItem_AddFromClipboard;
+        private System.Windows.Forms.Timer timer_SelectedIndexChangedDebounce;
     }
 }

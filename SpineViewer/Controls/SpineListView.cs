@@ -229,6 +229,18 @@ namespace SpineViewer.Controls
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
+            timer_SelectedIndexChangedDebounce.Stop();
+            timer_SelectedIndexChangedDebounce.Start();
+        }
+
+        private void timer_SelectedIndexChangedDebounce_Tick(object sender, EventArgs e)
+        {
+            timer_SelectedIndexChangedDebounce.Stop();
+            _listView_SelectedIndexChanged(listView, EventArgs.Empty);
+        }
+
+        private void _listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
             lock (Spines)
             {
                 if (PropertyGrid is not null)
@@ -395,17 +407,19 @@ namespace SpineViewer.Controls
                     return;
             }
 
-            foreach (var i in listView.SelectedIndices.Cast<int>().OrderByDescending(x => x))
+            lock (Spines)
             {
-                listView.Items.RemoveAt(i);
-                lock (Spines)
+                listView.BeginUpdate();
+                foreach (var i in listView.SelectedIndices.Cast<int>().OrderByDescending(x => x))
                 {
+                    listView.Items.RemoveAt(i);
                     var spine = spines[i];
                     spines.RemoveAt(i);
                     listView.SmallImageList.Images.RemoveByKey(spine.ID);
                     listView.LargeImageList.Images.RemoveByKey(spine.ID);
                     spine.Dispose();
                 }
+                listView.EndUpdate();
             }
         }
 
