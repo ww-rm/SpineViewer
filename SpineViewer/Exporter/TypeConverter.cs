@@ -10,20 +10,6 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Exporter
 {
-    public class SFMLImageFileSuffixConverter : StringConverter
-    {
-        private readonly string[] supportedFileSuffix = [".png", ".jpg", ".tga", ".bmp"];
-
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
-
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
-
-        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
-        {
-            return new StandardValuesCollection(supportedFileSuffix);
-        }
-    }
-
     public class SFMLColorConverter : ExpandableObjectConverter
     {
         private class SFMLColorPropertyDescriptor : SimplePropertyDescriptor

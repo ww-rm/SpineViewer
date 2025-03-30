@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -43,6 +44,48 @@ namespace SpineViewer
                 }
             }
             return base.ConvertFrom(context, culture, value);
+        }
+    }
+
+    public class StringEnumConverter : StringConverter
+    {
+        /// <summary>
+        /// 字符串标准值列表属性
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+        public class StandardValuesAttribute : Attribute
+        {
+            /// <summary>
+            /// 标准值列表
+            /// </summary>
+            public ReadOnlyCollection<string> StandardValues { get; private set; }
+            private readonly List<string> standardValues = [];
+
+            /// <summary>
+            /// 字符串标准值列表
+            /// </summary>
+            /// <param name="values">允许的字符串标准值</param>
+            public StandardValuesAttribute(params string[] values)
+            {
+                standardValues.AddRange(values);
+                StandardValues = standardValues.AsReadOnly();
+            }
+        }
+
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
+
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
+
+        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
+        {
+            // 查找属性上的 StandardValuesAttribute
+            var attribute = context?.PropertyDescriptor?.Attributes.OfType<StandardValuesAttribute>().FirstOrDefault();
+            StandardValuesCollection result;
+            if (attribute != null)
+                result = new StandardValuesCollection(attribute.StandardValues);
+            else
+                result = new StandardValuesCollection(Array.Empty<string>());
+            return result;
         }
     }
 }
