@@ -269,6 +269,8 @@ namespace SpineViewer.Controls
 
             if (listView.SelectedItems.Count > 0)
                 listView.SelectedItems[0].EnsureVisible();
+
+            toolStripStatusLabel_CountInfo.Text = $"已选择 {listView.SelectedItems.Count} 项，共 {listView.Items.Count} 项";
         }
 
         private void listView_ItemDrag(object sender, ItemDragEventArgs e)

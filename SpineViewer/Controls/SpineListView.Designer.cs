@@ -55,7 +55,12 @@
             imageList_LargeIcon = new ImageList(components);
             imageList_SmallIcon = new ImageList(components);
             timer_SelectedIndexChangedDebounce = new System.Windows.Forms.Timer(components);
+            statusStrip = new StatusStrip();
+            toolStripStatusLabel_CountInfo = new ToolStripStatusLabel();
+            tableLayoutPanel = new TableLayoutPanel();
             contextMenuStrip.SuspendLayout();
+            statusStrip.SuspendLayout();
+            tableLayoutPanel.SuspendLayout();
             SuspendLayout();
             // 
             // listView
@@ -69,9 +74,10 @@
             listView.GridLines = true;
             listView.LargeImageList = imageList_LargeIcon;
             listView.Location = new Point(0, 0);
+            listView.Margin = new Padding(0);
             listView.Name = "listView";
             listView.ShowItemToolTips = true;
-            listView.Size = new Size(336, 445);
+            listView.Size = new Size(336, 414);
             listView.SmallImageList = imageList_SmallIcon;
             listView.TabIndex = 1;
             listView.UseCompatibleStateImageBehavior = false;
@@ -256,14 +262,50 @@
             timer_SelectedIndexChangedDebounce.Interval = 30;
             timer_SelectedIndexChangedDebounce.Tick += timer_SelectedIndexChangedDebounce_Tick;
             // 
+            // statusStrip
+            // 
+            statusStrip.Dock = DockStyle.Fill;
+            statusStrip.ImageScalingSize = new Size(24, 24);
+            statusStrip.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel_CountInfo });
+            statusStrip.Location = new Point(0, 414);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(336, 31);
+            statusStrip.TabIndex = 2;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel_CountInfo
+            // 
+            toolStripStatusLabel_CountInfo.Name = "toolStripStatusLabel_CountInfo";
+            toolStripStatusLabel_CountInfo.Size = new Size(178, 24);
+            toolStripStatusLabel_CountInfo.Text = "已选择 0 项，共 0 项";
+            // 
+            // tableLayoutPanel
+            // 
+            tableLayoutPanel.ColumnCount = 1;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel.Controls.Add(listView, 0, 0);
+            tableLayoutPanel.Controls.Add(statusStrip, 0, 1);
+            tableLayoutPanel.Dock = DockStyle.Fill;
+            tableLayoutPanel.Location = new Point(0, 0);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 2;
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle());
+            tableLayoutPanel.Size = new Size(336, 445);
+            tableLayoutPanel.TabIndex = 3;
+            // 
             // SpineListView
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(listView);
+            Controls.Add(tableLayoutPanel);
             Name = "SpineListView";
             Size = new Size(336, 445);
             contextMenuStrip.ResumeLayout(false);
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
+            tableLayoutPanel.ResumeLayout(false);
+            tableLayoutPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -294,5 +336,8 @@
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem toolStripMenuItem_AddFromClipboard;
         private System.Windows.Forms.Timer timer_SelectedIndexChangedDebounce;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel toolStripStatusLabel_CountInfo;
+        private TableLayoutPanel tableLayoutPanel;
     }
 }
