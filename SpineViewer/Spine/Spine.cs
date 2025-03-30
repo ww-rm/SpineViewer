@@ -19,7 +19,7 @@ using SpineViewer.Exporter;
 namespace SpineViewer.Spine
 {
     /// <summary>
-    /// Spine 基类, 使用静态方法 New 来创建具体版本对象
+    /// Spine 基类, 使用静态方法 New 来创建具体版本对象, 该类是线程安全的
     /// </summary>
     public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
@@ -54,6 +54,11 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
+        /// 数据锁
+        /// </summary>
+        private readonly object _lock = new();
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         public Spine(string skelPath, string atlasPath)
@@ -74,9 +79,7 @@ namespace SpineViewer.Spine
             AnimationNames = animationNames.AsReadOnly();
 
             // 必须 Update 一次否则包围盒还没有值
-            Update(0);
-
-            InitBounds = Bounds;
+            update(0);
 
             // XXX: tex 没办法在这里主动 Dispose
             // 批量添加在获取预览图的时候极大概率会和预览线程死锁
@@ -84,7 +87,7 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            tex.SetView(InitBounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+            tex.SetView(bounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
             tex.Display();
@@ -101,8 +104,8 @@ namespace SpineViewer.Spine
             }
 
             // 取最后一个作为初始, 尽可能去显示非默认的内容
-            Skin = SkinNames.Last();
-            Track0Animation = AnimationNames.Last();
+            skin = SkinNames.Last();
+            track0Animation = AnimationNames.Last();
 
             return this;
         }
@@ -158,13 +161,23 @@ namespace SpineViewer.Spine
         /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
         /// </summary>
         [Category("[1] 设置"), DisplayName("是否隐藏")]
-        public bool IsHidden { get; set; } = false;
+        public bool IsHidden
+        {
+            get { lock (_lock) return isHidden; }
+            set { lock (_lock) isHidden = value; }
+        }
+        protected bool isHidden = false;
 
         /// <summary>
         /// 是否使用预乘Alpha
         /// </summary>
         [Category("[1] 设置"), DisplayName("预乘Alpha通道")]
-        public bool UsePremultipliedAlpha { get; set; } = true;
+        public bool UsePremultipliedAlpha
+        {
+            get { lock (_lock) return usePremultipliedAlpha; }
+            set { lock (_lock) usePremultipliedAlpha = value; }
+        }
+        protected bool usePremultipliedAlpha = true;
 
         #endregion
 
@@ -174,26 +187,46 @@ namespace SpineViewer.Spine
         /// 缩放比例
         /// </summary>
         [Category("[2] 变换"), DisplayName("缩放比例")]
-        public abstract float Scale { get; set; }
+        public float Scale
+        {
+            get { lock (_lock) return scale; }
+            set { lock (_lock) { scale = value; update(0); } }
+        }
+        protected abstract float scale { get; set; }
 
         /// <summary>
         /// 位置
         /// </summary>
         [TypeConverter(typeof(PointFConverter))]
         [Category("[2] 变换"), DisplayName("位置")]
-        public abstract PointF Position { get; set; }
+        public PointF Position 
+        {
+            get { lock (_lock) return position; }
+            set { lock (_lock) { position = value; update(0); } }
+        }
+        protected abstract PointF position { get; set; }
 
         /// <summary>
         /// 水平翻转
         /// </summary>
         [Category("[2] 变换"), DisplayName("水平翻转")]
-        public abstract bool FlipX { get; set; }
+        public bool FlipX
+        {
+            get { lock (_lock) return flipX; }
+            set { lock (_lock) { flipX = value; update(0); } }
+        }
+        protected abstract bool flipX { get; set; }
 
         /// <summary>
         /// 垂直翻转
         /// </summary>
         [Category("[2] 变换"), DisplayName("垂直翻转")]
-        public abstract bool FlipY { get; set; }
+        public bool FlipY
+        {
+            get { lock (_lock) return flipY; }
+            set { lock (_lock) { flipY = value; update(0); } }
+        }
+        protected abstract bool flipY { get; set; }
 
         #endregion
 
@@ -211,7 +244,12 @@ namespace SpineViewer.Spine
         /// </summary>
         [TypeConverter(typeof(SkinConverter))]
         [Category("[3] 动画"), DisplayName("皮肤")]
-        public abstract string Skin { get; set; }
+        public string Skin
+        {
+            get { lock (_lock) return skin; }
+            set { lock (_lock) { skin = value; update(0); } }
+        }
+        protected abstract string skin { get; set; }
 
         /// <summary>
         /// 包含的所有动画名称
@@ -225,7 +263,12 @@ namespace SpineViewer.Spine
         /// </summary>
         [TypeConverter(typeof(AnimationConverter))]
         [Category("[3] 动画"), DisplayName("默认轨道动画")]
-        public abstract string Track0Animation { get; set; }
+        public string Track0Animation
+        {
+            get { lock (_lock) return track0Animation; }
+            set { lock (_lock) { track0Animation = value; update(0); } }
+        }
+        protected abstract string track0Animation { get; set; }
 
         /// <summary>
         /// 默认轨道动画时长
@@ -241,25 +284,45 @@ namespace SpineViewer.Spine
         /// 显示调试
         /// </summary>
         [Browsable(false)]
-        public bool IsDebug { get; set; } = false;
+        public bool IsDebug 
+        { 
+            get { lock (_lock) return isDebug; }
+            set { lock (_lock) isDebug = value; }
+        }
+        protected bool isDebug = false;
 
         /// <summary>
         /// 显示纹理
         /// </summary>
         [Category("[4] 调试"), DisplayName("显示纹理")]
-        public bool DebugTexture { get; set; } = true;
+        public bool DebugTexture
+        {
+            get { lock (_lock) return debugTexture; }
+            set { lock (_lock) debugTexture = value; }
+        }
+        protected bool debugTexture = true;
 
         /// <summary>
         /// 显示包围盒
         /// </summary>
         [Category("[4] 调试"), DisplayName("显示包围盒")]
-        public bool DebugBounds { get; set; } = true;
+        public bool DebugBounds
+        {
+            get { lock (_lock) return debugBounds; }
+            set { lock (_lock) debugBounds = value; }
+        }
+        protected bool debugBounds = true;
 
         /// <summary>
         /// 显示骨骼
         /// </summary>
         [Category("[4] 调试"), DisplayName("显示骨架")]
-        public bool DebugBones { get; set; } = false;
+        public bool DebugBones
+        {
+            get { lock (_lock) return debugBones; }
+            set { lock (_lock) debugBones = value; }
+        }
+        protected bool debugBones = false;
 
         #endregion
 
@@ -272,19 +335,19 @@ namespace SpineViewer.Spine
         /// 是否被选中
         /// </summary>
         [Browsable(false)]
-        public bool IsSelected { get; set; } = false;
+        public bool IsSelected
+        {
+            get { lock (_lock) return isSelected; }
+            set { lock (_lock) isSelected = value; }
+        }
+        protected bool isSelected = false;
 
         /// <summary>
         /// 骨骼包围盒
         /// </summary>
         [Browsable(false)]
-        public abstract RectangleF Bounds { get; }
-
-        /// <summary>
-        /// 初始状态下的骨骼包围盒
-        /// </summary>
-        [Browsable(false)]
-        public RectangleF InitBounds { get; private set; }
+        public RectangleF Bounds { get { lock (_lock) return bounds; } }
+        protected abstract RectangleF bounds { get; }
 
         /// <summary>
         /// 骨骼预览图
@@ -300,7 +363,8 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 更新内部状态
         /// </summary>
-        public abstract void Update(float delta);
+        public void Update(float delta) { lock (_lock) update(delta); }
+        protected abstract void update(float delta);
 
         #region SFML.Graphics.Drawable 接口实现
 
@@ -327,7 +391,8 @@ namespace SpineViewer.Spine
         /// <summary>
         /// SFML.Graphics.Drawable 接口实现
         /// </summary>
-        public abstract void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
+        public void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states) { lock (_lock) draw(target, states); }
+        protected abstract void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
 
         #endregion
     }

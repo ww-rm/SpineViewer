@@ -91,51 +91,47 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override string FileVersion { get => skeletonData.Version; }
 
-        public override float Scale
+        protected override float scale
         {
             get => Math.Abs(skeleton.ScaleX);
             set
             {
                 skeleton.ScaleX = Math.Sign(skeleton.ScaleX) * value;
                 skeleton.ScaleY = Math.Sign(skeleton.ScaleY) * value;
-                Update(0);
             }
         }
 
-        public override PointF Position
+        protected override PointF position
         {
             get => new(skeleton.X, skeleton.Y);
             set
             {
                 skeleton.X = value.X;
                 skeleton.Y = value.Y;
-                Update(0);
             }
         }
 
-        public override bool FlipX
+        protected override bool flipX
         {
             get => skeleton.ScaleX < 0;
             set
             {
                 if (skeleton.ScaleX > 0 && value || skeleton.ScaleX < 0 && !value)
                     skeleton.ScaleX *= -1;
-                Update(0);
             }
         }
 
-        public override bool FlipY
+        protected override bool flipY
         {
             get => skeleton.ScaleY < 0;
             set
             {
                 if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
                     skeleton.ScaleY *= -1;
-                Update(0);
             }
         }
 
-        public override string Skin
+        protected override string skin
         {
             get => skeleton.Skin?.Name ?? "default";
             set
@@ -143,11 +139,10 @@ namespace SpineViewer.Spine.Implementations.Spine
                 if (!skinNames.Contains(value)) return;
                 skeleton.SetSkin(value);
                 skeleton.SetSlotsToSetupPose();
-                Update(0);
             }
         }
 
-        public override string Track0Animation
+        protected override string track0Animation
         {
             get => animationState.GetCurrent(0)?.Animation.Name ?? EMPTY_ANIMATION;
             set
@@ -156,11 +151,10 @@ namespace SpineViewer.Spine.Implementations.Spine
                     animationState.SetAnimation(0, EmptyAnimation, false);
                 else if (animationNames.Contains(value))
                     animationState.SetAnimation(0, value, true);
-                Update(0);
             }
         }
 
-        public override RectangleF Bounds
+        protected override RectangleF bounds
         {
             get
             {
@@ -172,7 +166,7 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         public override float GetAnimationDuration(string name) { return skeletonData.FindAnimation(name)?.Duration ?? 0f; }
 
-        public override void Update(float delta)
+        protected override void update(float delta)
         {
             animationState.Update(delta);
             animationState.Apply(skeleton);
@@ -192,7 +186,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             };
         }
 
-        public override void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
+        protected override void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
         {
             vertexArray.Clear();
             states.Texture = null;
@@ -263,13 +257,13 @@ namespace SpineViewer.Spine.Implementations.Spine
                     if (vertexArray.VertexCount > 0)
                     {
                         // XXX: 实测不用设置 sampler2D 的值也正确
-                        if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
+                        if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                             states.Shader = Shader.FragmentShader;
                         else
                             states.Shader = null;
 
                         // 调试纹理
-                        if (!IsDebug || DebugTexture)
+                        if (!isDebug || debugTexture)
                             target.Draw(vertexArray, states);
 
                         vertexArray.Clear();
@@ -313,23 +307,23 @@ namespace SpineViewer.Spine.Implementations.Spine
             }
             clipping.ClipEnd();
 
-            if (UsePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
+            if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
                 states.Shader = Shader.FragmentShader;
             else
                 states.Shader = null;
 
             // 调试纹理
-            if (!IsDebug || DebugTexture)
+            if (!isDebug || debugTexture)
                 target.Draw(vertexArray, states);
 
             // 包围盒
-            if (IsDebug && IsSelected && DebugBounds)
+            if (isDebug && isSelected && debugBounds)
             {
-                var bounds = Bounds;
-                boundsVertices[0] = boundsVertices[4] = new(new(bounds.Left, bounds.Top), BoundsColor);
-                boundsVertices[1] = new(new(bounds.Right, bounds.Top), BoundsColor);
-                boundsVertices[2] = new(new(bounds.Right, bounds.Bottom), BoundsColor);
-                boundsVertices[3] = new(new(bounds.Left, bounds.Bottom), BoundsColor);
+                var b = bounds;
+                boundsVertices[0] = boundsVertices[4] = new(new(b.Left, b.Top), BoundsColor);
+                boundsVertices[1] = new(new(b.Right, b.Top), BoundsColor);
+                boundsVertices[2] = new(new(b.Right, b.Bottom), BoundsColor);
+                boundsVertices[3] = new(new(b.Left, b.Bottom), BoundsColor);
                 target.Draw(boundsVertices);
             }
         }
