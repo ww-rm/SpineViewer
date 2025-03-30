@@ -422,6 +422,10 @@ namespace SpineViewer.Controls
                     RenderWindow.Display();
                 }
             }
+            catch
+            {
+                throw;
+            }
             finally
             {
                 RenderWindow.SetActive(false);
