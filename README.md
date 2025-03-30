@@ -24,7 +24,7 @@
 - [x] 帧序列
 - [x] GIF 动图
 - [ ] MKV
-- [ ] MP4
+- [x] MP4
 - [ ] MOV
 - [ ] WebM
 

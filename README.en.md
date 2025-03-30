@@ -24,7 +24,7 @@ You can also download the zip package with the `SelfContained` suffix, which can
 - [x] Frame Sequence
 - [x] Animated GIF
 - [ ] MKV
-- [ ] MP4
+- [x] MP4
 - [ ] MOV
 - [ ] WebM
 
