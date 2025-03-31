@@ -32,8 +32,7 @@ namespace SpineViewer
             var impTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => baseType.IsAssignableFrom(t) && !t.IsAbstract);
             foreach (var type in impTypes)
             {
-                var attr = type.GetCustomAttribute<TAttr>();
-                if (attr is not null)
+                foreach (var attr in type.GetCustomAttributes<TAttr>())
                 {
                     var key = attr.ImplementationKey;
                     if (ImplementationTypes.ContainsKey(key))

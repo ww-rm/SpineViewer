@@ -25,7 +25,7 @@ namespace SpineViewer.Exporter
     /// <summary>
     /// 导出实现类标记
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class ExportImplementationAttribute(ExportType exportType) : Attribute, IImplementationKey<ExportType>
     {
         public ExportType ImplementationKey { get; private set; } = exportType;
