@@ -29,13 +29,13 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// </summary>
         [StringEnumConverter.StandardValues("libvpx-vp9", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
-        [Category("[3] 格式参数"), DisplayName("编码器"), Description("要使用的编码器")]
+        [Category("[3] 格式参数"), DisplayName("编码器"), Description("-c:v, 要使用的编码器")]
         public string Codec { get; set; } = "libvpx-vp9";
 
         /// <summary>
         /// CRF
         /// </summary>
-        [Category("[3] 格式参数"), DisplayName("CRF"), Description("Constant Rate Factor, 取值范围 0-63, 建议范围 18-28, 默认取值 23, 数值越小则输出质量越高")]
+        [Category("[3] 格式参数"), DisplayName("CRF"), Description("-crf, 取值范围 0-63, 建议范围 18-28, 默认取值 23, 数值越小则输出质量越高")]
         public int CRF { get => crf; set => crf = Math.Clamp(value, 0, 63); }
         private int crf = 23;
 
@@ -44,7 +44,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// </summary>
         [StringEnumConverter.StandardValues("yuv420p", "yuv422p", "yuv444p", "yuva420p", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
-        [Category("[3] 格式参数"), DisplayName("像素格式"), Description("要使用的像素格式")]
+        [Category("[3] 格式参数"), DisplayName("像素格式"), Description("-pix_fmt, 要使用的像素格式")]
         public string PixelFormat { get; set; } = "yuva420p";
 
         public override void SetOutputOptions(FFMpegArgumentOptions options)

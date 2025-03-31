@@ -28,7 +28,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// </summary>
         [StringEnumConverter.StandardValues("libx264", "libx265", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
-        [Category("[3] 格式参数"), DisplayName("编码器"), Description("要使用的编码器")]
+        [Category("[3] 格式参数"), DisplayName("编码器"), Description("-c:v, 要使用的编码器")]
         public string Codec { get; set; } = "libx264";
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// </summary>
         [StringEnumConverter.StandardValues("yuv420p", "yuv422p", "yuv444p", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
-        [Category("[3] 格式参数"), DisplayName("像素格式"), Description("要使用的像素格式")]
+        [Category("[3] 格式参数"), DisplayName("像素格式"), Description("-pix_fmt, 要使用的像素格式")]
         public string PixelFormat { get; set; } = "yuv444p";
 
         public override void SetOutputOptions(FFMpegArgumentOptions options)

@@ -19,7 +19,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// <summary>
         /// 文件格式
         /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("文件格式"), Description("文件格式")]
+        [Category("[2] FFmpeg 基本参数"), DisplayName("文件格式"), Description("-f, 文件格式")]
         public abstract string Format { get; }
 
         /// <summary>
