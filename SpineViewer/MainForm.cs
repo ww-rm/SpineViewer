@@ -24,11 +24,12 @@ namespace SpineViewer
             // 在此处将导出菜单需要的类绑定起来
             toolStripMenuItem_ExportFrame.Tag = ExportType.Frame;
             toolStripMenuItem_ExportFrameSequence.Tag = ExportType.FrameSequence;
-            toolStripMenuItem_ExportGif.Tag = ExportType.GIF;
-            toolStripMenuItem_ExportMkv.Tag = ExportType.MKV;
-            toolStripMenuItem_ExportMp4.Tag = ExportType.MP4;
-            toolStripMenuItem_ExportMov.Tag = ExportType.MOV;
-            toolStripMenuItem_ExportWebm.Tag = ExportType.WebM;
+            toolStripMenuItem_ExportGif.Tag = ExportType.Gif;
+            toolStripMenuItem_ExportMkv.Tag = ExportType.Mkv;
+            toolStripMenuItem_ExportMp4.Tag = ExportType.Mp4;
+            toolStripMenuItem_ExportMov.Tag = ExportType.Mov;
+            toolStripMenuItem_ExportWebm.Tag = ExportType.Webm;
+            toolStripMenuItem_ExportCustom.Tag = ExportType.Custom;
 
             // 执行一些初始化工作
             try

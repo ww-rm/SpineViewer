@@ -62,6 +62,11 @@ namespace SpineViewer
             private readonly List<string> standardValues = [];
 
             /// <summary>
+            /// 是否允许用户自定义
+            /// </summary>
+            public bool Customizable { get; set; } = false;
+
+            /// <summary>
             /// 字符串标准值列表
             /// </summary>
             /// <param name="values">允许的字符串标准值</param>
@@ -74,7 +79,11 @@ namespace SpineViewer
 
         public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
 
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
+        {
+            var customizable = context?.PropertyDescriptor?.Attributes.OfType<StandardValuesAttribute>().FirstOrDefault()?.Customizable ?? false;
+            return !customizable;
+        }
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {

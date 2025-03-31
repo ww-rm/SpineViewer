@@ -22,7 +22,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             var args = (FrameExportArgs)ExportArgs;
 
             // 导出单个时必定提供输出文件夹
-            var filename = $"frame_{timestamp}{args.FileSuffix}";
+            var filename = $"frame_{timestamp}{args.Suffix}";
             var savePath = Path.Combine(args.OutputDir, filename);
 
             worker?.ReportProgress(0, $"已处理 0/1");
@@ -55,7 +55,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 var spine = spinesToRender[i];
 
                 // 逐个导出时如果提供了输出文件夹, 则全部导出到输出文件夹, 否则输出到各自的文件夹
-                var filename = $"{spine.Name}_{timestamp}{args.FileSuffix}";
+                var filename = $"{spine.Name}_{timestamp}{args.Suffix}";
                 var savePath = args.OutputDir is null ? Path.Combine(spine.AssetsDir, filename) : Path.Combine(args.OutputDir, filename);
 
                 try

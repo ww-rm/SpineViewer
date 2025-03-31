@@ -79,14 +79,14 @@ namespace SpineViewer.Exporter
         /// </summary>
         public virtual string? Validate()
         {
-            if (!string.IsNullOrEmpty(OutputDir) && File.Exists(OutputDir))
+            if (!string.IsNullOrWhiteSpace(OutputDir) && File.Exists(OutputDir))
                 return "输出文件夹无效";
-            if (!string.IsNullOrEmpty(OutputDir) && !Directory.Exists(OutputDir))
+            if (!string.IsNullOrWhiteSpace(OutputDir) && !Directory.Exists(OutputDir))
                 return $"文件夹 {OutputDir} 不存在";
-            if (ExportSingle && string.IsNullOrEmpty(OutputDir))
+            if (ExportSingle && string.IsNullOrWhiteSpace(OutputDir))
                 return "导出单个时必须提供输出文件夹";
 
-            OutputDir = string.IsNullOrEmpty(OutputDir) ? null : Path.GetFullPath(OutputDir);
+            OutputDir = string.IsNullOrWhiteSpace(OutputDir) ? null : Path.GetFullPath(OutputDir);
             return null;
         }
     }

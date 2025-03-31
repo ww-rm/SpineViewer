@@ -15,11 +15,12 @@ namespace SpineViewer.Exporter
     {
         Frame,
         FrameSequence,
-        GIF,
-        MKV,
-        MP4,
-        MOV,
-        WebM
+        Gif,
+        Mp4,
+        Webm,
+        Mkv,
+        Mov,
+        Custom,
     }
 
     /// <summary>

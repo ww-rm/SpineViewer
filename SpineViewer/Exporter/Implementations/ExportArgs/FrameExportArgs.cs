@@ -36,7 +36,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// 文件名后缀
         /// </summary>
         [Category("[1] 单帧画面"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
-        public string FileSuffix { get => imageFormat.GetSuffix(); }
+        public string Suffix { get => imageFormat.GetSuffix(); }
 
         /// <summary>
         /// DPI

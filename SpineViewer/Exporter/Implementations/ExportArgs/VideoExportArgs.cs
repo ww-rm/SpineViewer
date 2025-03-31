@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FFMpegCore.Enums;
+using FFMpegCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

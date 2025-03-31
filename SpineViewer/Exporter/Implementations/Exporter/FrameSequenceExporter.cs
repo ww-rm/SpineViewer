@@ -28,7 +28,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
             int frameIdx = 0;
             foreach (var frame in GetFrames(spinesToRender, worker))
             {
-                var filename = $"frames_{timestamp}_{args.FPS:f0}_{frameIdx:d6}{args.FileSuffix}";
+                var filename = $"frames_{timestamp}_{args.FPS:f0}_{frameIdx:d6}{args.Suffix}";
                 var savePath = Path.Combine(saveDir, filename);
 
                 try
@@ -63,7 +63,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
                 int frameIdx = 0;
                 foreach (var frame in GetFrames(spine, worker))
                 {
-                    var filename = $"{spine.Name}_{timestamp}_{args.FPS:f0}_{frameIdx:d6}{args.FileSuffix}";
+                    var filename = $"{spine.Name}_{timestamp}_{args.FPS:f0}_{frameIdx:d6}{args.Suffix}";
                     var savePath = Path.Combine(saveDir, filename);
 
                     try

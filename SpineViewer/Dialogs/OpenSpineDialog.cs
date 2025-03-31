@@ -65,7 +65,7 @@ namespace SpineViewer.Dialogs
                 skelPath = Path.GetFullPath(skelPath);
             }
 
-            if (string.IsNullOrEmpty(atlasPath))
+            if (string.IsNullOrWhiteSpace(atlasPath))
             {
                 atlasPath = null;
             }

@@ -21,6 +21,6 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// </summary>
         [TypeConverter(typeof(StringEnumConverter)), StringEnumConverter.StandardValues(".png", ".jpg", ".tga", ".bmp")]
         [Category("[2] 帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
-        public string FileSuffix { get; set; } = ".png";
+        public string Suffix { get; set; } = ".png";
     }
 }
