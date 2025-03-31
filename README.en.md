@@ -25,7 +25,7 @@ Exporting video formats such as GIF requires that ffmpeg is installed locally an
 ## Supported Export Formats
 
 | Export Format  | Suitable for Scenario                                                                 |
-| :------------: | :------------------------------------------------------------------------------------:|
+| ------------ | ------------------------------------------------------------------------------------|
 | Single Frame   | Supports generating high-definition model snapshots; you can manually adjust the frame. |
 | Frame Sequence | Supports png sequence output with transparency and lossless compression.              |
 | GIF            | Ideal for generating preview animations.                                              |
