@@ -1,8 +1,8 @@
 # [SpineViewer](https://github.com/ww-rm/SpineViewer)
 
 [![Build and Release](https://github.com/ww-rm/SpineViewer/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/ww-rm/SpineViewer/actions/workflows/dotnet-desktop.yml)
-[![GitHub Release](https://img.shields.io/github/v/release/ww-rm/SpineViewer?logo=github&label=Release)](https://github.com/ww-rm/SpineViewer/releases)
-[![Downloads](https://img.shields.io/github/downloads/ww-rm/SpineViewer/total?logo=github&label=Downloads)](https://github.com/ww-rm/SpineViewer/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/ww-rm/SpineViewer?logo=github&logoColor=959da5&label=Release&labelColor=3f4850)](https://github.com/ww-rm/SpineViewer/releases)
+[![Downloads](https://img.shields.io/github/downloads/ww-rm/SpineViewer/total?logo=github&logoColor=959da5&label=Downloads&labelColor=3f4850)](https://github.com/ww-rm/SpineViewer/releases)
 
 [中文](README.md) | [English](README.en.md)
 
