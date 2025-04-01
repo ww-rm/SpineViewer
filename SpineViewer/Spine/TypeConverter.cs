@@ -39,7 +39,7 @@ namespace SpineViewer.Spine
                 {
                     IEnumerable<string> common = spines[0].AnimationNames;
                     foreach (var spine in spines.Skip(1))
-                        common = common.Intersect(spine.AnimationNames);
+                        common = common.Union(spine.AnimationNames);
                     return new StandardValuesCollection(common.ToArray());
                 }
             }
@@ -65,7 +65,7 @@ namespace SpineViewer.Spine
                 {
                     IEnumerable<string> common = spines[0].SkinNames;
                     foreach (var spine in spines.Skip(1))
-                        common = common.Intersect(spine.SkinNames);
+                        common = common.Union(spine.SkinNames);
                     return new StandardValuesCollection(common.ToArray());
                 }
             }
