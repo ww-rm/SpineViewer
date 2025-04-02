@@ -23,9 +23,9 @@ namespace SpineViewer.Exporter.Implementations.Exporter
         {
             var args = (VideoExportArgs)ExportArgs;
 
-            // 独立导出时如果 args.Duration 小于 0 则使用 Track0 的动画时长
+            // 独立导出时如果 args.Duration 小于 0 则使用所有轨道上动画时长最大值
             var duration = args.Duration;
-            if (duration < 0) duration = spine.GetAnimationDuration(spine.Track0Animation); // TODO: 也许可以使用所有轨道的最大值
+            if (duration < 0) duration = spine.GetTrackIndices().Select(i => spine.GetAnimationDuration(spine.GetAnimation(i))).Max();
 
             float delta = 1f / args.FPS;
             int total = Math.Max(1, (int)(duration * args.FPS)); // 至少导出 1 帧
@@ -75,7 +75,7 @@ namespace SpineViewer.Exporter.Implementations.Exporter
         public override void Export(Spine.Spine[] spines, BackgroundWorker? worker = null)
         {
             // 导出视频格式需要把模型时间都重置到 0
-            foreach (var spine in spines) spine.Track0Animation = spine.Track0Animation; // TODO: 多轨道重置
+            foreach (var spine in spines) spine.ResetAnimationsTime();
             base.Export(spines, worker);
         }
     }

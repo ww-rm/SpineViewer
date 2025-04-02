@@ -19,7 +19,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
         /// <summary>
         /// 导出时长
         /// </summary>
-        [Category("[1] 视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的当前动画时长")]
+        [Category("[1] 视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的所有轨道动画时长最大值")]
         public float Duration 
         { 
             get => duration;
