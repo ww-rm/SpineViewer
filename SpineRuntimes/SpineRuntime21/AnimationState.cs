@@ -41,8 +41,9 @@ namespace SpineRuntime21 {
 
 		public AnimationStateData Data { get { return data; } }
 		public float TimeScale { get { return timeScale; } set { timeScale = value; } }
+		public List<TrackEntry> Tracks => tracks;
 
-		public delegate void StartEndDelegate(AnimationState state, int trackIndex);
+        public delegate void StartEndDelegate(AnimationState state, int trackIndex);
 		public event StartEndDelegate Start;
 		public event StartEndDelegate End;
 
