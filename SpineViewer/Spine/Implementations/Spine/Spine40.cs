@@ -142,17 +142,21 @@ namespace SpineViewer.Spine.Implementations.Spine
             }
         }
 
-        protected override string track0Animation
+        protected override int[] trackIndices => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();
+
+        protected override string getAnimation(int track) => animationState.GetCurrent(track)?.Animation.Name ?? EMPTY_ANIMATION;
+
+        protected override void setAnimation(int track, string name)
         {
-            get => animationState.GetCurrent(0)?.Animation.Name ?? EMPTY_ANIMATION;
-            set
-            {
-                if (value == EMPTY_ANIMATION)
-                    animationState.SetAnimation(0, EmptyAnimation, false);
-                else if (animationNames.Contains(value))
-                    animationState.SetAnimation(0, value, true);
-            }
+            if (name == EMPTY_ANIMATION)
+                animationState.SetAnimation(track, EmptyAnimation, false);
+            else if (animationNames.Contains(name))
+                animationState.SetAnimation(track, name, true);
         }
+
+        protected override void clearTrack(int i) => animationState.ClearTrack(i);
+
+        public override float GetAnimationDuration(string name) { return skeletonData.FindAnimation(name)?.Duration ?? 0f; }
 
         protected override RectangleF bounds
         {
@@ -163,8 +167,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                 return new RectangleF(x, y, w, h);
             }
         }
-
-        public override float GetAnimationDuration(string name) { return skeletonData.FindAnimation(name)?.Duration ?? 0f; }
 
         protected override void update(float delta)
         {
