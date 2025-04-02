@@ -180,7 +180,7 @@ namespace SpineViewer.Spine
             get { lock (_lock) return usePremultipliedAlpha; }
             set { lock (_lock) usePremultipliedAlpha = value; }
         }
-        protected bool usePremultipliedAlpha = true;
+        protected bool usePremultipliedAlpha = false;
 
         #endregion
 
