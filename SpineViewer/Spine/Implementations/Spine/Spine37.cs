@@ -140,7 +140,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             }
         }
 
-        protected override int[] trackIndices => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();
+        protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();
 
         protected override string getAnimation(int track) => animationState.GetCurrent(track)?.Animation.Name ?? EMPTY_ANIMATION;
 

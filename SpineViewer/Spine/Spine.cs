@@ -236,13 +236,6 @@ namespace SpineViewer.Spine
         #region 属性 | [3] 动画
 
         /// <summary>
-        /// 包含的所有皮肤名称
-        /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> SkinNames { get; private set; }
-        protected List<string> skinNames = [];
-
-        /// <summary>
         /// 使用的皮肤名称, 如果设置的皮肤不存在则忽略
         /// </summary>
         [TypeConverter(typeof(SkinConverter))]
@@ -253,13 +246,6 @@ namespace SpineViewer.Spine
             set { lock (_lock) { skin = value; update(0); } }
         }
         protected abstract string skin { get; set; }
-
-        /// <summary>
-        /// 包含的所有动画名称
-        /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> AnimationNames { get; private set; }
-        protected List<string> animationNames = [EMPTY_ANIMATION];
 
         /// <summary>
         /// 默认轨道动画名称, 如果设置的动画不存在则忽略
@@ -276,34 +262,58 @@ namespace SpineViewer.Spine
         /// 默认轨道动画时长
         /// </summary>
         [Category("[3] 动画"), DisplayName("轨道 0 动画时长")]
-        public float Track0AnimationDuration { get => GetAnimationDuration(Track0Animation); } // TODO: 动画时长变成伪属性在面板显示
+        public float Track0AnimationDuration => GetAnimationDuration(Track0Animation);
 
         /// <summary>
         /// 默认轨道动画时长
         /// </summary>
-        [Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
-        [Category("[3] 动画"), DisplayName("多轨道动画")]
-        public AnimationTrackDict AnimationTracks { get; private set; }
+        [Editor(typeof(AnimationTracksEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Category("[3] 动画"), DisplayName("多轨道动画管理")]
+        public AnimationTracksType AnimationTracks { get; private set; }
+
+        /// <summary>
+        /// 包含的所有皮肤名称
+        /// </summary>
+        [Browsable(false)]
+        public ReadOnlyCollection<string> SkinNames { get; private set; }
+        protected List<string> skinNames = [];
+
+        /// <summary>
+        /// 包含的所有动画名称
+        /// </summary>
+        [Browsable(false)]
+        public ReadOnlyCollection<string> AnimationNames { get; private set; }
+        protected List<string> animationNames = [EMPTY_ANIMATION];
 
         /// <summary>
         /// 获取所有非 null 的轨道索引
         /// </summary>
-        protected abstract int[] trackIndices { get; }
+        public int[] GetTrackIndices() { lock (_lock) return getTrackIndices(); }
+        protected abstract int[] getTrackIndices();
 
         /// <summary>
         /// 获取指定轨道的当前动画, 如果没有, 应当返回空动画名称
         /// </summary>
+        public string GetAnimation(int track) { lock (_lock) return getAnimation(track); }
         protected abstract string getAnimation(int track);
 
         /// <summary>
         /// 设置某个轨道动画
         /// </summary>
+        public void SetAnimation(int track, string name) { lock (_lock) setAnimation(track, name); }
         protected abstract void setAnimation(int track, string name);
 
         /// <summary>
         /// 清除某个轨道, 与设置空动画不同, 是彻底删除轨道内的东西
         /// </summary>
-        protected abstract void clearTrack(int i);
+        public void ClearTrack(int i) { lock (_lock) clearTrack(i); }
+        protected abstract void clearTrack(int i); // XXX: 清除轨道之后被加载的附件还是会保留, 不会自动卸下, 除非使用 SetSlotsToSetupPose
+
+        /// <summary>
+        /// 获取动画时长, 如果动画不存在则返回 0
+        /// </summary>
+        public abstract float GetAnimationDuration(string name);
 
         #endregion
 
@@ -385,11 +395,6 @@ namespace SpineViewer.Spine
         public Image Preview { get; private set; }
 
         /// <summary>
-        /// 获取动画时长, 如果动画不存在则返回 0
-        /// </summary>
-        public abstract float GetAnimationDuration(string name);
-
-        /// <summary>
         /// 更新内部状态
         /// </summary>
         public void Update(float delta) { lock (_lock) update(delta); }
@@ -425,128 +430,5 @@ namespace SpineViewer.Spine
 
         #endregion
 
-        /// <summary>
-        /// 多轨动画管理集合
-        /// </summary>
-        /// <param name="spine"></param>
-        public class AnimationTrackDict(Spine spine) : IDictionary<int, string>
-        {
-            private readonly Spine sp = spine;
-
-            public string this[int key]
-            {
-                get
-                {
-                    lock (sp._lock)
-                    {
-                        if (!sp.trackIndices.Contains(key))
-                            throw new KeyNotFoundException($"Track {key} not found.");
-                        return sp.getAnimation(key);
-                    }
-                }
-                set
-                {
-                    lock (sp._lock) sp.setAnimation(key, value);
-                }
-            }
-
-            public ICollection<int> Keys
-            {
-                get { lock (sp._lock) return sp.trackIndices; }
-            }
-
-            public ICollection<string> Values
-            {
-                get { lock (sp._lock) return sp.trackIndices.Select(sp.getAnimation).ToArray(); }
-            }
-
-            public int Count
-            {
-                get { lock (sp._lock) return sp.trackIndices.Length; }
-            }
-
-            public bool IsReadOnly => false;
-
-            public void Add(int key, string value)
-            {
-                lock (sp._lock) sp.setAnimation(key, value);
-            }
-
-            public void Add(KeyValuePair<int, string> item)
-            {
-                lock (sp._lock) sp.setAnimation(item.Key, item.Value);
-            }
-
-            public void Clear()
-            {
-                lock (sp._lock) foreach (var i in sp.trackIndices) sp.setAnimation(i, EMPTY_ANIMATION);
-            }
-
-            public bool Contains(KeyValuePair<int, string> item)
-            {
-                lock (sp._lock) return sp.trackIndices.Contains(item.Key) && sp.getAnimation(item.Key) == item.Value;
-            }
-
-            public bool ContainsKey(int key)
-            {
-                lock (sp._lock) return sp.trackIndices.Contains(key);
-            }
-
-            public void CopyTo(KeyValuePair<int, string>[] array, int arrayIndex)
-            {
-                lock (sp._lock) foreach (var i in sp.trackIndices) array[arrayIndex++] = new KeyValuePair<int, string>(i, sp.getAnimation(i));
-            }
-
-            public IEnumerator<KeyValuePair<int, string>> GetEnumerator()
-            {
-                List<KeyValuePair<int, string>> cache;
-                lock (sp._lock)
-                {
-                    cache = sp.trackIndices.Select(i => new KeyValuePair<int, string>(i, sp.getAnimation(i))).ToList();
-                }
-                foreach (var item in cache)
-                {
-                    yield return item;
-                }
-            }
-
-            public bool Remove(int key)
-            {
-                lock (sp._lock)
-                {
-                    sp.setAnimation(key, EMPTY_ANIMATION);
-                    sp.clearTrack(key);
-                }
-                return true;
-            }
-
-            public bool Remove(KeyValuePair<int, string> item)
-            {
-                lock (sp._lock)
-                {
-                    sp.setAnimation(item.Key, EMPTY_ANIMATION);
-                    sp.clearTrack(item.Key);
-                }
-                return true;
-            }
-
-            public bool TryGetValue(int key, [MaybeNullWhen(false)] out string value)
-            {
-                value = null;
-                lock (sp._lock)
-                {
-                    if (!sp.trackIndices.Contains(key)) return false;
-                    value = sp.getAnimation(key);
-                    return true;
-                }
-            }
-
-            public override string ToString()
-            {
-                lock (sp._lock) return string.Join(", ", sp.trackIndices.Select(sp.getAnimation));
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        }
     }
 }

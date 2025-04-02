@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpineViewer.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -34,6 +35,30 @@ namespace SpineViewer.Spine
             openFileDialog.Title = "选择 atlas 文件";
             openFileDialog.AddExtension = false;
             openFileDialog.Filter = "atlas 文件 (*.atlas)|*.atlas|所有文件 (*.*)|*.*";
+        }
+    }
+
+    /// <summary>
+    /// 多轨道动画编辑器
+    /// </summary>
+    public class AnimationTracksEditor : UITypeEditor
+    {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext? context) => UITypeEditorEditStyle.Modal;
+
+        public override object? EditValue(ITypeDescriptorContext? context, IServiceProvider provider, object? value)
+        {
+            if (provider == null || context == null || context.Instance is not Spine)
+                return value;
+
+            IWindowsFormsEditorService editorService = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+            if (editorService == null)
+                return value;
+
+            using (var dialog = new AnimationTracksEditorDialog((Spine)context.Instance))
+                editorService.ShowDialog(dialog);
+
+            TypeDescriptor.Refresh(context.Instance);
+            return value;
         }
     }
 }
