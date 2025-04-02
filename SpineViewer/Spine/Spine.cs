@@ -315,6 +315,18 @@ namespace SpineViewer.Spine
         /// </summary>
         public abstract float GetAnimationDuration(string name);
 
+        /// <summary>
+        /// 重置所有轨道上的动画时间
+        /// </summary>
+        public void ResetAnimationsTime()
+        {
+            lock (_lock)
+            {
+                foreach (var i in getTrackIndices())
+                    setAnimation(i, getAnimation(i));
+            }
+        }
+
         #endregion
 
         #region 属性 | [4] 调试
