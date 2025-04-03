@@ -133,9 +133,47 @@ namespace SpineViewer
             progressDialog.ShowDialog();
         }
 
+        //private System.Windows.Forms.Timer timer = new();
+        //private PetForm pet = new PetForm();
+        //private IntPtr screenDC;
+        //private IntPtr memDC;
         private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
         {
+        //    screenDC = Win32.GetDC(IntPtr.Zero);
+        //    memDC = Win32.CreateCompatibleDC(screenDC);
+        //    pet.Show();
+        //    timer.Tick += Timer_Tick;
+        //    timer.Enabled = true;
+        //    timer.Interval = 50;
+        //    timer.Start();
+        //}
 
+        //private void Timer_Tick(object? sender, EventArgs e)
+        //{
+        //    using var tex = new SFML.Graphics.RenderTexture((uint)pet.Width, (uint)pet.Height);
+        //    var v = spinePreviewer.GetView();
+        //    tex.SetView(v);
+        //    tex.Clear(new SFML.Graphics.Color(0, 0, 0, 0));
+        //    lock (spineListView.Spines)
+        //    {
+        //        foreach (var sp in spineListView.Spines)
+        //            tex.Draw(sp);
+        //    }
+        //    tex.Display();
+        //    using var frame = new SFMLImageVideoFrame(tex.Texture.CopyToImage());
+        //    using var bitmap = frame.CopyToBitmap();
+
+        //    var newBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
+        //    var oldBitmap = Win32.SelectObject(memDC, newBitmap);
+
+        //    Win32.SIZE size = new Win32.SIZE { cx = pet.Width, cy = pet.Height };
+        //    Win32.POINT srcPos = new Win32.POINT { x = 0, y = 0 };
+        //    Win32.BLENDFUNCTION blend = new Win32.BLENDFUNCTION { BlendOp = 0, BlendFlags = 0, SourceConstantAlpha = 255, AlphaFormat = Win32.AC_SRC_ALPHA };
+
+        //    Win32.UpdateLayeredWindow(pet.Handle, screenDC, IntPtr.Zero, ref size, memDC, ref srcPos, 0, ref blend, Win32.ULW_ALPHA);
+
+        //    Win32.SelectObject(memDC, oldBitmap);
+        //    Win32.DeleteObject(newBitmap);
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
