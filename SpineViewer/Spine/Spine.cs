@@ -301,13 +301,13 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 设置某个轨道动画
         /// </summary>
-        public void SetAnimation(int track, string name) { lock (_lock) setAnimation(track, name); }
+        public void SetAnimation(int track, string name) { lock (_lock) { setAnimation(track, name); update(0); } }
         protected abstract void setAnimation(int track, string name);
 
         /// <summary>
         /// 清除某个轨道, 与设置空动画不同, 是彻底删除轨道内的东西
         /// </summary>
-        public void ClearTrack(int i) { lock (_lock) clearTrack(i); }
+        public void ClearTrack(int i) { lock (_lock) { clearTrack(i); update(0); } }
         protected abstract void clearTrack(int i); // XXX: 清除轨道之后被加载的附件还是会保留, 不会自动卸下, 除非使用 SetSlotsToSetupPose
 
         /// <summary>
@@ -318,14 +318,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 重置所有轨道上的动画时间
         /// </summary>
-        public void ResetAnimationsTime()
-        {
-            lock (_lock)
-            {
-                foreach (var i in getTrackIndices())
-                    setAnimation(i, getAnimation(i));
-            }
-        }
+        public void ResetAnimationsTime() { lock (_lock) { foreach (var i in getTrackIndices()) setAnimation(i, getAnimation(i)); } }
 
         #endregion
 
