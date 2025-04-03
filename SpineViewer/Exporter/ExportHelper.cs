@@ -33,7 +33,7 @@ namespace SpineViewer.Exporter
     }
 
     /// <summary>
-    /// SFML.Graphics.Image 帧对象包装类
+    /// SFML.Graphics.Image 帧对象包装类, 将接管给定的 image 对象生命周期
     /// </summary>
     public class SFMLImageVideoFrame(SFML.Graphics.Image image) : IVideoFrame, IDisposable
     {
@@ -64,13 +64,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 获取 Winforms Bitmap 对象
         /// </summary>
-        public Bitmap CopyToBitmap()
-        {
-            image.SaveToMemory(out var imgBuffer, "bmp");
-            using var stream = new MemoryStream(imgBuffer);
-            using var bitmap = new Bitmap(stream);
-            return new(bitmap); // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
-        }
+        public Bitmap CopyToBitmap() => image.CopyToBitmap();
     }
 
     /// <summary>
@@ -87,51 +81,5 @@ namespace SpineViewer.Exporter
             else if (imageFormat == ImageFormat.Exif) return ".jpeg";
             else return $".{imageFormat.ToString().ToLower()}";
         }
-
-        #region 包围盒辅助函数
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, Size resolution, Padding padding)
-            => bounds.GetView((uint)resolution.Width, (uint)resolution.Height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, uint width, uint height, Padding padding)
-            => bounds.GetView(width, height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, Size resolution, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-            => bounds.GetView((uint)resolution.Width, (uint)resolution.Height, paddingL, paddingR, paddingT, paddingB);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-        {
-            float sizeX = bounds.Width;
-            float sizeY = bounds.Height;
-            float innerW = width - paddingL - paddingR;
-            float innerH = height - paddingT - paddingB;
-
-            float scale = 1;
-            if (sizeY / sizeX < innerH / innerW)
-                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
-            else
-                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
-
-            var x = bounds.X + bounds.Width / 2 + (paddingL - (float)paddingR) * scale;
-            var y = bounds.Y + bounds.Height / 2 + (paddingT - (float)paddingB) * scale;
-            var viewX = width * scale;
-            var viewY = height * scale;
-
-            return new(new(x, y), new(viewX, -viewY));
-        }
-
-        #endregion
     }
 }

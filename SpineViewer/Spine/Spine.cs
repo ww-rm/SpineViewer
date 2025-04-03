@@ -1,21 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Numerics;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Text.Json.Nodes;
-using System.Collections.Immutable;
-using SpineViewer.Exporter;
-using System.ComponentModel.Design;
 using System.Drawing.Design;
 
 namespace SpineViewer.Spine
@@ -94,17 +80,7 @@ namespace SpineViewer.Spine
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
             tex.Display();
-
-            using (var img = tex.Texture.CopyToImage())
-            {
-                if (img.SaveToMemory(out var imgBuffer, "bmp"))
-                {
-                    // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
-                    using var stream = new MemoryStream(imgBuffer);
-                    using var bitmap = new Bitmap(stream);
-                    Preview = new Bitmap(bitmap);
-                }
-            }
+            Preview = tex.Texture.CopyToBitmap();
 
             // 取最后一个作为初始, 尽可能去显示非默认的内容
             skin = SkinNames.Last();
