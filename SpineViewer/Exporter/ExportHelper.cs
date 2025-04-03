@@ -68,7 +68,8 @@ namespace SpineViewer.Exporter
         {
             image.SaveToMemory(out var imgBuffer, "bmp");
             using var stream = new MemoryStream(imgBuffer);
-            return new(new Bitmap(stream)); // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
+            using var bitmap = new Bitmap(stream);
+            return new(bitmap); // 必须重复构造一个副本才能摆脱对流的依赖, 否则之后使用会报错
         }
     }
 
