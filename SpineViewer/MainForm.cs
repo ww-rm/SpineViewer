@@ -1,13 +1,7 @@
-﻿using FFMpegCore.Pipes;
-using FFMpegCore;
-using NLog;
-using SFML.System;
+﻿using NLog;
 using SpineViewer.Spine;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using FFMpegCore.Enums;
 using SpineViewer.Exporter;
 
 namespace SpineViewer

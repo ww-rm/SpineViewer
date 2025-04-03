@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FFMpegCore.Arguments;
 using System.Diagnostics;
 
 namespace SpineViewer.Exporter.Implementations.Exporter
