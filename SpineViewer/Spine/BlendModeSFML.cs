@@ -20,7 +20,7 @@ namespace SpineViewer.Spine
         ///// res.a = src.a *     1 + dst.a * (1 - src.a)
         ///// </code>
         ///// </summary>
-        //public static SFML.Graphics.BlendMode Normal = new(
+        //public static readonly SFML.Graphics.BlendMode Normal = new(
         //    SFML.Graphics.BlendMode.Factor.SrcAlpha,
         //    SFML.Graphics.BlendMode.Factor.OneMinusSrcAlpha,
         //    SFML.Graphics.BlendMode.Equation.Add,
@@ -38,7 +38,7 @@ namespace SpineViewer.Spine
         ///// res.a = src.a *     1 + dst.a * 1
         ///// </code>
         ///// </summary>
-        //public static SFML.Graphics.BlendMode Additive = new(
+        //public static readonly SFML.Graphics.BlendMode Additive = new(
         //    SFML.Graphics.BlendMode.Factor.SrcAlpha,
         //    SFML.Graphics.BlendMode.Factor.One,
         //    SFML.Graphics.BlendMode.Equation.Add,
@@ -54,7 +54,7 @@ namespace SpineViewer.Spine
         ///          res.a  =          src.a  * 1 +          dst.a  * (1 - src.a)
         /// </code>
         /// </summary>
-        public static SFML.Graphics.BlendMode NormalPma = new(
+        public static readonly SFML.Graphics.BlendMode NormalPma = new(
             SFML.Graphics.BlendMode.Factor.One,
             SFML.Graphics.BlendMode.Factor.OneMinusSrcAlpha,
             SFML.Graphics.BlendMode.Equation.Add,
@@ -70,7 +70,7 @@ namespace SpineViewer.Spine
         ///          res.a  =          src.a  * 1 +          dst.a  * 1
         /// </code>
         /// </summary>
-        public static SFML.Graphics.BlendMode AdditivePma = new(
+        public static readonly SFML.Graphics.BlendMode AdditivePma = new(
             SFML.Graphics.BlendMode.Factor.One,
             SFML.Graphics.BlendMode.Factor.One,
             SFML.Graphics.BlendMode.Equation.Add,
@@ -86,7 +86,7 @@ namespace SpineViewer.Spine
         /// res.a = src.a *     1 + dst.a * (1 - src.a)
         /// </code>
         /// </summary>
-        public static SFML.Graphics.BlendMode MultiplyPma = new(
+        public static readonly SFML.Graphics.BlendMode MultiplyPma = new(
             SFML.Graphics.BlendMode.Factor.DstColor,
             SFML.Graphics.BlendMode.Factor.OneMinusSrcAlpha,
             SFML.Graphics.BlendMode.Equation.Add,
@@ -102,7 +102,7 @@ namespace SpineViewer.Spine
         /// res.a = src.a * 1 + dst.a * (1 - src.a)
         /// </code>
         /// </summary>
-        public static SFML.Graphics.BlendMode ScreenPma = new(
+        public static readonly SFML.Graphics.BlendMode ScreenPma = new(
             SFML.Graphics.BlendMode.Factor.One,
             SFML.Graphics.BlendMode.Factor.OneMinusSrcColor,
             SFML.Graphics.BlendMode.Equation.Add,
