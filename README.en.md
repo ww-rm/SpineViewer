@@ -12,6 +12,10 @@
 
 ---
 
+:sparkles: v0.12.x New Feature: Support for multi-track animations and multi-skin list management :sparkles:
+
+---
+
 ## Installation
 
 Head over to the [Release](https://github.com/ww-rm/SpineViewer/releases) page to download the zip package.

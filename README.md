@@ -12,6 +12,10 @@
 
 ---
 
+:sparkles: v0.12.x 新增功能: 支持多轨道动画以及多皮肤列表管理 :sparkles:
+
+---
+
 ## 安装
 
 前往 [Release](https://github.com/ww-rm/SpineViewer/releases) 界面下载压缩包.
