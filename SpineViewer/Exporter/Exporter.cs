@@ -15,6 +15,11 @@ namespace SpineViewer.Exporter
     public abstract class Exporter(ExportArgs exportArgs) : ImplementationResolver<Exporter, ExportImplementationAttribute, ExportType>
     {
         /// <summary>
+        /// 仅源像素混合模式
+        /// </summary>
+        private static readonly SFML.Graphics.BlendMode SrcOnlyBlendMode = new(SFML.Graphics.BlendMode.Factor.One, SFML.Graphics.BlendMode.Factor.Zero);
+
+        /// <summary>
         /// 创建指定类型导出器
         /// </summary>
         /// <param name="exportType">导出类型</param>
@@ -83,7 +88,7 @@ namespace SpineViewer.Exporter
 
                 // 混合模式用直接覆盖的方式, 保证得到的图像区域是反预乘的颜色和透明度, 同时使用反预乘着色器
                 var st = SFML.Graphics.RenderStates.Default;
-                st.BlendMode = new(SFML.Graphics.BlendMode.Factor.One, SFML.Graphics.BlendMode.Factor.Zero); // 用源的颜色和透明度直接覆盖
+                st.BlendMode = SrcOnlyBlendMode; // 用源的颜色和透明度直接覆盖
                 st.Shader = Shader.InversePma;
 
                 // 在最终结果上二次渲染非预乘画面
