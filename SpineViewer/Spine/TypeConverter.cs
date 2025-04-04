@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -101,6 +102,38 @@ namespace SpineViewer.Spine
                     IEnumerable<string> common = animTracks[0].Spine.AnimationNames;
                     foreach (var t in animTracks.Skip(1))
                         common = common.Union(t.Spine.AnimationNames);
+                    return new StandardValuesCollection(common.ToArray());
+                }
+            }
+            return base.GetStandardValues(context);
+        }
+    }
+
+    public class SkinWrapperConverter : StringConverter
+    {
+        // NOTE: 可以不用实现 ConvertTo/ConvertFrom, 因为属性实现了与字符串之间的互转
+        // ToString 实现了 ConvertTo
+        // SetValue 实现了从字符串设置属性
+
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
+
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => true;
+
+        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
+        {
+            if (context.Instance is SkinManager manager)
+            {
+                return new StandardValuesCollection(manager.Spine.SkinNames);
+            }
+            else if (context.Instance is object[] instances && instances.All(x => x is SkinManager))
+            {
+                // XXX: 这里不知道为啥总是会得到 object[] 类型而不是具体的 SkinManager[] 类型
+                var managers = instances.Cast<SkinManager>().ToArray();
+                if (managers.Length > 0)
+                {
+                    IEnumerable<string> common = managers[0].Spine.SkinNames;
+                    foreach (var t in managers.Skip(1))
+                        common = common.Union(t.Spine.SkinNames);
                     return new StandardValuesCollection(common.ToArray());
                 }
             }

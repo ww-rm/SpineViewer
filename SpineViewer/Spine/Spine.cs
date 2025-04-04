@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Drawing.Design;
+using NLog;
 
 namespace SpineViewer.Spine
 {
@@ -11,6 +12,9 @@ namespace SpineViewer.Spine
     /// </summary>
     public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private bool skinLoggerWarned = false;
+
         /// <summary>
         /// 空动画标记
         /// </summary>
@@ -64,6 +68,7 @@ namespace SpineViewer.Spine
         private Spine PostInit()
         {
             SkinNames = skinNames.AsReadOnly();
+            SkinManager = new(this);
             AnimationNames = animationNames.AsReadOnly();
             AnimationTracks = new(this);
 
@@ -83,7 +88,7 @@ namespace SpineViewer.Spine
             Preview = tex.Texture.CopyToBitmap();
 
             // 取最后一个作为初始, 尽可能去显示非默认的内容
-            skin = SkinNames.Last();
+            //skin = SkinNames.Last();
             setAnimation(0, AnimationNames.Last());
 
             return this;
@@ -212,16 +217,12 @@ namespace SpineViewer.Spine
         #region 属性 | [3] 动画
 
         /// <summary>
-        /// 使用的皮肤名称, 如果设置的皮肤不存在则忽略
+        /// 已加载皮肤列表
         /// </summary>
-        [TypeConverter(typeof(SkinConverter))]
-        [Category("[3] 动画"), DisplayName("皮肤")]
-        public string Skin
-        {
-            get { lock (_lock) return skin; }
-            set { lock (_lock) { skin = value; update(0); } }
-        }
-        protected abstract string skin { get; set; }
+        [Editor(typeof(SkinManagerEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Category("[3] 动画"), DisplayName("已加载皮肤列表")]
+        public SkinManager SkinManager { get; private set; }
 
         /// <summary>
         /// 默认轨道动画名称, 如果设置的动画不存在则忽略
@@ -253,17 +254,95 @@ namespace SpineViewer.Spine
         /// </summary>
         [Browsable(false)]
         public ReadOnlyCollection<string> SkinNames { get; private set; }
-        protected List<string> skinNames = [];
+        protected readonly List<string> skinNames = [];
+
+        /// <summary>
+        /// 获取已加载的皮肤列表快照, 允许出现重复值
+        /// </summary>
+        public string[] GetLoadedSkins() { lock (_lock) return loadedSkins.ToArray(); }
+        protected readonly List<string> loadedSkins = [];
+        
+        /// <summary>
+        /// 加载指定皮肤, 添加至列表末尾, 如果不存在则忽略, 允许加载重复的值
+        /// </summary>
+        public void LoadSkin(string name) 
+        {
+            lock (_lock)
+            {
+                if (skinNames.Contains(name))
+                {
+                    loadedSkins.Add(name);
+                    reloadSkins();
+
+                    if (!skinLoggerWarned && Version <= SpineVersion.V37 && loadedSkins.Count > 1)
+                    {
+                        logger.Warn($"Multiplt skins not supported in SpineVersion {Version.GetName()}");
+                        skinLoggerWarned = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 卸载列表指定位置皮肤, 如果超出范围则忽略
+        /// </summary>
+        public void UnloadSkin(int idx)
+        {
+            lock (_lock)
+            {
+                if (idx >= 0 && idx < loadedSkins.Count)
+                {
+                    loadedSkins.RemoveAt(idx);
+                    reloadSkins();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 替换皮肤列表指定位置皮肤, 超出范围或者皮肤不存在则忽略
+        /// </summary>
+        public void ReplaceSkin(int idx, string name)
+        {
+            lock (_lock)
+            {
+                if (idx >= 0 && idx < loadedSkins.Count && skinNames.Contains(name))
+                {
+                    loadedSkins[idx] = name;
+                    reloadSkins();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 重新加载现有皮肤列表, 用于刷新等操作
+        /// </summary>
+        public void ReloadSkins() { lock (_lock) reloadSkins(); }
+        private void reloadSkins()
+        {
+            clearSkin();
+            foreach (var s in loadedSkins) addSkin(s);
+            update(0);
+        }
+
+        /// <summary>
+        /// 加载皮肤, 之后需要使用 <see cref="setSlotsToSetupPose"/> 来复位
+        /// </summary>
+        protected abstract void addSkin(string name);
+
+        /// <summary>
+        /// 清空加载的所有皮肤
+        /// </summary>
+        protected abstract void clearSkin();
 
         /// <summary>
         /// 包含的所有动画名称
         /// </summary>
         [Browsable(false)]
         public ReadOnlyCollection<string> AnimationNames { get; private set; }
-        protected List<string> animationNames = [EMPTY_ANIMATION];
+        protected readonly List<string> animationNames = [EMPTY_ANIMATION];
 
         /// <summary>
-        /// 获取所有非 null 的轨道索引
+        /// 获取所有非 null 的轨道索引快照
         /// </summary>
         public int[] GetTrackIndices() { lock (_lock) return getTrackIndices(); }
         protected abstract int[] getTrackIndices();

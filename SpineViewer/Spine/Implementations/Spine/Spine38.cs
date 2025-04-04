@@ -82,7 +82,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
 
-            skeleton = new Skeleton(skeletonData);
+            skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) }; // 挂载一个空皮肤当作容器
             animationStateData = new AnimationStateData(skeletonData);
             animationState = new AnimationState(animationStateData);
         }
@@ -135,15 +135,17 @@ namespace SpineViewer.Spine.Implementations.Spine
             }
         }
 
-        protected override string skin
+        protected override void addSkin(string name)
         {
-            get => skeleton.Skin?.Name ?? "default";
-            set
-            {
-                if (!skinNames.Contains(value)) return;
-                skeleton.SetSkin(value);
-                skeleton.SetSlotsToSetupPose();
-            }
+            if (!skinNames.Contains(name)) return;
+            skeleton.Skin.AddSkin(skeletonData.FindSkin(name));
+            skeleton.SetSlotsToSetupPose();
+        }
+
+        protected override void clearSkin()
+        {
+            skeleton.Skin.Clear();
+            skeleton.SetSlotsToSetupPose();
         }
 
         protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();

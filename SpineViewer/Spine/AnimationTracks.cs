@@ -33,14 +33,14 @@ namespace SpineViewer.Spine
         /// </summary>
         public override bool Equals(object? obj)
         {
-            if (obj is TrackWrapper tr) return ToString() == obj.ToString();
+            if (obj is TrackWrapper) return ToString() == obj.ToString();
             return base.Equals(obj);
         }
 
         /// <summary>
         /// 哈希码需要和 Equals 行为类似
         /// </summary>
-        public override int GetHashCode() => ToString().GetHashCode();
+        public override int GetHashCode() => (typeof(TrackWrapper).FullName + ToString()).GetHashCode();
     }
 
     /// <summary>
@@ -119,6 +119,6 @@ namespace SpineViewer.Spine
             return base.Equals(obj);
         }
 
-        public override int GetHashCode() => ToString().GetHashCode();
+        public override int GetHashCode() => (typeof(AnimationTracksType).FullName + ToString()).GetHashCode();
     }
 }

@@ -110,7 +110,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                 var fX = flipX;
                 var fY = flipY;
                 var animations = animationState.Tracks.Where(te => te is not null).Select(te => te.Animation.Name).ToArray();
-                var sk = skin;
 
                 var val = Math.Max(value, SCALE_MIN);
                 if (skeletonBinary is not null)
@@ -133,8 +132,8 @@ namespace SpineViewer.Spine.Implementations.Spine
                 position = pos;
                 flipX = fX;
                 flipY = fY;
+                foreach (var s in loadedSkins) addSkin(s);
                 for (int i = 0; i < animations.Length; i++) setAnimation(i, animations[i]);
-                skin = sk;
             }
         }
 
@@ -160,15 +159,17 @@ namespace SpineViewer.Spine.Implementations.Spine
             set => skeleton.FlipY = value;
         }
 
-        protected override string skin
+        protected override void addSkin(string name)
         {
-            get => skeleton.Skin?.Name ?? "default";
-            set
-            {
-                if (!skinNames.Contains(value)) return;
-                skeleton.SetSkin(value);
-                skeleton.SetSlotsToSetupPose();
-            }
+            if (!skinNames.Contains(name)) return;
+            skeleton.SetSkin(name); // XXX: 3.7 及以下不支持 AddSkin
+            skeleton.SetSlotsToSetupPose();
+        }
+
+        protected override void clearSkin()
+        {
+            skeleton.SetSkin(skeletonData.DefaultSkin);
+            skeleton.SetSlotsToSetupPose();
         }
 
         protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks[i] is not null).ToArray();

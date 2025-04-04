@@ -37,7 +37,7 @@ namespace SpineViewer.Dialogs
                     spine.ClearTrack(tr.Index);
             }
             propertyGrid_AnimationTracks.Refresh();
-            propertyGrid_AnimationTracks.SelectedGridItem = propertyGrid_AnimationTracks.SelectedGridItem.Parent.GridItems.Cast<GridItem>().Last();
+            propertyGrid_AnimationTracks.SelectedGridItem = propertyGrid_AnimationTracks.SelectedGridItem?.Parent?.GridItems?.Cast<GridItem>().Last();
         }
     }
 }

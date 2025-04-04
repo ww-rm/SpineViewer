@@ -129,15 +129,17 @@ namespace SpineViewer.Spine.Implementations.Spine
             }
         }
 
-        protected override string skin
+        protected override void addSkin(string name)
         {
-            get => skeleton.Skin?.Name ?? "default";
-            set
-            {
-                if (!skinNames.Contains(value)) return;
-                skeleton.SetSkin(value);
-                skeleton.SetSlotsToSetupPose();
-            }
+            if (!skinNames.Contains(name)) return;
+            skeleton.SetSkin(name); // XXX: 3.7 及以下不支持 AddSkin
+            skeleton.SetSlotsToSetupPose();
+        }
+
+        protected override void clearSkin()
+        {
+            skeleton.SetSkin(skeletonData.DefaultSkin);
+            skeleton.SetSlotsToSetupPose();
         }
 
         protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();
