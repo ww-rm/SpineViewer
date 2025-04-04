@@ -8,13 +8,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace SpineViewer.Exporter
 {
     /// <summary>
     /// 导出参数基类
     /// </summary>
-    public abstract class ExportArgs : ImplementationResolver<ExportArgs, ExportImplementationAttribute, ExportType>
+    public abstract class ExportArgs : ImplementationResolver<ExportArgs, ExportImplementationAttribute, ExportType>, IDisposable
     {
         /// <summary>
         /// 创建指定类型导出参数
@@ -33,6 +34,10 @@ namespace SpineViewer.Exporter
             View = view;
             RenderSelectedOnly = renderSelectedOnly;
         }
+
+        ~ExportArgs() { Dispose(false); }
+        public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+        protected virtual void Dispose(bool disposing) { View?.Dispose(); }
 
         /// <summary>
         /// 输出文件夹

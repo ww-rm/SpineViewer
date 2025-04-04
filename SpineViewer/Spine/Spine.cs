@@ -81,14 +81,14 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            tex.SetView(bounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+            using var view = bounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            tex.SetView(view);
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
             tex.Display();
             Preview = tex.Texture.CopyToBitmap();
 
             // 取最后一个作为初始, 尽可能去显示非默认的内容
-            //skin = SkinNames.Last();
             setAnimation(0, AnimationNames.Last());
 
             return this;
@@ -320,7 +320,7 @@ namespace SpineViewer.Spine
         private void reloadSkins()
         {
             clearSkin();
-            foreach (var s in loadedSkins) addSkin(s);
+            foreach (var s in loadedSkins.Distinct()) addSkin(s);
             update(0);
         }
 

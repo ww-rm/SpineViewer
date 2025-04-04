@@ -120,7 +120,7 @@ namespace SpineViewer.Controls
                 RenderWindow.Size = new((uint)sizeX, (uint)sizeY);
 
                 // 将 view 的大小设置成于 resolution 相同的大小, 其余属性都不变
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 var signX = Math.Sign(view.Size.X);
                 var signY = Math.Sign(view.Size.Y);
                 view.Size = new(value.Width * signX, value.Height * signY);
@@ -140,12 +140,13 @@ namespace SpineViewer.Controls
         {
             get
             {
-                var center = RenderWindow.GetView().Center;
+                using var view = RenderWindow.GetView();
+                var center = view.Center;
                 return new(center.X, center.Y);
             }
             set
             {
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 view.Center = new(value.X, value.Y);
                 RenderWindow.SetView(view);
             }
@@ -158,11 +159,15 @@ namespace SpineViewer.Controls
         [Browsable(false)]
         public float Zoom
         {
-            get => resolution.Width / Math.Abs(RenderWindow.GetView().Size.X);
+            get
+            {
+                using var view = RenderWindow.GetView();
+                return resolution.Width / Math.Abs(view.Size.X);
+            }
             set
             {
                 value = Math.Clamp(value, ZOOM_MIN, ZOOM_MAX);
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 var signX = Math.Sign(view.Size.X);
                 var signY = Math.Sign(view.Size.Y);
                 view.Size = new(resolution.Width / value * signX, resolution.Height / value * signY);
@@ -177,10 +182,14 @@ namespace SpineViewer.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float Rotation
         {
-            get => RenderWindow.GetView().Rotation;
+            get
+            {
+                using var view = RenderWindow.GetView();
+                return view.Rotation;
+            }
             set
             {
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 view.Rotation = value;
                 RenderWindow.SetView(view);
             }
@@ -193,10 +202,14 @@ namespace SpineViewer.Controls
         [Browsable(false)]
         public bool FlipX
         {
-            get => RenderWindow.GetView().Size.X < 0;
+            get
+            {
+                using var view = RenderWindow.GetView();
+                return view.Size.X < 0;
+            }
             set
             {
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 var size = view.Size;
                 if (size.X > 0 && value || size.X < 0 && !value)
                     size.X *= -1;
@@ -212,10 +225,14 @@ namespace SpineViewer.Controls
         [Browsable(false)]
         public bool FlipY
         {
-            get => RenderWindow.GetView().Size.Y < 0;
+            get
+            {
+                using var view = RenderWindow.GetView();
+                return view.Size.Y < 0;
+            }
             set
             {
-                var view = RenderWindow.GetView();
+                using var view = RenderWindow.GetView();
                 var size = view.Size;
                 if (size.Y > 0 && value || size.Y < 0 && !value)
                     size.Y *= -1;
