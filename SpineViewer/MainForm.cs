@@ -28,7 +28,7 @@ namespace SpineViewer
             // 执行一些初始化工作
             try
             {
-                Spine.Shader.Init();
+                Shader.Init();
             }
             catch (Exception ex)
             {

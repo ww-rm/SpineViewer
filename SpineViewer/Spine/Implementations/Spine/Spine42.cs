@@ -192,7 +192,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             vertexArray.Clear();
             states.Texture = null;
-            states.Shader = Shader.GetShader(usePremultipliedAlpha);
+            states.Shader = Shader.GetSpineShader(usePremultipliedAlpha);
 
             // 要用 DrawOrder 而不是 Slots
             foreach (var slot in skeleton.DrawOrder)

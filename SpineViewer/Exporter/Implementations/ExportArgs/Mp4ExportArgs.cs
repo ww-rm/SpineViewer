@@ -16,7 +16,7 @@ namespace SpineViewer.Exporter.Implementations.ExportArgs
     {
         public Mp4ExportArgs(Size resolution, SFML.Graphics.View view, bool renderSelectedOnly) : base(resolution, view, renderSelectedOnly)
         {
-            BackgroundColor = new(0, 255, 0, 0);
+            BackgroundColor = new(0, 255, 0);
         }
 
         public override string Format => "mp4";

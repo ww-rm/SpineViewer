@@ -1,5 +1,4 @@
 ﻿using NLog;
-using SpineViewer.Spine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,27 +51,54 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 获取单个模型的单帧画面
         /// </summary>
-        protected SFMLImageVideoFrame GetFrame(Spine.Spine spine)
-        {
-            // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
-            using var tex = GetRenderTexture();
-            tex.Clear(ExportArgs.BackgroundColor);
-            tex.Draw(spine);
-            tex.Display();
-            return new(tex.Texture.CopyToImage());
-        }
+        protected SFMLImageVideoFrame GetFrame(Spine.Spine spine) => GetFrame([spine]);
 
         /// <summary>
         /// 获取模型列表的单帧画面
         /// </summary>
         protected SFMLImageVideoFrame GetFrame(Spine.Spine[] spinesToRender)
         {
-            // tex 必须临时创建, 随用随取, 防止出现跨线程的情况
-            using var tex = GetRenderTexture();
-            tex.Clear(ExportArgs.BackgroundColor);
-            foreach (var spine in spinesToRender) tex.Draw(spine);
-            tex.Display();
-            return new(tex.Texture.CopyToImage());
+            // RenderTexture 必须临时创建, 随用随取, 防止出现跨线程的情况
+            using var texPma = GetRenderTexture();
+
+            // 先将预乘结果准确绘制出来, 注意背景色也应当是预乘的
+            texPma.Clear(ExportArgs.BackgroundColorPma);
+            foreach (var spine in spinesToRender) texPma.Draw(spine);
+            texPma.Display();
+
+            // 背景色透明度不为 1 时需要处理反预乘, 否则直接就是结果
+            if (ExportArgs.BackgroundColor.A < 255)
+            {
+                // 从预乘结果构造渲染对象, 并正确设置变换
+                using var view = texPma.GetView();
+                using var img = texPma.Texture.CopyToImage();
+                using var texSprite = new SFML.Graphics.Texture(img);
+                using var sp = new SFML.Graphics.Sprite(texSprite)
+                {
+                    Origin = new(texPma.Size.X / 2f, texPma.Size.Y / 2f),
+                    Position = new(view.Center.X, view.Center.Y),
+                    Scale = new(view.Size.X / texPma.Size.X, view.Size.Y / texPma.Size.Y),
+                    Rotation = view.Rotation
+                };
+
+                // 混合模式用直接覆盖的方式, 保证得到的图像区域是反预乘的颜色和透明度, 同时使用反预乘着色器
+                var st = SFML.Graphics.RenderStates.Default;
+                st.BlendMode = new(SFML.Graphics.BlendMode.Factor.One, SFML.Graphics.BlendMode.Factor.Zero); // 用源的颜色和透明度直接覆盖
+                st.Shader = Shader.InversePma;
+
+                // 在最终结果上二次渲染非预乘画面
+                using var tex = GetRenderTexture();
+
+                // 将非预乘结果覆盖式绘制在目标对象上, 注意背景色应该用非预乘的
+                tex.Clear(ExportArgs.BackgroundColor);
+                tex.Draw(sp, st);
+                tex.Display();
+                return new(tex.Texture.CopyToImage());
+            }
+            else
+            {
+                return new(texPma.Texture.CopyToImage());
+            }
         }
 
         /// <summary>

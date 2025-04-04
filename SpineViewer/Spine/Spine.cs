@@ -370,7 +370,7 @@ namespace SpineViewer.Spine
         protected abstract RectangleF bounds { get; }
 
         /// <summary>
-        /// 骨骼预览图
+        /// 骨骼预览图, 并没有去除预乘, 画面可能偏暗
         /// </summary>
         [Browsable(false)]
         public Image Preview { get; private set; }
@@ -405,8 +405,15 @@ namespace SpineViewer.Spine
 
         /// <summary>
         /// SFML.Graphics.Drawable 接口实现
+        /// <para>这个渲染实现绘制出来的像素将是预乘的, 当渲染的背景透明度是 1 时, 则等价于非预乘的结果, 即正常画面, 否则画面偏暗</para>
+        /// <para>可以用于 <see cref="SFML.Graphics.RenderWindow"/> 的渲染, 因为直接在窗口上绘制时窗口始终是不透明的</para>
         /// </summary>
         public void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states) { lock (_lock) draw(target, states); }
+
+        /// <summary>
+        /// 这个渲染实现绘制出来的像素将是预乘的, 当渲染的背景透明度是 1 时, 则等价于非预乘的结果, 即正常画面, 否则画面偏暗
+        /// <para>可以用于 <see cref="SFML.Graphics.RenderWindow"/> 的渲染, 因为直接在窗口上绘制时窗口始终是不透明的</para>
+        /// </summary>
         protected abstract void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
 
         #endregion
