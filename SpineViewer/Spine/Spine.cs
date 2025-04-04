@@ -294,7 +294,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 重置所有轨道上的动画时间
         /// </summary>
-        public void ResetAnimationsTime() { lock (_lock) { foreach (var i in getTrackIndices()) setAnimation(i, getAnimation(i)); } }
+        public void ResetAnimationsTime() { lock (_lock) { foreach (var i in getTrackIndices()) setAnimation(i, getAnimation(i)); update(0); } }
 
         #endregion
 
