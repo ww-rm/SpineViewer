@@ -180,10 +180,10 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             return spineBlendMode switch
             {
-                BlendMode.Normal => BlendModeSFML.Normal,
-                BlendMode.Additive => BlendModeSFML.Additive,
-                BlendMode.Multiply => BlendModeSFML.Multiply,
-                BlendMode.Screen => BlendModeSFML.Screen,
+                BlendMode.Normal => BlendModeSFML.NormalPma,
+                BlendMode.Additive => BlendModeSFML.AdditivePma,
+                BlendMode.Multiply => BlendModeSFML.MultiplyPma,
+                BlendMode.Screen => BlendModeSFML.ScreenPma,
                 _ => throw new NotImplementedException($"{spineBlendMode}"),
             };
         }
@@ -192,6 +192,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             vertexArray.Clear();
             states.Texture = null;
+            states.Shader = Shader.GetShader(usePremultipliedAlpha);
 
             // 要用 DrawOrder 而不是 Slots
             foreach (var slot in skeleton.DrawOrder)
@@ -258,12 +259,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                 {
                     if (vertexArray.VertexCount > 0)
                     {
-                        // XXX: 实测不用设置 sampler2D 的值也正确
-                        if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                            states.Shader = Shader.FragmentShader;
-                        else
-                            states.Shader = null;
-
                         // 调试纹理
                         if (!isDebug || debugTexture)
                             target.Draw(vertexArray, states);
@@ -308,11 +303,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                 clipping.ClipEnd(slot);
             }
             clipping.ClipEnd();
-
-            if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                states.Shader = Shader.FragmentShader;
-            else
-                states.Shader = null;
 
             // 调试纹理
             if (!isDebug || debugTexture)

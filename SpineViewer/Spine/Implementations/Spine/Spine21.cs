@@ -261,6 +261,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             vertexArray.Clear();
             states.Texture = null;
+            states.Shader = Shader.GetShader(usePremultipliedAlpha);
 
             // 要用 DrawOrder 而不是 Slots
             foreach (var slot in skeleton.DrawOrder)
@@ -322,18 +323,13 @@ namespace SpineViewer.Spine.Implementations.Spine
                 }
 
                 // 似乎 2.1.x 也没有 BlendMode
-                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendModeSFML.Additive : BlendModeSFML.Normal;
+                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendModeSFML.AdditivePma : BlendModeSFML.NormalPma;
 
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)
                 {
                     if (vertexArray.VertexCount > 0)
                     {
-                        if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                            states.Shader = Shader.FragmentShader;
-                        else
-                            states.Shader = null;
-
                         // 调试纹理
                         if (!isDebug || debugTexture)
                             target.Draw(vertexArray, states);
@@ -377,11 +373,6 @@ namespace SpineViewer.Spine.Implementations.Spine
 
                 //clipping.ClipEnd(slot);
             }
-
-            if (usePremultipliedAlpha && (states.BlendMode == BlendModeSFML.Normal || states.BlendMode == BlendModeSFML.Additive))
-                states.Shader = Shader.FragmentShader;
-            else
-                states.Shader = null;
             //clipping.ClipEnd();
 
             // 调试纹理
