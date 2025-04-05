@@ -33,6 +33,7 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             button_Add = new Button();
             button_Delete = new Button();
+            button_Ok = new Button();
             propertyGrid_SkinManager = new PropertyGrid();
             panel.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -69,6 +70,7 @@
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(button_Add);
             flowLayoutPanel1.Controls.Add(button_Delete);
+            flowLayoutPanel1.Controls.Add(button_Ok);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(3, 415);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -95,6 +97,16 @@
             button_Delete.UseVisualStyleBackColor = true;
             button_Delete.Click += button_Delete_Click;
             // 
+            // button_Ok
+            // 
+            button_Ok.Location = new Point(239, 3);
+            button_Ok.Name = "button_Ok";
+            button_Ok.Size = new Size(112, 34);
+            button_Ok.TabIndex = 3;
+            button_Ok.Text = "确定";
+            button_Ok.UseVisualStyleBackColor = true;
+            button_Ok.Click += button_Ok_Click;
+            // 
             // propertyGrid_SkinManager
             // 
             propertyGrid_SkinManager.Dock = DockStyle.Fill;
@@ -108,6 +120,7 @@
             // 
             // SkinManagerEditorDialog
             // 
+            AcceptButton = button_Ok;
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(666, 483);
@@ -135,5 +148,6 @@
         private Button button_Add;
         private Button button_Delete;
         private PropertyGrid propertyGrid_SkinManager;
+        private Button button_Ok;
     }
 }

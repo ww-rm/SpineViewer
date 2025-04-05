@@ -39,5 +39,10 @@ namespace SpineViewer.Dialogs
             propertyGrid_AnimationTracks.Refresh();
             propertyGrid_AnimationTracks.SelectedGridItem = propertyGrid_AnimationTracks.SelectedGridItem?.Parent?.GridItems?.Cast<GridItem>().Last();
         }
+
+        private void button_Ok_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
     }
 }

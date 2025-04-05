@@ -41,5 +41,10 @@ namespace SpineViewer.Dialogs
             if (propertyGrid_SkinManager.SelectedGridItem?.Parent?.GridItems?.Cast<GridItem>().Last() is GridItem gt)
                 propertyGrid_SkinManager.SelectedGridItem = gt;
         }
+
+        private void button_Ok_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
     }
 }
