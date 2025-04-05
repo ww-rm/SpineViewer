@@ -97,8 +97,8 @@ namespace SpineViewer.Controls
                 if (value.Width <= 0) value.Width = 100;
                 if (value.Height <= 0) value.Height = 100;
 
-                float parentX = Width;
-                float parentY = Height;
+                float parentX = panel.Parent.Width;
+                float parentY = panel.Parent.Height;
                 float sizeX = value.Width;
                 float sizeY = value.Height;
 
