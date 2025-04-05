@@ -39,9 +39,8 @@ namespace SpineViewer.Spine
     /// 皮肤属性描述符, 实现对属性的读取和赋值
     /// </summary>
     /// <param name="spine">关联的 Spine 对象</param>
-    public class SkinWrapperPropertyDescriptor(Spine spine, int i) : PropertyDescriptor($"Skin{i}", [new DisplayNameAttribute($"皮肤 {i}")])
+    public class SkinWrapperPropertyDescriptor(int i) : PropertyDescriptor($"Skin{i}", [new DisplayNameAttribute($"皮肤 {i}")])
     {
-        private readonly Spine spine = spine;
         private readonly int idx = i;
 
         public override Type ComponentType => typeof(SkinManager);
@@ -54,14 +53,23 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 得到一个 SkinWrapper, 允许用户查看或者修改具体的属性值, 这个地方决定了在面板上看到的是一个对象及其属性
         /// </summary>
-        public override object? GetValue(object? component) => new SkinWrapper(spine, idx);
+        public override object? GetValue(object? component)
+        {
+            if (component is SkinManager manager)
+                return manager.GetSkinWrapper(idx);
+            return null;
+        }
 
         /// <summary>
         /// 允许通过字符串赋值修改该位置的皮肤
         /// </summary>
         public override void SetValue(object? component, object? value)
         {
-            if (value is string s) spine.ReplaceSkin(idx, s);
+            if (component is SkinManager manager)
+            {
+                if (value is string s)
+                    manager.Spine.ReplaceSkin(idx, s); // manager.SetSkinWrapper(idx, s);
+            }
         }
     }
 
@@ -71,8 +79,10 @@ namespace SpineViewer.Spine
     /// <param name="spine">关联的 Spine 对象</param>
     public class SkinManager(Spine spine) : ICustomTypeDescriptor
     {
-        private readonly Dictionary<int, SkinWrapperPropertyDescriptor> pdCache = [];
+        private static readonly Dictionary<int, SkinWrapperPropertyDescriptor> pdCache = [];
+
         public Spine Spine { get; } = spine;
+        private readonly Dictionary<int, SkinWrapper> skinWrapperProperties = [];
 
         // XXX: 必须实现 ICustomTypeDescriptor 接口, 不能继承 CustomTypeDescriptor, 似乎继承下来的东西会有问题, 导致某些调用不正确
 
@@ -93,10 +103,20 @@ namespace SpineViewer.Spine
             for (var i = 0; i < Spine.GetLoadedSkins().Length; i++)
             {
                 if (!pdCache.ContainsKey(i))
-                    pdCache[i] = new SkinWrapperPropertyDescriptor(Spine, i);
+                    pdCache[i] = new SkinWrapperPropertyDescriptor(i);
                 props.Add(pdCache[i]);
             }
             return new PropertyDescriptorCollection(props.ToArray());
+        }
+
+        /// <summary>
+        /// 访问 SkinWrapper 属性 <c>SkinManager.Skin{i}</c>
+        /// </summary>
+        public SkinWrapper GetSkinWrapper(int i)
+        {
+            if (!skinWrapperProperties.ContainsKey(i))
+                skinWrapperProperties[i] = new SkinWrapper(Spine, i);
+            return skinWrapperProperties[i];
         }
 
         /// <summary>  
