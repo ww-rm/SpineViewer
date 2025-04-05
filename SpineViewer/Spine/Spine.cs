@@ -31,11 +31,6 @@ namespace SpineViewer.Spine
         protected const uint PREVIEW_HEIGHT = 256;
 
         /// <summary>
-        /// 缩放最小值
-        /// </summary>
-        protected const float SCALE_MIN = 0.001f;
-
-        /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
         public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
@@ -174,7 +169,7 @@ namespace SpineViewer.Spine
         public float Scale
         {
             get { lock (_lock) return scale; }
-            set { lock (_lock) { scale = value; update(0); } }
+            set { lock (_lock) { scale = Math.Max(value, 0.001f); update(0); } }
         }
         protected abstract float scale { get; set; }
 
@@ -261,24 +256,22 @@ namespace SpineViewer.Spine
         /// </summary>
         public string[] GetLoadedSkins() { lock (_lock) return loadedSkins.ToArray(); }
         protected readonly List<string> loadedSkins = [];
-        
+
         /// <summary>
         /// 加载指定皮肤, 添加至列表末尾, 如果不存在则忽略, 允许加载重复的值
         /// </summary>
-        public void LoadSkin(string name) 
+        public void LoadSkin(string name)
         {
+            if (!skinNames.Contains(name)) return;
             lock (_lock)
             {
-                if (skinNames.Contains(name))
-                {
-                    loadedSkins.Add(name);
-                    reloadSkins();
+                loadedSkins.Add(name);
+                reloadSkins();
 
-                    if (!skinLoggerWarned && Version <= SpineVersion.V37 && loadedSkins.Count > 1)
-                    {
-                        logger.Warn($"Multiplt skins not supported in SpineVersion {Version.GetName()}");
-                        skinLoggerWarned = true;
-                    }
+                if (!skinLoggerWarned && Version <= SpineVersion.V37 && loadedSkins.Count > 1)
+                {
+                    logger.Warn($"Multiplt skins not supported in SpineVersion {Version.GetName()}");
+                    skinLoggerWarned = true;
                 }
             }
         }
@@ -288,13 +281,11 @@ namespace SpineViewer.Spine
         /// </summary>
         public void UnloadSkin(int idx)
         {
+            if (idx < 0 || idx >= loadedSkins.Count) return;
             lock (_lock)
             {
-                if (idx >= 0 && idx < loadedSkins.Count)
-                {
-                    loadedSkins.RemoveAt(idx);
-                    reloadSkins();
-                }
+                loadedSkins.RemoveAt(idx);
+                reloadSkins();
             }
         }
 
@@ -303,13 +294,11 @@ namespace SpineViewer.Spine
         /// </summary>
         public void ReplaceSkin(int idx, string name)
         {
+            if (idx < 0 || idx >= loadedSkins.Count || !skinNames.Contains(name)) return;
             lock (_lock)
             {
-                if (idx >= 0 && idx < loadedSkins.Count && skinNames.Contains(name))
-                {
-                    loadedSkins[idx] = name;
-                    reloadSkins();
-                }
+                loadedSkins[idx] = name;
+                reloadSkins();
             }
         }
 
@@ -325,7 +314,7 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
-        /// 加载皮肤, 之后需要使用 <see cref="setSlotsToSetupPose"/> 来复位
+        /// 加载皮肤, 如果不存在则忽略
         /// </summary>
         protected abstract void addSkin(string name);
 

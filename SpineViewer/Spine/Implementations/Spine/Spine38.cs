@@ -137,9 +137,11 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         protected override void addSkin(string name)
         {
-            if (!skinNames.Contains(name)) return;
-            skeleton.Skin.AddSkin(skeletonData.FindSkin(name));
-            skeleton.SetSlotsToSetupPose();
+            if (skeletonData.FindSkin(name) is Skin sk)
+            {
+                skeleton.Skin.AddSkin(sk);
+                skeleton.SetSlotsToSetupPose();
+            }
         }
 
         protected override void clearSkin()

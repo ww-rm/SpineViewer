@@ -110,15 +110,14 @@ namespace SpineViewer.Spine.Implementations.Spine
                 var fY = flipY;
                 var animations = animationState.Tracks.Where(te => te is not null).Select(te => te.Animation.Name).ToArray();
 
-                var val = Math.Max(value, SCALE_MIN);
                 if (skeletonBinary is not null)
                 {
-                    skeletonBinary.Scale = val;
+                    skeletonBinary.Scale = value;
                     skeletonData = skeletonBinary.ReadSkeletonData(SkelPath);
                 }
                 else if (skeletonJson is not null)
                 {
-                    skeletonJson.Scale = val;
+                    skeletonJson.Scale = value;
                     skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
                 }
 
