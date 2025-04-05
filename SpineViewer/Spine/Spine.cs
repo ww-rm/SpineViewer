@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Drawing.Design;
 using NLog;
+using System.Xml.Linq;
 
 namespace SpineViewer.Spine
 {
@@ -83,8 +84,13 @@ namespace SpineViewer.Spine
             tex.Display();
             Preview = tex.Texture.CopyToBitmap();
 
-            // 取最后一个作为初始, 尽可能去显示非默认的内容
-            setAnimation(0, AnimationNames.Last());
+            // 默认初始化10个空位
+            for (int i = 0; i < 10; i++)
+            {
+                setAnimation(i, AnimationNames.First());
+                loadedSkins.Add(SkinNames.First());
+            }
+            reloadSkins();
 
             return this;
         }
@@ -222,8 +228,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 默认轨道动画名称, 如果设置的动画不存在则忽略
         /// </summary>
-        [TypeConverter(typeof(AnimationConverter))]
-        [Category("[3] 动画"), DisplayName("轨道 0 动画")]
+        [Browsable(false)]
         public string Track0Animation
         {
             get { lock (_lock) return getAnimation(0); }
@@ -231,10 +236,10 @@ namespace SpineViewer.Spine
         }
 
         /// <summary>
-        /// 默认轨道动画时长
+        /// 全轨道动画最大时长
         /// </summary>
-        [Category("[3] 动画"), DisplayName("轨道 0 动画时长")]
-        public float Track0AnimationDuration => GetAnimationDuration(Track0Animation);
+        [Category("[3] 动画"), DisplayName("全轨道最大时长")]
+        public float AnimationTracksMaxDuration { get { lock (_lock) return getTrackIndices().Select(i => GetAnimationDuration(getAnimation(i))).Max(); } }
 
         /// <summary>
         /// 默认轨道动画时长
