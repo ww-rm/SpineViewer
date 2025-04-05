@@ -46,14 +46,12 @@ namespace SpineViewer.Spine
     /// <summary>
     /// 轨道属性描述符, 实现对属性的读取和赋值
     /// </summary>
-    /// <param name="spine">关联的 Spine 对象</param>
     /// <param name="i">轨道索引</param>
-    public class TrackWrapperPropertyDescriptor(Spine spine, int i) : PropertyDescriptor($"Track{i}", [new DisplayNameAttribute($"轨道 {i}")])
+    public class TrackWrapperPropertyDescriptor(int i) : PropertyDescriptor($"Track{i}", [new DisplayNameAttribute($"轨道 {i}")])
     {
-        private readonly Spine spine = spine;
         private readonly int idx = i;
 
-        public override Type ComponentType => typeof(AnimationTracksType);
+        public override Type ComponentType => typeof(AnimationTracks);
         public override bool IsReadOnly => false;
         public override Type PropertyType => typeof(TrackWrapper);
         public override bool CanResetValue(object component) => false;
@@ -63,14 +61,23 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 得到一个轨道包装类, 允许用户查看或者修改具体的属性值, 这个地方决定了在面板上看到的是一个对象及其属性
         /// </summary>
-        public override object? GetValue(object? component) => new TrackWrapper(spine, idx);
+        public override object? GetValue(object? component) 
+        {
+            if (component is AnimationTracks tracks)
+                return tracks.GetTrackWrapper(idx);
+            return null;
+        }
 
         /// <summary>
         /// 允许通过字符串赋值修改该轨道的动画, 这里决定了当其他地方的调用 (比如 Converter) 通过 value 来设置属性值的时候应该怎么处理
         /// </summary>
         public override void SetValue(object? component, object? value) 
         {
-            if (value is string s) spine.SetAnimation(idx, s);
+            if (component is AnimationTracks tracks)
+            {
+                if (value is string s)
+                    tracks.Spine.SetAnimation(idx, s); // tracks.SetTrackWrapper(idx, s);
+            }
         }
     }
 
@@ -78,10 +85,12 @@ namespace SpineViewer.Spine
     /// AnimationTracks 动态类型包装类, 用于提供对 Spine 对象多轨道动画的访问能力, 不同轨道将动态生成属性
     /// </summary>
     /// <param name="spine">关联的 Spine 对象</param>
-    public class AnimationTracksType(Spine spine) : ICustomTypeDescriptor
+    public class AnimationTracks(Spine spine) : ICustomTypeDescriptor
     {
-        private readonly Dictionary<int, TrackWrapperPropertyDescriptor> pdCache = [];
+        private static readonly Dictionary<int, TrackWrapperPropertyDescriptor> pdCache = [];
+
         public Spine Spine { get; } = spine;
+        private readonly Dictionary<int, TrackWrapper> trackWrapperProperties = [];
 
         // XXX: 必须实现 ICustomTypeDescriptor 接口, 不能继承 CustomTypeDescriptor, 似乎继承下来的东西会有问题, 导致某些调用不正确
 
@@ -102,10 +111,20 @@ namespace SpineViewer.Spine
             foreach (var i in Spine.GetTrackIndices())
             {
                 if (!pdCache.ContainsKey(i))
-                    pdCache[i] = new TrackWrapperPropertyDescriptor(Spine, i);
+                    pdCache[i] = new TrackWrapperPropertyDescriptor(i);
                 props.Add(pdCache[i]);
             }
             return new PropertyDescriptorCollection(props.ToArray());
+        }
+
+        /// <summary>
+        /// 访问 TrackWrapper 属性 <c>AnimationTracks.Track{i}</c>
+        /// </summary>
+        public TrackWrapper GetTrackWrapper(int i)
+        {
+            if (!trackWrapperProperties.ContainsKey(i))
+                trackWrapperProperties[i] = new TrackWrapper(Spine, i);
+            return trackWrapperProperties[i];
         }
 
         /// <summary>
@@ -115,10 +134,10 @@ namespace SpineViewer.Spine
 
         public override bool Equals(object? obj)
         {
-            if (obj is AnimationTracksType tracks) return ToString() == tracks.ToString();
+            if (obj is AnimationTracks tracks) return ToString() == tracks.ToString();
             return base.Equals(obj);
         }
 
-        public override int GetHashCode() => (typeof(AnimationTracksType).FullName + ToString()).GetHashCode();
+        public override int GetHashCode() => (typeof(AnimationTracks).FullName + ToString()).GetHashCode();
     }
 }

@@ -89,14 +89,14 @@ namespace SpineViewer.Spine
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
-            if (context.Instance is AnimationTracksType animTrack)
+            if (context.Instance is AnimationTracks tracks)
             {
-                return new StandardValuesCollection(animTrack.Spine.AnimationNames);
+                return new StandardValuesCollection(tracks.Spine.AnimationNames);
             }
-            else if (context.Instance is object[] instances && instances.All(x => x is AnimationTracksType))
+            else if (context.Instance is object[] instances && instances.All(x => x is AnimationTracks))
             {
-                // XXX: 这里不知道为啥总是会得到 object[] 类型而不是具体的 AnimationTracksType[] 类型
-                var animTracks = instances.Cast<AnimationTracksType>().ToArray();
+                // XXX: 这里不知道为啥总是会得到 object[] 类型而不是具体的类型
+                var animTracks = instances.Cast<AnimationTracks>().ToArray();
                 if (animTracks.Length > 0)
                 {
                     IEnumerable<string> common = animTracks[0].Spine.AnimationNames;

@@ -242,7 +242,7 @@ namespace SpineViewer.Spine
         [Editor(typeof(AnimationTracksEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Category("[3] 动画"), DisplayName("多轨道动画管理")]
-        public AnimationTracksType AnimationTracks { get; private set; }
+        public AnimationTracks AnimationTracks { get; private set; }
 
         /// <summary>
         /// 包含的所有皮肤名称
