@@ -1,37 +1,13 @@
 ﻿using FFMpegCore.Pipes;
+using SpineViewer.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SpineViewer.Exporter
 {
-    /// <summary>
-    /// 导出类型
-    /// </summary>
-    public enum ExportType
-    {
-        Frame,
-        FrameSequence,
-        Gif,
-        Mp4,
-        Webm,
-        Mkv,
-        Mov,
-        Custom,
-    }
-
-    /// <summary>
-    /// 导出实现类标记
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class ExportImplementationAttribute(ExportType exportType) : Attribute, IImplementationKey<ExportType>
-    {
-        public ExportType ImplementationKey { get; private set; } = exportType;
-    }
-
     /// <summary>
     /// SFML.Graphics.Image 帧对象包装类, 将接管给定的 image 对象生命周期
     /// </summary>

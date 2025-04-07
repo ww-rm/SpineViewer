@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime41;
+using SpineViewer.Extensions;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
@@ -184,10 +185,10 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             return spineBlendMode switch
             {
-                BlendMode.Normal => BlendModeSFML.NormalPma,
-                BlendMode.Additive => BlendModeSFML.AdditivePma,
-                BlendMode.Multiply => BlendModeSFML.MultiplyPma,
-                BlendMode.Screen => BlendModeSFML.ScreenPma,
+                BlendMode.Normal => SFMLBlendMode.NormalPma,
+                BlendMode.Additive => SFMLBlendMode.AdditivePma,
+                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
+                BlendMode.Screen => SFMLBlendMode.ScreenPma,
                 _ => throw new NotImplementedException($"{spineBlendMode}"),
             };
         }
@@ -196,7 +197,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             vertexArray.Clear();
             states.Texture = null;
-            states.Shader = Shader.GetSpineShader(usePremultipliedAlpha);
+            states.Shader = SFMLShader.GetSpineShader(usePma);
 
             // 要用 DrawOrder 而不是 Slots
             foreach (var slot in skeleton.DrawOrder)

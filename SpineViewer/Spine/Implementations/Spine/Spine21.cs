@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime21;
+using SpineViewer.Extensions;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
@@ -261,7 +262,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             vertexArray.Clear();
             states.Texture = null;
-            states.Shader = Shader.GetSpineShader(usePremultipliedAlpha);
+            states.Shader = SFMLShader.GetSpineShader(usePma);
 
             // 要用 DrawOrder 而不是 Slots
             foreach (var slot in skeleton.DrawOrder)
@@ -323,7 +324,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                 }
 
                 // 似乎 2.1.x 也没有 BlendMode
-                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? BlendModeSFML.AdditivePma : BlendModeSFML.NormalPma;
+                SFML.Graphics.BlendMode blendMode = slot.Data.AdditiveBlending ? SFMLBlendMode.AdditivePma : SFMLBlendMode.NormalPma;
 
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)

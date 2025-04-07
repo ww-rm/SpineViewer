@@ -1,10 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Reflection;
 using System.Drawing.Design;
 using NLog;
 using System.Xml.Linq;
+using SpineViewer.Extensions;
 
 namespace SpineViewer.Spine
 {
@@ -13,9 +13,6 @@ namespace SpineViewer.Spine
     /// </summary>
     public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private bool skinLoggerWarned = false;
-
         /// <summary>
         /// 空动画标记
         /// </summary>
@@ -36,8 +33,12 @@ namespace SpineViewer.Spine
         /// </summary>
         public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
         {
-            if (version == SpineVersion.Auto) version = SpineHelper.GetVersion(skelPath);
             atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");
+            skelPath = Path.GetFullPath(skelPath);
+            atlasPath = Path.GetFullPath(atlasPath);
+            
+            if (version == SpineVersion.Auto) version = SpineHelper.GetVersion(skelPath);
+            if (!File.Exists(atlasPath)) throw new FileNotFoundException($"atlas file {atlasPath} not found");
             return New(version, [skelPath, atlasPath]).PostInit();
         }
 
@@ -45,6 +46,9 @@ namespace SpineViewer.Spine
         /// 数据锁
         /// </summary>
         private readonly object _lock = new();
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private bool skinLoggerWarned = false;
 
         /// <summary>
         /// 构造函数
@@ -64,9 +68,7 @@ namespace SpineViewer.Spine
         private Spine PostInit()
         {
             SkinNames = skinNames.AsReadOnly();
-            SkinManager = new(this);
             AnimationNames = animationNames.AsReadOnly();
-            AnimationTracks = new(this);
 
             // 必须 Update 一次否则包围盒还没有值
             update(0);
@@ -99,79 +101,67 @@ namespace SpineViewer.Spine
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
         protected virtual void Dispose(bool disposing) { Preview?.Dispose(); }
 
-        #region 属性 | [0] 基本信息
+        /// <summary>
+        /// 运行时唯一 ID
+        /// </summary>
+        public string ID { get; } = Guid.NewGuid().ToString();
+
+        /// <summary>
+        /// 骨骼预览图, 并没有去除预乘, 画面可能偏暗
+        /// </summary>
+        public Image Preview { get; private set; }
 
         /// <summary>
         /// 获取所属版本
         /// </summary>
-        [TypeConverter(typeof(SpineVersionConverter))]
-        [Category("[0] 基本信息"), DisplayName("运行时版本")]
         public SpineVersion Version { get; }
 
         /// <summary>
         /// 资源所在完整目录
         /// </summary>
-        [Category("[0] 基本信息"), DisplayName("资源目录")]
         public string AssetsDir { get; }
 
         /// <summary>
         /// skel 文件完整路径
         /// </summary>
-        [Category("[0] 基本信息"), DisplayName("skel文件路径")]
         public string SkelPath { get; }
 
         /// <summary>
         /// atlas 文件完整路径
         /// </summary>
-        [Category("[0] 基本信息"), DisplayName("atlas文件路径")]
         public string AtlasPath { get; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        [Category("[0] 基本信息"), DisplayName("名称")]
         public string Name { get; }
 
         /// <summary>
         /// 获取所属文件版本
         /// </summary>
-        [Category("[0] 基本信息"), DisplayName("文件版本")]
         public abstract string FileVersion { get; }
-
-        #endregion
-
-        #region 属性 | [1] 设置
 
         /// <summary>
         /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
         /// </summary>
-        [Category("[1] 设置"), DisplayName("是否隐藏")]
-        public bool IsHidden
-        {
-            get { lock (_lock) return isHidden; }
-            set { lock (_lock) isHidden = value; }
-        }
+        public bool IsHidden { get { lock (_lock) return isHidden; } set { lock (_lock) isHidden = value; } }
         protected bool isHidden = false;
 
         /// <summary>
-        /// 是否使用预乘Alpha
+        /// 是否使用预乘 Alpha
         /// </summary>
-        [Category("[1] 设置"), DisplayName("预乘Alpha通道")]
-        public bool UsePremultipliedAlpha
-        {
-            get { lock (_lock) return usePremultipliedAlpha; }
-            set { lock (_lock) usePremultipliedAlpha = value; }
-        }
-        protected bool usePremultipliedAlpha = false;
+        public bool UsePma { get { lock (_lock) return usePma; } set { lock (_lock) usePma = value; } }
+        protected bool usePma = false;
 
-        #endregion
-
-        #region 属性 | [2] 变换
+        /// <summary>
+        /// 骨骼包围盒
+        /// </summary>
+        public RectangleF Bounds { get { lock (_lock) return bounds; } }
+        protected abstract RectangleF bounds { get; }
 
         /// <summary>
         /// 缩放比例
         /// </summary>
-        [Category("[2] 变换"), DisplayName("缩放比例")]
         public float Scale
         {
             get { lock (_lock) return scale; }
@@ -182,8 +172,6 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 位置
         /// </summary>
-        [TypeConverter(typeof(PointFConverter))]
-        [Category("[2] 变换"), DisplayName("位置")]
         public PointF Position
         {
             get { lock (_lock) return position; }
@@ -194,7 +182,6 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 水平翻转
         /// </summary>
-        [Category("[2] 变换"), DisplayName("水平翻转")]
         public bool FlipX
         {
             get { lock (_lock) return flipX; }
@@ -205,7 +192,6 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 垂直翻转
         /// </summary>
-        [Category("[2] 变换"), DisplayName("垂直翻转")]
         public bool FlipY
         {
             get { lock (_lock) return flipY; }
@@ -213,48 +199,67 @@ namespace SpineViewer.Spine
         }
         protected abstract bool flipY { get; set; }
 
-        #endregion
-
-        #region 属性 | [3] 动画
-
-        /// <summary>
-        /// 已加载皮肤列表
-        /// </summary>
-        [Editor(typeof(SkinManagerEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Category("[3] 动画"), DisplayName("已加载皮肤列表")]
-        public SkinManager SkinManager { get; private set; }
-
-        /// <summary>
-        /// 默认轨道动画名称, 如果设置的动画不存在则忽略
-        /// </summary>
-        [Browsable(false)]
-        public string Track0Animation
-        {
-            get { lock (_lock) return getAnimation(0); }
-            set { lock (_lock) { setAnimation(0, value); update(0); } }
-        }
-
-        /// <summary>
-        /// 全轨道动画最大时长
-        /// </summary>
-        [Category("[3] 动画"), DisplayName("全轨道最大时长")]
-        public float AnimationTracksMaxDuration { get { lock (_lock) return getTrackIndices().Select(i => GetAnimationDuration(getAnimation(i))).Max(); } }
-
-        /// <summary>
-        /// 默认轨道动画时长
-        /// </summary>
-        [Editor(typeof(AnimationTracksEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Category("[3] 动画"), DisplayName("多轨道动画管理")]
-        public AnimationTracks AnimationTracks { get; private set; }
-
         /// <summary>
         /// 包含的所有皮肤名称
         /// </summary>
-        [Browsable(false)]
         public ReadOnlyCollection<string> SkinNames { get; private set; }
         protected readonly List<string> skinNames = [];
+
+        /// <summary>
+        /// 包含的所有动画名称
+        /// </summary>
+        public ReadOnlyCollection<string> AnimationNames { get; private set; }
+        protected readonly List<string> animationNames = [EMPTY_ANIMATION];
+
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
+        public bool IsSelected
+        {
+            get { lock (_lock) return isSelected; }
+            set { lock (_lock) { isSelected = value; update(0); } }
+        }
+        protected bool isSelected = false;
+
+        /// <summary>
+        /// 显示调试
+        /// </summary>
+        public bool IsDebug
+        {
+            get { lock (_lock) return isDebug; }
+            set { lock (_lock) { isDebug = value; update(0); } }
+        }
+        protected bool isDebug = false;
+
+        /// <summary>
+        /// 显示纹理
+        /// </summary>
+        public bool DebugTexture
+        {
+            get { lock (_lock) return debugTexture; }
+            set { lock (_lock) { debugTexture = value; update(0); } }
+        }
+        protected bool debugTexture = true;
+
+        /// <summary>
+        /// 显示包围盒
+        /// </summary>
+        public bool DebugBounds
+        {
+            get { lock (_lock) return debugBounds; }
+            set { lock (_lock) { debugBounds = value; update(0); } }
+        }
+        protected bool debugBounds = true;
+
+        /// <summary>
+        /// 显示骨骼
+        /// </summary>
+        public bool DebugBones
+        {
+            get { lock (_lock) return debugBones; }
+            set { lock (_lock) { debugBones = value; update(0); } }
+        }
+        protected bool debugBones = false;
 
         /// <summary>
         /// 获取已加载的皮肤列表快照, 允许出现重复值
@@ -329,13 +334,6 @@ namespace SpineViewer.Spine
         protected abstract void clearSkin();
 
         /// <summary>
-        /// 包含的所有动画名称
-        /// </summary>
-        [Browsable(false)]
-        public ReadOnlyCollection<string> AnimationNames { get; private set; }
-        protected readonly List<string> animationNames = [EMPTY_ANIMATION];
-
-        /// <summary>
         /// 获取所有非 null 的轨道索引快照
         /// </summary>
         public int[] GetTrackIndices() { lock (_lock) return getTrackIndices(); }
@@ -368,85 +366,6 @@ namespace SpineViewer.Spine
         /// 重置所有轨道上的动画时间
         /// </summary>
         public void ResetAnimationsTime() { lock (_lock) { foreach (var i in getTrackIndices()) setAnimation(i, getAnimation(i)); update(0); } }
-
-        #endregion
-
-        #region 属性 | [4] 调试
-
-        /// <summary>
-        /// 显示调试
-        /// </summary>
-        [Browsable(false)]
-        public bool IsDebug
-        {
-            get { lock (_lock) return isDebug; }
-            set { lock (_lock) isDebug = value; }
-        }
-        protected bool isDebug = false;
-
-        /// <summary>
-        /// 显示纹理
-        /// </summary>
-        [Category("[4] 调试"), DisplayName("显示纹理")]
-        public bool DebugTexture
-        {
-            get { lock (_lock) return debugTexture; }
-            set { lock (_lock) debugTexture = value; }
-        }
-        protected bool debugTexture = true;
-
-        /// <summary>
-        /// 显示包围盒
-        /// </summary>
-        [Category("[4] 调试"), DisplayName("显示包围盒")]
-        public bool DebugBounds
-        {
-            get { lock (_lock) return debugBounds; }
-            set { lock (_lock) debugBounds = value; }
-        }
-        protected bool debugBounds = true;
-
-        /// <summary>
-        /// 显示骨骼
-        /// </summary>
-        [Category("[4] 调试"), DisplayName("显示骨架")]
-        public bool DebugBones
-        {
-            get { lock (_lock) return debugBones; }
-            set { lock (_lock) debugBones = value; }
-        }
-        protected bool debugBones = false;
-
-        #endregion
-
-        /// <summary>
-        /// 标识符
-        /// </summary>
-        public readonly string ID = Guid.NewGuid().ToString();
-
-        /// <summary>
-        /// 是否被选中
-        /// </summary>
-        [Browsable(false)]
-        public bool IsSelected
-        {
-            get { lock (_lock) return isSelected; }
-            set { lock (_lock) isSelected = value; }
-        }
-        protected bool isSelected = false;
-
-        /// <summary>
-        /// 骨骼包围盒
-        /// </summary>
-        [Browsable(false)]
-        public RectangleF Bounds { get { lock (_lock) return bounds; } }
-        protected abstract RectangleF bounds { get; }
-
-        /// <summary>
-        /// 骨骼预览图, 并没有去除预乘, 画面可能偏暗
-        /// </summary>
-        [Browsable(false)]
-        public Image Preview { get; private set; }
 
         /// <summary>
         /// 更新内部状态
@@ -490,6 +409,5 @@ namespace SpineViewer.Spine
         protected abstract void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
 
         #endregion
-
     }
 }

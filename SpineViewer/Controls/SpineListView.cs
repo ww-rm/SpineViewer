@@ -13,11 +13,18 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Specialized;
 using NLog;
+using SpineViewer.Extensions;
+using SpineViewer.PropertyGridWrappers.Spine;
 
 namespace SpineViewer.Controls
 {
     public partial class SpineListView : UserControl
     {
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Spine 列表只读视图, 访问时必须使用 lock 语句锁定视图本身
         /// </summary>
@@ -29,9 +36,9 @@ namespace SpineViewer.Controls
         private readonly List<Spine.Spine> spines = [];
 
         /// <summary>
-        /// 日志器
+        /// 用于属性页显示模型参数的包装类
         /// </summary>
-        protected readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Dictionary<string, SpineWrapper> spinePropertyWrappers = [];
 
         public SpineListView()
         {
@@ -61,8 +68,7 @@ namespace SpineViewer.Controls
         private void Insert(int index = -1)
         {
             var dialog = new Dialogs.OpenSpineDialog();
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return;
+            if (dialog.ShowDialog() != DialogResult.OK) return;
             Insert(dialog.Result, index);
         }
 
@@ -80,12 +86,10 @@ namespace SpineViewer.Controls
                     index = listView.Items.Count;
 
                 // 锁定外部的读操作
-                lock (Spines)
-                {
-                    spines.Insert(index, spine);
-                    listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
-                    listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
-                }
+                lock (Spines) { spines.Insert(index, spine); }
+                spinePropertyWrappers[spine.ID] = new(spine);
+                listView.SmallImageList.Images.Add(spine.ID, spine.Preview);
+                listView.LargeImageList.Images.Add(spine.ID, spine.Preview);
                 listView.Items.Insert(index, new ListViewItem(spine.Name, spine.ID) { ToolTipText = spine.SkelPath });
 
                 // 选中新增项
@@ -108,8 +112,7 @@ namespace SpineViewer.Controls
         public void BatchAdd()
         {
             var openDialog = new Dialogs.BatchOpenSpineDialog();
-            if (openDialog.ShowDialog() != DialogResult.OK)
-                return;
+            if (openDialog.ShowDialog() != DialogResult.OK) return;
             BatchAdd(openDialog.Result);
         }
 
@@ -154,6 +157,7 @@ namespace SpineViewer.Controls
                     var spine = Spine.Spine.New(version, skelPath);
                     var preview = spine.Preview;
                     lock (Spines) { spines.Add(spine); }
+                    spinePropertyWrappers[spine.ID] = new(spine);
                     listView.Invoke(() =>
                     {
                         listView.SmallImageList.Images.Add(spine.ID, preview);
@@ -249,9 +253,9 @@ namespace SpineViewer.Controls
                     if (listView.SelectedIndices.Count <= 0)
                         PropertyGrid.SelectedObject = null;
                     else if (listView.SelectedIndices.Count <= 1)
-                        PropertyGrid.SelectedObject = spines[listView.SelectedIndices[0]];
+                        PropertyGrid.SelectedObject = spinePropertyWrappers[spines[listView.SelectedIndices[0]].ID];
                     else
-                        PropertyGrid.SelectedObjects = listView.SelectedIndices.Cast<int>().Select(index => spines[index]).ToArray();
+                        PropertyGrid.SelectedObjects = listView.SelectedIndices.Cast<int>().Select(index => spinePropertyWrappers[spines[index].ID]).ToArray();
                 }
 
                 // 标记选中的 Spine
@@ -418,6 +422,7 @@ namespace SpineViewer.Controls
                     listView.Items.RemoveAt(i);
                     var spine = spines[i];
                     spines.RemoveAt(i);
+                    spinePropertyWrappers.Remove(spine.ID);
                     listView.SmallImageList.Images.RemoveByKey(spine.ID);
                     listView.LargeImageList.Images.RemoveByKey(spine.ID);
                     spine.Dispose();
@@ -513,6 +518,7 @@ namespace SpineViewer.Controls
             {
                 foreach (var spine in spines) spine.Dispose();
                 spines.Clear();
+                spinePropertyWrappers.Clear();
                 listView.SmallImageList.Images.Clear();
                 listView.LargeImageList.Images.Clear();
             }
