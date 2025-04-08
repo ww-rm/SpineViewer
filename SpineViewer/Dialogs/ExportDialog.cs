@@ -1,4 +1,5 @@
 ﻿using SpineViewer.PropertyGridWrappers.Exporter;
+using SpineViewer.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace SpineViewer.Dialogs
         {
             if (wrapper.Exporter.Validate() is string error)
             { 
-                MessageBox.Info(error, "参数错误");
+                MessagePopup.Info(error, "参数错误");
                 return;
             }
             DialogResult = DialogResult.OK;

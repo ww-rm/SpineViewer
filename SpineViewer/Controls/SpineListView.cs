@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using NLog;
 using SpineViewer.Extensions;
 using SpineViewer.PropertyGridWrappers.Spine;
+using SpineViewer.Utilities;
 
 namespace SpineViewer.Controls
 {
@@ -100,7 +101,7 @@ namespace SpineViewer.Controls
             {
                 logger.Error(ex.ToString());
                 logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
-                MessageBox.Error(ex.ToString(), "骨骼加载失败");
+                MessagePopup.Error(ex.ToString(), "骨骼加载失败");
             }
 
             logger.LogCurrentProcessMemoryUsage();
@@ -221,7 +222,7 @@ namespace SpineViewer.Controls
             {
                 if (validPaths.Count > 100)
                 {
-                    if (MessageBox.Quest($"共发现 {validPaths.Count} 个可加载骨骼，数量较多，是否一次性全部加载？") == DialogResult.Cancel)
+                    if (MessagePopup.Quest($"共发现 {validPaths.Count} 个可加载骨骼，数量较多，是否一次性全部加载？") == DialogResult.Cancel)
                         return;
                 }
                 BatchAdd(new Dialogs.BatchOpenSpineDialogResult(SpineVersion.Auto, validPaths.ToArray()));
@@ -410,7 +411,7 @@ namespace SpineViewer.Controls
 
             if (listView.SelectedIndices.Count > 1)
             {
-                if (MessageBox.Quest($"确定移除所选 {listView.SelectedIndices.Count} 项吗？") != DialogResult.OK)
+                if (MessagePopup.Quest($"确定移除所选 {listView.SelectedIndices.Count} 项吗？") != DialogResult.OK)
                     return;
             }
 
@@ -510,7 +511,7 @@ namespace SpineViewer.Controls
             if (listView.Items.Count <= 0)
                 return;
 
-            if (MessageBox.Quest($"确认移除所有 {listView.Items.Count} 项吗？") != DialogResult.OK)
+            if (MessagePopup.Quest($"确认移除所有 {listView.Items.Count} 项吗？") != DialogResult.OK)
                 return;
 
             listView.Items.Clear();

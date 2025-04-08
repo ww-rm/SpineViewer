@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer
+namespace SpineViewer.Natives
 {
     /// <summary>
     /// Win32 Sdk 包装类
@@ -38,7 +38,7 @@ namespace SpineViewer
         public const int ULW_ALPHA = 0x00000002;
         public const int ULW_OPAQUE = 0x00000004;
 
-        public const IntPtr HWND_TOPMOST = -1;
+        public const nint HWND_TOPMOST = -1;
 
         public const uint SWP_NOSIZE = 0x0001;
         public const uint SWP_NOMOVE = 0x0002;
@@ -87,28 +87,28 @@ namespace SpineViewer
         }
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetDC(IntPtr hWnd);
+        public static extern nint GetDC(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        public static extern int ReleaseDC(nint hWnd, nint hDC);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern int SetWindowLong(nint hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        public static extern int GetWindowLong(nint hWnd, int nIndex);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetLayeredWindowAttributes(IntPtr hWnd, ref uint crKey, ref byte bAlpha, ref uint dwFlags);
+        public static extern bool GetLayeredWindowAttributes(nint hWnd, ref uint crKey, ref byte bAlpha, ref uint dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint pcrKey, byte pbAlpha, uint pdwFlags);
+        public static extern bool SetLayeredWindowAttributes(nint hWnd, uint pcrKey, byte pbAlpha, uint pdwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool UpdateLayeredWindow(IntPtr hWnd, IntPtr hdcDst, IntPtr pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+        public static extern bool UpdateLayeredWindow(nint hWnd, nint hdcDst, nint pptDst, ref SIZE psize, nint hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        public static extern bool SetWindowPos(nint hWnd, nint hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetDoubleClickTime();
@@ -117,37 +117,37 @@ namespace SpineViewer
         private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        public static extern nint FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam, uint fuFlags, uint uTimeout, out IntPtr lpdwResult);
+        public static extern nint SendMessageTimeout(nint hWnd, uint Msg, nint wParam, nint lParam, uint fuFlags, uint uTimeout, out nint lpdwResult);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
+        public static extern nint FindWindowEx(nint parentHandle, nint childAfter, string className, string windowTitle);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        public static extern nint SetParent(nint hWndChild, nint hWndNewParent);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetParent(IntPtr hWnd);
+        public static extern nint GetParent(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
+        public static extern nint GetAncestor(nint hWnd, uint gaFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+        public static extern nint GetWindow(nint hWnd, uint uCmd);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        public static extern nint CreateCompatibleDC(nint hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteDC(IntPtr hdc);
+        public static extern bool DeleteDC(nint hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+        public static extern nint SelectObject(nint hdc, nint hgdiobj);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteObject(IntPtr hObject);
+        public static extern bool DeleteObject(nint hObject);
 
         public static TimeSpan GetLastInputElapsedTime()
         {
@@ -164,12 +164,12 @@ namespace SpineViewer
             return TimeSpan.FromMilliseconds(idleTimeMillis);
         }
 
-        public static IntPtr GetWorkerW()
+        public static nint GetWorkerW()
         {
             var progman = FindWindow("Progman", null);
-            if (progman == IntPtr.Zero)
-                return IntPtr.Zero;
-            IntPtr hWnd = FindWindowEx(progman, 0, "WorkerW", null);
+            if (progman == nint.Zero)
+                return nint.Zero;
+            nint hWnd = FindWindowEx(progman, 0, "WorkerW", null);
             Debug.WriteLine($"{hWnd:x8}");
             return hWnd;
         }

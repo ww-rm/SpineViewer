@@ -1,4 +1,5 @@
 ﻿using NLog;
+using SpineViewer.Utilities;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -49,12 +50,12 @@ namespace SpineViewer
 
             try
             {
-                Application.Run(new MainForm() { Text = $"SpineViewer - v{Version}"});
+                Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}"});
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex.ToString());
-                MessageBox.Error(ex.ToString(), "程序已崩溃");
+                MessagePopup.Error(ex.ToString(), "程序已崩溃");
             }
         }
 

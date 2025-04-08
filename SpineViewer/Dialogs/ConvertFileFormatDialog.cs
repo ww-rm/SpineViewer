@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Spine;
+using SpineViewer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,7 +47,7 @@ namespace SpineViewer.Dialogs
 
             if (items.Count <= 0)
             {
-                MessageBox.Info("未选择任何文件");
+                MessagePopup.Info("未选择任何文件");
                 return;
             }
 
@@ -54,20 +55,20 @@ namespace SpineViewer.Dialogs
             {
                 if (!File.Exists(p))
                 {
-                    MessageBox.Info($"{p}", "skel文件不存在");
+                    MessagePopup.Info($"{p}", "skel文件不存在");
                     return;
                 }
             }
 
             if (sourceVersion != SpineVersion.Auto && !SkeletonConverter.HasImplementation(sourceVersion))
             {
-                MessageBox.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 
             if (!SkeletonConverter.HasImplementation(targetVersion))
             {
-                MessageBox.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 

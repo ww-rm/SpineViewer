@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpineViewer.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -40,7 +41,7 @@ namespace SpineViewer.Dialogs
             else
             {
                 Clipboard.SetText(url);
-                MessageBox.Info("链接已复制到剪贴板，请前往浏览器进行访问");
+                MessagePopup.Info("链接已复制到剪贴板，请前往浏览器进行访问");
             }
         }
     }

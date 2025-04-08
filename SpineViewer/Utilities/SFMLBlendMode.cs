@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.Extensions
+namespace SpineViewer.Utilities
 {
     /// <summary>
     /// SFML 混合模式, 预乘模式下输入和输出的像素值都是预乘的

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SpineViewer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,7 +93,7 @@ namespace SpineViewer.Dialogs
             var properties = selectedObject.GetType().GetProperties();
             var result = string.Join(Environment.NewLine, properties.Select(p => $"{p.Name}\t{p.GetValue(selectedObject)?.ToString()}"));
             Clipboard.SetText(result);
-            MessageBox.Info("已复制");
+            MessagePopup.Info("已复制");
         }
     }
 }

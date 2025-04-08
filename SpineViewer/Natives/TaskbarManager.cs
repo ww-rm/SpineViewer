@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace SpineViewer
+namespace SpineViewer.Natives
 {
     internal enum TBPFLAG
     {
@@ -19,15 +19,15 @@ namespace SpineViewer
     {
         // ITaskbarList
         void HrInit();
-        void AddTab(IntPtr hwnd);
-        void DeleteTab(IntPtr hwnd);
-        void ActivateTab(IntPtr hwnd);
-        void SetActiveAlt(IntPtr hwnd);
+        void AddTab(nint hwnd);
+        void DeleteTab(nint hwnd);
+        void ActivateTab(nint hwnd);
+        void SetActiveAlt(nint hwnd);
         // ITaskbarList2
-        void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+        void MarkFullscreenWindow(nint hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
         // ITaskbarList3
-        void SetProgressValue(IntPtr hwnd, ulong ullCompleted, ulong ullTotal);
-        void SetProgressState(IntPtr hwnd, TBPFLAG tbpFlags);
+        void SetProgressValue(nint hwnd, ulong ullCompleted, ulong ullTotal);
+        void SetProgressState(nint hwnd, TBPFLAG tbpFlags);
         //void RegisterTab(IntPtr hwndTab, IntPtr hwndMDI);
         //void UnregisterTab(IntPtr hwndTab);
         //void SetTabOrder(IntPtr hwndTab, IntPtr hwndInsertBefore);
@@ -52,12 +52,12 @@ namespace SpineViewer
             taskbarList.HrInit();
         }
 
-        public static void SetProgressState(IntPtr windowHandle, TBPFLAG state)
+        public static void SetProgressState(nint windowHandle, TBPFLAG state)
         {
             taskbarList.SetProgressState(windowHandle, state);
         }
 
-        public static void SetProgressValue(IntPtr windowHandle, ulong completed, ulong total)
+        public static void SetProgressValue(nint windowHandle, ulong completed, ulong total)
         {
             taskbarList.SetProgressValue(windowHandle, completed, total);
         }

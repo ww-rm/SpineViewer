@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime36;
-using SpineViewer.Extensions;
+using SpineViewer.Utilities;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {

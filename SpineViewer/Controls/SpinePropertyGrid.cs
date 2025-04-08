@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpineViewer.PropertyGridWrappers.Spine;
+using SpineViewer.Utilities;
 
 namespace SpineViewer.Controls
 {
@@ -86,7 +87,7 @@ namespace SpineViewer.Controls
 
             if (spine.SkinNames.Count <= 0)
             {
-                MessageBox.Info("没有可用的皮肤");
+                MessagePopup.Info("没有可用的皮肤");
                 return;
             }
 

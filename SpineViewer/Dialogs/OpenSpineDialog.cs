@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Spine;
+using SpineViewer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -57,7 +58,7 @@ namespace SpineViewer.Dialogs
 
             if (!File.Exists(skelPath))
             {
-                MessageBox.Info($"{skelPath}", "skel文件不存在");
+                MessagePopup.Info($"{skelPath}", "skel文件不存在");
                 return;
             }
             else
@@ -71,7 +72,7 @@ namespace SpineViewer.Dialogs
             }
             else if (!File.Exists(atlasPath))
             {
-                MessageBox.Info($"{atlasPath}", "atlas文件不存在");
+                MessagePopup.Info($"{atlasPath}", "atlas文件不存在");
                 return;
             }
             else
@@ -81,7 +82,7 @@ namespace SpineViewer.Dialogs
 
             if (version != SpineVersion.Auto && !Spine.Spine.HasImplementation(version))
             {
-                MessageBox.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;
             }
 

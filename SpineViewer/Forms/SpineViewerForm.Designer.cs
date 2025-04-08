@@ -1,6 +1,6 @@
 ﻿namespace SpineViewer
 {
-    partial class MainForm
+    partial class SpineViewerForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpineViewerForm));
             menuStrip = new MenuStrip();
             toolStripMenuItem_File = new ToolStripMenuItem();
             toolStripMenuItem_Open = new ToolStripMenuItem();

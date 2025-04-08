@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Security.Policy;
 using System.Diagnostics;
 using NLog;
+using SpineViewer.Utilities;
 
 namespace SpineViewer.Controls
 {
@@ -402,7 +403,7 @@ namespace SpineViewer.Controls
             {
                 logger.Fatal(ex);
                 logger.Fatal("Render task stopped");
-                MessageBox.Error(ex.ToString(), "预览画面已停止渲染");
+                MessagePopup.Error(ex.ToString(), "预览画面已停止渲染");
             }
             finally
             {

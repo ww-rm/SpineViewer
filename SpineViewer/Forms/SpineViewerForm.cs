@@ -3,17 +3,18 @@ using SpineViewer.Spine;
 using System.ComponentModel;
 using System.Diagnostics;
 using SpineViewer.Exporter;
-using SpineViewer.Extensions;
 using System.Reflection.Metadata;
 using SpineViewer.PropertyGridWrappers.Exporter;
+using SpineViewer.Utilities;
+using SpineViewer.Natives;
 
 namespace SpineViewer
 {
-    internal partial class MainForm : Form
+    internal partial class SpineViewerForm : Form
     {
         private Logger logger = LogManager.GetCurrentClassLogger();
 
-        public MainForm()
+        public SpineViewerForm()
         {
             InitializeComponent();
             InitializeLogConfiguration();
@@ -27,7 +28,7 @@ namespace SpineViewer
             {
                 logger.Error(ex.ToString());
                 logger.Error("Failed to load fragment shader");
-                MessageBox.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
+                MessagePopup.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
             }
 
         }
@@ -84,7 +85,7 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
         {
-            if (spinePreviewer.IsUpdating && MessageBox.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
+            if (spinePreviewer.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
                 return;
 
             var exporter = new FrameExporter()

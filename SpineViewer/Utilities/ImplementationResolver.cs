@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer
+namespace SpineViewer.Utilities
 {
     public interface IImplementationKey<TKey>
     {

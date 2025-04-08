@@ -1,4 +1,5 @@
 ﻿using NLog;
+using SpineViewer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,7 +52,7 @@ namespace SpineViewer.Dialogs
             if (e.Error != null)
             {
                 logger.Error(e.Error.ToString());
-                MessageBox.Error(e.Error.ToString(), "执行出错");
+                MessagePopup.Error(e.Error.ToString(), "执行出错");
                 DialogResult = DialogResult.Abort;
             }
             else if (e.Cancelled)
