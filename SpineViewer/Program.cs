@@ -1,5 +1,6 @@
 ﻿using NLog;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace SpineViewer
 {
@@ -25,6 +26,8 @@ namespace SpineViewer
         ///// </summary>
         //public static readonly string TempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Name)).FullName;
 
+        public static string Version => Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
         /// <summary>
         /// 程序日志器
         /// </summary>
@@ -46,7 +49,7 @@ namespace SpineViewer
 
             try
             {
-                Application.Run(new MainForm());
+                Application.Run(new MainForm() { Text = $"SpineViewer - v{Version}"});
             }
             catch (Exception ex)
             {
