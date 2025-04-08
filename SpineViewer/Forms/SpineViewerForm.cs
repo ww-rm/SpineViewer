@@ -12,7 +12,7 @@ namespace SpineViewer
 {
     internal partial class SpineViewerForm : Form
     {
-        private Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public SpineViewerForm()
         {

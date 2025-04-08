@@ -14,7 +14,7 @@ namespace SpineViewer.Dialogs
 {
     public partial class ProgressDialog : Form
     {
-        private Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ProgressDialog()
         {
