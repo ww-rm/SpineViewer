@@ -79,6 +79,7 @@
             // 
             tabPage_BaseInfo.Controls.Add(propertyGrid_BaseInfo);
             tabPage_BaseInfo.Location = new Point(4, 4);
+            tabPage_BaseInfo.Margin = new Padding(0);
             tabPage_BaseInfo.Name = "tabPage_BaseInfo";
             tabPage_BaseInfo.Size = new Size(357, 405);
             tabPage_BaseInfo.TabIndex = 0;
@@ -100,6 +101,7 @@
             // 
             tabPage_Render.Controls.Add(propertyGrid_Render);
             tabPage_Render.Location = new Point(4, 4);
+            tabPage_Render.Margin = new Padding(0);
             tabPage_Render.Name = "tabPage_Render";
             tabPage_Render.Size = new Size(357, 405);
             tabPage_Render.TabIndex = 1;
@@ -121,6 +123,7 @@
             // 
             tabPage_Transform.Controls.Add(propertyGrid_Transform);
             tabPage_Transform.Location = new Point(4, 4);
+            tabPage_Transform.Margin = new Padding(0);
             tabPage_Transform.Name = "tabPage_Transform";
             tabPage_Transform.Size = new Size(357, 405);
             tabPage_Transform.TabIndex = 2;
@@ -142,6 +145,7 @@
             // 
             tabPage_Skin.Controls.Add(propertyGrid_Skin);
             tabPage_Skin.Location = new Point(4, 4);
+            tabPage_Skin.Margin = new Padding(0);
             tabPage_Skin.Name = "tabPage_Skin";
             tabPage_Skin.Size = new Size(357, 405);
             tabPage_Skin.TabIndex = 3;
@@ -186,6 +190,7 @@
             // 
             tabPage_Animation.Controls.Add(propertyGrid_Animation);
             tabPage_Animation.Location = new Point(4, 4);
+            tabPage_Animation.Margin = new Padding(0);
             tabPage_Animation.Name = "tabPage_Animation";
             tabPage_Animation.Size = new Size(357, 405);
             tabPage_Animation.TabIndex = 4;
