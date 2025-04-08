@@ -46,6 +46,8 @@
             contextMenuStrip_Animation = new ContextMenuStrip(components);
             toolStripMenuItem_AddAnimation = new ToolStripMenuItem();
             toolStripMenuItem_RemoveAnimation = new ToolStripMenuItem();
+            tabPage_Debug = new TabPage();
+            propertyGrid_Debug = new PropertyGrid();
             tabControl.SuspendLayout();
             tabPage_BaseInfo.SuspendLayout();
             tabPage_Render.SuspendLayout();
@@ -54,6 +56,7 @@
             contextMenuStrip_Skin.SuspendLayout();
             tabPage_Animation.SuspendLayout();
             contextMenuStrip_Animation.SuspendLayout();
+            tabPage_Debug.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl
@@ -64,6 +67,7 @@
             tabControl.Controls.Add(tabPage_Transform);
             tabControl.Controls.Add(tabPage_Skin);
             tabControl.Controls.Add(tabPage_Animation);
+            tabControl.Controls.Add(tabPage_Debug);
             tabControl.Dock = DockStyle.Fill;
             tabControl.ItemSize = new Size(100, 35);
             tabControl.Location = new Point(0, 0);
@@ -71,20 +75,20 @@
             tabControl.Name = "tabControl";
             tabControl.Padding = new Point(0, 0);
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(365, 448);
+            tabControl.Size = new Size(372, 448);
             tabControl.SizeMode = TabSizeMode.FillToRight;
             tabControl.TabIndex = 0;
             // 
             // tabPage_BaseInfo
             // 
+            tabPage_BaseInfo.BackColor = SystemColors.Control;
             tabPage_BaseInfo.Controls.Add(propertyGrid_BaseInfo);
             tabPage_BaseInfo.Location = new Point(4, 4);
             tabPage_BaseInfo.Margin = new Padding(0);
             tabPage_BaseInfo.Name = "tabPage_BaseInfo";
-            tabPage_BaseInfo.Size = new Size(357, 405);
+            tabPage_BaseInfo.Size = new Size(364, 370);
             tabPage_BaseInfo.TabIndex = 0;
             tabPage_BaseInfo.Text = "基本信息";
-            tabPage_BaseInfo.UseVisualStyleBackColor = true;
             // 
             // propertyGrid_BaseInfo
             // 
@@ -93,20 +97,20 @@
             propertyGrid_BaseInfo.Location = new Point(0, 0);
             propertyGrid_BaseInfo.Name = "propertyGrid_BaseInfo";
             propertyGrid_BaseInfo.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_BaseInfo.Size = new Size(357, 405);
+            propertyGrid_BaseInfo.Size = new Size(364, 370);
             propertyGrid_BaseInfo.TabIndex = 0;
             propertyGrid_BaseInfo.ToolbarVisible = false;
             // 
             // tabPage_Render
             // 
+            tabPage_Render.BackColor = SystemColors.Control;
             tabPage_Render.Controls.Add(propertyGrid_Render);
             tabPage_Render.Location = new Point(4, 4);
             tabPage_Render.Margin = new Padding(0);
             tabPage_Render.Name = "tabPage_Render";
-            tabPage_Render.Size = new Size(357, 405);
+            tabPage_Render.Size = new Size(437, 405);
             tabPage_Render.TabIndex = 1;
             tabPage_Render.Text = "渲染";
-            tabPage_Render.UseVisualStyleBackColor = true;
             // 
             // propertyGrid_Render
             // 
@@ -115,20 +119,20 @@
             propertyGrid_Render.Location = new Point(0, 0);
             propertyGrid_Render.Name = "propertyGrid_Render";
             propertyGrid_Render.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Render.Size = new Size(357, 405);
+            propertyGrid_Render.Size = new Size(437, 405);
             propertyGrid_Render.TabIndex = 1;
             propertyGrid_Render.ToolbarVisible = false;
             // 
             // tabPage_Transform
             // 
+            tabPage_Transform.BackColor = SystemColors.Control;
             tabPage_Transform.Controls.Add(propertyGrid_Transform);
             tabPage_Transform.Location = new Point(4, 4);
             tabPage_Transform.Margin = new Padding(0);
             tabPage_Transform.Name = "tabPage_Transform";
-            tabPage_Transform.Size = new Size(357, 405);
+            tabPage_Transform.Size = new Size(437, 405);
             tabPage_Transform.TabIndex = 2;
             tabPage_Transform.Text = "变换";
-            tabPage_Transform.UseVisualStyleBackColor = true;
             // 
             // propertyGrid_Transform
             // 
@@ -137,20 +141,20 @@
             propertyGrid_Transform.Location = new Point(0, 0);
             propertyGrid_Transform.Name = "propertyGrid_Transform";
             propertyGrid_Transform.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Transform.Size = new Size(357, 405);
+            propertyGrid_Transform.Size = new Size(437, 405);
             propertyGrid_Transform.TabIndex = 1;
             propertyGrid_Transform.ToolbarVisible = false;
             // 
             // tabPage_Skin
             // 
+            tabPage_Skin.BackColor = SystemColors.Control;
             tabPage_Skin.Controls.Add(propertyGrid_Skin);
             tabPage_Skin.Location = new Point(4, 4);
             tabPage_Skin.Margin = new Padding(0);
             tabPage_Skin.Name = "tabPage_Skin";
-            tabPage_Skin.Size = new Size(357, 405);
+            tabPage_Skin.Size = new Size(437, 405);
             tabPage_Skin.TabIndex = 3;
             tabPage_Skin.Text = "皮肤";
-            tabPage_Skin.UseVisualStyleBackColor = true;
             // 
             // propertyGrid_Skin
             // 
@@ -160,7 +164,7 @@
             propertyGrid_Skin.Location = new Point(0, 0);
             propertyGrid_Skin.Name = "propertyGrid_Skin";
             propertyGrid_Skin.PropertySort = PropertySort.NoSort;
-            propertyGrid_Skin.Size = new Size(357, 405);
+            propertyGrid_Skin.Size = new Size(437, 405);
             propertyGrid_Skin.TabIndex = 1;
             propertyGrid_Skin.ToolbarVisible = false;
             // 
@@ -188,14 +192,14 @@
             // 
             // tabPage_Animation
             // 
+            tabPage_Animation.BackColor = SystemColors.Control;
             tabPage_Animation.Controls.Add(propertyGrid_Animation);
             tabPage_Animation.Location = new Point(4, 4);
             tabPage_Animation.Margin = new Padding(0);
             tabPage_Animation.Name = "tabPage_Animation";
-            tabPage_Animation.Size = new Size(357, 405);
+            tabPage_Animation.Size = new Size(437, 405);
             tabPage_Animation.TabIndex = 4;
             tabPage_Animation.Text = "动画";
-            tabPage_Animation.UseVisualStyleBackColor = true;
             // 
             // propertyGrid_Animation
             // 
@@ -205,7 +209,7 @@
             propertyGrid_Animation.Location = new Point(0, 0);
             propertyGrid_Animation.Name = "propertyGrid_Animation";
             propertyGrid_Animation.PropertySort = PropertySort.NoSort;
-            propertyGrid_Animation.Size = new Size(357, 405);
+            propertyGrid_Animation.Size = new Size(437, 405);
             propertyGrid_Animation.TabIndex = 1;
             propertyGrid_Animation.ToolbarVisible = false;
             // 
@@ -231,13 +235,34 @@
             toolStripMenuItem_RemoveAnimation.Text = "移除";
             toolStripMenuItem_RemoveAnimation.Click += toolStripMenuItem_RemoveAnimation_Click;
             // 
+            // tabPage_Debug
+            // 
+            tabPage_Debug.BackColor = SystemColors.Control;
+            tabPage_Debug.Controls.Add(propertyGrid_Debug);
+            tabPage_Debug.Location = new Point(4, 4);
+            tabPage_Debug.Name = "tabPage_Debug";
+            tabPage_Debug.Size = new Size(437, 405);
+            tabPage_Debug.TabIndex = 5;
+            tabPage_Debug.Text = "调试";
+            // 
+            // propertyGrid_Debug
+            // 
+            propertyGrid_Debug.Dock = DockStyle.Fill;
+            propertyGrid_Debug.HelpVisible = false;
+            propertyGrid_Debug.Location = new Point(0, 0);
+            propertyGrid_Debug.Name = "propertyGrid_Debug";
+            propertyGrid_Debug.PropertySort = PropertySort.NoSort;
+            propertyGrid_Debug.Size = new Size(437, 405);
+            propertyGrid_Debug.TabIndex = 2;
+            propertyGrid_Debug.ToolbarVisible = false;
+            // 
             // SpinePropertyGrid
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tabControl);
             Name = "SpinePropertyGrid";
-            Size = new Size(365, 448);
+            Size = new Size(372, 448);
             tabControl.ResumeLayout(false);
             tabPage_BaseInfo.ResumeLayout(false);
             tabPage_Render.ResumeLayout(false);
@@ -246,6 +271,7 @@
             contextMenuStrip_Skin.ResumeLayout(false);
             tabPage_Animation.ResumeLayout(false);
             contextMenuStrip_Animation.ResumeLayout(false);
+            tabPage_Debug.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -268,5 +294,7 @@
         private ToolStripMenuItem toolStripMenuItem_RemoveSkin;
         private ToolStripMenuItem toolStripMenuItem_AddAnimation;
         private ToolStripMenuItem toolStripMenuItem_RemoveAnimation;
+        private TabPage tabPage_Debug;
+        private PropertyGrid propertyGrid_Debug;
     }
 }

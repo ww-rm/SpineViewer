@@ -272,7 +272,7 @@
             rtbLog.Margin = new Padding(3, 2, 3, 2);
             rtbLog.Name = "rtbLog";
             rtbLog.ReadOnly = true;
-            rtbLog.Size = new Size(1758, 164);
+            rtbLog.Size = new Size(1758, 168);
             rtbLog.TabIndex = 0;
             rtbLog.Text = "";
             rtbLog.WordWrap = false;
@@ -296,7 +296,7 @@
             splitContainer_MainForm.Panel2.Controls.Add(rtbLog);
             splitContainer_MainForm.Panel2.Cursor = Cursors.Default;
             splitContainer_MainForm.Size = new Size(1758, 1097);
-            splitContainer_MainForm.SplitterDistance = 925;
+            splitContainer_MainForm.SplitterDistance = 921;
             splitContainer_MainForm.SplitterWidth = 8;
             splitContainer_MainForm.TabIndex = 3;
             splitContainer_MainForm.TabStop = false;
@@ -320,7 +320,7 @@
             // 
             splitContainer_Functional.Panel2.Controls.Add(groupBox_Preview);
             splitContainer_Functional.Panel2.Cursor = Cursors.Default;
-            splitContainer_Functional.Size = new Size(1758, 925);
+            splitContainer_Functional.Size = new Size(1758, 921);
             splitContainer_Functional.SplitterDistance = 759;
             splitContainer_Functional.SplitterWidth = 8;
             splitContainer_Functional.TabIndex = 2;
@@ -344,7 +344,7 @@
             // 
             splitContainer_Information.Panel2.Controls.Add(tabControl_Config);
             splitContainer_Information.Panel2.Cursor = Cursors.Default;
-            splitContainer_Information.Size = new Size(759, 925);
+            splitContainer_Information.Size = new Size(759, 921);
             splitContainer_Information.SplitterDistance = 354;
             splitContainer_Information.SplitterWidth = 8;
             splitContainer_Information.TabIndex = 1;
@@ -358,7 +358,7 @@
             groupBox_SkelList.Dock = DockStyle.Fill;
             groupBox_SkelList.Location = new Point(0, 0);
             groupBox_SkelList.Name = "groupBox_SkelList";
-            groupBox_SkelList.Size = new Size(354, 925);
+            groupBox_SkelList.Size = new Size(354, 921);
             groupBox_SkelList.TabIndex = 0;
             groupBox_SkelList.TabStop = false;
             groupBox_SkelList.Text = "模型列表";
@@ -368,7 +368,7 @@
             spineListView.Dock = DockStyle.Fill;
             spineListView.Location = new Point(3, 26);
             spineListView.Name = "spineListView";
-            spineListView.Size = new Size(348, 896);
+            spineListView.Size = new Size(348, 892);
             spineListView.SpinePropertyGrid = spinePropertyGrid;
             spineListView.TabIndex = 0;
             // 
@@ -377,7 +377,7 @@
             spinePropertyGrid.Dock = DockStyle.Fill;
             spinePropertyGrid.Location = new Point(3, 26);
             spinePropertyGrid.Name = "spinePropertyGrid";
-            spinePropertyGrid.Size = new Size(383, 853);
+            spinePropertyGrid.Size = new Size(383, 849);
             spinePropertyGrid.TabIndex = 0;
             // 
             // tabControl_Config
@@ -390,8 +390,9 @@
             tabControl_Config.Location = new Point(0, 0);
             tabControl_Config.Multiline = true;
             tabControl_Config.Name = "tabControl_Config";
+            tabControl_Config.Padding = new Point(0, 0);
             tabControl_Config.SelectedIndex = 0;
-            tabControl_Config.Size = new Size(397, 925);
+            tabControl_Config.Size = new Size(397, 921);
             tabControl_Config.TabIndex = 0;
             // 
             // tabPage_Previewer
@@ -400,7 +401,7 @@
             tabPage_Previewer.Location = new Point(4, 4);
             tabPage_Previewer.Margin = new Padding(0);
             tabPage_Previewer.Name = "tabPage_Previewer";
-            tabPage_Previewer.Size = new Size(389, 882);
+            tabPage_Previewer.Size = new Size(389, 878);
             tabPage_Previewer.TabIndex = 0;
             tabPage_Previewer.Text = "画面参数";
             // 
@@ -411,7 +412,7 @@
             groupBox_PreviewConfig.Location = new Point(0, 0);
             groupBox_PreviewConfig.Margin = new Padding(0);
             groupBox_PreviewConfig.Name = "groupBox_PreviewConfig";
-            groupBox_PreviewConfig.Size = new Size(389, 882);
+            groupBox_PreviewConfig.Size = new Size(389, 878);
             groupBox_PreviewConfig.TabIndex = 1;
             groupBox_PreviewConfig.TabStop = false;
             groupBox_PreviewConfig.Text = "画面参数";
@@ -422,7 +423,7 @@
             propertyGrid_Previewer.HelpVisible = false;
             propertyGrid_Previewer.Location = new Point(3, 26);
             propertyGrid_Previewer.Name = "propertyGrid_Previewer";
-            propertyGrid_Previewer.Size = new Size(383, 853);
+            propertyGrid_Previewer.Size = new Size(383, 849);
             propertyGrid_Previewer.TabIndex = 1;
             propertyGrid_Previewer.ToolbarVisible = false;
             propertyGrid_Previewer.PropertyValueChanged += propertyGrid_PropertyValueChanged;
@@ -434,7 +435,7 @@
             tabPage_SpineProperty.Location = new Point(4, 4);
             tabPage_SpineProperty.Margin = new Padding(0);
             tabPage_SpineProperty.Name = "tabPage_SpineProperty";
-            tabPage_SpineProperty.Size = new Size(389, 882);
+            tabPage_SpineProperty.Size = new Size(389, 878);
             tabPage_SpineProperty.TabIndex = 1;
             tabPage_SpineProperty.Text = "模型参数";
             // 
@@ -445,7 +446,7 @@
             groupBox_SkelConfig.Location = new Point(0, 0);
             groupBox_SkelConfig.Margin = new Padding(0);
             groupBox_SkelConfig.Name = "groupBox_SkelConfig";
-            groupBox_SkelConfig.Size = new Size(389, 882);
+            groupBox_SkelConfig.Size = new Size(389, 878);
             groupBox_SkelConfig.TabIndex = 0;
             groupBox_SkelConfig.TabStop = false;
             groupBox_SkelConfig.Text = "模型参数";
@@ -456,7 +457,7 @@
             groupBox_Preview.Dock = DockStyle.Fill;
             groupBox_Preview.Location = new Point(0, 0);
             groupBox_Preview.Name = "groupBox_Preview";
-            groupBox_Preview.Size = new Size(991, 925);
+            groupBox_Preview.Size = new Size(991, 921);
             groupBox_Preview.TabIndex = 1;
             groupBox_Preview.TabStop = false;
             groupBox_Preview.Text = "预览画面";
@@ -467,7 +468,7 @@
             spinePreviewer.Location = new Point(3, 26);
             spinePreviewer.Name = "spinePreviewer";
             spinePreviewer.PropertyGrid = propertyGrid_Previewer;
-            spinePreviewer.Size = new Size(985, 896);
+            spinePreviewer.Size = new Size(985, 892);
             spinePreviewer.SpineListView = spineListView;
             spinePreviewer.TabIndex = 0;
             // 

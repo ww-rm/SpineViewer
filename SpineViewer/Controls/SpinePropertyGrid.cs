@@ -34,6 +34,7 @@ namespace SpineViewer.Controls
                     propertyGrid_Transform.SelectedObject = null;
                     propertyGrid_Skin.SelectedObject = null;
                     propertyGrid_Animation.SelectedObject = null;
+                    propertyGrid_Debug.SelectedObject = null;
                 }
                 else
                 {
@@ -43,6 +44,7 @@ namespace SpineViewer.Controls
                     propertyGrid_Transform.SelectedObjects = value.Select(e => e.Transform).ToArray();
                     propertyGrid_Skin.SelectedObjects = value.Select(e => e.Skin).ToArray();
                     propertyGrid_Animation.SelectedObjects = value.Select(e => e.Animation).ToArray();
+                    propertyGrid_Debug.SelectedObjects = value.Select(e => e.Debug).ToArray();
                 }
             }
         }

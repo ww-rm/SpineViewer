@@ -13,15 +13,12 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         [Browsable(false)]
         public SpineViewer.Spine.Spine Spine { get; } = spine;
 
-        [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("基本信息")]
         public SpineBaseInfoWrapper BaseInfo { get; } = new(spine);
 
-        [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("渲染")]
         public SpineRenderWrapper Render { get; } = new(spine);
 
-        [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("变换")]
         public SpineTransformWrapper Transform { get; } = new(spine);
 
@@ -32,5 +29,8 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("动画")]
         public SpineAnimationWrapper Animation { get; } = new(spine);
+
+        [DisplayName("调试")]
+        public SpineDebugWrapper Debug { get; } = new(spine);
     }
 }
