@@ -561,7 +561,7 @@ namespace SpineViewer.Controls
             // 右键高优先级, 结束画面拖动模式
             if ((e.Button & MouseButtons.Right) != 0)
             {
-                SpineListView?.PropertyGrid?.Refresh();
+                SpineListView?.SpinePropertyGrid?.Refresh();
 
                 draggingSrc = null;
                 Cursor = Cursors.Default;
@@ -571,7 +571,7 @@ namespace SpineViewer.Controls
             else if ((e.Button & MouseButtons.Left) != 0 && (MouseButtons & MouseButtons.Right) == 0)
             {
                 draggingSrc = null;
-                SpineListView?.PropertyGrid?.Refresh();
+                SpineListView?.SpinePropertyGrid?.Refresh();
             }
         }
 

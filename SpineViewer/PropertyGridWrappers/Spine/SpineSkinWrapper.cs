@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SpineViewer.PropertyGridWrappers.Spine
 {
     /// <summary>
-    /// 对皮肤的包装类
+    /// 对皮肤属性的包装类
     /// </summary>
     [TypeConverter(typeof(SkinWrapperConverter))]
     public class SkinWrapper(SpineViewer.Spine.Spine spine, int i)
@@ -37,7 +37,7 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     }
 
     /// <summary>
-    /// SkinManager 动态类型包装类, 用于提供对 Spine 皮肤列表的管理能力
+    /// 皮肤列表动态类型包装类, 用于提供对 Spine 皮肤列表的管理能力
     /// </summary>
     /// <param name="spine">关联的 Spine 对象</param>
     public class SpineSkinWrapper(SpineViewer.Spine.Spine spine) : ICustomTypeDescriptor

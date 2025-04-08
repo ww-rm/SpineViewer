@@ -25,12 +25,10 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         [DisplayName("变换")]
         public SpineTransformWrapper Transform { get; } = new(spine);
 
-        [Editor(typeof(SpineSkinEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("皮肤")]
         public SpineSkinWrapper Skin { get; } = new(spine);
 
-        [Editor(typeof(SpineAnimationEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("动画")]
         public SpineAnimationWrapper Animation { get; } = new(spine);

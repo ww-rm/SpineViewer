@@ -49,8 +49,8 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 显示骨骼信息的属性面板
         /// </summary>
-        [Category("自定义"), Description("用于显示骨骼属性的属性页")]
-        public PropertyGrid? PropertyGrid { get; set; }
+        [Category("自定义"), Description("用于显示模型属性的组合属性页")]
+        public SpinePropertyGrid? SpinePropertyGrid { get; set; }
 
         /// <summary>
         /// 选中的索引
@@ -248,14 +248,14 @@ namespace SpineViewer.Controls
         {
             lock (Spines)
             {
-                if (PropertyGrid is not null)
+                if (SpinePropertyGrid is not null)
                 {
                     if (listView.SelectedIndices.Count <= 0)
-                        PropertyGrid.SelectedObject = null;
+                        SpinePropertyGrid.SelectedSpines = null;
                     else if (listView.SelectedIndices.Count <= 1)
-                        PropertyGrid.SelectedObject = spinePropertyWrappers[spines[listView.SelectedIndices[0]].ID];
+                        SpinePropertyGrid.SelectedSpines = [spinePropertyWrappers[spines[listView.SelectedIndices[0]].ID]];
                     else
-                        PropertyGrid.SelectedObjects = listView.SelectedIndices.Cast<int>().Select(index => spinePropertyWrappers[spines[index].ID]).ToArray();
+                        SpinePropertyGrid.SelectedSpines = listView.SelectedIndices.Cast<int>().Select(index => spinePropertyWrappers[spines[index].ID]).ToArray();
                 }
 
                 // 标记选中的 Spine
@@ -522,8 +522,8 @@ namespace SpineViewer.Controls
                 listView.SmallImageList.Images.Clear();
                 listView.LargeImageList.Images.Clear();
             }
-            if (PropertyGrid is not null)
-                PropertyGrid.SelectedObject = null;
+            if (SpinePropertyGrid is not null)
+                SpinePropertyGrid.SelectedSpines = null;
         }
 
         private void toolStripMenuItem_CopyPreview_Click(object sender, EventArgs e)
@@ -580,5 +580,10 @@ namespace SpineViewer.Controls
         {
             listView.View = View.Details;
         }
+    }
+
+    public class DefaultSpineConfig
+    {
+
     }
 }
