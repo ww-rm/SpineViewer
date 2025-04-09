@@ -25,7 +25,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 编码器
         /// </summary>
-        public string Codec { get; set; } = "libwebp";
+        public string Codec { get; set; } = "libwebp_anim";
 
         /// <summary>
         /// 是否无损

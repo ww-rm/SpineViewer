@@ -16,7 +16,7 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// <summary>
         /// 编码器
         /// </summary>
-        [StringEnumConverter.StandardValues("libwebp", Customizable = true)]
+        [StringEnumConverter.StandardValues("libwebp_anim", "libwebp", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
         [Category("[3] 格式参数"), DisplayName("编码器"), Description("-c:v, 要使用的编码器")]
         public string Codec { get => Exporter.Codec; set => Exporter.Codec = value; }
