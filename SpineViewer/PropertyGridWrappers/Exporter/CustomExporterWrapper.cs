@@ -30,12 +30,5 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// </summary>
         [Category("[2] FFmpeg 基本参数"), DisplayName("文件名后缀"), Description("文件名后缀")]
         public string CustomSuffix { get => Exporter.CustomSuffix; set => Exporter.CustomSuffix = value; }
-
-        /// <summary>
-        /// 文件名后缀
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("自定义参数"), Description("提供给 FFmpeg 的自定义参数")]
-        public override string CustomArgument { get => Exporter.CustomArgument; set => Exporter.CustomArgument = value; }
-
     }
 }

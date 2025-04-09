@@ -44,7 +44,7 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// <summary>
         /// 透明度阈值
         /// </summary>
-        [Category("[3] 格式参数"), DisplayName("循环次数"), Description("循环次数, 0 无限循环, 取值范围 [0, 65535]")]
+        [Category("[3] 格式参数"), DisplayName("循环次数"), Description("-loop, 循环次数, 0 无限循环, 取值范围 [0, 65535]")]
         public int Loop { get => Exporter.Loop; set => Exporter.Loop = value; }
     }
 }
