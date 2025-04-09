@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.PropertyGridWrappers.Exporter
 {
-    public class MkvExporterWrapper(FFmpegVideoExporter exporter) : FFmpegVideoExporterWrapper(exporter)
+    public class AvifExporterWrapper(AvifExporter exporter) : FFmpegVideoExporterWrapper(exporter)
     {
         [Browsable(false)]
-        public override MkvExporter Exporter => (MkvExporter)base.Exporter;
+        public override AvifExporter Exporter => (AvifExporter)base.Exporter;
 
         /// <summary>
         /// 编码器
         /// </summary>
-        [StringEnumConverter.StandardValues("libx264", "libx265", "libvpx-vp9", "av1_nvenc", Customizable = true)]
+        [StringEnumConverter.StandardValues("av1_nvenc", "av1_amf", "libaom-av1", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
-        [Category("[3] 格式参数"), DisplayName("编码器"), Description("-c:v, 要使用的编码器")]
+        [Category("[3] 格式参数"), DisplayName("编码器"), Description("-c:v, 要使用的编码器\n建议使用硬件加速, libaom-av1 速度非常非常非常慢")]
         public string Codec { get => Exporter.Codec; set => Exporter.Codec = value; }
 
         /// <summary>
@@ -30,9 +30,15 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// <summary>
         /// 像素格式
         /// </summary>
-        [StringEnumConverter.StandardValues("yuv420p", "yuv422p", "yuv444p", "yuva420p", Customizable = true)]
+        [StringEnumConverter.StandardValues("yuv420p", "yuv422p", "yuv444p", Customizable = true)]
         [TypeConverter(typeof(StringEnumConverter))]
         [Category("[3] 格式参数"), DisplayName("像素格式"), Description("-pix_fmt, 要使用的像素格式")]
         public string PixelFormat { get => Exporter.PixelFormat; set => Exporter.PixelFormat = value; }
+
+        /// <summary>
+        /// 循环次数
+        /// </summary>
+        [Category("[3] 格式参数"), DisplayName("循环次数"), Description("循环次数, 0 无限循环, 取值范围 [0, 65535]")]
+        public int Loop { get => Exporter.Loop; set => Exporter.Loop = value; }
     }
 }

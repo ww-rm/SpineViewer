@@ -47,7 +47,7 @@
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(50, 15, 50, 10);
-            panel1.Size = new Size(710, 698);
+            panel1.Size = new Size(793, 754);
             panel1.TabIndex = 2;
             // 
             // tableLayoutPanel1
@@ -65,7 +65,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(610, 673);
+            tableLayoutPanel1.Size = new Size(693, 729);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // propertyGrid_ExportArgs
@@ -74,7 +74,7 @@
             propertyGrid_ExportArgs.Location = new Point(3, 3);
             propertyGrid_ExportArgs.Name = "propertyGrid_ExportArgs";
             propertyGrid_ExportArgs.PropertySort = PropertySort.Categorized;
-            propertyGrid_ExportArgs.Size = new Size(604, 594);
+            propertyGrid_ExportArgs.Size = new Size(687, 650);
             propertyGrid_ExportArgs.TabIndex = 1;
             propertyGrid_ExportArgs.ToolbarVisible = false;
             // 
@@ -88,18 +88,18 @@
             tableLayoutPanel2.Controls.Add(button_Ok, 0, 0);
             tableLayoutPanel2.Controls.Add(button_Cancel, 1, 0);
             tableLayoutPanel2.Dock = DockStyle.Bottom;
-            tableLayoutPanel2.Location = new Point(3, 630);
+            tableLayoutPanel2.Location = new Point(3, 686);
             tableLayoutPanel2.Margin = new Padding(3, 30, 3, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle());
-            tableLayoutPanel2.Size = new Size(604, 40);
+            tableLayoutPanel2.Size = new Size(687, 40);
             tableLayoutPanel2.TabIndex = 10;
             // 
             // button_Ok
             // 
             button_Ok.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button_Ok.Location = new Point(160, 3);
+            button_Ok.Location = new Point(201, 3);
             button_Ok.Margin = new Padding(3, 3, 30, 3);
             button_Ok.Name = "button_Ok";
             button_Ok.Size = new Size(112, 34);
@@ -111,7 +111,7 @@
             // button_Cancel
             // 
             button_Cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button_Cancel.Location = new Point(332, 3);
+            button_Cancel.Location = new Point(373, 3);
             button_Cancel.Margin = new Padding(30, 3, 3, 3);
             button_Cancel.Name = "button_Cancel";
             button_Cancel.Size = new Size(112, 34);
@@ -126,9 +126,8 @@
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = button_Cancel;
-            ClientSize = new Size(710, 698);
+            ClientSize = new Size(793, 754);
             Controls.Add(panel1);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;

@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace SpineViewer.Dialogs
 {
-    public partial class ExportDialog: Form
+    public partial class ExportDialog : Form
     {
         private readonly ExporterWrapper wrapper;
 
@@ -64,7 +64,7 @@ namespace SpineViewer.Dialogs
         private void button_Ok_Click(object sender, EventArgs e)
         {
             if (wrapper.Exporter.Validate() is string error)
-            { 
+            {
                 MessagePopup.Info(error, "参数错误");
                 return;
             }

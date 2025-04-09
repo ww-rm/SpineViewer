@@ -24,5 +24,11 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// </summary>
         [Category("[3] 格式参数"), DisplayName("透明度阈值"), Description("小于该值的像素点会被认为是透明像素")]
         public byte AlphaThreshold { get => Exporter.AlphaThreshold; set => Exporter.AlphaThreshold = value; }
+
+        /// <summary>
+        /// 透明度阈值
+        /// </summary>
+        [Category("[3] 格式参数"), DisplayName("循环次数"), Description("循环次数, -1 不循环, 0 无限循环, 取值范围 [-1, 65535]")]
+        public int Loop { get => Exporter.Loop; set => Exporter.Loop = value; }
     }
 }

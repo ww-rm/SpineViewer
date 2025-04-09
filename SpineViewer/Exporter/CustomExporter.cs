@@ -12,6 +12,11 @@ namespace SpineViewer.Exporter
     /// </summary>
     public class CustomExporter : FFmpegVideoExporter
     {
+        public CustomExporter() 
+        {
+            CustomArgument = "-c:v libx264 -crf 23 -pix_fmt yuv420p"; // 提供一个示例参数
+        }
+
         public override string Format => CustomFormat;
 
         public override string Suffix => CustomSuffix;

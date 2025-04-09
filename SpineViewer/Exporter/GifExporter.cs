@@ -35,6 +35,12 @@ namespace SpineViewer.Exporter
         public byte AlphaThreshold { get => alphaThreshold; set => alphaThreshold = value; }
         private byte alphaThreshold = 128;
 
+        /// <summary>
+        /// 循环次数, -1 不循环, 0 无限循环, 取值范围 [-1, 65535]
+        /// </summary>
+        public int Loop { get => loop; set => loop = Math.Clamp(value, -1, 65535); }
+        private int loop = 0;
+
         public override string FileNameNoteSuffix => $"{MaxColors}_{AlphaThreshold}";
 
         public override void SetOutputOptions(FFMpegArgumentOptions options)
@@ -43,7 +49,7 @@ namespace SpineViewer.Exporter
             var v = $"[0:v] split [s0][s1]";
             var s0 = $"[s0] palettegen=reserve_transparent=1:max_colors={MaxColors} [p]";
             var s1 = $"[s1][p] paletteuse=dither=bayer:alpha_threshold={AlphaThreshold}";
-            var customArgs = $"-filter_complex \"{v};{s0};{s1}\"";
+            var customArgs = $"-filter_complex \"{v};{s0};{s1}\" -loop {Loop}";
             options.WithCustomArgument(customArgs);
         }
     }
