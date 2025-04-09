@@ -49,7 +49,7 @@ namespace SpineViewer.Exporter
         public override void SetOutputOptions(FFMpegArgumentOptions options)
         {
             base.SetOutputOptions(options);
-            options.WithVideoCodec(Codec).WithConstantRateFactor(CRF).WithCustomArgument($"-loop {Loop}");
+            options.WithVideoCodec(Codec).ForcePixelFormat(PixelFormat).WithConstantRateFactor(CRF).WithCustomArgument($"-loop {Loop}");
         }
     }
 }

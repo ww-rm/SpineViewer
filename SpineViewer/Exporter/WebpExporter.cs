@@ -54,7 +54,7 @@ namespace SpineViewer.Exporter
         public override void SetOutputOptions(FFMpegArgumentOptions options)
         {
             base.SetOutputOptions(options);
-            options.WithVideoCodec(Codec).WithCustomArgument($"-lossless {(Lossless ? 1 : 0)} -quality {Quality} -loop {Loop}");
+            options.WithVideoCodec(Codec).ForcePixelFormat(PixelFormat).WithCustomArgument($"-lossless {(Lossless ? 1 : 0)} -quality {Quality} -loop {Loop}");
         }
     }
 }
