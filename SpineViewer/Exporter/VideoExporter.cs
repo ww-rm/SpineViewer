@@ -24,6 +24,11 @@ namespace SpineViewer.Exporter
         /// </summary>
         public float FPS { get; set; } = 60;
 
+        /// <summary>
+        /// 是否保留最后一帧
+        /// </summary>
+        public bool KeepLast { get; set; } = true;
+
         public override string? Validate()
         {
             if (base.Validate() is string error)
@@ -43,9 +48,21 @@ namespace SpineViewer.Exporter
             if (duration < 0) duration = spine.GetTrackIndices().Select(i => spine.GetAnimationDuration(spine.GetAnimation(i))).Max();
 
             float delta = 1f / FPS;
-            int total = Math.Max(1, (int)(duration * FPS)); // 至少导出 1 帧
+            int total = (int)(duration * FPS); // 完整帧的数量
 
-            worker?.ReportProgress(0, $"{spine.Name} 已处理 0/{total} 帧");
+            float deltaFinal = duration - delta * total; // 最后一帧时长
+            int final = (KeepLast && (deltaFinal > 1e-3)) ? 1 : 0;
+
+            int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
+
+            worker?.ReportProgress(0, $"{spine.Name} 已处理 0/{frameCount} 帧");
+
+            // 导出首帧
+            var firstFrame = GetFrame(spine);
+            worker?.ReportProgress(1 * 100 / frameCount, $"{spine.Name} 已处理 1/{frameCount} 帧");
+            yield return firstFrame;
+
+            // 导出完整帧
             for (int i = 0; i < total; i++)
             {
                 if (worker?.CancellationPending == true)
@@ -54,10 +71,19 @@ namespace SpineViewer.Exporter
                     break;
                 }
 
-                var frame = GetFrame(spine);
                 spine.Update(delta);
-                worker?.ReportProgress((int)((i + 1) * 100.0) / total, $"{spine.Name} 已处理 {i + 1}/{total} 帧");
+                var frame = GetFrame(spine);
+                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"{spine.Name} 已处理 {1 + i + 1}/{frameCount} 帧");
                 yield return frame;
+            }
+
+            // 导出最后一帧
+            if (final > 0)
+            {
+                spine.Update(deltaFinal);
+                var finalFrame = GetFrame(spine);
+                worker?.ReportProgress(100, $"{spine.Name} 已处理 {frameCount}/{frameCount} 帧");
+                yield return finalFrame;
             }
         }
 
@@ -67,10 +93,24 @@ namespace SpineViewer.Exporter
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必须根据 Duration 决定导出时长
-            float delta = 1f / FPS;
-            int total = Math.Max(1, (int)(Duration * FPS)); // 至少导出 1 帧
+            var duration = Duration;
 
-            worker?.ReportProgress(0, $"已处理 0/{total} 帧");
+            float delta = 1f / FPS;
+            int total = (int)(duration * FPS); // 完整帧的数量
+
+            float deltaFinal = duration - delta * total; // 最后一帧时长
+            int final = (KeepLast && (deltaFinal > 1e-3)) ? 1 : 0;
+
+            int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
+
+            worker?.ReportProgress(0, $"已处理 0/{frameCount} 帧");
+
+            // 导出首帧
+            var firstFrame = GetFrame(spinesToRender);
+            worker?.ReportProgress(1 * 100 / frameCount, $"已处理 1/{frameCount} 帧");
+            yield return firstFrame;
+
+            // 导出完整帧
             for (int i = 0; i < total; i++)
             {
                 if (worker?.CancellationPending == true)
@@ -79,10 +119,19 @@ namespace SpineViewer.Exporter
                     break;
                 }
 
-                var frame = GetFrame(spinesToRender);
                 foreach (var spine in spinesToRender) spine.Update(delta);
-                worker?.ReportProgress((int)((i + 1) * 100.0) / total, $"已处理 {i + 1}/{total} 帧");
+                var frame = GetFrame(spinesToRender);
+                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"已处理 {1 + i + 1}/{frameCount} 帧");
                 yield return frame;
+            }
+
+            // 导出最后一帧
+            if (final > 0)
+            {
+                foreach (var spine in spinesToRender) spine.Update(delta);
+                var finalFrame = GetFrame(spinesToRender);
+                worker?.ReportProgress(100, $"已处理 {frameCount}/{frameCount} 帧");
+                yield return finalFrame;
             }
         }
 

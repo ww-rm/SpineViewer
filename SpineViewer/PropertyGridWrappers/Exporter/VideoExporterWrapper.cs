@@ -24,5 +24,11 @@ namespace SpineViewer.PropertyGridWrappers.Exporter
         /// </summary>
         [Category("[1] 视频参数"), DisplayName("帧率"), Description("每秒画面数")]
         public float FPS { get => Exporter.FPS; set => Exporter.FPS = value; }
+
+        /// <summary>
+        /// 保留最后一帧
+        /// </summary>
+        [Category("[1] 视频参数"), DisplayName("保留最后一帧"), Description("当设置保留最后一帧时, 动图会更为连贯, 但是帧数可能比预期帧数多 1")]
+        public bool KeepLast { get => Exporter.KeepLast; set => Exporter.KeepLast = value; }
     }
 }
