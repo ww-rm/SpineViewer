@@ -15,7 +15,7 @@ namespace SpineViewer.Exporter
     {
         public WebpExporter()
         {
-            FPS = 12;
+            FPS = 24;
         }
 
         public override string Format => "webp";

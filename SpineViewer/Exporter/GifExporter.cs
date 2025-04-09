@@ -15,8 +15,7 @@ namespace SpineViewer.Exporter
     {
         public GifExporter()
         {
-            // GIF 的帧率不能太高, 超过 50 帧反而会变慢
-            FPS = 12;
+            FPS = 24;
         }
 
         public override string Format => "gif";
