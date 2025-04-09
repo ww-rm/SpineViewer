@@ -100,7 +100,11 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         /// <summary>
         /// 设置 SkinWrapper 属性 <c>SkinManager.Skin{i} = <paramref name="value"/></c>
         /// </summary>
-        public void SetSkinWrapper(int i, string value) => Spine.ReplaceSkin(i, value);
+        public void SetSkinWrapper(int i, string value)
+        {
+            Spine.ReplaceSkin(i, value);
+            TypeDescriptor.Refresh(this);
+        }
 
         /// <summary>  
         /// 在属性面板悬停可以显示已加载的皮肤列表  

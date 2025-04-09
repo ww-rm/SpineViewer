@@ -114,7 +114,11 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         /// <summary>
         /// 设置 TrackWrapper 属性 <c>AnimationTracks.Track{i} = <paramref name="value"/></c>
         /// </summary>
-        public void SetTrackWrapper(int i, string value) => Spine.SetAnimation(i, value);
+        public void SetTrackWrapper(int i, string value)
+        {
+            Spine.SetAnimation(i, value);
+            TypeDescriptor.Refresh(this);
+        }
 
         /// <summary>
         /// 在属性面板悬停可以按轨道顺序显示动画名称
