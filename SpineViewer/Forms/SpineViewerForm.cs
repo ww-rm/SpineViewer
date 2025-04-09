@@ -14,6 +14,8 @@ namespace SpineViewer
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly Dictionary<string, Exporter.Exporter> exporterCache = [];
+
         public SpineViewerForm()
         {
             InitializeComponent();
@@ -81,21 +83,22 @@ namespace SpineViewer
             spineListView.BatchAdd();
         }
 
-        #region toolStripMenuItem_ExportXXX_Click
+        #region private void toolStripMenuItem_ExportXXX_Click(object sender, EventArgs e)
 
         private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
         {
             if (spinePreviewer.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
                 return;
 
-            var exporter = new FrameExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportFrame);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new FrameExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new FrameExporterWrapper((FrameExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -107,14 +110,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportFrameSequence_Click(object sender, EventArgs e)
         {
-            var exporter = new FrameSequenceExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportFrameSequence);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameSequenceExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new FrameSequenceExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new FrameSequenceExporterWrapper((FrameSequenceExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -126,14 +130,55 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportGif_Click(object sender, EventArgs e)
         {
-            var exporter = new GifExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportGif);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new GifExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new GifExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new GifExporterWrapper((GifExporter)exporter));
+            if (exportDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += Export_Work;
+            progressDialog.RunWorkerAsync(exporter);
+            progressDialog.ShowDialog();
+        }
+
+        private void toolStripMenuItem_ExportWebp_Click(object sender, EventArgs e)
+        {
+            var k = nameof(toolStripMenuItem_ExportWebp);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebpExporter();
+
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new WebpExporterWrapper((WebpExporter)exporter));
+            if (exportDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var progressDialog = new Dialogs.ProgressDialog();
+            progressDialog.DoWork += Export_Work;
+            progressDialog.RunWorkerAsync(exporter);
+            progressDialog.ShowDialog();
+        }
+
+        private void toolStripMenuItem_ExportAvif_Click(object sender, EventArgs e)
+        {
+            var k = nameof(toolStripMenuItem_ExportAvif);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new AvifExporter();
+
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new AvifExporterWrapper((AvifExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -145,14 +190,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportMp4_Click(object sender, EventArgs e)
         {
-            var exporter = new Mp4Exporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportMp4);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new Mp4Exporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new Mp4ExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new Mp4ExporterWrapper((Mp4Exporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -164,14 +210,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportWebm_Click(object sender, EventArgs e)
         {
-            var exporter = new WebmExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportWebm);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebmExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new WebmExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new WebmExporterWrapper((WebmExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -183,14 +230,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportMkv_Click(object sender, EventArgs e)
         {
-            var exporter = new MkvExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportMkv);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MkvExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new MkvExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new MkvExporterWrapper((MkvExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -202,14 +250,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportMov_Click(object sender, EventArgs e)
         {
-            var exporter = new MovExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportMov);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MovExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new MovExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new MovExporterWrapper((MovExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -221,14 +270,15 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportCustom_Click(object sender, EventArgs e)
         {
-            var exporter = new CustomExporter()
-            {
-                Resolution = spinePreviewer.Resolution,
-                View = spinePreviewer.GetView(),
-                RenderSelectedOnly = spinePreviewer.RenderSelectedOnly
-            };
+            var k = nameof(toolStripMenuItem_ExportCustom);
+            if (!exporterCache.ContainsKey(k)) exporterCache[k] = new CustomExporter();
 
-            var exportDialog = new Dialogs.ExportDialog(new CustomExporterWrapper(exporter));
+            var exporter = exporterCache[k];
+            exporter.Resolution = spinePreviewer.Resolution;
+            exporter.View = spinePreviewer.GetView();
+            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+
+            var exportDialog = new Dialogs.ExportDialog(new CustomExporterWrapper((CustomExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -369,41 +419,41 @@ namespace SpineViewer
         //private IntPtr memDC;
         //private void _Test()
         //{
-            //    screenDC = Win32.GetDC(IntPtr.Zero);
-            //    memDC = Win32.CreateCompatibleDC(screenDC);
-            //    pet.Show();
-            //    timer.Tick += Timer_Tick;
-            //    timer.Enabled = true;
-            //    timer.Interval = 50;
-            //    timer.Start();
-            //}
+        //    screenDC = Win32.GetDC(IntPtr.Zero);
+        //    memDC = Win32.CreateCompatibleDC(screenDC);
+        //    pet.Show();
+        //    timer.Tick += Timer_Tick;
+        //    timer.Enabled = true;
+        //    timer.Interval = 50;
+        //    timer.Start();
+        //}
 
-            //private void Timer_Tick(object? sender, EventArgs e)
-            //{
-            //    using var tex = new SFML.Graphics.RenderTexture((uint)pet.Width, (uint)pet.Height);
-            //    var v = spinePreviewer.GetView();
-            //    tex.SetView(v);
-            //    tex.Clear(new SFML.Graphics.Color(0, 0, 0, 0));
-            //    lock (spineListView.Spines)
-            //    {
-            //        foreach (var sp in spineListView.Spines)
-            //            tex.Draw(sp);
-            //    }
-            //    tex.Display();
-            //    using var frame = new SFMLImageVideoFrame(tex.Texture.CopyToImage());
-            //    using var bitmap = frame.CopyToBitmap();
+        //private void Timer_Tick(object? sender, EventArgs e)
+        //{
+        //    using var tex = new SFML.Graphics.RenderTexture((uint)pet.Width, (uint)pet.Height);
+        //    var v = spinePreviewer.GetView();
+        //    tex.SetView(v);
+        //    tex.Clear(new SFML.Graphics.Color(0, 0, 0, 0));
+        //    lock (spineListView.Spines)
+        //    {
+        //        foreach (var sp in spineListView.Spines)
+        //            tex.Draw(sp);
+        //    }
+        //    tex.Display();
+        //    using var frame = new SFMLImageVideoFrame(tex.Texture.CopyToImage());
+        //    using var bitmap = frame.CopyToBitmap();
 
-            //    var newBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
-            //    var oldBitmap = Win32.SelectObject(memDC, newBitmap);
+        //    var newBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
+        //    var oldBitmap = Win32.SelectObject(memDC, newBitmap);
 
-            //    Win32.SIZE size = new Win32.SIZE { cx = pet.Width, cy = pet.Height };
-            //    Win32.POINT srcPos = new Win32.POINT { x = 0, y = 0 };
-            //    Win32.BLENDFUNCTION blend = new Win32.BLENDFUNCTION { BlendOp = 0, BlendFlags = 0, SourceConstantAlpha = 255, AlphaFormat = Win32.AC_SRC_ALPHA };
+        //    Win32.SIZE size = new Win32.SIZE { cx = pet.Width, cy = pet.Height };
+        //    Win32.POINT srcPos = new Win32.POINT { x = 0, y = 0 };
+        //    Win32.BLENDFUNCTION blend = new Win32.BLENDFUNCTION { BlendOp = 0, BlendFlags = 0, SourceConstantAlpha = 255, AlphaFormat = Win32.AC_SRC_ALPHA };
 
-            //    Win32.UpdateLayeredWindow(pet.Handle, screenDC, IntPtr.Zero, ref size, memDC, ref srcPos, 0, ref blend, Win32.ULW_ALPHA);
+        //    Win32.UpdateLayeredWindow(pet.Handle, screenDC, IntPtr.Zero, ref size, memDC, ref srcPos, 0, ref blend, Win32.ULW_ALPHA);
 
-            //    Win32.SelectObject(memDC, oldBitmap);
-            //    Win32.DeleteObject(newBitmap);
+        //    Win32.SelectObject(memDC, oldBitmap);
+        //    Win32.DeleteObject(newBitmap);
         //}
 
         //private void spinePreviewer_KeyDown(object sender, KeyEventArgs e)
