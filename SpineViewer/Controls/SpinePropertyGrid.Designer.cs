@@ -69,7 +69,7 @@
             tabControl.Controls.Add(tabPage_Animation);
             tabControl.Controls.Add(tabPage_Debug);
             tabControl.Dock = DockStyle.Fill;
-            tabControl.ItemSize = new Size(100, 35);
+            tabControl.ItemSize = new Size(90, 35);
             tabControl.Location = new Point(0, 0);
             tabControl.Multiline = true;
             tabControl.Name = "tabControl";
@@ -108,7 +108,7 @@
             tabPage_Render.Location = new Point(4, 4);
             tabPage_Render.Margin = new Padding(0);
             tabPage_Render.Name = "tabPage_Render";
-            tabPage_Render.Size = new Size(437, 405);
+            tabPage_Render.Size = new Size(364, 380);
             tabPage_Render.TabIndex = 1;
             tabPage_Render.Text = "渲染";
             // 
@@ -119,7 +119,7 @@
             propertyGrid_Render.Location = new Point(0, 0);
             propertyGrid_Render.Name = "propertyGrid_Render";
             propertyGrid_Render.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Render.Size = new Size(437, 405);
+            propertyGrid_Render.Size = new Size(364, 380);
             propertyGrid_Render.TabIndex = 1;
             propertyGrid_Render.ToolbarVisible = false;
             // 
@@ -130,7 +130,7 @@
             tabPage_Transform.Location = new Point(4, 4);
             tabPage_Transform.Margin = new Padding(0);
             tabPage_Transform.Name = "tabPage_Transform";
-            tabPage_Transform.Size = new Size(437, 405);
+            tabPage_Transform.Size = new Size(364, 380);
             tabPage_Transform.TabIndex = 2;
             tabPage_Transform.Text = "变换";
             // 
@@ -141,7 +141,7 @@
             propertyGrid_Transform.Location = new Point(0, 0);
             propertyGrid_Transform.Name = "propertyGrid_Transform";
             propertyGrid_Transform.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Transform.Size = new Size(437, 405);
+            propertyGrid_Transform.Size = new Size(364, 380);
             propertyGrid_Transform.TabIndex = 1;
             propertyGrid_Transform.ToolbarVisible = false;
             // 
@@ -152,7 +152,7 @@
             tabPage_Skin.Location = new Point(4, 4);
             tabPage_Skin.Margin = new Padding(0);
             tabPage_Skin.Name = "tabPage_Skin";
-            tabPage_Skin.Size = new Size(437, 405);
+            tabPage_Skin.Size = new Size(364, 380);
             tabPage_Skin.TabIndex = 3;
             tabPage_Skin.Text = "皮肤";
             // 
@@ -164,7 +164,7 @@
             propertyGrid_Skin.Location = new Point(0, 0);
             propertyGrid_Skin.Name = "propertyGrid_Skin";
             propertyGrid_Skin.PropertySort = PropertySort.NoSort;
-            propertyGrid_Skin.Size = new Size(437, 405);
+            propertyGrid_Skin.Size = new Size(364, 380);
             propertyGrid_Skin.TabIndex = 1;
             propertyGrid_Skin.ToolbarVisible = false;
             // 
@@ -197,7 +197,7 @@
             tabPage_Animation.Location = new Point(4, 4);
             tabPage_Animation.Margin = new Padding(0);
             tabPage_Animation.Name = "tabPage_Animation";
-            tabPage_Animation.Size = new Size(437, 405);
+            tabPage_Animation.Size = new Size(364, 380);
             tabPage_Animation.TabIndex = 4;
             tabPage_Animation.Text = "动画";
             // 
@@ -209,7 +209,7 @@
             propertyGrid_Animation.Location = new Point(0, 0);
             propertyGrid_Animation.Name = "propertyGrid_Animation";
             propertyGrid_Animation.PropertySort = PropertySort.NoSort;
-            propertyGrid_Animation.Size = new Size(437, 405);
+            propertyGrid_Animation.Size = new Size(364, 380);
             propertyGrid_Animation.TabIndex = 1;
             propertyGrid_Animation.ToolbarVisible = false;
             // 
@@ -241,7 +241,7 @@
             tabPage_Debug.Controls.Add(propertyGrid_Debug);
             tabPage_Debug.Location = new Point(4, 4);
             tabPage_Debug.Name = "tabPage_Debug";
-            tabPage_Debug.Size = new Size(437, 405);
+            tabPage_Debug.Size = new Size(364, 380);
             tabPage_Debug.TabIndex = 5;
             tabPage_Debug.Text = "调试";
             // 
@@ -252,7 +252,7 @@
             propertyGrid_Debug.Location = new Point(0, 0);
             propertyGrid_Debug.Name = "propertyGrid_Debug";
             propertyGrid_Debug.PropertySort = PropertySort.NoSort;
-            propertyGrid_Debug.Size = new Size(437, 405);
+            propertyGrid_Debug.Size = new Size(364, 380);
             propertyGrid_Debug.TabIndex = 2;
             propertyGrid_Debug.ToolbarVisible = false;
             // 

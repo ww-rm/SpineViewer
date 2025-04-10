@@ -38,11 +38,16 @@
             toolStripMenuItem_Export = new ToolStripMenuItem();
             toolStripMenuItem_ExportFrame = new ToolStripMenuItem();
             toolStripMenuItem_ExportFrameSequence = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
             toolStripMenuItem_ExportGif = new ToolStripMenuItem();
+            toolStripMenuItem_ExportWebp = new ToolStripMenuItem();
+            toolStripMenuItem_ExportAvif = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
             toolStripMenuItem_ExportMp4 = new ToolStripMenuItem();
             toolStripMenuItem_ExportWebm = new ToolStripMenuItem();
             toolStripMenuItem_ExportMkv = new ToolStripMenuItem();
             toolStripMenuItem_ExportMov = new ToolStripMenuItem();
+            toolStripSeparator6 = new ToolStripSeparator();
             toolStripMenuItem_ExportCustom = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             toolStripMenuItem_Exit = new ToolStripMenuItem();
@@ -61,21 +66,14 @@
             groupBox_SkelList = new GroupBox();
             spineListView = new SpineViewer.Controls.SpineListView();
             spinePropertyGrid = new SpineViewer.Controls.SpinePropertyGrid();
-            tabControl_Config = new TabControl();
-            tabPage_Previewer = new TabPage();
+            splitContainer_Config = new SplitContainer();
             groupBox_PreviewConfig = new GroupBox();
             propertyGrid_Previewer = new PropertyGrid();
-            tabPage_SpineProperty = new TabPage();
             groupBox_SkelConfig = new GroupBox();
             groupBox_Preview = new GroupBox();
             spinePreviewer = new SpineViewer.Controls.SpinePreviewer();
             panel_MainForm = new Panel();
             toolTip = new ToolTip(components);
-            toolStripSeparator4 = new ToolStripSeparator();
-            toolStripSeparator5 = new ToolStripSeparator();
-            toolStripSeparator6 = new ToolStripSeparator();
-            toolStripMenuItem_ExportWebp = new ToolStripMenuItem();
-            toolStripMenuItem_ExportAvif = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer_MainForm).BeginInit();
             splitContainer_MainForm.Panel1.SuspendLayout();
@@ -90,10 +88,11 @@
             splitContainer_Information.Panel2.SuspendLayout();
             splitContainer_Information.SuspendLayout();
             groupBox_SkelList.SuspendLayout();
-            tabControl_Config.SuspendLayout();
-            tabPage_Previewer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer_Config).BeginInit();
+            splitContainer_Config.Panel1.SuspendLayout();
+            splitContainer_Config.Panel2.SuspendLayout();
+            splitContainer_Config.SuspendLayout();
             groupBox_PreviewConfig.SuspendLayout();
-            tabPage_SpineProperty.SuspendLayout();
             groupBox_SkelConfig.SuspendLayout();
             groupBox_Preview.SuspendLayout();
             panel_MainForm.SuspendLayout();
@@ -121,27 +120,27 @@
             // 
             toolStripMenuItem_Open.Name = "toolStripMenuItem_Open";
             toolStripMenuItem_Open.ShortcutKeys = Keys.Control | Keys.O;
-            toolStripMenuItem_Open.Size = new Size(270, 34);
+            toolStripMenuItem_Open.Size = new Size(254, 34);
             toolStripMenuItem_Open.Text = "打开(&O)...";
             toolStripMenuItem_Open.Click += toolStripMenuItem_Open_Click;
             // 
             // toolStripMenuItem_BatchOpen
             // 
             toolStripMenuItem_BatchOpen.Name = "toolStripMenuItem_BatchOpen";
-            toolStripMenuItem_BatchOpen.Size = new Size(270, 34);
+            toolStripMenuItem_BatchOpen.Size = new Size(254, 34);
             toolStripMenuItem_BatchOpen.Text = "批量打开(&B)...";
             toolStripMenuItem_BatchOpen.Click += toolStripMenuItem_BatchOpen_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(267, 6);
+            toolStripSeparator1.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_Export
             // 
             toolStripMenuItem_Export.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_ExportFrame, toolStripMenuItem_ExportFrameSequence, toolStripSeparator4, toolStripMenuItem_ExportGif, toolStripMenuItem_ExportWebp, toolStripMenuItem_ExportAvif, toolStripSeparator5, toolStripMenuItem_ExportMp4, toolStripMenuItem_ExportWebm, toolStripMenuItem_ExportMkv, toolStripMenuItem_ExportMov, toolStripSeparator6, toolStripMenuItem_ExportCustom });
             toolStripMenuItem_Export.Name = "toolStripMenuItem_Export";
-            toolStripMenuItem_Export.Size = new Size(270, 34);
+            toolStripMenuItem_Export.Size = new Size(254, 34);
             toolStripMenuItem_Export.Text = "导出(&E)";
             // 
             // toolStripMenuItem_ExportFrame
@@ -158,12 +157,36 @@
             toolStripMenuItem_ExportFrameSequence.Text = "帧序列...";
             toolStripMenuItem_ExportFrameSequence.Click += toolStripMenuItem_ExportFrameSequence_Click;
             // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(285, 6);
+            // 
             // toolStripMenuItem_ExportGif
             // 
             toolStripMenuItem_ExportGif.Name = "toolStripMenuItem_ExportGif";
             toolStripMenuItem_ExportGif.Size = new Size(288, 34);
             toolStripMenuItem_ExportGif.Text = "GIF...";
             toolStripMenuItem_ExportGif.Click += toolStripMenuItem_ExportGif_Click;
+            // 
+            // toolStripMenuItem_ExportWebp
+            // 
+            toolStripMenuItem_ExportWebp.Name = "toolStripMenuItem_ExportWebp";
+            toolStripMenuItem_ExportWebp.Size = new Size(288, 34);
+            toolStripMenuItem_ExportWebp.Text = "WebP...";
+            toolStripMenuItem_ExportWebp.Click += toolStripMenuItem_ExportWebp_Click;
+            // 
+            // toolStripMenuItem_ExportAvif
+            // 
+            toolStripMenuItem_ExportAvif.Name = "toolStripMenuItem_ExportAvif";
+            toolStripMenuItem_ExportAvif.Size = new Size(288, 34);
+            toolStripMenuItem_ExportAvif.Text = "AVIF...";
+            toolStripMenuItem_ExportAvif.Click += toolStripMenuItem_ExportAvif_Click;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(285, 6);
             // 
             // toolStripMenuItem_ExportMp4
             // 
@@ -193,6 +216,11 @@
             toolStripMenuItem_ExportMov.Text = "MOV...";
             toolStripMenuItem_ExportMov.Click += toolStripMenuItem_ExportMov_Click;
             // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(285, 6);
+            // 
             // toolStripMenuItem_ExportCustom
             // 
             toolStripMenuItem_ExportCustom.Name = "toolStripMenuItem_ExportCustom";
@@ -203,13 +231,13 @@
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(267, 6);
+            toolStripSeparator2.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_Exit
             // 
             toolStripMenuItem_Exit.Name = "toolStripMenuItem_Exit";
             toolStripMenuItem_Exit.ShortcutKeys = Keys.Alt | Keys.F4;
-            toolStripMenuItem_Exit.Size = new Size(270, 34);
+            toolStripMenuItem_Exit.Size = new Size(254, 34);
             toolStripMenuItem_Exit.Text = "退出(&X)";
             toolStripMenuItem_Exit.Click += toolStripMenuItem_Exit_Click;
             // 
@@ -277,7 +305,7 @@
             rtbLog.Margin = new Padding(3, 2, 3, 2);
             rtbLog.Name = "rtbLog";
             rtbLog.ReadOnly = true;
-            rtbLog.Size = new Size(1758, 172);
+            rtbLog.Size = new Size(1758, 138);
             rtbLog.TabIndex = 0;
             rtbLog.Text = "";
             rtbLog.WordWrap = false;
@@ -301,7 +329,7 @@
             splitContainer_MainForm.Panel2.Controls.Add(rtbLog);
             splitContainer_MainForm.Panel2.Cursor = Cursors.Default;
             splitContainer_MainForm.Size = new Size(1758, 1097);
-            splitContainer_MainForm.SplitterDistance = 917;
+            splitContainer_MainForm.SplitterDistance = 951;
             splitContainer_MainForm.SplitterWidth = 8;
             splitContainer_MainForm.TabIndex = 3;
             splitContainer_MainForm.TabStop = false;
@@ -325,8 +353,8 @@
             // 
             splitContainer_Functional.Panel2.Controls.Add(groupBox_Preview);
             splitContainer_Functional.Panel2.Cursor = Cursors.Default;
-            splitContainer_Functional.Size = new Size(1758, 917);
-            splitContainer_Functional.SplitterDistance = 759;
+            splitContainer_Functional.Size = new Size(1758, 951);
+            splitContainer_Functional.SplitterDistance = 788;
             splitContainer_Functional.SplitterWidth = 8;
             splitContainer_Functional.TabIndex = 2;
             splitContainer_Functional.TabStop = false;
@@ -347,10 +375,10 @@
             // 
             // splitContainer_Information.Panel2
             // 
-            splitContainer_Information.Panel2.Controls.Add(tabControl_Config);
+            splitContainer_Information.Panel2.Controls.Add(splitContainer_Config);
             splitContainer_Information.Panel2.Cursor = Cursors.Default;
-            splitContainer_Information.Size = new Size(759, 917);
-            splitContainer_Information.SplitterDistance = 354;
+            splitContainer_Information.Size = new Size(788, 951);
+            splitContainer_Information.SplitterDistance = 351;
             splitContainer_Information.SplitterWidth = 8;
             splitContainer_Information.TabIndex = 1;
             splitContainer_Information.TabStop = false;
@@ -363,7 +391,7 @@
             groupBox_SkelList.Dock = DockStyle.Fill;
             groupBox_SkelList.Location = new Point(0, 0);
             groupBox_SkelList.Name = "groupBox_SkelList";
-            groupBox_SkelList.Size = new Size(354, 917);
+            groupBox_SkelList.Size = new Size(351, 951);
             groupBox_SkelList.TabIndex = 0;
             groupBox_SkelList.TabStop = false;
             groupBox_SkelList.Text = "模型列表";
@@ -373,7 +401,7 @@
             spineListView.Dock = DockStyle.Fill;
             spineListView.Location = new Point(3, 26);
             spineListView.Name = "spineListView";
-            spineListView.Size = new Size(348, 888);
+            spineListView.Size = new Size(345, 922);
             spineListView.SpinePropertyGrid = spinePropertyGrid;
             spineListView.TabIndex = 0;
             // 
@@ -382,33 +410,27 @@
             spinePropertyGrid.Dock = DockStyle.Fill;
             spinePropertyGrid.Location = new Point(3, 26);
             spinePropertyGrid.Name = "spinePropertyGrid";
-            spinePropertyGrid.Size = new Size(383, 849);
+            spinePropertyGrid.Size = new Size(423, 588);
             spinePropertyGrid.TabIndex = 0;
             // 
-            // tabControl_Config
+            // splitContainer_Config
             // 
-            tabControl_Config.Alignment = TabAlignment.Bottom;
-            tabControl_Config.Controls.Add(tabPage_Previewer);
-            tabControl_Config.Controls.Add(tabPage_SpineProperty);
-            tabControl_Config.Dock = DockStyle.Fill;
-            tabControl_Config.ItemSize = new Size(100, 35);
-            tabControl_Config.Location = new Point(0, 0);
-            tabControl_Config.Multiline = true;
-            tabControl_Config.Name = "tabControl_Config";
-            tabControl_Config.Padding = new Point(0, 0);
-            tabControl_Config.SelectedIndex = 0;
-            tabControl_Config.Size = new Size(397, 917);
-            tabControl_Config.TabIndex = 0;
+            splitContainer_Config.Dock = DockStyle.Fill;
+            splitContainer_Config.Location = new Point(0, 0);
+            splitContainer_Config.Name = "splitContainer_Config";
+            splitContainer_Config.Orientation = Orientation.Horizontal;
             // 
-            // tabPage_Previewer
+            // splitContainer_Config.Panel1
             // 
-            tabPage_Previewer.Controls.Add(groupBox_PreviewConfig);
-            tabPage_Previewer.Location = new Point(4, 4);
-            tabPage_Previewer.Margin = new Padding(0);
-            tabPage_Previewer.Name = "tabPage_Previewer";
-            tabPage_Previewer.Size = new Size(389, 874);
-            tabPage_Previewer.TabIndex = 0;
-            tabPage_Previewer.Text = "画面参数";
+            splitContainer_Config.Panel1.Controls.Add(groupBox_PreviewConfig);
+            // 
+            // splitContainer_Config.Panel2
+            // 
+            splitContainer_Config.Panel2.Controls.Add(groupBox_SkelConfig);
+            splitContainer_Config.Size = new Size(429, 951);
+            splitContainer_Config.SplitterDistance = 326;
+            splitContainer_Config.SplitterWidth = 8;
+            splitContainer_Config.TabIndex = 0;
             // 
             // groupBox_PreviewConfig
             // 
@@ -417,7 +439,7 @@
             groupBox_PreviewConfig.Location = new Point(0, 0);
             groupBox_PreviewConfig.Margin = new Padding(0);
             groupBox_PreviewConfig.Name = "groupBox_PreviewConfig";
-            groupBox_PreviewConfig.Size = new Size(389, 874);
+            groupBox_PreviewConfig.Size = new Size(429, 326);
             groupBox_PreviewConfig.TabIndex = 1;
             groupBox_PreviewConfig.TabStop = false;
             groupBox_PreviewConfig.Text = "画面参数";
@@ -428,21 +450,10 @@
             propertyGrid_Previewer.HelpVisible = false;
             propertyGrid_Previewer.Location = new Point(3, 26);
             propertyGrid_Previewer.Name = "propertyGrid_Previewer";
-            propertyGrid_Previewer.Size = new Size(383, 845);
+            propertyGrid_Previewer.Size = new Size(423, 297);
             propertyGrid_Previewer.TabIndex = 1;
             propertyGrid_Previewer.ToolbarVisible = false;
             propertyGrid_Previewer.PropertyValueChanged += propertyGrid_PropertyValueChanged;
-            // 
-            // tabPage_SpineProperty
-            // 
-            tabPage_SpineProperty.BackColor = SystemColors.Control;
-            tabPage_SpineProperty.Controls.Add(groupBox_SkelConfig);
-            tabPage_SpineProperty.Location = new Point(4, 4);
-            tabPage_SpineProperty.Margin = new Padding(0);
-            tabPage_SpineProperty.Name = "tabPage_SpineProperty";
-            tabPage_SpineProperty.Size = new Size(389, 878);
-            tabPage_SpineProperty.TabIndex = 1;
-            tabPage_SpineProperty.Text = "模型参数";
             // 
             // groupBox_SkelConfig
             // 
@@ -451,7 +462,7 @@
             groupBox_SkelConfig.Location = new Point(0, 0);
             groupBox_SkelConfig.Margin = new Padding(0);
             groupBox_SkelConfig.Name = "groupBox_SkelConfig";
-            groupBox_SkelConfig.Size = new Size(389, 878);
+            groupBox_SkelConfig.Size = new Size(429, 617);
             groupBox_SkelConfig.TabIndex = 0;
             groupBox_SkelConfig.TabStop = false;
             groupBox_SkelConfig.Text = "模型参数";
@@ -462,7 +473,7 @@
             groupBox_Preview.Dock = DockStyle.Fill;
             groupBox_Preview.Location = new Point(0, 0);
             groupBox_Preview.Name = "groupBox_Preview";
-            groupBox_Preview.Size = new Size(991, 917);
+            groupBox_Preview.Size = new Size(962, 951);
             groupBox_Preview.TabIndex = 1;
             groupBox_Preview.TabStop = false;
             groupBox_Preview.Text = "预览画面";
@@ -473,7 +484,7 @@
             spinePreviewer.Location = new Point(3, 26);
             spinePreviewer.Name = "spinePreviewer";
             spinePreviewer.PropertyGrid = propertyGrid_Previewer;
-            spinePreviewer.Size = new Size(985, 888);
+            spinePreviewer.Size = new Size(956, 922);
             spinePreviewer.SpineListView = spineListView;
             spinePreviewer.TabIndex = 0;
             // 
@@ -490,35 +501,6 @@
             // toolTip
             // 
             toolTip.ShowAlways = true;
-            // 
-            // toolStripSeparator4
-            // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(285, 6);
-            // 
-            // toolStripSeparator5
-            // 
-            toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(285, 6);
-            // 
-            // toolStripSeparator6
-            // 
-            toolStripSeparator6.Name = "toolStripSeparator6";
-            toolStripSeparator6.Size = new Size(285, 6);
-            // 
-            // toolStripMenuItem_ExportWebp
-            // 
-            toolStripMenuItem_ExportWebp.Name = "toolStripMenuItem_ExportWebp";
-            toolStripMenuItem_ExportWebp.Size = new Size(288, 34);
-            toolStripMenuItem_ExportWebp.Text = "WebP...";
-            toolStripMenuItem_ExportWebp.Click += toolStripMenuItem_ExportWebp_Click;
-            // 
-            // toolStripMenuItem_ExportAvif
-            // 
-            toolStripMenuItem_ExportAvif.Name = "toolStripMenuItem_ExportAvif";
-            toolStripMenuItem_ExportAvif.Size = new Size(288, 34);
-            toolStripMenuItem_ExportAvif.Text = "AVIF...";
-            toolStripMenuItem_ExportAvif.Click += toolStripMenuItem_ExportAvif_Click;
             // 
             // SpineViewerForm
             // 
@@ -550,10 +532,11 @@
             ((System.ComponentModel.ISupportInitialize)splitContainer_Information).EndInit();
             splitContainer_Information.ResumeLayout(false);
             groupBox_SkelList.ResumeLayout(false);
-            tabControl_Config.ResumeLayout(false);
-            tabPage_Previewer.ResumeLayout(false);
+            splitContainer_Config.Panel1.ResumeLayout(false);
+            splitContainer_Config.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer_Config).EndInit();
+            splitContainer_Config.ResumeLayout(false);
             groupBox_PreviewConfig.ResumeLayout(false);
-            tabPage_SpineProperty.ResumeLayout(false);
             groupBox_SkelConfig.ResumeLayout(false);
             groupBox_Preview.ResumeLayout(false);
             panel_MainForm.ResumeLayout(false);
@@ -601,13 +584,11 @@
         private ToolStripMenuItem toolStripMenuItem_ExportWebm;
         private ToolStripMenuItem toolStripMenuItem_ExportCustom;
         private Controls.SpinePropertyGrid spinePropertyGrid;
-        private TabControl tabControl_Config;
-        private TabPage tabPage_Previewer;
-        private TabPage tabPage_SpineProperty;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem toolStripMenuItem_ExportWebp;
         private ToolStripMenuItem toolStripMenuItem_ExportAvif;
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripSeparator toolStripSeparator6;
+        private SplitContainer splitContainer_Config;
     }
 }
