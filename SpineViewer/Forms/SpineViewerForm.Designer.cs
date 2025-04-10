@@ -305,7 +305,7 @@
             rtbLog.Margin = new Padding(3, 2, 3, 2);
             rtbLog.Name = "rtbLog";
             rtbLog.ReadOnly = true;
-            rtbLog.Size = new Size(1758, 138);
+            rtbLog.Size = new Size(1758, 142);
             rtbLog.TabIndex = 0;
             rtbLog.Text = "";
             rtbLog.WordWrap = false;
@@ -329,7 +329,7 @@
             splitContainer_MainForm.Panel2.Controls.Add(rtbLog);
             splitContainer_MainForm.Panel2.Cursor = Cursors.Default;
             splitContainer_MainForm.Size = new Size(1758, 1097);
-            splitContainer_MainForm.SplitterDistance = 951;
+            splitContainer_MainForm.SplitterDistance = 947;
             splitContainer_MainForm.SplitterWidth = 8;
             splitContainer_MainForm.TabIndex = 3;
             splitContainer_MainForm.TabStop = false;
@@ -353,7 +353,7 @@
             // 
             splitContainer_Functional.Panel2.Controls.Add(groupBox_Preview);
             splitContainer_Functional.Panel2.Cursor = Cursors.Default;
-            splitContainer_Functional.Size = new Size(1758, 951);
+            splitContainer_Functional.Size = new Size(1758, 947);
             splitContainer_Functional.SplitterDistance = 788;
             splitContainer_Functional.SplitterWidth = 8;
             splitContainer_Functional.TabIndex = 2;
@@ -377,7 +377,7 @@
             // 
             splitContainer_Information.Panel2.Controls.Add(splitContainer_Config);
             splitContainer_Information.Panel2.Cursor = Cursors.Default;
-            splitContainer_Information.Size = new Size(788, 951);
+            splitContainer_Information.Size = new Size(788, 947);
             splitContainer_Information.SplitterDistance = 351;
             splitContainer_Information.SplitterWidth = 8;
             splitContainer_Information.TabIndex = 1;
@@ -391,7 +391,7 @@
             groupBox_SkelList.Dock = DockStyle.Fill;
             groupBox_SkelList.Location = new Point(0, 0);
             groupBox_SkelList.Name = "groupBox_SkelList";
-            groupBox_SkelList.Size = new Size(351, 951);
+            groupBox_SkelList.Size = new Size(351, 947);
             groupBox_SkelList.TabIndex = 0;
             groupBox_SkelList.TabStop = false;
             groupBox_SkelList.Text = "模型列表";
@@ -401,7 +401,7 @@
             spineListView.Dock = DockStyle.Fill;
             spineListView.Location = new Point(3, 26);
             spineListView.Name = "spineListView";
-            spineListView.Size = new Size(345, 922);
+            spineListView.Size = new Size(345, 918);
             spineListView.SpinePropertyGrid = spinePropertyGrid;
             spineListView.TabIndex = 0;
             // 
@@ -410,7 +410,7 @@
             spinePropertyGrid.Dock = DockStyle.Fill;
             spinePropertyGrid.Location = new Point(3, 26);
             spinePropertyGrid.Name = "spinePropertyGrid";
-            spinePropertyGrid.Size = new Size(423, 588);
+            spinePropertyGrid.Size = new Size(423, 586);
             spinePropertyGrid.TabIndex = 0;
             // 
             // splitContainer_Config
@@ -427,8 +427,8 @@
             // splitContainer_Config.Panel2
             // 
             splitContainer_Config.Panel2.Controls.Add(groupBox_SkelConfig);
-            splitContainer_Config.Size = new Size(429, 951);
-            splitContainer_Config.SplitterDistance = 326;
+            splitContainer_Config.Size = new Size(429, 947);
+            splitContainer_Config.SplitterDistance = 324;
             splitContainer_Config.SplitterWidth = 8;
             splitContainer_Config.TabIndex = 0;
             // 
@@ -439,7 +439,7 @@
             groupBox_PreviewConfig.Location = new Point(0, 0);
             groupBox_PreviewConfig.Margin = new Padding(0);
             groupBox_PreviewConfig.Name = "groupBox_PreviewConfig";
-            groupBox_PreviewConfig.Size = new Size(429, 326);
+            groupBox_PreviewConfig.Size = new Size(429, 324);
             groupBox_PreviewConfig.TabIndex = 1;
             groupBox_PreviewConfig.TabStop = false;
             groupBox_PreviewConfig.Text = "画面参数";
@@ -450,7 +450,7 @@
             propertyGrid_Previewer.HelpVisible = false;
             propertyGrid_Previewer.Location = new Point(3, 26);
             propertyGrid_Previewer.Name = "propertyGrid_Previewer";
-            propertyGrid_Previewer.Size = new Size(423, 297);
+            propertyGrid_Previewer.Size = new Size(423, 295);
             propertyGrid_Previewer.TabIndex = 1;
             propertyGrid_Previewer.ToolbarVisible = false;
             propertyGrid_Previewer.PropertyValueChanged += propertyGrid_PropertyValueChanged;
@@ -462,7 +462,7 @@
             groupBox_SkelConfig.Location = new Point(0, 0);
             groupBox_SkelConfig.Margin = new Padding(0);
             groupBox_SkelConfig.Name = "groupBox_SkelConfig";
-            groupBox_SkelConfig.Size = new Size(429, 617);
+            groupBox_SkelConfig.Size = new Size(429, 615);
             groupBox_SkelConfig.TabIndex = 0;
             groupBox_SkelConfig.TabStop = false;
             groupBox_SkelConfig.Text = "模型参数";
@@ -473,7 +473,7 @@
             groupBox_Preview.Dock = DockStyle.Fill;
             groupBox_Preview.Location = new Point(0, 0);
             groupBox_Preview.Name = "groupBox_Preview";
-            groupBox_Preview.Size = new Size(962, 951);
+            groupBox_Preview.Size = new Size(962, 947);
             groupBox_Preview.TabIndex = 1;
             groupBox_Preview.TabStop = false;
             groupBox_Preview.Text = "预览画面";
@@ -484,7 +484,7 @@
             spinePreviewer.Location = new Point(3, 26);
             spinePreviewer.Name = "spinePreviewer";
             spinePreviewer.PropertyGrid = propertyGrid_Previewer;
-            spinePreviewer.Size = new Size(956, 922);
+            spinePreviewer.Size = new Size(956, 918);
             spinePreviewer.SpineListView = spineListView;
             spinePreviewer.TabIndex = 0;
             // 
@@ -504,8 +504,8 @@
             // 
             // SpineViewerForm
             // 
-            AutoScaleDimensions = new SizeF(11F, 24F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(144F, 144F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(1778, 1144);
             Controls.Add(panel_MainForm);
             Controls.Add(menuStrip);
