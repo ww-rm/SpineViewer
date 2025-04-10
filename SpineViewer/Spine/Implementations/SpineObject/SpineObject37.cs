@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime37;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
     [SpineImplementation(SpineVersion.V37)]
-    internal class Spine37 : SpineViewer.Spine.Spine
+    internal class SpineObject37 : SpineObject
     {
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
@@ -45,7 +45,7 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         private SkeletonClipping clipping = new();
 
-        public Spine37(string skelPath, string atlasPath) : base(skelPath, atlasPath)
+        public SpineObject37(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try

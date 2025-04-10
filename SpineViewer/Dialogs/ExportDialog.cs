@@ -1,5 +1,5 @@
 ﻿using SpineViewer.PropertyGridWrappers.Exporter;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;

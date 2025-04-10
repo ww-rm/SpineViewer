@@ -4,16 +4,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpineViewer.Spine;
 
 namespace SpineViewer.PropertyGridWrappers.Spine
 {
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 空间变换的包装类
     /// </summary>
-    public class SpineTransformWrapper(SpineViewer.Spine.Spine spine)
+    public class SpineTransformWrapper(SpineObject spine)
     {
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// 缩放比例

@@ -12,9 +12,9 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     /// 对皮肤属性的包装类
     /// </summary>
     [TypeConverter(typeof(SkinWrapperConverter))]
-    public class SkinWrapper(SpineViewer.Spine.Spine spine, int i)
+    public class SkinWrapper(SpineObject spine, int i)
     {
-        private readonly SpineViewer.Spine.Spine spine = spine;
+        private readonly SpineObject spine = spine;
 
         [Browsable(false)]
         public int Index { get; } = i;
@@ -40,7 +40,7 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     /// 皮肤列表动态类型包装类, 用于提供对 Spine 皮肤列表的管理能力
     /// </summary>
     /// <param name="spine">关联的 Spine 对象</param>
-    public class SpineSkinWrapper(SpineViewer.Spine.Spine spine) : ICustomTypeDescriptor
+    public class SpineSkinWrapper(SpineObject spine) : ICustomTypeDescriptor
     {
         /// <summary>
         /// 皮肤属性描述符, 实现对属性的读取和赋值
@@ -80,7 +80,7 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         }
 
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// SkinWrapper 属性缓存

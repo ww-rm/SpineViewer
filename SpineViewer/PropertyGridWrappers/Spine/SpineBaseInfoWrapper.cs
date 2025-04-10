@@ -11,10 +11,10 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 基本信息的包装类
     /// </summary>
-    public class SpineBaseInfoWrapper(SpineViewer.Spine.Spine spine)
+    public class SpineBaseInfoWrapper(SpineObject spine)
     {
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// 获取所属版本

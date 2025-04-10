@@ -14,9 +14,9 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     /// <param name="spine"></param>
     /// <param name="i"></param>
     [TypeConverter(typeof(TrackWrapperConverter))]
-    public class TrackWrapper(SpineViewer.Spine.Spine spine, int i)
+    public class TrackWrapper(SpineObject spine, int i)
     {
-        private readonly SpineViewer.Spine.Spine spine = spine;
+        private readonly SpineObject spine = spine;
 
         [Browsable(false)]
         public int Index { get; } = i;
@@ -47,7 +47,7 @@ namespace SpineViewer.PropertyGridWrappers.Spine
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 动画列表的包装类
     /// </summary>
-    public class SpineAnimationWrapper(SpineViewer.Spine.Spine spine) : ICustomTypeDescriptor
+    public class SpineAnimationWrapper(SpineObject spine) : ICustomTypeDescriptor
     {
         /// <summary>
         /// 轨道属性描述符, 实现对属性的读取和赋值
@@ -88,7 +88,7 @@ namespace SpineViewer.PropertyGridWrappers.Spine
         }
 
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// 全轨道动画最大时长

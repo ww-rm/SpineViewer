@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpineViewer.PropertyGridWrappers.Spine;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Controls
 {

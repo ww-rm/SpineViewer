@@ -4,16 +4,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpineViewer.Spine;
 
 namespace SpineViewer.PropertyGridWrappers.Spine
 {
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 渲染设置的包装类
     /// </summary>
-    public class SpineRenderWrapper(SpineViewer.Spine.Spine spine)
+    public class SpineRenderWrapper(SpineObject spine)
     {
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为

@@ -18,7 +18,7 @@ namespace SpineViewer.Exporter
         /// </summary>
         public string Suffix { get; set; } = ".png";
 
-        protected override void ExportSingle(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必定提供输出文件夹, 
             var saveDir = Path.Combine(OutputDir, $"frames_{timestamp}_{FPS:f0}");
@@ -47,7 +47,7 @@ namespace SpineViewer.Exporter
             }
         }
 
-        protected override void ExportIndividual(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             foreach (var spine in spinesToRender)
             {

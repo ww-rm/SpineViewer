@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Encodings.Web;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Spine
 {

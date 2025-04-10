@@ -5,14 +5,14 @@ using System.Drawing.Design;
 using NLog;
 using System.Xml.Linq;
 using SpineViewer.Extensions;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Spine
 {
     /// <summary>
     /// Spine 基类, 使用静态方法 New 来创建具体版本对象, 该类是线程安全的
     /// </summary>
-    public abstract class Spine : ImplementationResolver<Spine, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
+    public abstract class SpineObject : ImplementationResolver<SpineObject, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
         /// 空动画标记
@@ -32,7 +32,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
-        public static Spine New(SpineVersion version, string skelPath, string? atlasPath = null)
+        public static SpineObject New(SpineVersion version, string skelPath, string? atlasPath = null)
         {
             atlasPath ??= Path.ChangeExtension(skelPath, ".atlas");
             skelPath = Path.GetFullPath(skelPath);
@@ -48,13 +48,16 @@ namespace SpineViewer.Spine
         /// </summary>
         private readonly object _lock = new();
 
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        protected readonly Logger logger = LogManager.GetCurrentClassLogger();
         private bool skinLoggerWarned = false;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public Spine(string skelPath, string atlasPath)
+        public SpineObject(string skelPath, string atlasPath)
         {
             Version = GetType().GetCustomAttribute<SpineImplementationAttribute>().ImplementationKey;
             AssetsDir = Directory.GetParent(skelPath).FullName;
@@ -66,7 +69,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 构造函数之后的初始化工作
         /// </summary>
-        private Spine PostInit()
+        private SpineObject PostInit()
         {
             SkinNames = skinNames.AsReadOnly();
             AnimationNames = animationNames.AsReadOnly();
@@ -98,7 +101,7 @@ namespace SpineViewer.Spine
             return this;
         }
 
-        ~Spine() { Dispose(false); }
+        ~SpineObject() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
         protected virtual void Dispose(bool disposing) { Preview?.Dispose(); }
 
@@ -279,7 +282,7 @@ namespace SpineViewer.Spine
                 loadedSkins.Add(name);
                 reloadSkins();
 
-                if (!skinLoggerWarned && Version <= SpineVersion.V37 && loadedSkins.Count > 1)
+                if (!skinLoggerWarned && Version < SpineVersion.V38 && loadedSkins.Count > 1)
                 {
                     logger.Warn($"Multiplt skins not supported in SpineVersion {Version.GetName()}");
                     skinLoggerWarned = true;
@@ -292,9 +295,9 @@ namespace SpineViewer.Spine
         /// </summary>
         public void UnloadSkin(int idx)
         {
-            if (idx < 0 || idx >= loadedSkins.Count) return;
             lock (_lock)
             {
+                if (idx < 0 || idx >= loadedSkins.Count) return;
                 loadedSkins.RemoveAt(idx);
                 reloadSkins();
             }
@@ -305,9 +308,9 @@ namespace SpineViewer.Spine
         /// </summary>
         public void ReplaceSkin(int idx, string name)
         {
-            if (idx < 0 || idx >= loadedSkins.Count || !skinNames.Contains(name)) return;
             lock (_lock)
             {
+                if (idx < 0 || idx >= loadedSkins.Count || !skinNames.Contains(name)) return;
                 loadedSkins[idx] = name;
                 reloadSkins();
             }

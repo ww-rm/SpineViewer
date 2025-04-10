@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Security.Policy;
 using System.Diagnostics;
 using NLog;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Controls
 {

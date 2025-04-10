@@ -41,7 +41,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 生成单个模型的帧序列
         /// </summary>
-        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.Spine spine, BackgroundWorker? worker = null)
+        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.SpineObject spine, BackgroundWorker? worker = null)
         {
             // 独立导出时如果 Duration 小于 0 则使用所有轨道上动画时长最大值
             var duration = Duration;
@@ -90,7 +90,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 生成多个模型的帧序列
         /// </summary>
-        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必须根据 Duration 决定导出时长
             var duration = Duration;
@@ -135,7 +135,7 @@ namespace SpineViewer.Exporter
             }
         }
 
-        public override void Export(Spine.Spine[] spines, BackgroundWorker? worker = null)
+        public override void Export(Spine.SpineObject[] spines, BackgroundWorker? worker = null)
         {
             // 导出视频格式需要把模型时间都重置到 0
             foreach (var spine in spines) spine.ResetAnimationsTime();

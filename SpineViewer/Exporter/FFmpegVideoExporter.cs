@@ -51,7 +51,7 @@ namespace SpineViewer.Exporter
             return null;
         }
 
-        protected override void ExportSingle(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             var noteSuffix = FileNameNoteSuffix;
             if (!string.IsNullOrWhiteSpace(noteSuffix)) noteSuffix = $"_{noteSuffix}";
@@ -76,7 +76,7 @@ namespace SpineViewer.Exporter
             }
         }
 
-        protected override void ExportIndividual(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             var noteSuffix = FileNameNoteSuffix;
             if (!string.IsNullOrWhiteSpace(noteSuffix)) noteSuffix = $"_{noteSuffix}";

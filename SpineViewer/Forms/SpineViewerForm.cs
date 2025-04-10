@@ -5,8 +5,8 @@ using System.Diagnostics;
 using SpineViewer.Exporter;
 using System.Reflection.Metadata;
 using SpineViewer.PropertyGridWrappers.Exporter;
-using SpineViewer.Utilities;
 using SpineViewer.Natives;
+using SpineViewer.Utils;
 
 namespace SpineViewer
 {

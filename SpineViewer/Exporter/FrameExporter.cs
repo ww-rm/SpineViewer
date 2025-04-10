@@ -43,7 +43,7 @@ namespace SpineViewer.Exporter
         }
         private SizeF dpi = new(144, 144);
 
-        protected override void ExportSingle(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必定提供输出文件夹
             var filename = $"frame_{timestamp}{ImageFormat.GetSuffix()}";
@@ -65,7 +65,7 @@ namespace SpineViewer.Exporter
             worker?.ReportProgress(100, $"已处理 1/1");
         }
 
-        protected override void ExportIndividual(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             int total = spinesToRender.Length;
             int success = 0;

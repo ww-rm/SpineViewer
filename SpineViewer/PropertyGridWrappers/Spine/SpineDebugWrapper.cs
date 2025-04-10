@@ -4,16 +4,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpineViewer.Spine;
 
 namespace SpineViewer.PropertyGridWrappers.Spine
 {
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 调试属性的包装类
     /// </summary>
-    public class SpineDebugWrapper(SpineViewer.Spine.Spine spine)
+    public class SpineDebugWrapper(SpineObject spine)
     {
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         /// <summary>
         /// 显示纹理

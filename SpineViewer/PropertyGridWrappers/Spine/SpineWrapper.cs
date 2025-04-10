@@ -5,13 +5,14 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpineViewer.Spine;
 
 namespace SpineViewer.PropertyGridWrappers.Spine
 {
-    public class SpineWrapper(SpineViewer.Spine.Spine spine)
+    public class SpineWrapper(SpineObject spine)
     {
         [Browsable(false)]
-        public SpineViewer.Spine.Spine Spine { get; } = spine;
+        public SpineObject Spine { get; } = spine;
 
         [DisplayName("基本信息")]
         public SpineBaseInfoWrapper BaseInfo { get; } = new(spine);

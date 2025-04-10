@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 using NLog;
 using SpineViewer.Extensions;
 using SpineViewer.PropertyGridWrappers.Spine;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Controls
 {
@@ -29,12 +29,12 @@ namespace SpineViewer.Controls
         /// <summary>
         /// Spine 列表只读视图, 访问时必须使用 lock 语句锁定视图本身
         /// </summary>
-        public readonly ReadOnlyCollection<Spine.Spine> Spines;
+        public readonly ReadOnlyCollection<Spine.SpineObject> Spines;
 
         /// <summary>
         /// Spine 列表, 访问时必须使用 lock 语句锁定只读视图 Spines
         /// </summary>
-        private readonly List<Spine.Spine> spines = [];
+        private readonly List<Spine.SpineObject> spines = [];
 
         /// <summary>
         /// 用于属性页显示模型参数的包装类
@@ -80,7 +80,7 @@ namespace SpineViewer.Controls
         {
             try
             {
-                var spine = Spine.Spine.New(result.Version, result.SkelPath, result.AtlasPath);
+                var spine = Spine.SpineObject.New(result.Version, result.SkelPath, result.AtlasPath);
 
                 // 如果索引无效则在末尾添加
                 if (index < 0 || index > listView.Items.Count)
@@ -155,7 +155,7 @@ namespace SpineViewer.Controls
 
                 try
                 {
-                    var spine = Spine.Spine.New(version, skelPath);
+                    var spine = Spine.SpineObject.New(version, skelPath);
                     var preview = spine.Preview;
                     lock (Spines) { spines.Add(spine); }
                     spinePropertyWrappers[spine.ID] = new(spine);

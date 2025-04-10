@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -5,17 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpineRuntime40;
-using SpineViewer.Utilities;
+using SpineRuntime38;
+using SpineRuntime38.Attachments;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(SpineVersion.V40)]
-    internal class Spine40 : SpineViewer.Spine.Spine
+    [SpineImplementation(SpineVersion.V38)]
+    internal class SpineObject38 : SpineObject
     {
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
-        private class TextureLoader : SpineRuntime40.TextureLoader
+        private class TextureLoader : SpineRuntime38.TextureLoader
         {
             public void Load(AtlasPage page, string path)
             {
@@ -26,6 +27,9 @@ namespace SpineViewer.Spine.Implementations.Spine
                     texture.Repeated = true;
                 
                 page.rendererObject = texture;
+                // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
+                // page.width = (int)texture.Size.X;
+                // page.height = (int)texture.Size.Y;
             }
 
             public void Unload(object texture)
@@ -47,7 +51,7 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         private SkeletonClipping clipping = new();
 
-        public Spine40(string skelPath, string atlasPath) : base(skelPath, atlasPath)
+        public SpineObject38(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -265,7 +269,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                     if (vertexArray.VertexCount > 0)
                     {
                         // 调试纹理
-                        if (!isDebug || debugTexture)
+                        if (!isDebug || debugTexture) 
                             target.Draw(vertexArray, states);
 
                         vertexArray.Clear();
@@ -313,7 +317,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             if (!isDebug || debugTexture)
                 target.Draw(vertexArray, states);
 
-            // 包围盒
+            // 调试包围盒
             if (isDebug && isSelected && debugBounds)
             {
                 var b = bounds;

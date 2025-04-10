@@ -1,5 +1,5 @@
 ﻿using SpineViewer.Spine;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +49,7 @@ namespace SpineViewer.Dialogs
                 }
             }
 
-            if (version != SpineVersion.Auto && !Spine.Spine.HasImplementation(version))
+            if (version != SpineVersion.Auto && !Spine.SpineObject.HasImplementation(version))
             {
                 MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
                 return;

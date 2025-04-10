@@ -1,5 +1,5 @@
 ﻿using NLog;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 using System.Diagnostics;
 using System.Reflection;
 

@@ -5,18 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpineRuntime38;
-using SpineRuntime38.Attachments;
-using SpineViewer.Utilities;
+using SpineRuntime41;
+using SpineViewer.Utils;
 
 namespace SpineViewer.Spine.Implementations.Spine
 {
-    [SpineImplementation(SpineVersion.V38)]
-    internal class Spine38 : SpineViewer.Spine.Spine
+    [SpineImplementation(SpineVersion.V41)]
+    internal class SpineObject41 : SpineObject
     {
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
-        private class TextureLoader : SpineRuntime38.TextureLoader
+        private class TextureLoader : SpineRuntime41.TextureLoader
         {
             public void Load(AtlasPage page, string path)
             {
@@ -27,9 +26,6 @@ namespace SpineViewer.Spine.Implementations.Spine
                     texture.Repeated = true;
                 
                 page.rendererObject = texture;
-                // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
-                // page.width = (int)texture.Size.X;
-                // page.height = (int)texture.Size.Y;
             }
 
             public void Unload(object texture)
@@ -51,7 +47,7 @@ namespace SpineViewer.Spine.Implementations.Spine
 
         private SkeletonClipping clipping = new();
 
-        public Spine38(string skelPath, string atlasPath) : base(skelPath, atlasPath)
+        public SpineObject41(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
@@ -181,7 +177,7 @@ namespace SpineViewer.Spine.Implementations.Spine
         {
             animationState.Update(delta);
             animationState.Apply(skeleton);
-            skeleton.Update(delta);
+            //skeleton.Update(delta); // XXX: v4.1.x 没有 Update 方法
             skeleton.UpdateWorldTransform();
         }
 
@@ -222,9 +218,9 @@ namespace SpineViewer.Spine.Implementations.Spine
 
                 if (attachment is RegionAttachment regionAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.RendererObject).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.Region).page.rendererObject;
 
-                    regionAttachment.ComputeWorldVertices(slot.Bone, worldVertices, 0);
+                    regionAttachment.ComputeWorldVertices(slot, worldVertices, 0);
                     worldVerticesCount = 4;
                     worldTriangleIndices = [0, 1, 2, 2, 3, 0];
                     worldTriangleIndicesLength = 6;
@@ -236,7 +232,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                 }
                 else if (attachment is MeshAttachment meshAttachment)
                 {
-                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.RendererObject).page.rendererObject;
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)meshAttachment.Region).page.rendererObject;
 
                     if (meshAttachment.WorldVerticesLength > worldVertices.Length)
                         worldVertices = worldVerticesBuffer = new float[meshAttachment.WorldVerticesLength * 2];
@@ -269,7 +265,7 @@ namespace SpineViewer.Spine.Implementations.Spine
                     if (vertexArray.VertexCount > 0)
                     {
                         // 调试纹理
-                        if (!isDebug || debugTexture) 
+                        if (!isDebug || debugTexture)
                             target.Draw(vertexArray, states);
 
                         vertexArray.Clear();
@@ -317,7 +313,7 @@ namespace SpineViewer.Spine.Implementations.Spine
             if (!isDebug || debugTexture)
                 target.Draw(vertexArray, states);
 
-            // 调试包围盒
+            // 包围盒
             if (isDebug && isSelected && debugBounds)
             {
                 var b = bounds;

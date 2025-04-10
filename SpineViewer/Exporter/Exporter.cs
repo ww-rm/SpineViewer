@@ -1,7 +1,7 @@
 ﻿using NLog;
 using SpineViewer.Extensions;
 using SpineViewer.PropertyGridWrappers;
-using SpineViewer.Utilities;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -96,12 +96,12 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 获取单个模型的单帧画面
         /// </summary>
-        protected SFMLImageVideoFrame GetFrame(Spine.Spine spine) => GetFrame([spine]);
+        protected SFMLImageVideoFrame GetFrame(Spine.SpineObject spine) => GetFrame([spine]);
 
         /// <summary>
         /// 获取模型列表的单帧画面
         /// </summary>
-        protected SFMLImageVideoFrame GetFrame(Spine.Spine[] spinesToRender)
+        protected SFMLImageVideoFrame GetFrame(Spine.SpineObject[] spinesToRender)
         {
             // RenderTexture 必须临时创建, 随用随取, 防止出现跨线程的情况
             using var texPma = GetRenderTexture();
@@ -149,12 +149,12 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 每个模型在同一个画面进行导出
         /// </summary>
-        protected abstract void ExportSingle(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null);
+        protected abstract void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null);
 
         /// <summary>
         /// 每个模型独立导出
         /// </summary>
-        protected abstract void ExportIndividual(Spine.Spine[] spinesToRender, BackgroundWorker? worker = null);
+        protected abstract void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null);
 
         /// <summary>
         /// 检查参数是否合法并规范化参数值, 否则返回用户错误原因
@@ -178,7 +178,7 @@ namespace SpineViewer.Exporter
         /// <param name="spines">要进行导出的 Spine 列表</param>
         /// <param name="worker">用来执行该函数的 worker</param>
         /// <exception cref="ArgumentException"></exception>
-        public virtual void Export(Spine.Spine[] spines, BackgroundWorker? worker = null)
+        public virtual void Export(Spine.SpineObject[] spines, BackgroundWorker? worker = null)
         {
             if (Validate() is string err) 
                 throw new ArgumentException(err);

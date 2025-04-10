@@ -120,11 +120,11 @@ namespace SpineViewer.PropertyGridWrappers
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
-            if (context?.Instance is SpineViewer.Spine.Spine obj)
+            if (context?.Instance is SpineObject obj)
             {
                 return new StandardValuesCollection(obj.SkinNames);
             }
-            else if (context?.Instance is SpineViewer.Spine.Spine[] spines)
+            else if (context?.Instance is SpineObject[] spines)
             {
                 if (spines.Length > 0)
                 {
@@ -146,11 +146,11 @@ namespace SpineViewer.PropertyGridWrappers
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
-            if (context?.Instance is SpineViewer.Spine.Spine obj)
+            if (context?.Instance is SpineObject obj)
             {
                 return new StandardValuesCollection(obj.AnimationNames);
             }
-            else if (context?.Instance is SpineViewer.Spine.Spine[] spines)
+            else if (context?.Instance is SpineObject[] spines)
             {
                 if (spines.Length > 0)
                 {
