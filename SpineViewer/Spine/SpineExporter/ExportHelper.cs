@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 
-namespace SpineViewer.Exporter
+namespace SpineViewer.Spine.SpineExporter
 {
     /// <summary>
     /// SFML.Graphics.Image 帧对象包装类, 将接管给定的 image 对象生命周期

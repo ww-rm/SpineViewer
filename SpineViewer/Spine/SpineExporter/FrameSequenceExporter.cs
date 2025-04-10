@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Spine;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.Exporter
+namespace SpineViewer.Spine.SpineExporter
 {
     /// <summary>
     /// 帧序列导出器
@@ -18,7 +19,7 @@ namespace SpineViewer.Exporter
         /// </summary>
         public string Suffix { get; set; } = ".png";
 
-        protected override void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportSingle(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必定提供输出文件夹, 
             var saveDir = Path.Combine(OutputDir, $"frames_{timestamp}_{FPS:f0}");
@@ -47,7 +48,7 @@ namespace SpineViewer.Exporter
             }
         }
 
-        protected override void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportIndividual(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             foreach (var spine in spinesToRender)
             {
@@ -81,5 +82,18 @@ namespace SpineViewer.Exporter
                 }
             }
         }
+    }
+
+    public class FrameSequenceExporterProperty(VideoExporter exporter) : VideoExporterProperty(exporter)
+    {
+        [Browsable(false)]
+        public override FrameSequenceExporter Exporter => (FrameSequenceExporter)base.Exporter;
+
+        /// <summary>
+        /// 文件名后缀
+        /// </summary>
+        [TypeConverter(typeof(StringEnumConverter)), StringEnumConverter.StandardValues(".png", ".jpg", ".tga", ".bmp")]
+        [Category("[2] 帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
+        public string Suffix { get => Exporter.Suffix; set => Exporter.Suffix = value; }
     }
 }

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.PropertyGridWrappers
+namespace SpineViewer.Utils
 {
     public class PointFConverter : ExpandableObjectConverter
     {

@@ -1,6 +1,5 @@
 ﻿using NLog;
 using SpineViewer.Extensions;
-using SpineViewer.PropertyGridWrappers;
 using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.Exporter
+namespace SpineViewer.Spine.SpineExporter
 {
     /// <summary>
     /// 导出器基类
@@ -96,12 +95,12 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 获取单个模型的单帧画面
         /// </summary>
-        protected SFMLImageVideoFrame GetFrame(Spine.SpineObject spine) => GetFrame([spine]);
+        protected SFMLImageVideoFrame GetFrame(SpineObject spine) => GetFrame([spine]);
 
         /// <summary>
         /// 获取模型列表的单帧画面
         /// </summary>
-        protected SFMLImageVideoFrame GetFrame(Spine.SpineObject[] spinesToRender)
+        protected SFMLImageVideoFrame GetFrame(SpineObject[] spinesToRender)
         {
             // RenderTexture 必须临时创建, 随用随取, 防止出现跨线程的情况
             using var texPma = GetRenderTexture();
@@ -149,12 +148,12 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 每个模型在同一个画面进行导出
         /// </summary>
-        protected abstract void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null);
+        protected abstract void ExportSingle(SpineObject[] spinesToRender, BackgroundWorker? worker = null);
 
         /// <summary>
         /// 每个模型独立导出
         /// </summary>
-        protected abstract void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null);
+        protected abstract void ExportIndividual(SpineObject[] spinesToRender, BackgroundWorker? worker = null);
 
         /// <summary>
         /// 检查参数是否合法并规范化参数值, 否则返回用户错误原因
@@ -178,7 +177,7 @@ namespace SpineViewer.Exporter
         /// <param name="spines">要进行导出的 Spine 列表</param>
         /// <param name="worker">用来执行该函数的 worker</param>
         /// <exception cref="ArgumentException"></exception>
-        public virtual void Export(Spine.SpineObject[] spines, BackgroundWorker? worker = null)
+        public virtual void Export(SpineObject[] spines, BackgroundWorker? worker = null)
         {
             if (Validate() is string err) 
                 throw new ArgumentException(err);
@@ -190,5 +189,54 @@ namespace SpineViewer.Exporter
 
             logger.LogCurrentProcessMemoryUsage();
         }
+    }
+
+    /// <summary>
+    /// 用于在 PropertyGrid 上提供用户操作接口的包装类
+    /// </summary>
+    public class ExporterProperty(Exporter exporter)
+    {
+        [Browsable(false)]
+        public virtual Exporter Exporter { get; } = exporter;
+
+        /// <summary>
+        /// 输出文件夹
+        /// </summary>
+        [Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        [Category("[0] 导出"), DisplayName("输出文件夹"), Description("逐个导出时可以留空，将逐个导出到模型自身所在目录")]
+        public string? OutputDir { get => Exporter.OutputDir; set => Exporter.OutputDir = value; }
+
+        /// <summary>
+        /// 导出单个
+        /// </summary>
+        [Category("[0] 导出"), DisplayName("导出单个"), Description("是否将模型在同一个画面上导出单个文件，否则逐个导出模型")]
+        public bool IsExportSingle { get => Exporter.IsExportSingle; set => Exporter.IsExportSingle = value; }
+
+        /// <summary>
+        /// 画面分辨率
+        /// </summary>
+        [TypeConverter(typeof(SizeConverter))]
+        [Category("[0] 导出"), DisplayName("分辨率"), Description("画面的宽高像素大小，请在预览画面参数面板进行调整")]
+        public Size Resolution { get => Exporter.Resolution; }
+
+        /// <summary>
+        /// 渲染视窗
+        /// </summary>
+        [Category("[0] 导出"), DisplayName("视图"), Description("画面的视图参数，请在预览画面参数面板进行调整")]
+        public SFML.Graphics.View View { get => Exporter.View; }
+
+        /// <summary>
+        /// 是否仅渲染选中
+        /// </summary>
+        [Category("[0] 导出"), DisplayName("仅渲染选中"), Description("是否仅导出选中的模型，请在预览画面参数面板进行调整")]
+        public bool RenderSelectedOnly { get => Exporter.RenderSelectedOnly; }
+
+        /// <summary>
+        /// 背景颜色
+        /// </summary>
+        [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(SFMLColorConverter))]
+        [Category("[0] 导出"), DisplayName("背景颜色"), Description("要使用的背景色, 格式为 #RRGGBBAA")]
+        public SFML.Graphics.Color BackgroundColor { get => Exporter.BackgroundColor; set => Exporter.BackgroundColor = value; }
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace SpineViewer.Exporter
+namespace SpineViewer.Spine.SpineExporter
 {
     /// <summary>
     /// 使用 FFmpeg 的视频导出器
@@ -51,7 +51,7 @@ namespace SpineViewer.Exporter
             return null;
         }
 
-        protected override void ExportSingle(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportSingle(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             var noteSuffix = FileNameNoteSuffix;
             if (!string.IsNullOrWhiteSpace(noteSuffix)) noteSuffix = $"_{noteSuffix}";
@@ -76,7 +76,7 @@ namespace SpineViewer.Exporter
             }
         }
 
-        protected override void ExportIndividual(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
+        protected override void ExportIndividual(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             var noteSuffix = FileNameNoteSuffix;
             if (!string.IsNullOrWhiteSpace(noteSuffix)) noteSuffix = $"_{noteSuffix}";
@@ -107,5 +107,29 @@ namespace SpineViewer.Exporter
                 }
             }
         }
+    }
+
+    public class FFmpegVideoExporterProperty(FFmpegVideoExporter exporter) : VideoExporterProperty(exporter)
+    {
+        [Browsable(false)]
+        public override FFmpegVideoExporter Exporter => (FFmpegVideoExporter)base.Exporter;
+
+        /// <summary>
+        /// 文件格式
+        /// </summary>
+        [Category("[2] FFmpeg 基本参数"), DisplayName("文件格式"), Description("-f, 文件格式")]
+        public virtual string Format => Exporter.Format;
+
+        /// <summary>
+        /// 文件名后缀
+        /// </summary>
+        [Category("[2] FFmpeg 基本参数"), DisplayName("文件名后缀"), Description("文件名后缀")]
+        public virtual string Suffix => Exporter.Suffix;
+
+        /// <summary>
+        /// 文件名后缀
+        /// </summary>
+        [Category("[2] FFmpeg 基本参数"), DisplayName("自定义参数"), Description("使用 \"ffmpeg -h encoder=<编码器>\" 查看编码器支持的参数\n使用 \"ffmpeg -h muxer=<文件格式>\" 查看文件格式支持的参数")]
+        public string CustomArgument { get => Exporter.CustomArgument; set => Exporter.CustomArgument = value; }
     }
 }

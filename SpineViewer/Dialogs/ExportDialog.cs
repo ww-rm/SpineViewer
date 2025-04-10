@@ -1,5 +1,4 @@
-﻿using SpineViewer.PropertyGridWrappers.Exporter;
-using SpineViewer.Utils;
+﻿using SpineViewer.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +7,15 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using SpineViewer.Spine.SpineExporter;
 
 namespace SpineViewer.Dialogs
 {
     public partial class ExportDialog : Form
     {
-        private readonly ExporterWrapper wrapper;
+        private readonly ExporterProperty wrapper;
 
-        public ExportDialog(ExporterWrapper wrapper)
+        public ExportDialog(ExporterProperty wrapper)
         {
             InitializeComponent();
             this.wrapper = wrapper;

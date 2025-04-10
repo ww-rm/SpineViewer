@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 
-namespace SpineViewer.PropertyGridWrappers
+namespace SpineViewer.Utils
 {
     /// <summary>
     /// 使用 FolderBrowserDialog 的文件夹路径编辑器

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.Exporter
+namespace SpineViewer.Spine.SpineExporter
 {
     /// <summary>
     /// 视频导出基类
@@ -41,7 +41,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 生成单个模型的帧序列
         /// </summary>
-        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.SpineObject spine, BackgroundWorker? worker = null)
+        protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject spine, BackgroundWorker? worker = null)
         {
             // 独立导出时如果 Duration 小于 0 则使用所有轨道上动画时长最大值
             var duration = Duration;
@@ -51,7 +51,7 @@ namespace SpineViewer.Exporter
             int total = (int)(duration * FPS); // 完整帧的数量
 
             float deltaFinal = duration - delta * total; // 最后一帧时长
-            int final = (KeepLast && (deltaFinal > 1e-3)) ? 1 : 0;
+            int final = KeepLast && deltaFinal > 1e-3 ? 1 : 0;
 
             int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
 
@@ -90,7 +90,7 @@ namespace SpineViewer.Exporter
         /// <summary>
         /// 生成多个模型的帧序列
         /// </summary>
-        protected IEnumerable<SFMLImageVideoFrame> GetFrames(Spine.SpineObject[] spinesToRender, BackgroundWorker? worker = null)
+        protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必须根据 Duration 决定导出时长
             var duration = Duration;
@@ -99,7 +99,7 @@ namespace SpineViewer.Exporter
             int total = (int)(duration * FPS); // 完整帧的数量
 
             float deltaFinal = duration - delta * total; // 最后一帧时长
-            int final = (KeepLast && (deltaFinal > 1e-3)) ? 1 : 0;
+            int final = KeepLast && deltaFinal > 1e-3 ? 1 : 0;
 
             int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
 
@@ -135,11 +135,35 @@ namespace SpineViewer.Exporter
             }
         }
 
-        public override void Export(Spine.SpineObject[] spines, BackgroundWorker? worker = null)
+        public override void Export(SpineObject[] spines, BackgroundWorker? worker = null)
         {
             // 导出视频格式需要把模型时间都重置到 0
             foreach (var spine in spines) spine.ResetAnimationsTime();
             base.Export(spines, worker);
         }
+    }
+
+    public class VideoExporterProperty(VideoExporter exporter) : ExporterProperty(exporter)
+    {
+        [Browsable(false)]
+        public override VideoExporter Exporter => (VideoExporter)base.Exporter;
+
+        /// <summary>
+        /// 导出时长
+        /// </summary>
+        [Category("[1] 视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的所有轨道动画时长最大值")]
+        public float Duration { get => Exporter.Duration; set => Exporter.Duration = value; }
+
+        /// <summary>
+        /// 帧率
+        /// </summary>
+        [Category("[1] 视频参数"), DisplayName("帧率"), Description("每秒画面数")]
+        public float FPS { get => Exporter.FPS; set => Exporter.FPS = value; }
+
+        /// <summary>
+        /// 保留最后一帧
+        /// </summary>
+        [Category("[1] 视频参数"), DisplayName("保留最后一帧"), Description("当设置保留最后一帧时, 动图会更为连贯, 但是帧数可能比预期帧数多 1")]
+        public bool KeepLast { get => Exporter.KeepLast; set => Exporter.KeepLast = value; }
     }
 }
