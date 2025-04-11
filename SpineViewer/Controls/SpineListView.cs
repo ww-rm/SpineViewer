@@ -14,8 +14,8 @@ using System.Diagnostics;
 using System.Collections.Specialized;
 using NLog;
 using SpineViewer.Extensions;
-using SpineViewer.PropertyGridWrappers.Spine;
 using SpineViewer.Utils;
+using SpineViewer.Spine.SpineView;
 
 namespace SpineViewer.Controls
 {

@@ -1,6 +1,4 @@
-﻿using SpineViewer.Dialogs;
-using SpineViewer.PropertyGridWrappers.Spine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;

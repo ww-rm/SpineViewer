@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.PropertyGridWrappers.Spine
+namespace SpineViewer.Spine.SpineView
 {
     /// <summary>
     /// 对轨道索引属性的包装类, 能够在面板上显示例如时长的属性, 但是处理该属性时按字符串去处理, 例如 ToString 和判断对象相等都是用动画名称实现逻辑

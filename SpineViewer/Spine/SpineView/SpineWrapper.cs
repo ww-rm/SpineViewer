@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpineViewer.Spine;
 
-namespace SpineViewer.PropertyGridWrappers.Spine
+namespace SpineViewer.Spine.SpineView
 {
     public class SpineWrapper(SpineObject spine)
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using SpineViewer.Spine;
 using SpineViewer.Utils;
 
-namespace SpineViewer.PropertyGridWrappers.Spine
+namespace SpineViewer.Spine.SpineView
 {
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 空间变换的包装类

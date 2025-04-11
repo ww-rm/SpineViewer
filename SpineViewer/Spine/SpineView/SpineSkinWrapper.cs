@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.PropertyGridWrappers.Spine
+namespace SpineViewer.Spine.SpineView
 {
     /// <summary>
     /// 对皮肤属性的包装类

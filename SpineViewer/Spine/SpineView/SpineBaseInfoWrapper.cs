@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.PropertyGridWrappers.Spine
+namespace SpineViewer.Spine.SpineView
 {
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 基本信息的包装类

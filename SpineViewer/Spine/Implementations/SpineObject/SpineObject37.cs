@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using SpineRuntime37;
 using SpineViewer.Utils;
 
-namespace SpineViewer.Spine.Implementations.Spine
+namespace SpineViewer.Spine.Implementations.SpineObject
 {
     [SpineImplementation(SpineVersion.V37)]
-    internal class SpineObject37 : SpineObject
+    internal class SpineObject37 : Spine.SpineObject
     {
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 

@@ -1,5 +1,5 @@
-﻿using SpineViewer.PropertyGridWrappers.Spine;
-using SpineViewer.Spine;
+﻿using SpineViewer.Spine;
+using SpineViewer.Spine.SpineView;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
