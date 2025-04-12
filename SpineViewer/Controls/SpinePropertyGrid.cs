@@ -22,7 +22,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 设置选中的对象列表, 可以赋值 null 来清空选中, 行为与 PropertyGrid.SelectedObjects 类似
         /// </summary>
-        public SpineWrapper[] SelectedSpines
+        public SpineObjectProperty[] SelectedSpines
         {
             get => selectedSpines ?? [];
             set
@@ -49,14 +49,14 @@ namespace SpineViewer.Controls
                 }
             }
         }
-        private SpineWrapper[]? selectedSpines = null;
+        private SpineObjectProperty[]? selectedSpines = null;
 
         private void contextMenuStrip_Skin_Opening(object sender, CancelEventArgs e)
         {
             if (selectedSpines?.Length == 1)
             {
                 toolStripMenuItem_AddSkin.Enabled = true;
-                toolStripMenuItem_RemoveSkin.Enabled = propertyGrid_Skin.SelectedGridItem.Value is SkinWrapper;
+                toolStripMenuItem_RemoveSkin.Enabled = propertyGrid_Skin.SelectedGridItem.Value is SkinNameProperty;
             }
             else
             {
@@ -70,7 +70,7 @@ namespace SpineViewer.Controls
             if (selectedSpines?.Length == 1)
             {
                 toolStripMenuItem_AddAnimation.Enabled = true;
-                toolStripMenuItem_RemoveAnimation.Enabled = propertyGrid_Animation.SelectedGridItem.Value is TrackWrapper;
+                toolStripMenuItem_RemoveAnimation.Enabled = propertyGrid_Animation.SelectedGridItem.Value is TrackAnimationProperty;
             }
             else
             {
@@ -99,7 +99,7 @@ namespace SpineViewer.Controls
         {
             if (selectedSpines?.Length != 1) return;
 
-            if (propertyGrid_Skin.SelectedGridItem.Value is SkinWrapper wrapper)
+            if (propertyGrid_Skin.SelectedGridItem.Value is SkinNameProperty wrapper)
             {
                 selectedSpines[0].Skin.Spine.UnloadSkin(wrapper.Index);
                 propertyGrid_Skin.Refresh();
@@ -119,7 +119,7 @@ namespace SpineViewer.Controls
         {
             if (selectedSpines?.Length != 1) return;
 
-            if (propertyGrid_Animation.SelectedGridItem.Value is TrackWrapper wrapper)
+            if (propertyGrid_Animation.SelectedGridItem.Value is TrackAnimationProperty wrapper)
             {
                 selectedSpines[0].Animation.Spine.ClearTrack(wrapper.Index);
                 propertyGrid_Animation.Refresh();

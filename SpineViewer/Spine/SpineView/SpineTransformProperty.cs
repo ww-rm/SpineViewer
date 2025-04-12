@@ -12,7 +12,7 @@ namespace SpineViewer.Spine.SpineView
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 空间变换的包装类
     /// </summary>
-    public class SpineTransformWrapper(SpineObject spine)
+    public class SpineTransformProperty(SpineObject spine)
     {
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;

@@ -38,7 +38,7 @@ namespace SpineViewer.Spine
             skelPath = Path.GetFullPath(skelPath);
             atlasPath = Path.GetFullPath(atlasPath);
             
-            if (version == SpineVersion.Auto) version = SpineHelper.GetVersion(skelPath);
+            if (version == SpineVersion.Auto) version = SpineUtils.GetVersion(skelPath);
             if (!File.Exists(atlasPath)) throw new FileNotFoundException($"atlas file {atlasPath} not found");
             return New(version, [skelPath, atlasPath]).PostInit();
         }

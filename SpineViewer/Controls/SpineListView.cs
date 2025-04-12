@@ -39,7 +39,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 用于属性页显示模型参数的包装类
         /// </summary>
-        private readonly Dictionary<string, SpineWrapper> spinePropertyWrappers = [];
+        private readonly Dictionary<string, SpineObjectProperty> spinePropertyWrappers = [];
 
         public SpineListView()
         {
@@ -205,14 +205,14 @@ namespace SpineViewer.Controls
             {
                 if (File.Exists(path))
                 {
-                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                    if (SpineUtils.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
                         validPaths.Add(path);
                 }
                 else if (Directory.Exists(path))
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
-                        if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                        if (SpineUtils.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                             validPaths.Add(file);
                     }
                 }

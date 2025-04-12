@@ -13,34 +13,9 @@ using System.Threading.Tasks;
 namespace SpineViewer.Spine
 {
     /// <summary>
-    /// 支持的 Spine 版本
-    /// </summary>
-    public enum SpineVersion
-    {
-        [Description("<Auto>")] Auto = 0x0000,
-        [Description("2.1.x")] V21 = 0x0201,
-        [Description("3.6.x")] V36 = 0x0306,
-        [Description("3.7.x")] V37 = 0x0307,
-        [Description("3.8.x")] V38 = 0x0308,
-        [Description("4.0.x")] V40 = 0x0400,
-        [Description("4.1.x")] V41 = 0x0401,
-        [Description("4.2.x")] V42 = 0x0402,
-        [Description("4.3.x")] V43 = 0x0403,
-    }
-
-    /// <summary>
-    /// Spine 实现类标记
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SpineImplementationAttribute(SpineVersion version) : Attribute, IImplementationKey<SpineVersion>
-    {
-        public SpineVersion ImplementationKey { get; private set; } = version;
-    }
-
-    /// <summary>
     /// Spine 版本静态辅助类
     /// </summary>
-    public static class SpineHelper
+    public static class SpineUtils
     {
         /// <summary>
         /// 版本名称
@@ -53,7 +28,7 @@ namespace SpineViewer.Spine
         /// </summary>
         private static readonly Dictionary<SpineVersion, string> runtimes = [];
 
-        static SpineHelper()
+        static SpineUtils()
         {
             // 初始化缓存
             foreach (var value in Enum.GetValues(typeof(SpineVersion)))

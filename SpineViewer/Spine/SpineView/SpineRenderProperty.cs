@@ -11,7 +11,7 @@ namespace SpineViewer.Spine.SpineView
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 渲染设置的包装类
     /// </summary>
-    public class SpineRenderWrapper(SpineObject spine)
+    public class SpineRenderProperty(SpineObject spine)
     {
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;

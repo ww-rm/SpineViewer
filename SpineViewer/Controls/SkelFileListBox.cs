@@ -34,14 +34,14 @@ namespace SpineViewer.Controls
             {
                 if (File.Exists(path))
                 {
-                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
+                    if (SpineUtils.CommonSkelSuffix.Contains(Path.GetExtension(path).ToLower()))
                         listBox.Items.Add(Path.GetFullPath(path));
                 }
                 else if (Directory.Exists(path))
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
-                        if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                        if (SpineUtils.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                             listBox.Items.Add(file);
                     }
                 }
@@ -58,7 +58,7 @@ namespace SpineViewer.Controls
             {
                 foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                 {
-                    if (SpineHelper.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
+                    if (SpineUtils.CommonSkelSuffix.Contains(Path.GetExtension(file).ToLower()))
                         listBox.Items.Add(file);
                 }
             }

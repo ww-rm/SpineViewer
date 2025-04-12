@@ -23,13 +23,13 @@ namespace SpineViewer.Dialogs
         {
             InitializeComponent();
 
-            comboBox_SourceVersion.DataSource = SpineHelper.Names.ToList();
+            comboBox_SourceVersion.DataSource = SpineUtils.Names.ToList();
             comboBox_SourceVersion.DisplayMember = "Value";
             comboBox_SourceVersion.ValueMember = "Key";
             comboBox_SourceVersion.SelectedValue = SpineVersion.Auto;
 
             // 目标版本不包含自动
-            var versionsWithoutAuto = SpineHelper.Names.ToDictionary();
+            var versionsWithoutAuto = SpineUtils.Names.ToDictionary();
             versionsWithoutAuto.Remove(SpineVersion.Auto);
             comboBox_TargetVersion.DataSource = versionsWithoutAuto.ToList();
             comboBox_TargetVersion.DisplayMember = "Value";

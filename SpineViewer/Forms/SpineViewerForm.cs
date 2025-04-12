@@ -379,7 +379,7 @@ namespace SpineViewer
                     {
                         try
                         {
-                            srcCvter = SkeletonConverter.New(SpineHelper.GetVersion(skelPath));
+                            srcCvter = SkeletonConverter.New(SpineUtils.GetVersion(skelPath));
                         }
                         catch (Exception ex)
                         {

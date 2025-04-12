@@ -11,7 +11,7 @@ namespace SpineViewer.Spine.SpineView
     /// <summary>
     /// 用于在 PropertyGrid 上显示 Spine 调试属性的包装类
     /// </summary>
-    public class SpineDebugWrapper(SpineObject spine)
+    public class SpineDebugProperty(SpineObject spine)
     {
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;

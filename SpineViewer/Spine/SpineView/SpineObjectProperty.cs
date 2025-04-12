@@ -9,29 +9,29 @@ using SpineViewer.Spine;
 
 namespace SpineViewer.Spine.SpineView
 {
-    public class SpineWrapper(SpineObject spine)
+    public class SpineObjectProperty(SpineObject spine)
     {
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;
 
         [DisplayName("基本信息")]
-        public SpineBaseInfoWrapper BaseInfo { get; } = new(spine);
+        public SpineBaseInfoProperty BaseInfo { get; } = new(spine);
 
         [DisplayName("渲染")]
-        public SpineRenderWrapper Render { get; } = new(spine);
+        public SpineRenderProperty Render { get; } = new(spine);
 
         [DisplayName("变换")]
-        public SpineTransformWrapper Transform { get; } = new(spine);
+        public SpineTransformProperty Transform { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("皮肤")]
-        public SpineSkinWrapper Skin { get; } = new(spine);
+        public SpineSkinProperty Skin { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("动画")]
-        public SpineAnimationWrapper Animation { get; } = new(spine);
+        public SpineAnimationProperty Animation { get; } = new(spine);
 
         [DisplayName("调试")]
-        public SpineDebugWrapper Debug { get; } = new(spine);
+        public SpineDebugProperty Debug { get; } = new(spine);
     }
 }
