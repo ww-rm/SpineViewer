@@ -98,21 +98,21 @@
             contextMenuStrip.ImageScalingSize = new Size(24, 24);
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Add, toolStripMenuItem_Insert, toolStripMenuItem_Remove, toolStripSeparator1, toolStripMenuItem_BatchAdd, toolStripMenuItem_RemoveAll, toolStripSeparator2, toolStripMenuItem_MoveUp, toolStripMenuItem_MoveDown, toolStripMenuItem_MoveTop, toolStripMenuItem_MoveBottom, toolStripSeparator3, toolStripMenuItem_CopyPreview, toolStripMenuItem_AddFromClipboard, toolStripMenuItem_SelectAll, toolStripSeparator4, toolStripMenuItem_ChangeView });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(329, 418);
+            contextMenuStrip.Size = new Size(255, 451);
             contextMenuStrip.Closed += contextMenuStrip_Closed;
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
             // toolStripMenuItem_Add
             // 
             toolStripMenuItem_Add.Name = "toolStripMenuItem_Add";
-            toolStripMenuItem_Add.Size = new Size(328, 30);
+            toolStripMenuItem_Add.Size = new Size(254, 30);
             toolStripMenuItem_Add.Text = "添加...";
             toolStripMenuItem_Add.Click += toolStripMenuItem_Add_Click;
             // 
             // toolStripMenuItem_Insert
             // 
             toolStripMenuItem_Insert.Name = "toolStripMenuItem_Insert";
-            toolStripMenuItem_Insert.Size = new Size(328, 30);
+            toolStripMenuItem_Insert.Size = new Size(254, 30);
             toolStripMenuItem_Insert.Text = "插入...";
             toolStripMenuItem_Insert.Click += toolStripMenuItem_Insert_Click;
             // 
@@ -120,39 +120,39 @@
             // 
             toolStripMenuItem_Remove.Name = "toolStripMenuItem_Remove";
             toolStripMenuItem_Remove.ShortcutKeys = Keys.Delete;
-            toolStripMenuItem_Remove.Size = new Size(328, 30);
+            toolStripMenuItem_Remove.Size = new Size(254, 30);
             toolStripMenuItem_Remove.Text = "移除";
             toolStripMenuItem_Remove.Click += toolStripMenuItem_Remove_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(325, 6);
+            toolStripSeparator1.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_BatchAdd
             // 
             toolStripMenuItem_BatchAdd.Name = "toolStripMenuItem_BatchAdd";
-            toolStripMenuItem_BatchAdd.Size = new Size(328, 30);
+            toolStripMenuItem_BatchAdd.Size = new Size(254, 30);
             toolStripMenuItem_BatchAdd.Text = "批量添加...";
             toolStripMenuItem_BatchAdd.Click += toolStripMenuItem_BatchAdd_Click;
             // 
             // toolStripMenuItem_RemoveAll
             // 
             toolStripMenuItem_RemoveAll.Name = "toolStripMenuItem_RemoveAll";
-            toolStripMenuItem_RemoveAll.Size = new Size(328, 30);
+            toolStripMenuItem_RemoveAll.Size = new Size(254, 30);
             toolStripMenuItem_RemoveAll.Text = "移除全部";
             toolStripMenuItem_RemoveAll.Click += toolStripMenuItem_RemoveAll_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(325, 6);
+            toolStripSeparator2.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_MoveUp
             // 
             toolStripMenuItem_MoveUp.Name = "toolStripMenuItem_MoveUp";
             toolStripMenuItem_MoveUp.ShortcutKeys = Keys.Alt | Keys.W;
-            toolStripMenuItem_MoveUp.Size = new Size(328, 30);
+            toolStripMenuItem_MoveUp.Size = new Size(254, 30);
             toolStripMenuItem_MoveUp.Text = "上移";
             toolStripMenuItem_MoveUp.Click += toolStripMenuItem_MoveUp_Click;
             // 
@@ -160,7 +160,7 @@
             // 
             toolStripMenuItem_MoveDown.Name = "toolStripMenuItem_MoveDown";
             toolStripMenuItem_MoveDown.ShortcutKeys = Keys.Alt | Keys.S;
-            toolStripMenuItem_MoveDown.Size = new Size(328, 30);
+            toolStripMenuItem_MoveDown.Size = new Size(254, 30);
             toolStripMenuItem_MoveDown.Text = "下移";
             toolStripMenuItem_MoveDown.Click += toolStripMenuItem_MoveDown_Click;
             // 
@@ -168,7 +168,7 @@
             // 
             toolStripMenuItem_MoveTop.Name = "toolStripMenuItem_MoveTop";
             toolStripMenuItem_MoveTop.ShortcutKeys = Keys.Alt | Keys.Shift | Keys.W;
-            toolStripMenuItem_MoveTop.Size = new Size(328, 30);
+            toolStripMenuItem_MoveTop.Size = new Size(254, 30);
             toolStripMenuItem_MoveTop.Text = "置顶";
             toolStripMenuItem_MoveTop.Click += toolStripMenuItem_MoveTop_Click;
             // 
@@ -176,28 +176,28 @@
             // 
             toolStripMenuItem_MoveBottom.Name = "toolStripMenuItem_MoveBottom";
             toolStripMenuItem_MoveBottom.ShortcutKeys = Keys.Alt | Keys.Shift | Keys.S;
-            toolStripMenuItem_MoveBottom.Size = new Size(328, 30);
+            toolStripMenuItem_MoveBottom.Size = new Size(254, 30);
             toolStripMenuItem_MoveBottom.Text = "置底";
             toolStripMenuItem_MoveBottom.Click += toolStripMenuItem_MoveBottom_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(325, 6);
+            toolStripSeparator3.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_CopyPreview
             // 
             toolStripMenuItem_CopyPreview.Name = "toolStripMenuItem_CopyPreview";
             toolStripMenuItem_CopyPreview.ShortcutKeys = Keys.Control | Keys.C;
-            toolStripMenuItem_CopyPreview.Size = new Size(328, 30);
-            toolStripMenuItem_CopyPreview.Text = "复制预览图 (256x256)";
+            toolStripMenuItem_CopyPreview.Size = new Size(254, 30);
+            toolStripMenuItem_CopyPreview.Text = "复制预览图";
             toolStripMenuItem_CopyPreview.Click += toolStripMenuItem_CopyPreview_Click;
             // 
             // toolStripMenuItem_AddFromClipboard
             // 
             toolStripMenuItem_AddFromClipboard.Name = "toolStripMenuItem_AddFromClipboard";
             toolStripMenuItem_AddFromClipboard.ShortcutKeys = Keys.Control | Keys.V;
-            toolStripMenuItem_AddFromClipboard.Size = new Size(328, 30);
+            toolStripMenuItem_AddFromClipboard.Size = new Size(254, 30);
             toolStripMenuItem_AddFromClipboard.Text = "从剪贴板添加";
             toolStripMenuItem_AddFromClipboard.Click += toolStripMenuItem_AddFromClipboard_Click;
             // 
@@ -205,20 +205,20 @@
             // 
             toolStripMenuItem_SelectAll.Name = "toolStripMenuItem_SelectAll";
             toolStripMenuItem_SelectAll.ShortcutKeys = Keys.Control | Keys.A;
-            toolStripMenuItem_SelectAll.Size = new Size(328, 30);
+            toolStripMenuItem_SelectAll.Size = new Size(254, 30);
             toolStripMenuItem_SelectAll.Text = "全选";
             toolStripMenuItem_SelectAll.Click += toolStripMenuItem_SelectAll_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(325, 6);
+            toolStripSeparator4.Size = new Size(251, 6);
             // 
             // toolStripMenuItem_ChangeView
             // 
             toolStripMenuItem_ChangeView.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem_LargeIconView, toolStripMenuItem_ListView, toolStripMenuItem_DetailsView });
             toolStripMenuItem_ChangeView.Name = "toolStripMenuItem_ChangeView";
-            toolStripMenuItem_ChangeView.Size = new Size(328, 30);
+            toolStripMenuItem_ChangeView.Size = new Size(254, 30);
             toolStripMenuItem_ChangeView.Text = "切换视图";
             // 
             // toolStripMenuItem_LargeIconView
