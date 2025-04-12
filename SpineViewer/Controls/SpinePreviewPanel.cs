@@ -16,16 +16,11 @@ namespace SpineViewer.Controls
 {
     public partial class SpinePreviewPanel : UserControl
     {
-        /// <summary>
-        /// 日志器
-        /// </summary>
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         public SpinePreviewPanel()
         {
             InitializeComponent();
-            RenderWindow = new(panel_Render.Handle);
-            RenderWindow.SetActive(false);
+            renderWindow = new(panel_Render.Handle);
+            renderWindow.SetActive(false);
 
             // 设置默认参数
             Resolution = new(2048, 2048);
@@ -33,6 +28,11 @@ namespace SpineViewer.Controls
             FlipY = true;
             MaxFps = 30;
         }
+
+        /// <summary>
+        /// 日志器
+        /// </summary>
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 要绑定的 Spine 列表控件
@@ -90,15 +90,15 @@ namespace SpineViewer.Controls
                 }
 
                 // 必须通过 SFML 的方法调整窗口
-                RenderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
-                RenderWindow.Size = new((uint)sizeX, (uint)sizeY);
+                renderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
+                renderWindow.Size = new((uint)sizeX, (uint)sizeY);
 
                 // 将 view 的大小设置成于 resolution 相同的大小, 其余属性都不变
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 var signX = Math.Sign(view.Size.X);
                 var signY = Math.Sign(view.Size.Y);
                 view.Size = new(value.Width * signX, value.Height * signY);
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
 
                 resolution = value;
             }
@@ -114,15 +114,15 @@ namespace SpineViewer.Controls
         {
             get
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 var center = view.Center;
                 return new(center.X, center.Y);
             }
             set
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 view.Center = new(value.X, value.Y);
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
             }
         }
 
@@ -135,17 +135,17 @@ namespace SpineViewer.Controls
         {
             get
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 return resolution.Width / Math.Abs(view.Size.X);
             }
             set
             {
                 value = Math.Clamp(value, 0.001f, 1000f);
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 var signX = Math.Sign(view.Size.X);
                 var signY = Math.Sign(view.Size.Y);
                 view.Size = new(resolution.Width / value * signX, resolution.Height / value * signY);
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
             }
         }
 
@@ -158,14 +158,14 @@ namespace SpineViewer.Controls
         {
             get
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 return view.Rotation;
             }
             set
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 view.Rotation = value;
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
             }
         }
 
@@ -178,17 +178,17 @@ namespace SpineViewer.Controls
         {
             get
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 return view.Size.X < 0;
             }
             set
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 var size = view.Size;
                 if (size.X > 0 && value || size.X < 0 && !value)
                     size.X *= -1;
                 view.Size = size;
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
             }
         }
 
@@ -201,17 +201,17 @@ namespace SpineViewer.Controls
         {
             get
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 return view.Size.Y < 0;
             }
             set
             {
-                using var view = RenderWindow.GetView();
+                using var view = renderWindow.GetView();
                 var size = view.Size;
                 if (size.Y > 0 && value || size.Y < 0 && !value)
                     size.Y *= -1;
                 view.Size = size;
-                RenderWindow.SetView(view);
+                renderWindow.SetView(view);
             }
         }
 
@@ -234,13 +234,13 @@ namespace SpineViewer.Controls
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public uint MaxFps { get => maxFps; set { RenderWindow.SetFramerateLimit(value); maxFps = value; } }
+        public uint MaxFps { get => maxFps; set { renderWindow.SetFramerateLimit(value); maxFps = value; } }
         private uint maxFps = 60;
 
         /// <summary>
         /// 获取 View
         /// </summary>
-        public SFML.Graphics.View GetView() => RenderWindow.GetView();
+        public SFML.Graphics.View GetView() => renderWindow.GetView();
 
         #endregion
 
@@ -259,17 +259,17 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 坐标轴顶点缓冲区
         /// </summary>
-        private readonly SFML.Graphics.VertexArray AxisVertex = new(SFML.Graphics.PrimitiveType.Lines, 2);
+        private readonly SFML.Graphics.VertexArray axisVertices = new(SFML.Graphics.PrimitiveType.Lines, 2); // XXX: 暂时未使用 Dispose 释放
 
         /// <summary>
         /// 渲染窗口
         /// </summary>
-        private readonly SFML.Graphics.RenderWindow RenderWindow;
+        private readonly SFML.Graphics.RenderWindow renderWindow;
 
         /// <summary>
         /// 帧间隔计时器
         /// </summary>
-        private readonly SFML.System.Clock Clock = new();
+        private readonly SFML.System.Clock clock = new();
 
         /// <summary>
         /// 渲染任务
@@ -340,13 +340,13 @@ namespace SpineViewer.Controls
         {
             try
             {
-                RenderWindow.SetActive(true);
+                renderWindow.SetActive(true);
 
                 float delta;
                 while (cancelToken is not null && !cancelToken.IsCancellationRequested)
                 {
-                    delta = Clock.ElapsedTime.AsSeconds();
-                    Clock.Restart();
+                    delta = clock.ElapsedTime.AsSeconds();
+                    clock.Restart();
 
                     // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
                     if (!IsUpdating) delta = 0;
@@ -358,17 +358,17 @@ namespace SpineViewer.Controls
                         forwardDelta = 0;
                     }
 
-                    RenderWindow.Clear(BackgroundColor);
+                    renderWindow.Clear(BackgroundColor);
 
                     if (ShowAxis)
                     {
                         // 画一个很长的坐标轴, 用 1e9 比较合适
-                        AxisVertex[0] = new(new(-1e9f, 0), AxisColor);
-                        AxisVertex[1] = new(new(1e9f, 0), AxisColor);
-                        RenderWindow.Draw(AxisVertex);
-                        AxisVertex[0] = new(new(0, -1e9f), AxisColor);
-                        AxisVertex[1] = new(new(0, 1e9f), AxisColor);
-                        RenderWindow.Draw(AxisVertex);
+                        axisVertices[0] = new(new(-1e9f, 0), AxisColor);
+                        axisVertices[1] = new(new(1e9f, 0), AxisColor);
+                        renderWindow.Draw(axisVertices);
+                        axisVertices[0] = new(new(0, -1e9f), AxisColor);
+                        axisVertices[1] = new(new(0, 1e9f), AxisColor);
+                        renderWindow.Draw(axisVertices);
                     }
 
                     // 渲染 Spine
@@ -390,24 +390,24 @@ namespace SpineViewer.Controls
                                     continue;
 
                                 spine.IsDebug = true;
-                                RenderWindow.Draw(spine);
+                                renderWindow.Draw(spine);
                                 spine.IsDebug = false;
                             }
                         }
                     }
 
-                    RenderWindow.Display();
+                    renderWindow.Display();
                 }
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                logger.Fatal(ex.ToString());
                 logger.Fatal("Render task stopped");
                 MessagePopup.Error(ex.ToString(), "预览画面已停止渲染");
             }
             finally
             {
-                RenderWindow.SetActive(false);
+                renderWindow.SetActive(false);
             }
         }
 
@@ -420,7 +420,7 @@ namespace SpineViewer.Controls
 
         private void SpinePreviewPanel_SizeChanged(object sender, EventArgs e)
         {
-            if (RenderWindow is null)
+            if (renderWindow is null)
                 return;
 
             float parentX = panel_Render.Parent.Width;
@@ -442,8 +442,8 @@ namespace SpineViewer.Controls
             }
 
             // 必须通过 SFML 的方法调整窗口
-            RenderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
-            RenderWindow.Size = new((uint)sizeX, (uint)sizeY);
+            renderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
+            renderWindow.Size = new((uint)sizeX, (uint)sizeY);
         }
 
         private void panel_Render_MouseDown(object sender, MouseEventArgs e)
@@ -451,13 +451,13 @@ namespace SpineViewer.Controls
             // 右键优先级高, 进入画面拖动模式, 需要重新记录源点
             if ((e.Button & MouseButtons.Right) != 0)
             {
-                draggingSrc = RenderWindow.MapPixelToCoords(new(e.X, e.Y));
+                draggingSrc = renderWindow.MapPixelToCoords(new(e.X, e.Y));
                 Cursor = Cursors.Hand;
             }
             // 按下了左键并且右键是松开的
             else if ((e.Button & MouseButtons.Left) != 0 && (MouseButtons & MouseButtons.Right) == 0)
             {
-                draggingSrc = RenderWindow.MapPixelToCoords(new(e.X, e.Y));
+                draggingSrc = renderWindow.MapPixelToCoords(new(e.X, e.Y));
                 var src = new PointF(((SFML.System.Vector2f)draggingSrc).X, ((SFML.System.Vector2f)draggingSrc).Y);
 
                 if (SpineListView is null)
@@ -531,7 +531,7 @@ namespace SpineViewer.Controls
                 return;
 
             var src = (SFML.System.Vector2f)draggingSrc;
-            var dst = RenderWindow.MapPixelToCoords(new(e.X, e.Y));
+            var dst = renderWindow.MapPixelToCoords(new(e.X, e.Y));
             var _delta = dst - src;
             var delta = new SizeF(_delta.X, _delta.Y);
 
@@ -637,7 +637,10 @@ namespace SpineViewer.Controls
         {
             lock (_forwardDeltaLock)
             {
-                forwardDelta += 1f / maxFps;
+                if (maxFps > 0)
+                    forwardDelta += 1f / maxFps;
+                else
+                    forwardDelta += 0.001f;
             }
         }
 
@@ -645,7 +648,10 @@ namespace SpineViewer.Controls
         {
             lock (_forwardDeltaLock)
             {
-                forwardDelta += 10f / maxFps;
+                if (maxFps > 0)
+                    forwardDelta += 10f / maxFps;
+                else
+                    forwardDelta += 0.01f;
             }
         }
 
