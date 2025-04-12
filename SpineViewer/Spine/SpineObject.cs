@@ -322,6 +322,16 @@ namespace SpineViewer.Spine
         protected bool debugPaths = false;
 
         /// <summary>
+        /// 显示点附件
+        /// </summary>
+        public bool DebugPoints
+        {
+            get { lock (_lock) return debugPoints; }
+            set { lock (_lock) { debugPoints = value; update(0); } }
+        }
+        protected bool debugPoints = false;
+
+        /// <summary>
         /// 显示剪裁附件网格线
         /// </summary>
         public bool DebugClippings

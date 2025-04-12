@@ -64,6 +64,12 @@ namespace SpineViewer.Spine.SpineView
         //[DisplayName("Paths")]
         //public bool DebugPaths { get => Spine.DebugPaths; set => Spine.DebugPaths = value; }
 
+        ///// <summary>
+        ///// 显示点附件
+        ///// </summary>
+        //[DisplayName("Points")]
+        //public bool DebugPoints { get => Spine.DebugPoints; set => Spine.DebugPoints = value; }
+
         /// <summary>
         /// 显示剪裁附件网格线
         /// </summary>
