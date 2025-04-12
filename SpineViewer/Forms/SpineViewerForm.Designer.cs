@@ -65,13 +65,13 @@
             splitContainer_Information = new SplitContainer();
             groupBox_SkelList = new GroupBox();
             spineListView = new SpineViewer.Controls.SpineListView();
-            spinePropertyGrid = new SpineViewer.Controls.SpinePropertyGrid();
+            spineViewPropertyGrid = new SpineViewer.Controls.SpineViewPropertyGrid();
             splitContainer_Config = new SplitContainer();
             groupBox_PreviewConfig = new GroupBox();
             propertyGrid_Previewer = new PropertyGrid();
             groupBox_SkelConfig = new GroupBox();
             groupBox_Preview = new GroupBox();
-            spinePreviewer = new SpineViewer.Controls.SpinePreviewer();
+            spinePreviewPanel = new SpineViewer.Controls.SpinePreviewPanel();
             panel_MainForm = new Panel();
             toolTip = new ToolTip(components);
             menuStrip.SuspendLayout();
@@ -402,16 +402,16 @@
             spineListView.Location = new Point(3, 26);
             spineListView.Name = "spineListView";
             spineListView.Size = new Size(345, 918);
-            spineListView.SpinePropertyGrid = spinePropertyGrid;
+            spineListView.SpinePropertyGrid = spineViewPropertyGrid;
             spineListView.TabIndex = 0;
             // 
             // spinePropertyGrid
             // 
-            spinePropertyGrid.Dock = DockStyle.Fill;
-            spinePropertyGrid.Location = new Point(3, 26);
-            spinePropertyGrid.Name = "spinePropertyGrid";
-            spinePropertyGrid.Size = new Size(423, 586);
-            spinePropertyGrid.TabIndex = 0;
+            spineViewPropertyGrid.Dock = DockStyle.Fill;
+            spineViewPropertyGrid.Location = new Point(3, 26);
+            spineViewPropertyGrid.Name = "spinePropertyGrid";
+            spineViewPropertyGrid.Size = new Size(423, 586);
+            spineViewPropertyGrid.TabIndex = 0;
             // 
             // splitContainer_Config
             // 
@@ -457,7 +457,7 @@
             // 
             // groupBox_SkelConfig
             // 
-            groupBox_SkelConfig.Controls.Add(spinePropertyGrid);
+            groupBox_SkelConfig.Controls.Add(spineViewPropertyGrid);
             groupBox_SkelConfig.Dock = DockStyle.Fill;
             groupBox_SkelConfig.Location = new Point(0, 0);
             groupBox_SkelConfig.Margin = new Padding(0);
@@ -469,7 +469,7 @@
             // 
             // groupBox_Preview
             // 
-            groupBox_Preview.Controls.Add(spinePreviewer);
+            groupBox_Preview.Controls.Add(spinePreviewPanel);
             groupBox_Preview.Dock = DockStyle.Fill;
             groupBox_Preview.Location = new Point(0, 0);
             groupBox_Preview.Name = "groupBox_Preview";
@@ -480,13 +480,13 @@
             // 
             // spinePreviewer
             // 
-            spinePreviewer.Dock = DockStyle.Fill;
-            spinePreviewer.Location = new Point(3, 26);
-            spinePreviewer.Name = "spinePreviewer";
-            spinePreviewer.PropertyGrid = propertyGrid_Previewer;
-            spinePreviewer.Size = new Size(956, 918);
-            spinePreviewer.SpineListView = spineListView;
-            spinePreviewer.TabIndex = 0;
+            spinePreviewPanel.Dock = DockStyle.Fill;
+            spinePreviewPanel.Location = new Point(3, 26);
+            spinePreviewPanel.Name = "spinePreviewer";
+            spinePreviewPanel.PropertyGrid = propertyGrid_Previewer;
+            spinePreviewPanel.Size = new Size(956, 918);
+            spinePreviewPanel.SpineListView = spineListView;
+            spinePreviewPanel.TabIndex = 0;
             // 
             // panel_MainForm
             // 
@@ -567,7 +567,7 @@
         private ToolTip toolTip;
         private Controls.SpineListView spineListView;
         private PropertyGrid propertyGrid_Previewer;
-        private Controls.SpinePreviewer spinePreviewer;
+        private Controls.SpinePreviewPanel spinePreviewPanel;
         private ToolStripMenuItem toolStripMenuItem_Diagnostics;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem toolStripMenuItem_Download;
@@ -583,7 +583,7 @@
         private ToolStripMenuItem toolStripMenuItem_ExportMkv;
         private ToolStripMenuItem toolStripMenuItem_ExportWebm;
         private ToolStripMenuItem toolStripMenuItem_ExportCustom;
-        private Controls.SpinePropertyGrid spinePropertyGrid;
+        private Controls.SpineViewPropertyGrid spineViewPropertyGrid;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem toolStripMenuItem_ExportWebp;
         private ToolStripMenuItem toolStripMenuItem_ExportAvif;

@@ -1,6 +1,6 @@
 ﻿namespace SpineViewer.Controls
 {
-    partial class SpinePropertyGrid
+    partial class SpineViewPropertyGrid
     {
         /// <summary> 
         /// 必需的设计器变量。

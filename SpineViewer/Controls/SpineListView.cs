@@ -51,7 +51,7 @@ namespace SpineViewer.Controls
         /// 显示骨骼信息的属性面板
         /// </summary>
         [Category("自定义"), Description("用于显示模型属性的组合属性页")]
-        public SpinePropertyGrid? SpinePropertyGrid { get; set; }
+        public SpineViewPropertyGrid? SpinePropertyGrid { get; set; }
 
         /// <summary>
         /// 选中的索引

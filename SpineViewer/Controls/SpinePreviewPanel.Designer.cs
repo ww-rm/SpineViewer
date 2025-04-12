@@ -1,6 +1,6 @@
 ﻿namespace SpineViewer.Controls
 {
-    partial class SpinePreviewer
+    partial class SpinePreviewPanel
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpinePreviewer));
-            panel = new Panel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpinePreviewPanel));
+            panel_Render = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel_Container = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
@@ -46,18 +46,18 @@
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // panel
+            // panel_Render
             // 
-            panel.BackColor = SystemColors.ControlDarkDark;
-            panel.Location = new Point(157, 136);
-            panel.Margin = new Padding(0);
-            panel.Name = "panel";
-            panel.Size = new Size(320, 320);
-            panel.TabIndex = 1;
-            panel.MouseDown += panel_MouseDown;
-            panel.MouseMove += panel_MouseMove;
-            panel.MouseUp += panel_MouseUp;
-            panel.MouseWheel += panel_MouseWheel;
+            panel_Render.BackColor = SystemColors.ControlDarkDark;
+            panel_Render.Location = new Point(157, 136);
+            panel_Render.Margin = new Padding(0);
+            panel_Render.Name = "panel_Render";
+            panel_Render.Size = new Size(320, 320);
+            panel_Render.TabIndex = 1;
+            panel_Render.MouseDown += panel_Render_MouseDown;
+            panel_Render.MouseMove += panel_Render_MouseMove;
+            panel_Render.MouseUp += panel_Render_MouseUp;
+            panel_Render.MouseWheel += panel_Render_MouseWheel;
             // 
             // tableLayoutPanel1
             // 
@@ -78,7 +78,7 @@
             // panel_Container
             // 
             panel_Container.BackColor = SystemColors.ControlDark;
-            panel_Container.Controls.Add(panel);
+            panel_Container.Controls.Add(panel_Render);
             panel_Container.Dock = DockStyle.Fill;
             panel_Container.Location = new Point(0, 0);
             panel_Container.Margin = new Padding(0);
@@ -190,14 +190,14 @@
             button_ForwardFast.UseVisualStyleBackColor = true;
             button_ForwardFast.Click += button_ForwardFast_Click;
             // 
-            // SpinePreviewer
+            // SpinePreviewPanel
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
-            Name = "SpinePreviewer";
+            Name = "SpinePreviewPanel";
             Size = new Size(641, 636);
-            SizeChanged += SpinePreviewer_SizeChanged;
+            SizeChanged += SpinePreviewPanel_SizeChanged;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             panel_Container.ResumeLayout(false);
@@ -208,7 +208,7 @@
 
         #endregion
 
-        private Panel panel;
+        private Panel panel_Render;
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel_Container;
         private FlowLayoutPanel flowLayoutPanel1;

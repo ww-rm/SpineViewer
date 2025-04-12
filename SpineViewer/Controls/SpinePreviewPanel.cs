@@ -14,17 +14,17 @@ using SpineViewer.Utils;
 
 namespace SpineViewer.Controls
 {
-    public partial class SpinePreviewer : UserControl
+    public partial class SpinePreviewPanel : UserControl
     {
         /// <summary>
         /// 日志器
         /// </summary>
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public SpinePreviewer()
+        public SpinePreviewPanel()
         {
             InitializeComponent();
-            RenderWindow = new(panel.Handle);
+            RenderWindow = new(panel_Render.Handle);
             RenderWindow.SetActive(false);
 
             // 设置默认参数
@@ -51,7 +51,7 @@ namespace SpineViewer.Controls
             {
                 propertyGrid = value;
                 if (propertyGrid is not null)
-                    propertyGrid.SelectedObject = new SpinePreviewerProperty(this);
+                    propertyGrid.SelectedObject = new SpinePreviewPanelProperty(this);
             }
         }
         private PropertyGrid? propertyGrid;
@@ -71,8 +71,8 @@ namespace SpineViewer.Controls
                 if (value.Width <= 0) value.Width = 100;
                 if (value.Height <= 0) value.Height = 100;
 
-                float parentX = panel.Parent.Width;
-                float parentY = panel.Parent.Height;
+                float parentX = panel_Render.Parent.Width;
+                float parentY = panel_Render.Parent.Height;
                 float sizeX = value.Width;
                 float sizeY = value.Height;
 
@@ -418,15 +418,15 @@ namespace SpineViewer.Controls
         /// </summary>
         private SFML.System.Vector2f? draggingSrc = null;
 
-        private void SpinePreviewer_SizeChanged(object sender, EventArgs e)
+        private void SpinePreviewPanel_SizeChanged(object sender, EventArgs e)
         {
             if (RenderWindow is null)
                 return;
 
-            float parentX = panel.Parent.Width;
-            float parentY = panel.Parent.Height;
-            float sizeX = panel.Width;
-            float sizeY = panel.Height;
+            float parentX = panel_Render.Parent.Width;
+            float parentY = panel_Render.Parent.Height;
+            float sizeX = panel_Render.Width;
+            float sizeY = panel_Render.Height;
 
             if ((sizeY / sizeX) < (parentY / parentX))
             {
@@ -446,7 +446,7 @@ namespace SpineViewer.Controls
             RenderWindow.Size = new((uint)sizeX, (uint)sizeY);
         }
 
-        private void panel_MouseDown(object sender, MouseEventArgs e)
+        private void panel_Render_MouseDown(object sender, MouseEventArgs e)
         {
             // 右键优先级高, 进入画面拖动模式, 需要重新记录源点
             if ((e.Button & MouseButtons.Right) != 0)
@@ -525,7 +525,7 @@ namespace SpineViewer.Controls
             }
         }
 
-        private void panel_MouseMove(object sender, MouseEventArgs e)
+        private void panel_Render_MouseMove(object sender, MouseEventArgs e)
         {
             if (draggingSrc is null)
                 return;
@@ -557,7 +557,7 @@ namespace SpineViewer.Controls
             }
         }
 
-        private void panel_MouseUp(object sender, MouseEventArgs e)
+        private void panel_Render_MouseUp(object sender, MouseEventArgs e)
         {
             // 右键高优先级, 结束画面拖动模式
             if ((e.Button & MouseButtons.Right) != 0)
@@ -576,10 +576,30 @@ namespace SpineViewer.Controls
             }
         }
 
-        private void panel_MouseWheel(object sender, MouseEventArgs e)
+        private void panel_Render_MouseWheel(object sender, MouseEventArgs e)
         {
-            Zoom *= (e.Delta > 0 ? 1.1f : 0.9f);
-            PropertyGrid?.Refresh();
+            var factor = (e.Delta > 0 ? 1.1f : 0.9f);
+            if ((ModifierKeys & Keys.Control) == 0)
+            {
+                Zoom *= factor;
+                PropertyGrid?.Refresh();
+            }
+            else
+            {
+                if (SpineListView is not null)
+                {
+                    lock (SpineListView.Spines)
+                    {
+                        var spines = SpineListView.Spines;
+                        foreach (int i in SpineListView.SelectedIndices)
+                        {
+                            if (spines[i].IsHidden) continue;
+                            spines[i].Scale *= factor;
+                        }
+                    }
+                    SpineListView.SpinePropertyGrid?.Refresh();
+                }
+            }
         }
 
         private void button_Stop_Click(object sender, EventArgs e)
@@ -637,40 +657,40 @@ namespace SpineViewer.Controls
     }
 
     /// <summary>
-    /// 用于在 PropertyGrid 上显示 SpinePreviewe 属性的包装类, 提供用户操作接口
+    /// 用于在 PropertyGrid 上显示 <see cref="SpinePreviewPanel"/> 属性的包装类, 提供用户操作接口
     /// </summary>
-    public class SpinePreviewerProperty(SpinePreviewer previewer)
+    public class SpinePreviewPanelProperty(SpinePreviewPanel previewPanel)
     {
         [Browsable(false)]
-        public SpinePreviewer Previewer { get; } = previewer;
+        public SpinePreviewPanel PreviewPanel { get; } = previewPanel;
 
         [TypeConverter(typeof(SizeConverter))]
         [Category("[0] 导出"), DisplayName("分辨率")]
-        public Size Resolution { get => Previewer.Resolution; set => Previewer.Resolution = value; }
+        public Size Resolution { get => PreviewPanel.Resolution; set => PreviewPanel.Resolution = value; }
 
         [TypeConverter(typeof(PointFConverter))]
         [Category("[0] 导出"), DisplayName("画面中心点")]
-        public PointF Center { get => Previewer.Center; set => Previewer.Center = value; }
+        public PointF Center { get => PreviewPanel.Center; set => PreviewPanel.Center = value; }
 
         [Category("[0] 导出"), DisplayName("缩放")]
-        public float Zoom { get => Previewer.Zoom; set => Previewer.Zoom = value; }
+        public float Zoom { get => PreviewPanel.Zoom; set => PreviewPanel.Zoom = value; }
 
         [Category("[0] 导出"), DisplayName("旋转")]
-        public float Rotation { get => Previewer.Rotation; set => Previewer.Rotation = value; }
+        public float Rotation { get => PreviewPanel.Rotation; set => PreviewPanel.Rotation = value; }
 
         [Category("[0] 导出"), DisplayName("水平翻转")]
-        public bool FlipX { get => Previewer.FlipX; set => Previewer.FlipX = value; }
+        public bool FlipX { get => PreviewPanel.FlipX; set => PreviewPanel.FlipX = value; }
 
         [Category("[0] 导出"), DisplayName("垂直翻转")]
-        public bool FlipY { get => Previewer.FlipY; set => Previewer.FlipY = value; }
+        public bool FlipY { get => PreviewPanel.FlipY; set => PreviewPanel.FlipY = value; }
 
         [Category("[0] 导出"), DisplayName("仅渲染选中")]
-        public bool RenderSelectedOnly { get => Previewer.RenderSelectedOnly; set => Previewer.RenderSelectedOnly = value; }
+        public bool RenderSelectedOnly { get => PreviewPanel.RenderSelectedOnly; set => PreviewPanel.RenderSelectedOnly = value; }
 
         [Category("[1] 预览"), DisplayName("显示坐标轴")]
-        public bool ShowAxis { get => Previewer.ShowAxis; set => Previewer.ShowAxis = value; }
+        public bool ShowAxis { get => PreviewPanel.ShowAxis; set => PreviewPanel.ShowAxis = value; }
 
         [Category("[1] 预览"), DisplayName("最大帧率")]
-        public uint MaxFps { get => Previewer.MaxFps; set => Previewer.MaxFps = value; }
+        public uint MaxFps { get => PreviewPanel.MaxFps; set => PreviewPanel.MaxFps = value; }
     }
 }

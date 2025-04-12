@@ -63,12 +63,12 @@ namespace SpineViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            spinePreviewer.StartRender();
+            spinePreviewPanel.StartRender();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            spinePreviewer.StopRender();
+            spinePreviewPanel.StopRender();
         }
 
         private void toolStripMenuItem_Open_Click(object sender, EventArgs e)
@@ -85,16 +85,16 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
         {
-            if (spinePreviewer.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
+            if (spinePreviewPanel.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
                 return;
 
             var k = nameof(toolStripMenuItem_ExportFrame);
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new FrameExporterProperty((FrameExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -112,9 +112,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameSequenceExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new FrameSequenceExporterProperty((FrameSequenceExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -132,9 +132,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new GifExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new GifExporterProperty((GifExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -152,9 +152,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebpExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new WebpExporterProperty((WebpExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -172,9 +172,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new AvifExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new AvifExporterProperty((AvifExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -192,9 +192,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new Mp4Exporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new Mp4ExporterProperty((Mp4Exporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -212,9 +212,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebmExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new WebmExporterProperty((WebmExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -232,9 +232,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MkvExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new MkvExporterProperty((MkvExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -252,9 +252,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MovExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new MovExporterProperty((MovExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -272,9 +272,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new CustomExporter();
 
             var exporter = exporterCache[k];
-            exporter.Resolution = spinePreviewer.Resolution;
-            exporter.View = spinePreviewer.GetView();
-            exporter.RenderSelectedOnly = spinePreviewer.RenderSelectedOnly;
+            exporter.Resolution = spinePreviewPanel.Resolution;
+            exporter.View = spinePreviewPanel.GetView();
+            exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new CustomExporterProperty((CustomExporter)exporter));
             if (exportDialog.ShowDialog() != DialogResult.OK)
@@ -337,10 +337,10 @@ namespace SpineViewer
             var worker = (BackgroundWorker)sender;
             var exporter = (Exporter)e.Argument;
             Invoke(() => TaskbarManager.SetProgressState(Handle, TBPFLAG.TBPF_INDETERMINATE));
-            spinePreviewer.StopRender();
+            spinePreviewPanel.StopRender();
             lock (spineListView.Spines) { exporter.Export(spineListView.Spines.Where(sp => !sp.IsHidden).ToArray(), (BackgroundWorker)sender); }
             e.Cancel = worker.CancellationPending;
-            spinePreviewer.StartRender();
+            spinePreviewPanel.StartRender();
             Invoke(() => TaskbarManager.SetProgressState(Handle, TBPFLAG.TBPF_NOPROGRESS));
         }
 

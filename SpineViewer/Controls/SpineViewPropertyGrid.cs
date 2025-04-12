@@ -12,9 +12,9 @@ using SpineViewer.Spine.SpineView;
 
 namespace SpineViewer.Controls
 {
-    public partial class SpinePropertyGrid : UserControl
+    public partial class SpineViewPropertyGrid : UserControl
     {
-        public SpinePropertyGrid()
+        public SpineViewPropertyGrid()
         {
             InitializeComponent();
         }
@@ -124,6 +124,17 @@ namespace SpineViewer.Controls
                 selectedSpines[0].Animation.Spine.ClearTrack(wrapper.Index);
                 propertyGrid_Animation.Refresh();
             }
+        }
+
+        public override void Refresh()
+        {
+            base.Refresh();
+            propertyGrid_BaseInfo.Refresh();
+            propertyGrid_Render.Refresh();
+            propertyGrid_Transform.Refresh();
+            propertyGrid_Skin.Refresh();
+            propertyGrid_Animation.Refresh();
+            propertyGrid_Debug.Refresh();
         }
     }
 }
