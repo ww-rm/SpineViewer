@@ -103,7 +103,13 @@ namespace SpineViewer.Spine
 
         ~SpineObject() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
-        protected virtual void Dispose(bool disposing) { Preview?.Dispose(); }
+        protected virtual void Dispose(bool disposing)
+        { 
+            Preview?.Dispose();
+            triangleVertices.Dispose();
+            lineVertices.Dispose();
+            rectLineVertices.Dispose();
+        }
 
         /// <summary>
         /// 运行时唯一 ID
@@ -233,7 +239,7 @@ namespace SpineViewer.Spine
             get { lock (_lock) return isDebug; }
             set { lock (_lock) { isDebug = value; update(0); } }
         }
-        protected bool isDebug = false;
+        private bool isDebug = false;
 
         /// <summary>
         /// 显示纹理
@@ -243,7 +249,7 @@ namespace SpineViewer.Spine
             get { lock (_lock) return debugTexture; }
             set { lock (_lock) { debugTexture = value; update(0); } }
         }
-        protected bool debugTexture = true;
+        private bool debugTexture = true;
 
         /// <summary>
         /// 显示包围盒
@@ -263,7 +269,7 @@ namespace SpineViewer.Spine
             get { lock (_lock) return debugBones; }
             set { lock (_lock) { debugBones = value; update(0); } }
         }
-        protected bool debugBones = false;
+        protected bool debugBones = true;
 
         /// <summary>
         /// 获取已加载的皮肤列表快照, 允许出现重复值
@@ -380,37 +386,110 @@ namespace SpineViewer.Spine
         #region SFML.Graphics.Drawable 接口实现
 
         /// <summary>
-        /// 顶点坐标缓冲区
-        /// </summary>
-        protected float[] worldVerticesBuffer = new float[1024];
-
-        /// <summary>
-        /// 顶点缓冲区
-        /// </summary>
-        protected readonly SFML.Graphics.VertexArray vertexArray = new(SFML.Graphics.PrimitiveType.Triangles);
-
-        /// <summary>
         /// 包围盒颜色
         /// </summary>
         protected static readonly SFML.Graphics.Color BoundsColor = new(120, 200, 0);
 
         /// <summary>
-        /// 包围盒顶点数组
+        /// 骨骼点颜色
         /// </summary>
-        protected readonly SFML.Graphics.VertexArray boundsVertices = new(SFML.Graphics.PrimitiveType.LineStrip, 5);
+        protected static readonly SFML.Graphics.Color BonePointColor = new(0, 255, 0);
+
+        /// <summary>
+        /// 骨骼线颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color BoneLineColor = new(255, 0, 0);
+
+        /// <summary>
+        /// spine 顶点坐标缓冲区
+        /// </summary>
+        protected float[] worldVerticesBuffer = new float[1024];
+
+        /// <summary>
+        /// 三角形顶点缓冲区
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray triangleVertices = new(SFML.Graphics.PrimitiveType.Triangles);
+
+        /// <summary>
+        /// 无面积线条缓冲区
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray lineVertices = new(SFML.Graphics.PrimitiveType.Lines);
+
+        /// <summary>
+        /// 有半径圆点临时缓存对象
+        /// </summary>
+        private readonly SFML.Graphics.CircleShape circlePointShape = new();
+
+        /// <summary>
+        /// 有宽度线条缓冲区, 需要通过 <see cref="AddRectLine"/> 添加顶点
+        /// </summary>
+        protected readonly SFML.Graphics.VertexArray rectLineVertices = new(SFML.Graphics.PrimitiveType.Quads);
+
+        /// <summary>
+        /// 绘制有半径的实心圆点, 随模型一起缩放大小
+        /// </summary>
+        protected void DrawCirclePoint(SFML.Graphics.RenderTarget target, SFML.System.Vector2f p, SFML.Graphics.Color color, float radius = 1)
+        {
+            circlePointShape.Origin = new(radius, radius);
+            circlePointShape.Position = p;
+            circlePointShape.FillColor = color;
+            circlePointShape.Radius = radius;
+            target.Draw(circlePointShape);
+        }
+
+        /// <summary>
+        /// 绘制有宽度的实心线, 会随模型一起缩放粗细, 顶点被存储在 <see cref="rectLineVertices"/> 数组内
+        /// </summary>
+        protected void AddRectLine(SFML.System.Vector2f p1, SFML.System.Vector2f p2, SFML.Graphics.Color color, float width = 1)
+        {
+            var dx = p2.X - p1.X;
+            var dy = p2.Y - p1.Y;
+            var dt = (float)Math.Sqrt(dx * dx + dy * dy);
+            if (dt == 0) return;
+
+            var cosTheta = -dy / dt;
+            var sinTheta = dx / dt;
+            var halfWidth = width / 2;
+            var t = new SFML.System.Vector2f(halfWidth * cosTheta, halfWidth * sinTheta);
+            var v = new SFML.Graphics.Vertex() { Color = color };
+
+            v.Position = p1 + t; rectLineVertices.Append(v);
+            v.Position = p2 + t; rectLineVertices.Append(v);
+            v.Position = p2 - t; rectLineVertices.Append(v);
+            v.Position = p1 - t; rectLineVertices.Append(v);
+        }
 
         /// <summary>
         /// SFML.Graphics.Drawable 接口实现
         /// <para>这个渲染实现绘制出来的像素将是预乘的, 当渲染的背景透明度是 1 时, 则等价于非预乘的结果, 即正常画面, 否则画面偏暗</para>
         /// <para>可以用于 <see cref="SFML.Graphics.RenderWindow"/> 的渲染, 因为直接在窗口上绘制时窗口始终是不透明的</para>
         /// </summary>
-        public void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states) { lock (_lock) draw(target, states); }
+        public void Draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
+        {
+            lock (_lock)
+            {
+                if (!isDebug)
+                {
+                    draw(target, states);
+                }
+                else
+                {
+                    if (debugTexture) draw(target, states);
+                    debugDraw(target);
+                }
+            }
+        }
 
         /// <summary>
         /// 这个渲染实现绘制出来的像素将是预乘的, 当渲染的背景透明度是 1 时, 则等价于非预乘的结果, 即正常画面, 否则画面偏暗
         /// <para>可以用于 <see cref="SFML.Graphics.RenderWindow"/> 的渲染, 因为直接在窗口上绘制时窗口始终是不透明的</para>
         /// </summary>
         protected abstract void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states);
+
+        /// <summary>
+        /// 渲染调试内容
+        /// </summary>
+        protected abstract void debugDraw(SFML.Graphics.RenderTarget target);
 
         #endregion
     }

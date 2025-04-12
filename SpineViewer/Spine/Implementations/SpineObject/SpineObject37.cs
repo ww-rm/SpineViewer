@@ -191,7 +191,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         protected override void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
         {
-            vertexArray.Clear();
+            triangleVertices.Clear();
             states.Texture = null;
             states.Shader = SFMLShader.GetSpineShader(usePma);
 
@@ -258,13 +258,10 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)
                 {
-                    if (vertexArray.VertexCount > 0)
+                    if (triangleVertices.VertexCount > 0)
                     {
-                        // 调试纹理
-                        if (!isDebug || debugTexture)
-                            target.Draw(vertexArray, states);
-
-                        vertexArray.Clear();
+                        target.Draw(triangleVertices, states);
+                        triangleVertices.Clear();
                     }
                     states.BlendMode = blendMode;
                     states.Texture = texture;
@@ -298,26 +295,56 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     vertex.Position.Y = worldVertices[index + 1];
                     vertex.TexCoords.X = uvs[index] * textureSizeX;
                     vertex.TexCoords.Y = uvs[index + 1] * textureSizeY;
-                    vertexArray.Append(vertex);
+                    triangleVertices.Append(vertex);
                 }
 
                 clipping.ClipEnd(slot);
             }
             clipping.ClipEnd();
 
-            // 调试纹理
-            if (!isDebug || debugTexture)
-                target.Draw(vertexArray, states);
+            target.Draw(triangleVertices, states);
+        }
 
-            // 包围盒
-            if (isDebug && isSelected && debugBounds)
+        protected override void debugDraw(SFML.Graphics.RenderTarget target)
+        {
+            lineVertices.Clear();
+            rectLineVertices.Clear();
+
+            // 调试包围盒
+            if (debugBounds)
             {
                 var b = bounds;
-                boundsVertices[0] = boundsVertices[4] = new(new(b.Left, b.Top), BoundsColor);
-                boundsVertices[1] = new(new(b.Right, b.Top), BoundsColor);
-                boundsVertices[2] = new(new(b.Right, b.Bottom), BoundsColor);
-                boundsVertices[3] = new(new(b.Left, b.Bottom), BoundsColor);
-                target.Draw(boundsVertices);
+                var v = new SFML.Graphics.Vertex() { Color = BoundsColor };
+                v.Position = new(b.Left, b.Top); lineVertices.Append(v);
+                v.Position = new(b.Right, b.Top); lineVertices.Append(v); lineVertices.Append(v);
+                v.Position = new(b.Right, b.Bottom); lineVertices.Append(v); lineVertices.Append(v);
+                v.Position = new(b.Left, b.Bottom); lineVertices.Append(v); lineVertices.Append(v);
+                v.Position = new(b.Left, b.Top); lineVertices.Append(v);
+            }
+
+            if (debugBones)
+            {
+                var width = scale;
+                foreach (var bone in skeleton.Bones)
+                {
+                    var boneLength = bone.Data.Length;
+                    var p1 = new SFML.System.Vector2f(bone.WorldX, bone.WorldY);
+                    var p2 = new SFML.System.Vector2f(bone.WorldX + boneLength * bone.A, bone.WorldY + boneLength * bone.C);
+                    AddRectLine(p1, p2, BoneLineColor, width);
+                }
+            }
+
+            target.Draw(lineVertices);
+            target.Draw(rectLineVertices);
+
+            // 骨骼的点最后画, 层级处于上面
+            if (debugBones)
+            {
+                var radius = scale;
+                foreach (var bone in skeleton.Bones)
+                {
+                    DrawCirclePoint(target, new(bone.WorldX, bone.WorldY), BonePointColor, radius);
+                }
             }
         }
     }
