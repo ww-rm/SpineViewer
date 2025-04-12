@@ -389,9 +389,9 @@ namespace SpineViewer.Controls
                                 if (RenderSelectedOnly && !spine.IsSelected)
                                     continue;
 
-                                spine.IsDebug = true;
+                                spine.EnableDebug = true;
                                 renderWindow.Draw(spine);
-                                spine.IsDebug = false;
+                                spine.EnableDebug = false;
                             }
                         }
                     }

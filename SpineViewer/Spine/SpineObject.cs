@@ -232,14 +232,14 @@ namespace SpineViewer.Spine
         protected bool isSelected = false;
 
         /// <summary>
-        /// 显示调试
+        /// 启用渲染调试
         /// </summary>
-        public bool IsDebug
+        public bool EnableDebug
         {
-            get { lock (_lock) return isDebug; }
-            set { lock (_lock) { isDebug = value; update(0); } }
+            get { lock (_lock) return enableDebug; }
+            set { lock (_lock) { enableDebug = value; update(0); } }
         }
-        private bool isDebug = false;
+        private bool enableDebug = false;
 
         /// <summary>
         /// 显示纹理
@@ -269,7 +269,67 @@ namespace SpineViewer.Spine
             get { lock (_lock) return debugBones; }
             set { lock (_lock) { debugBones = value; update(0); } }
         }
-        protected bool debugBones = true;
+        protected bool debugBones = false;
+
+        /// <summary>
+        /// 显示区域附件边框
+        /// </summary>
+        public bool DebugRegions
+        {
+            get { lock (_lock) return debugRegions; }
+            set { lock (_lock) { debugRegions = value; update(0); } }
+        }
+        protected bool debugRegions = false;
+
+        /// <summary>
+        /// 显示网格附件边框线
+        /// </summary>
+        public bool DebugMeshHulls
+        {
+            get { lock (_lock) return debugMeshHulls; }
+            set { lock (_lock) { debugMeshHulls = value; update(0); } }
+        }
+        protected bool debugMeshHulls = false;
+
+        /// <summary>
+        /// 显示网格附件网格线
+        /// </summary>
+        public bool DebugMeshes
+        {
+            get { lock (_lock) return debugMeshes; }
+            set { lock (_lock) { debugMeshes = value; update(0); } }
+        }
+        protected bool debugMeshes = false;
+
+        /// <summary>
+        /// 显示碰撞盒附件边框线
+        /// </summary>
+        public bool DebugBoundingBoxes
+        {
+            get { lock (_lock) return debugBoundingBoxes; }
+            set { lock (_lock) { debugBoundingBoxes = value; update(0); } }
+        }
+        protected bool debugBoundingBoxes = false;
+
+        /// <summary>
+        /// 显示路径附件网格线
+        /// </summary>
+        public bool DebugPaths
+        {
+            get { lock (_lock) return debugPaths; }
+            set { lock (_lock) { debugPaths = value; update(0); } }
+        }
+        protected bool debugPaths = false;
+
+        /// <summary>
+        /// 显示剪裁附件网格线
+        /// </summary>
+        public bool DebugClippings
+        {
+            get { lock (_lock) return debugClippings; }
+            set { lock (_lock) { debugClippings = value; update(0); } }
+        }
+        protected bool debugClippings = false;
 
         /// <summary>
         /// 获取已加载的皮肤列表快照, 允许出现重复值
@@ -401,6 +461,21 @@ namespace SpineViewer.Spine
         protected static readonly SFML.Graphics.Color BoneLineColor = new(255, 0, 0);
 
         /// <summary>
+        /// 网格线颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color MeshLineColor = new(255, 163, 0, 128);
+
+        /// <summary>
+        /// 附件边框线颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color AttachmentLineColor = new(0, 0, 255, 128);
+
+        /// <summary>
+        /// 剪裁附件边框线颜色
+        /// </summary>
+        protected static readonly SFML.Graphics.Color ClippingLineColor = new(204, 0, 0);
+
+        /// <summary>
         /// spine 顶点坐标缓冲区
         /// </summary>
         protected float[] worldVerticesBuffer = new float[1024];
@@ -468,14 +543,14 @@ namespace SpineViewer.Spine
         {
             lock (_lock)
             {
-                if (!isDebug)
+                if (!enableDebug)
                 {
                     draw(target, states);
                 }
                 else
                 {
                     if (debugTexture) draw(target, states);
-                    debugDraw(target);
+                    if (isSelected) debugDraw(target);
                 }
             }
         }

@@ -318,23 +318,187 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             lineVertices.Clear();
             rectLineVertices.Clear();
 
-            // 调试包围盒
-            if (debugBounds)
+            if (debugRegions)
             {
-                var b = bounds;
-                var v = new SFML.Graphics.Vertex() { Color = BoundsColor };
-                v.Position = new(b.Left, b.Top); lineVertices.Append(v);
-                v.Position = new(b.Right, b.Top); lineVertices.Append(v); lineVertices.Append(v);
-                v.Position = new(b.Right, b.Bottom); lineVertices.Append(v); lineVertices.Append(v);
-                v.Position = new(b.Left, b.Bottom); lineVertices.Append(v); lineVertices.Append(v);
-                v.Position = new(b.Left, b.Top); lineVertices.Append(v);
+                SFML.Graphics.Vertex vt = new() { Color = AttachmentLineColor };
+                foreach (var slot in skeleton.Slots)
+                {
+                    if (slot.Bone.Active && slot.Attachment is RegionAttachment regionAttachment)
+                    {
+                        regionAttachment.ComputeWorldVertices(slot.Bone, worldVerticesBuffer, 0);
+
+                        vt.Position.X = worldVerticesBuffer[0];
+                        vt.Position.Y = worldVerticesBuffer[1];
+                        lineVertices.Append(vt);
+
+                        vt.Position.X = worldVerticesBuffer[2];
+                        vt.Position.Y = worldVerticesBuffer[3];
+                        lineVertices.Append(vt); lineVertices.Append(vt);
+
+                        vt.Position.X = worldVerticesBuffer[4];
+                        vt.Position.Y = worldVerticesBuffer[5];
+                        lineVertices.Append(vt); lineVertices.Append(vt);
+
+                        vt.Position.X = worldVerticesBuffer[6];
+                        vt.Position.Y = worldVerticesBuffer[7];
+                        lineVertices.Append(vt); lineVertices.Append(vt);
+
+                        vt.Position.X = worldVerticesBuffer[0];
+                        vt.Position.Y = worldVerticesBuffer[1];
+                        lineVertices.Append(vt);
+                    }
+                }
             }
 
+            if (debugMeshes)
+            {
+                SFML.Graphics.Vertex vt = new() { Color = MeshLineColor };
+                foreach (var slot in skeleton.Slots)
+                {
+                    if (slot.Bone.Active && slot.Attachment is MeshAttachment meshAttachment)
+                    {
+                        if (meshAttachment.WorldVerticesLength > worldVerticesBuffer.Length)
+                            worldVerticesBuffer = new float[meshAttachment.WorldVerticesLength * 2];
+
+                        meshAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
+
+                        var triangleIndices = meshAttachment.Triangles;
+                        for (int i = 0; i < triangleIndices.Length; i += 3)
+                        {
+                            var idx0 = triangleIndices[i] * 2;
+                            var idx1 = triangleIndices[i + 1] * 2;
+                            var idx2 = triangleIndices[i + 2] * 2;
+
+                            vt.Position.X = worldVerticesBuffer[idx0];
+                            vt.Position.Y = worldVerticesBuffer[idx0 + 1];
+                            lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx1];
+                            vt.Position.Y = worldVerticesBuffer[idx1 + 1];
+                            lineVertices.Append(vt); lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx2];
+                            vt.Position.Y = worldVerticesBuffer[idx2 + 1];
+                            lineVertices.Append(vt); lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx0];
+                            vt.Position.Y = worldVerticesBuffer[idx0 + 1];
+                            lineVertices.Append(vt);
+                        }
+                    }
+                }
+            }
+
+            if (debugMeshHulls)
+            {
+                SFML.Graphics.Vertex vt = new() { Color = AttachmentLineColor };
+                foreach (var slot in skeleton.Slots)
+                {
+                    if (slot.Bone.Active && slot.Attachment is MeshAttachment meshAttachment)
+                    {
+                        if (meshAttachment.WorldVerticesLength > worldVerticesBuffer.Length)
+                            worldVerticesBuffer = new float[meshAttachment.WorldVerticesLength * 2];
+
+                        meshAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
+
+                        var hullLength = (meshAttachment.HullLength >> 1) << 1;
+
+                        if (debugMeshHulls && hullLength > 2)
+                        {
+                            vt.Position.X = worldVerticesBuffer[0];
+                            vt.Position.Y = worldVerticesBuffer[1];
+                            lineVertices.Append(vt);
+
+                            for (int i = 2; i < hullLength; i += 2)
+                            {
+                                vt.Position.X = worldVerticesBuffer[i];
+                                vt.Position.Y = worldVerticesBuffer[i + 1];
+                                lineVertices.Append(vt);
+                                lineVertices.Append(vt);
+                            }
+
+                            vt.Position.X = worldVerticesBuffer[0];
+                            vt.Position.Y = worldVerticesBuffer[1];
+                            lineVertices.Append(vt);
+                        }
+                    }
+                }
+            }
+
+            if (debugBoundingBoxes)
+            {
+                throw new NotImplementedException();
+            }
+
+            if (debugPaths)
+            {
+                throw new NotImplementedException();
+            }
+
+            if (debugClippings)
+            {
+                SFML.Graphics.Vertex vt = new() { Color = ClippingLineColor };
+                foreach (var slot in skeleton.Slots)
+                {
+                    if (slot.Bone.Active && slot.Attachment is ClippingAttachment clippingAttachment)
+                    {
+                        if (clippingAttachment.WorldVerticesLength > worldVerticesBuffer.Length)
+                            worldVerticesBuffer = worldVerticesBuffer = new float[clippingAttachment.WorldVerticesLength * 2];
+
+                        clippingAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
+
+                        vt.Position.X = worldVerticesBuffer[0];
+                        vt.Position.Y = worldVerticesBuffer[1];
+                        lineVertices.Append(vt);
+
+                        for (int i = 2; i < clippingAttachment.WorldVerticesLength; i += 2)
+                        {
+                            vt.Position.X = worldVerticesBuffer[i];
+                            vt.Position.Y = worldVerticesBuffer[i + 1];
+                            lineVertices.Append(vt);
+                            lineVertices.Append(vt);
+                        }
+
+                        vt.Position.X = worldVerticesBuffer[0];
+                        vt.Position.Y = worldVerticesBuffer[1];
+                        lineVertices.Append(vt);
+                    }
+                }
+            }
+
+            if (debugBounds)
+            {
+                var vt = new SFML.Graphics.Vertex() { Color = BoundsColor };
+                var b = bounds;
+
+                vt.Position.X = b.Left;
+                vt.Position.Y = b.Top; 
+                lineVertices.Append(vt);
+
+                vt.Position.X = b.Right;
+                vt.Position.Y = b.Top;
+                lineVertices.Append(vt); lineVertices.Append(vt);
+
+                vt.Position.X = b.Right;
+                vt.Position.Y = b.Bottom;
+                lineVertices.Append(vt); lineVertices.Append(vt);
+
+                vt.Position.X = b.Left;
+                vt.Position.Y = b.Bottom;
+                lineVertices.Append(vt); lineVertices.Append(vt);
+
+                vt.Position.X = b.Left;
+                vt.Position.Y = b.Top;
+                lineVertices.Append(vt);
+            }
+
+            // 骨骼线放最后画
             if (debugBones)
             {
                 var width = scale;
                 foreach (var bone in skeleton.Bones)
                 {
+                    if (!bone.Active) continue;
                     var boneLength = bone.Data.Length;
                     var p1 = new SFML.System.Vector2f(bone.WorldX, bone.WorldY);
                     var p2 = new SFML.System.Vector2f(bone.WorldX + boneLength * bone.A, bone.WorldY + boneLength * bone.C);
@@ -345,12 +509,13 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             target.Draw(lineVertices);
             target.Draw(rectLineVertices);
 
-            // 骨骼的点最后画, 层级处于上面
+            // 骨骼的点最后画, 层级处于骨骼线上面
             if (debugBones)
             {
                 var radius = scale;
                 foreach (var bone in skeleton.Bones)
                 {
+                    if (!bone.Active) continue;
                     DrawCirclePoint(target, new(bone.WorldX, bone.WorldY), BonePointColor, radius);
                 }
             }
