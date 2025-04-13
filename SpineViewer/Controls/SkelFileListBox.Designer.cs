@@ -160,7 +160,7 @@
             // 
             openFileDialog_Skel.AddExtension = false;
             openFileDialog_Skel.AddToRecent = false;
-            openFileDialog_Skel.Filter = "skel 文件 (*.skel; *.json)|*.skel;*.json|二进制文件 (*.skel)|*.skel|文本文件 (*.json)|*.json|所有文件 (*.*)|*.*";
+            openFileDialog_Skel.Filter = "所有文件 (*.*)|*.*|skel 文件 (*.skel; *.json)|*.skel;*.json";
             openFileDialog_Skel.Multiselect = true;
             openFileDialog_Skel.Title = "批量选择skel文件";
             // 

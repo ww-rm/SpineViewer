@@ -232,14 +232,14 @@
             // 
             openFileDialog_Skel.AddExtension = false;
             openFileDialog_Skel.AddToRecent = false;
-            openFileDialog_Skel.Filter = "skel 文件 (*.skel; *.json)|*.skel;*.json|二进制文件 (*.skel)|*.skel|文本文件 (*.json)|*.json|所有文件 (*.*)|*.*";
+            openFileDialog_Skel.Filter = "所有文件 (*.*)|*.*|skel 文件 (*.skel; *.json)|*.skel;*.json";
             openFileDialog_Skel.Title = "选择skel文件";
             // 
             // openFileDialog_Atlas
             // 
             openFileDialog_Atlas.AddExtension = false;
             openFileDialog_Atlas.AddToRecent = false;
-            openFileDialog_Atlas.Filter = "atlas 文件 (*.atlas)|*.atlas|所有文件 (*.*)|*.*";
+            openFileDialog_Atlas.Filter = "所有文件 (*.*)|*.*|atlas 文件 (*.atlas)|*.atlas";
             openFileDialog_Atlas.Title = "选择atlas文件";
             // 
             // OpenSpineDialog
