@@ -12,8 +12,45 @@ using System.Globalization;
 namespace SpineViewer.Spine.Implementations.SkeletonConverter
 {
     [SpineImplementation(SpineVersion.V38)]
-    class SkeletonConverter38 : Spine.SkeletonConverter
+    public class SkeletonConverter38 : Spine.SkeletonConverter
     {
+        private static readonly Dictionary<string, string> TransformModeJsonValue = new()
+        {
+            [TransformMode.Normal.ToString()] = "normal",
+            [TransformMode.OnlyTranslation.ToString()] = "onlyTranslation",
+            [TransformMode.NoRotationOrReflection.ToString()] = "noRotationOrReflection",
+            [TransformMode.NoScale.ToString()] = "noScale",
+            [TransformMode.NoScaleOrReflection.ToString()] = "noScaleOrReflection",
+        };
+
+        private static readonly Dictionary<string, string> BlendModeJsonValue = new()
+        {
+            [BlendMode.Normal.ToString()] = "normal",
+            [BlendMode.Additive.ToString()] = "additive",
+            [BlendMode.Multiply.ToString()] = "multiply",
+            [BlendMode.Screen.ToString()] = "screen",
+        };
+
+        private static readonly Dictionary<string, string> PositionModeJsonValue = new()
+        {
+            [PositionMode.Fixed.ToString()] = "fixed",
+            [PositionMode.Percent.ToString()] = "percent",
+        };
+
+        private static readonly Dictionary<string, string> SpacingModeJsonValue = new()
+        {
+            [SpacingMode.Length.ToString()] = "length",
+            [SpacingMode.Fixed.ToString()] = "fixed",
+            [SpacingMode.Percent.ToString()] = "percent",
+        };
+
+        private static readonly Dictionary<string, string> RotateModeJsonValue = new()
+        {
+            [RotateMode.Tangent.ToString()] = "tangent",
+            [RotateMode.Chain.ToString()] = "chain",
+            [RotateMode.ChainScale.ToString()] = "chainScale",
+        };
+
         private BinaryReader reader = null;
         private JsonObject root = null;
         private bool nonessential = false;
@@ -90,7 +127,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["shearX"] = reader.ReadFloat();
                 data["shearY"] = reader.ReadFloat();
                 data["length"] = reader.ReadFloat();
-                data["transform"] = SkeletonBinary.TransformModeValues[reader.ReadVarInt()].ToString();
+                data["transform"] = TransformModeJsonValue[SkeletonBinary.TransformModeValues[reader.ReadVarInt()].ToString()];
                 data["skin"] = reader.ReadBoolean();
                 if (nonessential) reader.ReadInt();
                 bones.Add(data);
@@ -111,7 +148,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 int dark = reader.ReadInt();
                 if (dark != -1) data["dark"] = dark.ToString("x6"); // 0x00rrggbb -> rrggbb
                 data["attachment"] = reader.ReadStringRef();
-                data["blend"] = ((BlendMode)reader.ReadVarInt()).ToString();
+                data["blend"] = BlendModeJsonValue[((BlendMode)reader.ReadVarInt()).ToString()];
                 slots.Add(data);
             }
             root["slots"] = slots;
@@ -181,9 +218,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
                 data["target"] = (string)bones[reader.ReadVarInt()]["name"];
-                data["positionMode"] = ((PositionMode)reader.ReadVarInt()).ToString();
-                data["spacingMode"] = ((SpacingMode)reader.ReadVarInt()).ToString();
-                data["rotateMode"] = ((RotateMode)reader.ReadVarInt()).ToString();
+                data["positionMode"] = PositionModeJsonValue[((PositionMode)reader.ReadVarInt()).ToString()];
+                data["spacingMode"] = SpacingModeJsonValue[((SpacingMode)reader.ReadVarInt()).ToString()];
+                data["rotateMode"] = RotateModeJsonValue[((RotateMode)reader.ReadVarInt()).ToString()];
                 data["rotation"] = reader.ReadFloat();
                 data["position"] = reader.ReadFloat();
                 data["spacing"] = reader.ReadFloat();
@@ -348,7 +385,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = [];
                 var name = reader.ReadStringRef();
                 events[name] = data;
-                data["name"] = name; // 额外增加的, 方便后面查找
                 data["int"] = reader.ReadVarInt(false);
                 data["float"] = reader.ReadFloat();
                 data["string"] = reader.ReadString();
@@ -376,7 +412,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 if (ReadTransformTimelines() is JsonObject transform) data["transform"] = transform;
                 if (ReadPathTimelines() is JsonObject path) data["path"] = path;
                 if (ReadDeformTimelines() is JsonObject deform) data["deform"] = deform;
-                if (ReadDrawOrderTimelines() is JsonArray draworder) data["drawOrder"] = draworder;
+                if (ReadDrawOrderTimelines() is JsonArray draworder) data["draworder"] = draworder;
                 if (ReadEventTimelines() is JsonArray events) data["events"] = events;
             }
             root["animations"] = animations;
@@ -838,6 +874,14 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
             writer = null;
             this.root = null;
+
+            bone2idx.Clear();
+            slot2idx.Clear();
+            ik2idx.Clear();
+            transform2idx.Clear();
+            path2idx.Clear();
+            skin2idx.Clear();
+            event2idx.Clear();
         }
 
         private void WriteSkeleton()
@@ -1523,7 +1567,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject eventData = events[(string)data["name"]].AsObject();
                 if (data.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                writer.WriteVarInt(event2idx[(string)eventData["name"]]);
+                writer.WriteVarInt(event2idx[(string)data["name"]]);
                 if (data.TryGetPropertyValue("int", out var @int)) writer.WriteVarInt((int)@int); else
                     if (eventData.TryGetPropertyValue("int", out var @int2)) writer.WriteVarInt((int)@int2); else writer.WriteVarInt(0);
                 if (data.TryGetPropertyValue("float", out var @float)) writer.WriteFloat((float)@float); else
