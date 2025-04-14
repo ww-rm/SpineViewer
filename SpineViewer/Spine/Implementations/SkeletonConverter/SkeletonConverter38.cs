@@ -784,10 +784,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             switch (type)
             {
                 case SkeletonBinary.CURVE_LINEAR:
-                    obj["curve"] = 1 / 3f;
-                    obj["c2"] = 1 / 3f;
-                    obj["c3"] = 2 / 3f;
-                    obj["c4"] = 2 / 3f;
                     break;
                 case SkeletonBinary.CURVE_STEPPED:
                     obj["curve"] = "stepped";
@@ -1568,7 +1564,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         public void WriteShortArray(JsonArray array)
         {
             writer.WriteVarInt(array.Count);
-            foreach (uint i in array)
+            foreach (int i in array)
             {
                 writer.WriteByte((byte)(i >> 8));
                 writer.WriteByte((byte)i);
@@ -1620,7 +1616,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             else
             {
-                writer.WriteByte(byte.MaxValue); // 设置一个 case 外的值, 这样会符合原逻辑跳过操作
+                writer.WriteByte(SkeletonBinary.CURVE_LINEAR);
             }
         }
 
