@@ -70,10 +70,10 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     skeletonJson = new SkeletonJson(atlas);
                     skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
                 }
-                catch
+                catch (Exception ex)
                 {
                     // 都不行就报错
-                    throw new InvalidDataException($"Unknown skeleton file format {SkelPath}");
+                    throw new InvalidDataException($"Unknown skeleton file format {SkelPath}", ex);
                 }
             }
 
