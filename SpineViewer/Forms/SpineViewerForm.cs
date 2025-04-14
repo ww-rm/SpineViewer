@@ -307,7 +307,7 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
@@ -347,19 +347,15 @@ namespace SpineViewer
         private void ConvertFileFormat_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            var arguments = e.Argument as Dialogs.ConvertFileFormatDialogResult;
-            var skelPaths = arguments.SkelPaths;
-            var srcVersion = arguments.SourceVersion;
-            var tgtVersion = arguments.TargetVersion;
-            var jsonTarget = arguments.JsonTarget;
-            var newSuffix = jsonTarget ? ".json" : ".skel";
+            var args = e.Argument as Dialogs.ConvertFileFormatDialogResult;
+            var newSuffix = args.JsonTarget ? ".json" : ".skel";
 
-            int totalCount = skelPaths.Length;
+            int totalCount = args.SkelPaths.Length;
             int success = 0;
             int error = 0;
 
-            SkeletonConverter srcCvter = srcVersion != SpineVersion.Auto ? SkeletonConverter.New(srcVersion) : null;
-            SkeletonConverter tgtCvter = SkeletonConverter.New(tgtVersion);
+            SkeletonConverter srcCvter = args.SourceVersion != SpineVersion.Auto ? SkeletonConverter.New(args.SourceVersion) : null;
+            SkeletonConverter tgtCvter = SkeletonConverter.New(args.TargetVersion);
 
             worker.ReportProgress(0, $"已处理 0/{totalCount}");
             for (int i = 0; i < totalCount; i++)
@@ -370,12 +366,13 @@ namespace SpineViewer
                     break;
                 }
 
-                var skelPath = skelPaths[i];
+                var skelPath = args.SkelPaths[i];
                 var newPath = Path.ChangeExtension(skelPath, newSuffix);
+                if (args.OutputDir is string outputDir) newPath = Path.Combine(outputDir, Path.GetFileName(newPath));
 
                 try
                 {
-                    if (srcVersion == SpineVersion.Auto)
+                    if (args.SourceVersion == SpineVersion.Auto)
                     {
                         try
                         {
@@ -387,8 +384,9 @@ namespace SpineViewer
                         }
                     }
                     var root = srcCvter.Read(skelPath);
-                    root = srcCvter.ToVersion(root, tgtVersion);
-                    if (jsonTarget) tgtCvter.WriteJson(root, newPath); else tgtCvter.WriteBinary(root, newPath);
+                    root = srcCvter.ToVersion(root, args.TargetVersion);
+                    if (args.JsonTarget) tgtCvter.WriteJson(root, newPath); 
+                    else tgtCvter.WriteBinary(root, newPath);
                     success++;
                 }
                 catch (Exception ex)
