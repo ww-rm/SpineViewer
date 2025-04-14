@@ -1,4 +1,5 @@
-﻿using SpineViewer.Spine;
+﻿using NLog;
+using SpineViewer.Spine;
 using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SpineViewer.Dialogs
 {
     public partial class ConvertFileFormatDialog : Form
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 对话框结果, 取消时为 null
         /// </summary>
@@ -37,8 +40,17 @@ namespace SpineViewer.Dialogs
             comboBox_TargetVersion.SelectedValue = SpineVersion.V38;
         }
 
+        private void button_SelectOutputDir_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog_Output.ShowDialog() != DialogResult.OK)
+                return;
+
+            textBox_OutputDir.Text = Path.GetFullPath(folderBrowserDialog_Output.SelectedPath);
+        }
+
         private void button_Ok_Click(object sender, EventArgs e)
         {
+            var outputDir = textBox_OutputDir.Text;
             var sourceVersion = (SpineVersion)comboBox_SourceVersion.SelectedValue;
             var targetVersion = (SpineVersion)comboBox_TargetVersion.SelectedValue;
             var jsonTarget = radioButton_JsonTarget.Checked;
@@ -49,6 +61,36 @@ namespace SpineViewer.Dialogs
             {
                 MessagePopup.Info("未选择任何文件");
                 return;
+            }
+
+            if (string.IsNullOrWhiteSpace(outputDir))
+            {
+                outputDir = null;
+            }
+            else
+            {
+                outputDir = Path.GetFullPath(outputDir);
+                if (!Directory.Exists(outputDir))
+                {
+                    if (MessagePopup.Quest("输出文件夹不存在，是否创建？") == DialogResult.OK)
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(outputDir);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error(ex.ToString());
+                            logger.Error("Failed to create output dir {}", outputDir);
+                            MessagePopup.Error(ex.ToString());
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
 
             foreach (string p in items)
@@ -72,7 +114,7 @@ namespace SpineViewer.Dialogs
                 return;
             }
 
-            Result = new(items.Cast<string>().ToArray(), sourceVersion, targetVersion, jsonTarget);
+            Result = new(outputDir, items.Cast<string>().ToArray(), sourceVersion, targetVersion, jsonTarget);
             DialogResult = DialogResult.OK;
         }
 
@@ -85,8 +127,13 @@ namespace SpineViewer.Dialogs
     /// <summary>
     /// 文件格式转换对话框结果包装类
     /// </summary>
-    public class ConvertFileFormatDialogResult(string[] skelPaths, SpineVersion sourceVersion, SpineVersion targetVersion, bool jsonTarget)
+    public class ConvertFileFormatDialogResult(string? outputDir, string[] skelPaths, SpineVersion sourceVersion, SpineVersion targetVersion, bool jsonTarget)
     {
+        /// <summary>
+        /// 输出文件夹, 如果为空, 则将转换后的文件转换到各自的文件夹下
+        /// </summary>
+        public string? OutputDir => outputDir;
+
         /// <summary>
         /// 骨骼文件路径列表
         /// </summary>
