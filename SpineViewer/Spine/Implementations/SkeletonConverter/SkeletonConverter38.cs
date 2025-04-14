@@ -837,7 +837,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
             WriteSkeleton();
             WriteStrings();
-            output.Write(outputBody.GetBuffer());
+            outputBody.Seek(0, SeekOrigin.Begin);
+            outputBody.CopyTo(output);
 
             writer = null;
             this.root = null;
