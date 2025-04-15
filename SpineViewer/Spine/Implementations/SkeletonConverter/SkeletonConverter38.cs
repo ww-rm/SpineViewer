@@ -14,41 +14,41 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
     [SpineImplementation(SpineVersion.V38)]
     public class SkeletonConverter38 : Spine.SkeletonConverter
     {
-        private static readonly Dictionary<string, string> TransformModeJsonValue = new()
+        private static readonly Dictionary<TransformMode, string> TransformModeJsonValue = new()
         {
-            [TransformMode.Normal.ToString()] = "normal",
-            [TransformMode.OnlyTranslation.ToString()] = "onlyTranslation",
-            [TransformMode.NoRotationOrReflection.ToString()] = "noRotationOrReflection",
-            [TransformMode.NoScale.ToString()] = "noScale",
-            [TransformMode.NoScaleOrReflection.ToString()] = "noScaleOrReflection",
+            [TransformMode.Normal] = "normal",
+            [TransformMode.OnlyTranslation] = "onlyTranslation",
+            [TransformMode.NoRotationOrReflection] = "noRotationOrReflection",
+            [TransformMode.NoScale] = "noScale",
+            [TransformMode.NoScaleOrReflection] = "noScaleOrReflection",
         };
 
-        private static readonly Dictionary<string, string> BlendModeJsonValue = new()
+        private static readonly Dictionary<BlendMode, string> BlendModeJsonValue = new()
         {
-            [BlendMode.Normal.ToString()] = "normal",
-            [BlendMode.Additive.ToString()] = "additive",
-            [BlendMode.Multiply.ToString()] = "multiply",
-            [BlendMode.Screen.ToString()] = "screen",
+            [BlendMode.Normal] = "normal",
+            [BlendMode.Additive] = "additive",
+            [BlendMode.Multiply] = "multiply",
+            [BlendMode.Screen] = "screen",
         };
 
-        private static readonly Dictionary<string, string> PositionModeJsonValue = new()
+        private static readonly Dictionary<PositionMode, string> PositionModeJsonValue = new()
         {
-            [PositionMode.Fixed.ToString()] = "fixed",
-            [PositionMode.Percent.ToString()] = "percent",
+            [PositionMode.Fixed] = "fixed",
+            [PositionMode.Percent] = "percent",
         };
 
-        private static readonly Dictionary<string, string> SpacingModeJsonValue = new()
+        private static readonly Dictionary<SpacingMode, string> SpacingModeJsonValue = new()
         {
-            [SpacingMode.Length.ToString()] = "length",
-            [SpacingMode.Fixed.ToString()] = "fixed",
-            [SpacingMode.Percent.ToString()] = "percent",
+            [SpacingMode.Length] = "length",
+            [SpacingMode.Fixed] = "fixed",
+            [SpacingMode.Percent] = "percent",
         };
 
-        private static readonly Dictionary<string, string> RotateModeJsonValue = new()
+        private static readonly Dictionary<RotateMode, string> RotateModeJsonValue = new()
         {
-            [RotateMode.Tangent.ToString()] = "tangent",
-            [RotateMode.Chain.ToString()] = "chain",
-            [RotateMode.ChainScale.ToString()] = "chainScale",
+            [RotateMode.Tangent] = "tangent",
+            [RotateMode.Chain] = "chain",
+            [RotateMode.ChainScale] = "chainScale",
         };
 
         private BinaryReader reader = null;
@@ -80,6 +80,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             this.root = null;
 
             idx2event.Clear();
+
+            // 清理临时属性
+            foreach (var (_, data) in root["events"].AsObject()) data.AsObject().Remove("__name__");
 
             return root;
         }
@@ -127,7 +130,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["shearX"] = reader.ReadFloat();
                 data["shearY"] = reader.ReadFloat();
                 data["length"] = reader.ReadFloat();
-                data["transform"] = TransformModeJsonValue[SkeletonBinary.TransformModeValues[reader.ReadVarInt()].ToString()];
+                data["transform"] = TransformModeJsonValue[SkeletonBinary.TransformModeValues[reader.ReadVarInt()]];
                 data["skin"] = reader.ReadBoolean();
                 if (nonessential) reader.ReadInt();
                 bones.Add(data);
@@ -148,7 +151,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 int dark = reader.ReadInt();
                 if (dark != -1) data["dark"] = dark.ToString("x6"); // 0x00rrggbb -> rrggbb
                 data["attachment"] = reader.ReadStringRef();
-                data["blend"] = BlendModeJsonValue[((BlendMode)reader.ReadVarInt()).ToString()];
+                data["blend"] = BlendModeJsonValue[((BlendMode)reader.ReadVarInt())];
                 slots.Add(data);
             }
             root["slots"] = slots;
@@ -218,9 +221,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
                 data["target"] = (string)bones[reader.ReadVarInt()]["name"];
-                data["positionMode"] = PositionModeJsonValue[((PositionMode)reader.ReadVarInt()).ToString()];
-                data["spacingMode"] = SpacingModeJsonValue[((SpacingMode)reader.ReadVarInt()).ToString()];
-                data["rotateMode"] = RotateModeJsonValue[((RotateMode)reader.ReadVarInt()).ToString()];
+                data["positionMode"] = PositionModeJsonValue[((PositionMode)reader.ReadVarInt())];
+                data["spacingMode"] = SpacingModeJsonValue[((SpacingMode)reader.ReadVarInt())];
+                data["rotateMode"] = RotateModeJsonValue[((RotateMode)reader.ReadVarInt())];
                 data["rotation"] = reader.ReadFloat();
                 data["position"] = reader.ReadFloat();
                 data["spacing"] = reader.ReadFloat();
@@ -385,6 +388,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = [];
                 var name = reader.ReadStringRef();
                 events[name] = data;
+                data["__name__"] = name; // 数据里是不应该有这个字段的, 但是为了 ReadEventTimelines 里能够提供 name 字段, 临时增加了一下
                 data["int"] = reader.ReadVarInt(false);
                 data["float"] = reader.ReadFloat();
                 data["string"] = reader.ReadString();
@@ -754,10 +758,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = [];
                 data["time"] = reader.ReadFloat();
                 JsonObject eventData = idx2event[reader.ReadVarInt()].AsObject();
-                data["name"] = (string)eventData["name"];
+                data["name"] = (string)eventData["__name__"];
                 data["int"] = reader.ReadVarInt();
                 data["float"] = reader.ReadFloat();
-                data["string"] = reader.ReadBoolean() ? reader.ReadString() : (string)eventData["string"];
+                if (reader.ReadBoolean()) data["string"] = reader.ReadString();
                 if (eventData.ContainsKey("audio"))
                 {
                     data["volume"] = reader.ReadFloat();
