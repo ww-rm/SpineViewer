@@ -167,14 +167,11 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         public override float GetAnimationDuration(string name) { return skeletonData.FindAnimation(name)?.Duration ?? 0f; }
 
-        protected override RectangleF bounds
+        protected override RectangleF getBounds()
         {
-            get
-            {
-                float[] _ = [];
-                skeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
-                return new RectangleF(x, y, w, h);
-            }
+            float[] _ = [];
+            skeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
+            return new RectangleF(x, y, w, h);
         }
 
         protected override void update(float delta)
@@ -469,7 +466,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             if (debugBounds)
             {
                 var vt = new SFML.Graphics.Vertex() { Color = BoundsColor };
-                var b = bounds;
+                var b = getBounds();
 
                 vt.Position.X = b.Left;
                 vt.Position.Y = b.Top; 

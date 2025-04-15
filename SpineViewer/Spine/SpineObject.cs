@@ -83,7 +83,7 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            using var view = bounds.GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            using var view = getBounds().GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
             tex.SetView(view);
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
@@ -162,12 +162,6 @@ namespace SpineViewer.Spine
         /// </summary>
         public bool UsePma { get { lock (_lock) return usePma; } set { lock (_lock) usePma = value; } }
         protected bool usePma = false;
-
-        /// <summary>
-        /// 骨骼包围盒
-        /// </summary>
-        public RectangleF Bounds { get { lock (_lock) return bounds; } }
-        protected abstract RectangleF bounds { get; }
 
         /// <summary>
         /// 缩放比例
@@ -446,6 +440,12 @@ namespace SpineViewer.Spine
         /// 重置所有轨道上的动画时间
         /// </summary>
         public void ResetAnimationsTime() { lock (_lock) { foreach (var i in getTrackIndices()) setAnimation(i, getAnimation(i)); update(0); } }
+
+        /// <summary>
+        /// 获取当前状态包围盒
+        /// </summary>
+        public RectangleF GetBounds() { lock (_lock) return getBounds(); }
+        protected abstract RectangleF getBounds();
 
         /// <summary>
         /// 更新内部状态

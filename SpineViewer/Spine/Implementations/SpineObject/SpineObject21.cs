@@ -188,54 +188,51 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         public override float GetAnimationDuration(string name) { return skeletonData.FindAnimation(name)?.Duration ?? 0f; }
 
-        protected override RectangleF bounds
+        protected override RectangleF getBounds()
         {
-            get
+            float[] temp = new float[8];
+            var drawOrderItems = skeleton.DrawOrder;
+            float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            for (int i = 0, n = skeleton.DrawOrder.Count; i < n; i++)
             {
-                float[] temp = new float[8];
-                var drawOrderItems = skeleton.DrawOrder;
-                float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
-                for (int i = 0, n = skeleton.DrawOrder.Count; i < n; i++)
+                Slot slot = drawOrderItems[i];
+                int verticesLength = 0;
+                float[] vertices = null;
+                Attachment attachment = slot.Attachment;
+                var regionAttachment = attachment as RegionAttachment;
+                if (regionAttachment != null)
                 {
-                    Slot slot = drawOrderItems[i];
-                    int verticesLength = 0;
-                    float[] vertices = null;
-                    Attachment attachment = slot.Attachment;
-                    var regionAttachment = attachment as RegionAttachment;
-                    if (regionAttachment != null)
+                    verticesLength = 8;
+                    vertices = temp;
+                    if (vertices.Length < 8) vertices = temp = new float[8];
+                    regionAttachment.ComputeWorldVertices(slot.Bone, temp);
+                }
+                else
+                {
+                    var meshAttachment = attachment as MeshAttachment;
+                    if (meshAttachment != null)
                     {
-                        verticesLength = 8;
+                        MeshAttachment mesh = meshAttachment;
+                        verticesLength = mesh.Vertices.Length;
                         vertices = temp;
-                        if (vertices.Length < 8) vertices = temp = new float[8];
-                        regionAttachment.ComputeWorldVertices(slot.Bone, temp);
-                    }
-                    else
-                    {
-                        var meshAttachment = attachment as MeshAttachment;
-                        if (meshAttachment != null)
-                        {
-                            MeshAttachment mesh = meshAttachment;
-                            verticesLength = mesh.Vertices.Length;
-                            vertices = temp;
-                            if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
-                            mesh.ComputeWorldVertices(slot, temp);
-                        }
-                    }
-
-                    if (vertices != null)
-                    {
-                        for (int ii = 0; ii < verticesLength; ii += 2)
-                        {
-                            float vx = vertices[ii], vy = vertices[ii + 1];
-                            minX = Math.Min(minX, vx);
-                            minY = Math.Min(minY, vy);
-                            maxX = Math.Max(maxX, vx);
-                            maxY = Math.Max(maxY, vy);
-                        }
+                        if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
+                        mesh.ComputeWorldVertices(slot, temp);
                     }
                 }
-                return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+
+                if (vertices != null)
+                {
+                    for (int ii = 0; ii < verticesLength; ii += 2)
+                    {
+                        float vx = vertices[ii], vy = vertices[ii + 1];
+                        minX = Math.Min(minX, vx);
+                        minY = Math.Min(minY, vy);
+                        maxX = Math.Max(maxX, vx);
+                        maxY = Math.Max(maxY, vy);
+                    }
+                }
             }
+            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
         }
 
         protected override void update(float delta)
@@ -503,7 +500,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             if (debugBounds)
             {
                 var vt = new SFML.Graphics.Vertex() { Color = BoundsColor };
-                var b = bounds;
+                var b = getBounds();
 
                 vt.Position.X = b.Left;
                 vt.Position.Y = b.Top;
