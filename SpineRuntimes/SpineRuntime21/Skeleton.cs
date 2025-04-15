@@ -302,5 +302,50 @@ namespace SpineRuntime21 {
 		public void Update (float delta) {
 			time += delta;
 		}
-	}
+
+        public void GetBounds(out float x, out float y, out float width, out float height)
+        {
+            float[] temp = new float[8];
+            float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            for (int i = 0, n = drawOrder.Count; i < n; i++)
+            {
+                Slot slot = drawOrder[i];
+                int verticesLength = 0;
+                float[] vertices = null;
+                Attachment attachment = slot.Attachment;
+				if (attachment is RegionAttachment regionAttachment)
+				{
+					verticesLength = 8;
+					vertices = temp;
+					if (vertices.Length < 8) vertices = temp = new float[8];
+					regionAttachment.ComputeWorldVertices(slot.Bone, temp);
+				}
+				else if (attachment is MeshAttachment meshAttachment)
+				{
+
+					MeshAttachment mesh = meshAttachment;
+					verticesLength = mesh.Vertices.Length;
+					vertices = temp;
+					if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
+					mesh.ComputeWorldVertices(slot, temp);
+				}
+
+                if (vertices != null)
+                {
+                    for (int ii = 0; ii < verticesLength; ii += 2)
+                    {
+                        float vx = vertices[ii], vy = vertices[ii + 1];
+                        minX = Math.Min(minX, vx);
+                        minY = Math.Min(minY, vy);
+                        maxX = Math.Max(maxX, vx);
+                        maxY = Math.Max(maxY, vy);
+                    }
+                }
+            }
+			x = minX;
+			y = minY;
+			width = maxX - minX;
+			height = maxY - minY;
+        }
+    }
 }
