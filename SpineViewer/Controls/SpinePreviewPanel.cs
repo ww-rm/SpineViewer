@@ -475,7 +475,7 @@ namespace SpineViewer.Controls
                         foreach (int i in SpineListView.SelectedIndices)
                         {
                             if (spines[i].IsHidden) continue;
-                            if (!spines[i].GetBounds().Contains(src)) continue;
+                            if (!spines[i].GetCurrentBounds().Contains(src)) continue;
                             hit = true;
                             break;
                         }
@@ -492,7 +492,7 @@ namespace SpineViewer.Controls
                             for (int i = 0; i < spines.Count; i++)
                             {
                                 if (spines[i].IsHidden) continue;
-                                if (!spines[i].GetBounds().Contains(src)) continue;
+                                if (!spines[i].GetCurrentBounds().Contains(src)) continue;
 
                                 hit = true;
 
@@ -514,7 +514,7 @@ namespace SpineViewer.Controls
                             for (int i = 0; i < spines.Count; i++)
                             {
                                 if (spines[i].IsHidden) continue;
-                                if (!spines[i].GetBounds().Contains(src)) continue;
+                                if (!spines[i].GetCurrentBounds().Contains(src)) continue;
 
                                 SpineListView.SelectedIndices.Add(i);
                                 break;

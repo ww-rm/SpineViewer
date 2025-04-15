@@ -83,7 +83,7 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            using var view = getBounds().GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            using var view = getCurrentBounds().GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
             tex.SetView(view);
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
@@ -444,8 +444,14 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 获取当前状态包围盒
         /// </summary>
-        public RectangleF GetBounds() { lock (_lock) return getBounds(); }
-        protected abstract RectangleF getBounds();
+        public RectangleF GetCurrentBounds() { lock (_lock) return getCurrentBounds(); }
+        protected abstract RectangleF getCurrentBounds();
+
+        /// <summary>
+        /// 获取当前参数下包围盒最大范围, 不是精确值
+        /// </summary>
+        //public RectangleF GetBounds() { }
+        //protected abstract RectangleF getBounds();
 
         /// <summary>
         /// 更新内部状态
