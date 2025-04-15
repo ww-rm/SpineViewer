@@ -11,7 +11,17 @@ namespace SpineViewer.Spine.Implementations.SpineObject
     [SpineImplementation(SpineVersion.V37)]
     internal class SpineObject37 : Spine.SpineObject
     {
-        private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
+        private static SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
+        {
+            return spineBlendMode switch
+            {
+                BlendMode.Normal => SFMLBlendMode.NormalPma,
+                BlendMode.Additive => SFMLBlendMode.AdditivePma,
+                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
+                BlendMode.Screen => SFMLBlendMode.ScreenPma,
+                _ => throw new NotImplementedException($"{spineBlendMode}"),
+            };
+        }
 
         private class TextureLoader : SpineRuntime37.TextureLoader
         {
@@ -32,18 +42,19 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             }
         }
 
-        private static TextureLoader textureLoader = new();
+        private static readonly TextureLoader textureLoader = new();
+        private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
-        private Atlas atlas;
-        private SkeletonBinary? skeletonBinary;
-        private SkeletonJson? skeletonJson;
-        private SkeletonData skeletonData;
-        private AnimationStateData animationStateData;
+        private readonly Atlas atlas;
+        private readonly SkeletonBinary? skeletonBinary;
+        private readonly SkeletonJson? skeletonJson;
+        private readonly SkeletonData skeletonData;
+        private readonly AnimationStateData animationStateData;
 
-        private Skeleton skeleton;
-        private AnimationState animationState;
+        private readonly Skeleton skeleton;
+        private readonly AnimationState animationState;
 
-        private SkeletonClipping clipping = new();
+        private readonly SkeletonClipping clipping = new();
 
         public SpineObject37(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
@@ -77,7 +88,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             foreach (var anime in skeletonData.Animations)
                 animationNames.Add(anime.Name);
 
-            skeleton = new Skeleton(skeletonData);
+            skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) }; // 挂载一个空皮肤当作容器
             animationStateData = new AnimationStateData(skeletonData);
             animationState = new AnimationState(animationStateData);
         }
@@ -132,14 +143,18 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         protected override void addSkin(string name)
         {
-            if (!skinNames.Contains(name)) return;
-            skeleton.SetSkin(name); // XXX: 3.7 及以下不支持 AddSkin
+            if (skeletonData.FindSkin(name) is Skin sk)
+            {
+                // XXX: 3.7 及以下不支持 AddSkin
+                foreach (var (k, v) in sk.Attachments) 
+                    skeleton.Skin.AddAttachment(k.slotIndex, k.name, v);
+            }
             skeleton.SetSlotsToSetupPose();
         }
 
         protected override void clearSkin()
         {
-            skeleton.SetSkin(skeletonData.DefaultSkin);
+            skeleton.Skin.Attachments.Clear();
             skeleton.SetSlotsToSetupPose();
         }
 

@@ -52,7 +52,6 @@ namespace SpineViewer.Spine
         /// 日志器
         /// </summary>
         protected readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private bool skinLoggerWarned = false;
 
         /// <summary>
         /// 构造函数
@@ -351,12 +350,6 @@ namespace SpineViewer.Spine
             {
                 loadedSkins.Add(name);
                 reloadSkins();
-
-                if (!skinLoggerWarned && Version < SpineVersion.V38 && loadedSkins.Count > 1)
-                {
-                    logger.Warn($"Multiplt skins not supported in SpineVersion {Version.GetName()}");
-                    skinLoggerWarned = true;
-                }
             }
         }
 
