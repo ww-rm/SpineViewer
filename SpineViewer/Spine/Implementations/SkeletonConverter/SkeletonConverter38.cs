@@ -632,7 +632,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 for (int timelineCount = reader.ReadVarInt(); timelineCount > 0; timelineCount--)
                 {
                     JsonArray frames = [];
-                    var type = reader.ReadByte();
+                    var type = reader.ReadSByte();
                     var frameCount = reader.ReadVarInt();
                     switch (type)
                     {
@@ -640,11 +640,13 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             timeline["position"] = frames;
                             while (frameCount-- > 0)
                             {
-                                frames.Add(new JsonObject()
+                                var o = new JsonObject()
                                 {
                                     ["time"] = reader.ReadFloat(),
                                     ["position"] = reader.ReadFloat(),
-                                });
+                                };
+                                if (frameCount > 0) ReadCurve(o);
+                                frames.Add(o);
                             }
                             break;
                         case SkeletonBinary.PATH_SPACING:
@@ -1461,10 +1463,12 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     {
                         writer.WriteByte(SkeletonBinary.PATH_POSITION);
                         writer.WriteVarInt(frames.Count);
-                        foreach (JsonObject o in frames)
+                        for (int i = 0, n = frames.Count; i < n; i++)
                         {
+                            JsonObject o = frames[i].AsObject();
                             if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
                             if (o.TryGetPropertyValue("position", out var position)) writer.WriteFloat((float)position); else writer.WriteFloat(0);
+                            if (i < n - 1) WriteCurve(o);
                         }
                     }
                     else if (type == "spacing")
@@ -1475,7 +1479,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         {
                             JsonObject o = frames[i].AsObject();
                             if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("spacing", out var position)) writer.WriteFloat((float)position); else writer.WriteFloat(0);
+                            if (o.TryGetPropertyValue("spacing", out var spacing)) writer.WriteFloat((float)spacing); else writer.WriteFloat(0);
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
