@@ -13,7 +13,17 @@ namespace SpineViewer.Spine.Implementations.SpineObject
     [SpineImplementation(SpineVersion.V40)]
     internal class SpineObject40 : Spine.SpineObject
     {
-        private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
+        private static SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
+        {
+            return spineBlendMode switch
+            {
+                BlendMode.Normal => SFMLBlendMode.NormalPma,
+                BlendMode.Additive => SFMLBlendMode.AdditivePma,
+                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
+                BlendMode.Screen => SFMLBlendMode.ScreenPma,
+                _ => throw new NotImplementedException($"{spineBlendMode}"),
+            };
+        }
 
         private class TextureLoader : SpineRuntime40.TextureLoader
         {
@@ -34,18 +44,19 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             }
         }
 
-        private static TextureLoader textureLoader = new();
+        private static readonly TextureLoader textureLoader = new();
+        private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
-        private Atlas atlas;
-        private SkeletonBinary? skeletonBinary;
-        private SkeletonJson? skeletonJson;
-        private SkeletonData skeletonData;
-        private AnimationStateData animationStateData;
+        private readonly Atlas atlas;
+        private readonly SkeletonBinary? skeletonBinary;
+        private readonly SkeletonJson? skeletonJson;
+        private readonly SkeletonData skeletonData;
+        private readonly AnimationStateData animationStateData;
 
-        private Skeleton skeleton;
-        private AnimationState animationState;
+        private readonly Skeleton skeleton;
+        private readonly AnimationState animationState;
 
-        private SkeletonClipping clipping = new();
+        private readonly SkeletonClipping clipping = new();
 
         public SpineObject40(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
@@ -169,6 +180,48 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             skeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
             return new RectangleF(x, y, w, h);
         }
+        
+        protected override RectangleF getBounds()
+        {
+            // 初始化临时对象
+            var maxDuration = 0f;
+            var tmpSkeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
+            var tmpAnimationState = new AnimationState(animationStateData);
+            tmpSkeleton.ScaleX = skeleton.ScaleX;
+            tmpSkeleton.ScaleY = skeleton.ScaleY;
+            tmpSkeleton.X = skeleton.X;
+            tmpSkeleton.Y = skeleton.Y;
+            foreach (var sk in loadedSkins) tmpSkeleton.Skin.AddSkin(skeletonData.FindSkin(sk));
+            foreach (var tr in animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null))
+            {
+                var ani = animationState.GetCurrent(tr).Animation;
+                tmpAnimationState.SetAnimation(tr, ani, true);
+                if (ani.Duration > maxDuration) maxDuration = ani.Duration;
+            }
+            tmpSkeleton.SetSlotsToSetupPose();
+            tmpAnimationState.Update(0);
+            tmpAnimationState.Apply(tmpSkeleton);
+            tmpSkeleton.Update(0);
+            tmpSkeleton.UpdateWorldTransform();
+
+            // 切成 100 帧获取边界最大值
+            var bounds = getCurrentBounds();
+            float[] _ = [];
+            for (float tick = 0, delta = maxDuration / 100; tick < maxDuration; tick += delta)
+            {
+                tmpSkeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
+                if (x < bounds.X) bounds.X = x;
+                if (y < bounds.Y) bounds.Y = y;
+                if (w > bounds.Width) bounds.Width = w;
+                if (h > bounds.Height) bounds.Height = h;
+                tmpAnimationState.Update(delta);
+                tmpAnimationState.Apply(tmpSkeleton);
+                tmpSkeleton.Update(delta);
+                tmpSkeleton.UpdateWorldTransform();
+            }
+
+            return bounds;
+        }
 
         protected override void update(float delta)
         {
@@ -176,18 +229,6 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             animationState.Apply(skeleton);
             skeleton.Update(delta);
             skeleton.UpdateWorldTransform();
-        }
-
-        private SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
-        {
-            return spineBlendMode switch
-            {
-                BlendMode.Normal => SFMLBlendMode.NormalPma,
-                BlendMode.Additive => SFMLBlendMode.AdditivePma,
-                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
-                BlendMode.Screen => SFMLBlendMode.ScreenPma,
-                _ => throw new NotImplementedException($"{spineBlendMode}"),
-            };
         }
 
         protected override void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)

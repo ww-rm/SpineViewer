@@ -210,24 +210,58 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             return new RectangleF(x, y, w, h);
         }
 
+        protected override RectangleF getBounds()
+        {
+            // 初始化临时对象
+            var maxDuration = 0f;
+            var tmpSkeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
+            var tmpAnimationState = new AnimationState(animationStateData);
+            tmpSkeleton.FlipX = skeleton.FlipX;
+            tmpSkeleton.FlipY = skeleton.FlipY;
+            tmpSkeleton.X = skeleton.X;
+            tmpSkeleton.Y = skeleton.Y;
+            foreach (var name in loadedSkins)
+            {
+                foreach (var (k, v) in skeletonData.FindSkin(name).Attachments)
+                    tmpSkeleton.Skin.AddAttachment(k.slotIndex, k.name, v);
+            }
+            foreach (var tr in animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null))
+            {
+                var ani = animationState.GetCurrent(tr).Animation;
+                tmpAnimationState.SetAnimation(tr, ani, true);
+                if (ani.Duration > maxDuration) maxDuration = ani.Duration;
+            }
+            tmpSkeleton.SetSlotsToSetupPose();
+            tmpAnimationState.Update(0);
+            tmpAnimationState.Apply(tmpSkeleton);
+            tmpSkeleton.Update(0);
+            tmpSkeleton.UpdateWorldTransform();
+
+            // 切成 100 帧获取边界最大值
+            var bounds = getCurrentBounds();
+            float[] _ = [];
+            for (float tick = 0, delta = maxDuration / 100; tick < maxDuration; tick += delta)
+            {
+                tmpSkeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
+                if (x < bounds.X) bounds.X = x;
+                if (y < bounds.Y) bounds.Y = y;
+                if (w > bounds.Width) bounds.Width = w;
+                if (h > bounds.Height) bounds.Height = h;
+                tmpAnimationState.Update(delta);
+                tmpAnimationState.Apply(tmpSkeleton);
+                tmpSkeleton.Update(delta);
+                tmpSkeleton.UpdateWorldTransform();
+            }
+
+            return bounds;
+        }
+
         protected override void update(float delta)
         {
             animationState.Update(delta);
             animationState.Apply(skeleton);
             skeleton.Update(delta);
             skeleton.UpdateWorldTransform();
-        }
-
-        private SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
-        {
-            return spineBlendMode switch
-            {
-                BlendMode.Normal => SFMLBlendMode.NormalPma,
-                BlendMode.Additive => SFMLBlendMode.AdditivePma,
-                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
-                BlendMode.Screen => SFMLBlendMode.ScreenPma,
-                _ => throw new NotImplementedException($"{spineBlendMode}"),
-            };
         }
 
         protected override void draw(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)

@@ -206,49 +206,53 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         protected override RectangleF getCurrentBounds()
         {
-            float[] temp = new float[8];
-            var drawOrderItems = skeleton.DrawOrder;
-            float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
-            for (int i = 0, n = skeleton.DrawOrder.Count; i < n; i++)
-            {
-                Slot slot = drawOrderItems[i];
-                int verticesLength = 0;
-                float[] vertices = null;
-                Attachment attachment = slot.Attachment;
-                var regionAttachment = attachment as RegionAttachment;
-                if (regionAttachment != null)
-                {
-                    verticesLength = 8;
-                    vertices = temp;
-                    if (vertices.Length < 8) vertices = temp = new float[8];
-                    regionAttachment.ComputeWorldVertices(slot.Bone, temp);
-                }
-                else
-                {
-                    var meshAttachment = attachment as MeshAttachment;
-                    if (meshAttachment != null)
-                    {
-                        MeshAttachment mesh = meshAttachment;
-                        verticesLength = mesh.Vertices.Length;
-                        vertices = temp;
-                        if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
-                        mesh.ComputeWorldVertices(slot, temp);
-                    }
-                }
+            skeleton.GetBounds(out var x, out var y, out var w, out var h);
+            return new RectangleF(x, y, w, h);
+        }
 
-                if (vertices != null)
-                {
-                    for (int ii = 0; ii < verticesLength; ii += 2)
-                    {
-                        float vx = vertices[ii], vy = vertices[ii + 1];
-                        minX = Math.Min(minX, vx);
-                        minY = Math.Min(minY, vy);
-                        maxX = Math.Max(maxX, vx);
-                        maxY = Math.Max(maxY, vy);
-                    }
-                }
+        protected override RectangleF getBounds()
+        {
+            // 初始化临时对象
+            var maxDuration = 0f;
+            var tmpSkeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
+            var tmpAnimationState = new AnimationState(animationStateData);
+            tmpSkeleton.FlipX = skeleton.FlipX;
+            tmpSkeleton.FlipY = skeleton.FlipY;
+            tmpSkeleton.X = skeleton.X;
+            tmpSkeleton.Y = skeleton.Y;
+            foreach (var name in loadedSkins)
+            {
+                foreach (var (k, v) in skeletonData.FindSkin(name).Attachments)
+                    tmpSkeleton.Skin.AddAttachment(k.Key, k.Value, v);
             }
-            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+            foreach (var tr in animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks[i] is not null))
+            {
+                var ani = animationState.GetCurrent(tr).Animation;
+                tmpAnimationState.SetAnimation(tr, ani, true);
+                if (ani.Duration > maxDuration) maxDuration = ani.Duration;
+            }
+            tmpSkeleton.SetSlotsToSetupPose();
+            tmpAnimationState.Update(0);
+            tmpAnimationState.Apply(tmpSkeleton);
+            tmpSkeleton.Update(0);
+            tmpSkeleton.UpdateWorldTransform();
+
+            // 切成 100 帧获取边界最大值
+            var bounds = getCurrentBounds();
+            for (float tick = 0, delta = maxDuration / 100; tick < maxDuration; tick += delta)
+            {
+                tmpSkeleton.GetBounds(out var x, out var y, out var w, out var h);
+                if (x < bounds.X) bounds.X = x;
+                if (y < bounds.Y) bounds.Y = y;
+                if (w > bounds.Width) bounds.Width = w;
+                if (h > bounds.Height) bounds.Height = h;
+                tmpAnimationState.Update(delta);
+                tmpAnimationState.Apply(tmpSkeleton);
+                tmpSkeleton.Update(delta);
+                tmpSkeleton.UpdateWorldTransform();
+            }
+
+            return bounds;
         }
 
         protected override void update(float delta)

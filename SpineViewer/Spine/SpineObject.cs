@@ -443,8 +443,8 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 获取当前参数下包围盒最大范围, 不是精确值
         /// </summary>
-        //public RectangleF GetBounds() { }
-        //protected abstract RectangleF getBounds();
+        public RectangleF GetBounds() { lock (_lock) return getBounds(); }
+        protected abstract RectangleF getBounds();
 
         /// <summary>
         /// 更新内部状态
