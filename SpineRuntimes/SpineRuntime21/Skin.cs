@@ -39,8 +39,9 @@ namespace SpineRuntime21 {
 			new Dictionary<KeyValuePair<int, String>, Attachment>(AttachmentComparer.Instance);
 
 		public String Name { get { return name; } }
+        public Dictionary<KeyValuePair<int, String>, Attachment> Attachments { get { return attachments; } }
 
-		public Skin (String name) {
+        public Skin (String name) {
 			if (name == null) throw new ArgumentNullException("name cannot be null.");
 			this.name = name;
 		}
