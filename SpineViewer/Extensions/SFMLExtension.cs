@@ -31,7 +31,7 @@ namespace SpineViewer.Extensions
         /// <summary>
         /// 获取适合指定画布参数下能够覆盖包围盒的视区包围盒
         /// </summary>
-        public static RectangleF GetResolutionBounds(this RectangleF bounds, Size resolution, Padding padding, Padding margin)
+        public static RectangleF GetResolutionBounds(this RectangleF bounds, Size resolution, Padding margin, Padding padding)
         {
             float sizeW = bounds.Width;
             float sizeH = bounds.Height;
@@ -40,12 +40,15 @@ namespace SpineViewer.Extensions
             float scale = Math.Max(Math.Abs(sizeW / innerW), Math.Abs(sizeH / innerH)); // 取两方向上较大的缩放比, 以此让画布可以覆盖内容
             float scaleW = scale * Math.Sign(sizeW);
             float scaleH = scale * Math.Sign(sizeH);
-            return new(
-                bounds.X - (padding.Left + margin.Left - padding.Right - margin.Right) * scaleW,
-                bounds.Y - (padding.Top + margin.Top - padding.Bottom - margin.Bottom) * scaleH,
-                (resolution.Width + margin.Horizontal) * scaleW,
-                (resolution.Height + margin.Vertical) * scaleH
-            );
+
+            innerW *= scaleW;
+            innerH *= scaleH;
+
+            var x = bounds.X - (innerW - sizeW) / 2 - (margin.Left + padding.Left) * scaleW;
+            var y = bounds.Y - (innerH - sizeH) / 2 - (margin.Top + padding.Top) * scaleH;
+            var w = (resolution.Width + margin.Horizontal) * scaleW;
+            var h = (resolution.Height + margin.Vertical) * scaleH;
+            return new(x, y, w, h);
         }
     }
 }

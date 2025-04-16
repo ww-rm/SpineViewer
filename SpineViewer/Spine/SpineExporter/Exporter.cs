@@ -87,23 +87,6 @@ namespace SpineViewer.Spine.SpineExporter
         public SFML.Graphics.Color BackgroundColorPma { get; private set; } = SFML.Graphics.Color.Transparent;
 
         /// <summary>
-        /// 四周填充距离, 单位为像素
-        /// </summary>
-        public Padding Padding
-        {
-            get => padding;
-            set
-            {
-                if (value.Left < 0) value.Left = 0;
-                if (value.Right < 0) value.Right = 0;
-                if (value.Top < 0) value.Top = 0;
-                if (value.Bottom < 0) value.Bottom = 0;
-                padding = value;
-            }
-        }
-        private Padding padding = new(0);
-
-        /// <summary>
         /// 四周边缘距离, 单位为像素
         /// </summary>
         public Padding Margin 
@@ -121,6 +104,23 @@ namespace SpineViewer.Spine.SpineExporter
         private Padding margin = new(0);
 
         /// <summary>
+        /// 四周填充距离, 单位为像素
+        /// </summary>
+        public Padding Padding
+        {
+            get => padding;
+            set
+            {
+                if (value.Left < 0) value.Left = 0;
+                if (value.Right < 0) value.Right = 0;
+                if (value.Top < 0) value.Top = 0;
+                if (value.Bottom < 0) value.Bottom = 0;
+                padding = value;
+            }
+        }
+        private Padding padding = new(0);
+
+        /// <summary>
         /// 自动分辨率, 将会忽略预览画面的分辨率和视图, 使用模型自身的包围盒
         /// </summary>
         public bool AutoResolution { get; set; } = true;
@@ -135,7 +135,7 @@ namespace SpineViewer.Spine.SpineExporter
             var w = View.Size.X;
             var h = View.Size.Y;
             var currentBounds = new RectangleF(x, y, w, h);
-            var bounds = currentBounds.GetResolutionBounds(Resolution, new(0), Margin);
+            var bounds = currentBounds.GetResolutionBounds(Resolution, Margin, Padding);
 
             using var view = new SFML.Graphics.View(View);
             view.Center = new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
@@ -247,8 +247,11 @@ namespace SpineViewer.Spine.SpineExporter
             boundsCache.Clear();
 
             var spinesToRender = spines.Where(sp => !RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
-            if (IsExportSingle) ExportSingle(spinesToRender, worker);
-            else ExportIndividual(spinesToRender, worker);
+            if (spinesToRender.Length > 0)
+            {
+                if (IsExportSingle) ExportSingle(spinesToRender, worker);
+                else ExportIndividual(spinesToRender, worker);
+            }
 
             logger.LogCurrentProcessMemoryUsage();
         }
@@ -303,17 +306,17 @@ namespace SpineViewer.Spine.SpineExporter
         public SFML.Graphics.Color BackgroundColor { get => Exporter.BackgroundColor; set => Exporter.BackgroundColor = value; }
 
         /// <summary>
-        /// 四周填充距离
-        /// </summary>
-        [TypeConverter(typeof(PaddingConverter))]
-        [Category("[0] 导出"), DisplayName("四周填充距离"), Description("画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间")]
-        public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
-
-        /// <summary>
         /// 四周边缘距离
         /// </summary>
         [TypeConverter(typeof(PaddingConverter))]
         [Category("[0] 导出"), DisplayName("四周边缘距离"), Description("画布外部的边缘距离 (Margin), 最终导出的分辨率需要加上这个边距")]
         public Padding Margin { get => Exporter.Margin; set => Exporter.Margin = value; }
+
+        /// <summary>
+        /// 四周填充距离
+        /// </summary>
+        [TypeConverter(typeof(PaddingConverter))]
+        [Category("[0] 导出"), DisplayName("四周填充距离"), Description("画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间")]
+        public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
     }
 }
