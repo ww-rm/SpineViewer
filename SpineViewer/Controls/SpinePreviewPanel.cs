@@ -23,7 +23,7 @@ namespace SpineViewer.Controls
             renderWindow.SetActive(false);
 
             // 设置默认参数
-            Resolution = Screen.PrimaryScreen.Bounds.Size;
+            Resolution = new(2048, 2048);
             Center = new(0, 0);
             FlipY = true;
             MaxFps = 30;

@@ -29,45 +29,21 @@ namespace SpineViewer.Extensions
         }
 
         /// <summary>
-        /// 获取某个包围盒下合适的视图
+        /// 获取适合指定画布参数下能够覆盖包围盒的视区包围盒
         /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, Size resolution, Padding padding)
-            => bounds.GetView((uint)resolution.Width, (uint)resolution.Height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, uint width, uint height, Padding padding)
-            => bounds.GetView(width, height, (uint)padding.Left, (uint)padding.Right, (uint)padding.Top, (uint)padding.Bottom);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, Size resolution, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
-            => bounds.GetView((uint)resolution.Width, (uint)resolution.Height, paddingL, paddingR, paddingT, paddingB);
-
-        /// <summary>
-        /// 获取某个包围盒下合适的视图
-        /// </summary>
-        public static SFML.Graphics.View GetView(this RectangleF bounds, uint width, uint height, uint paddingL = 1, uint paddingR = 1, uint paddingT = 1, uint paddingB = 1)
+        public static RectangleF GetResolutionBounds(this RectangleF bounds, Size resolution, Padding padding, Padding margin)
         {
-            float sizeX = bounds.Width;
-            float sizeY = bounds.Height;
-            float innerW = width - paddingL - paddingR;
-            float innerH = height - paddingT - paddingB;
-
-            float scale = 1;
-            if (sizeY / sizeX < innerH / innerW)
-                scale = sizeX / innerW; // 相同的 X, 视窗 Y 更大
-            else
-                scale = sizeY / innerH; // 相同的 Y, 视窗 X 更大
-
-            var x = bounds.X + bounds.Width / 2 + (paddingL - (float)paddingR) * scale;
-            var y = bounds.Y + bounds.Height / 2 + (paddingT - (float)paddingB) * scale;
-            var viewX = width * scale;
-            var viewY = height * scale;
-
-            return new(new(x, y), new(viewX, -viewY));
+            float sizeW = bounds.Width;
+            float sizeH = bounds.Height;
+            float innerW = resolution.Width - padding.Horizontal;
+            float innerH = resolution.Height - padding.Vertical;
+            float scale = Math.Max(sizeW / innerW, sizeH / innerH); // 取两方向上较大的缩放比, 以此让画布可以覆盖内容
+            return new(
+                bounds.X + (padding.Left + margin.Left - padding.Right - margin.Right) * scale,
+                bounds.Y + (padding.Top + margin.Top - padding.Bottom - margin.Bottom) * scale,
+                (resolution.Width + margin.Horizontal) * scale,
+                (resolution.Height + margin.Vertical) * scale
+            );
         }
     }
 }

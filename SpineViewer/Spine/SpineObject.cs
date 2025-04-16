@@ -20,14 +20,9 @@ namespace SpineViewer.Spine
         protected const string EMPTY_ANIMATION = "<Empty>";
 
         /// <summary>
-        /// 预览图宽
+        /// 预览图像素大小
         /// </summary>
-        protected const uint PREVIEW_WIDTH = 256;
-
-        /// <summary>
-        /// 预览图高
-        /// </summary>
-        protected const uint PREVIEW_HEIGHT = 256;
+        protected static readonly Size PreviewResolution = new(256, 256);
 
         /// <summary>
         /// 创建特定版本的 Spine
@@ -81,8 +76,12 @@ namespace SpineViewer.Spine
             // 虽然两边不会同时调用 Draw, 但是死锁似乎和 Draw 函数有关
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
-            var tex = new SFML.Graphics.RenderTexture(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            using var view = getCurrentBounds().GetView(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            var tex = new SFML.Graphics.RenderTexture((uint)PreviewResolution.Width, (uint)PreviewResolution.Height);
+            var bounds = getCurrentBounds().GetResolutionBounds(PreviewResolution, new(0), new(0));
+            using var view = new SFML.Graphics.View(
+                new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2),
+                new(bounds.Width, -bounds.Height)
+            );
             tex.SetView(view);
             tex.Clear(SFML.Graphics.Color.Transparent);
             tex.Draw(this);
