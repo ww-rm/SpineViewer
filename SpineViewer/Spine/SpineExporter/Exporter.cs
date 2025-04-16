@@ -27,6 +27,11 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         protected readonly string timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
+        /// <summary>
+        /// 模型包围盒缓存
+        /// </summary>
+        private readonly Dictionary<string, RectangleF> boundsCache = [];
+
         ~Exporter() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
         protected virtual void Dispose(bool disposing) { View.Dispose(); }
@@ -82,15 +87,73 @@ namespace SpineViewer.Spine.SpineExporter
         public SFML.Graphics.Color BackgroundColorPma { get; private set; } = SFML.Graphics.Color.Transparent;
 
         /// <summary>
-        /// 获取供渲染的 SFML.Graphics.RenderTexture
+        /// 四周填充距离, 单位为像素
+        /// </summary>
+        public Padding Padding
+        {
+            get => padding;
+            set
+            {
+                if (value.Left < 0) value.Left = 0;
+                if (value.Right < 0) value.Right = 0;
+                if (value.Top < 0) value.Top = 0;
+                if (value.Bottom < 0) value.Bottom = 0;
+                padding = value;
+            }
+        }
+        private Padding padding = new(0);
+
+        /// <summary>
+        /// 四周边缘距离, 单位为像素
+        /// </summary>
+        public Padding Margin 
+        {
+            get => margin;
+            set
+            {
+                if (value.Left < 0) value.Left = 0;
+                if (value.Right < 0) value.Right = 0;
+                if (value.Top < 0) value.Top = 0;
+                if (value.Bottom < 0) value.Bottom = 0;
+                margin = value;
+            }
+        }
+        private Padding margin = new(0);
+
+        /// <summary>
+        /// 自动分辨率, 将会忽略预览画面的分辨率和视图, 使用模型自身的包围盒
+        /// </summary>
+        public bool AutoResolution { get; set; } = true;
+
+        /// <summary>
+        /// 按照预览画面的参数获取供渲染的 SFML.Graphics.RenderTexture
         /// </summary>
         private SFML.Graphics.RenderTexture GetRenderTexture()
         {
-            var tex = new SFML.Graphics.RenderTexture((uint)Resolution.Width, (uint)Resolution.Height);
+            var x = View.Center.X - View.Size.X / 2;
+            var y = View.Center.Y - View.Size.Y / 2;
+            var w = View.Size.X;
+            var h = View.Size.Y;
+            var currentBounds = new RectangleF(x, y, w, h);
+            var bounds = currentBounds.GetResolutionBounds(Resolution, new(0), Margin);
+
+            using var view = new SFML.Graphics.View(View);
+            view.Center = new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+            view.Size = new(bounds.Width, bounds.Height);
+
+            var tex = new SFML.Graphics.RenderTexture((uint)(Resolution.Width + Margin.Horizontal), (uint)(Resolution.Height + Margin.Vertical));
+            tex.SetView(view);
             tex.Clear(SFML.Graphics.Color.Transparent);
-            tex.SetView(View);
             return tex;
         }
+
+        /// <summary>
+        /// 按照要被渲染的模型获取 SFML.Graphics.RenderTexture
+        /// </summary>
+        //private SFML.Graphics.RenderTexture GetRenderTexture(SpineObject[] spinesToRender)
+        //{
+
+        //}
 
         /// <summary>
         /// 获取单个模型的单帧画面
@@ -179,11 +242,11 @@ namespace SpineViewer.Spine.SpineExporter
         /// <exception cref="ArgumentException"></exception>
         public virtual void Export(SpineObject[] spines, BackgroundWorker? worker = null)
         {
-            if (Validate() is string err) 
-                throw new ArgumentException(err);
+            if (Validate() is string err) throw new ArgumentException(err);
+
+            boundsCache.Clear();
 
             var spinesToRender = spines.Where(sp => !RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
-
             if (IsExportSingle) ExportSingle(spinesToRender, worker);
             else ExportIndividual(spinesToRender, worker);
 
@@ -238,5 +301,19 @@ namespace SpineViewer.Spine.SpineExporter
         [TypeConverter(typeof(SFMLColorConverter))]
         [Category("[0] 导出"), DisplayName("背景颜色"), Description("要使用的背景色, 格式为 #RRGGBBAA")]
         public SFML.Graphics.Color BackgroundColor { get => Exporter.BackgroundColor; set => Exporter.BackgroundColor = value; }
+
+        /// <summary>
+        /// 四周填充距离
+        /// </summary>
+        [TypeConverter(typeof(PaddingConverter))]
+        [Category("[0] 导出"), DisplayName("四周填充距离"), Description("画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间")]
+        public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
+
+        /// <summary>
+        /// 四周边缘距离
+        /// </summary>
+        [TypeConverter(typeof(PaddingConverter))]
+        [Category("[0] 导出"), DisplayName("四周边缘距离"), Description("画布外部的边缘距离 (Margin), 最终导出的分辨率需要加上这个边距")]
+        public Padding Margin { get => Exporter.Margin; set => Exporter.Margin = value; }
     }
 }

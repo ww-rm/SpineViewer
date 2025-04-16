@@ -37,12 +37,14 @@ namespace SpineViewer.Extensions
             float sizeH = bounds.Height;
             float innerW = resolution.Width - padding.Horizontal;
             float innerH = resolution.Height - padding.Vertical;
-            float scale = Math.Max(sizeW / innerW, sizeH / innerH); // 取两方向上较大的缩放比, 以此让画布可以覆盖内容
+            float scale = Math.Max(Math.Abs(sizeW / innerW), Math.Abs(sizeH / innerH)); // 取两方向上较大的缩放比, 以此让画布可以覆盖内容
+            float scaleW = scale * Math.Sign(sizeW);
+            float scaleH = scale * Math.Sign(sizeH);
             return new(
-                bounds.X + (padding.Left + margin.Left - padding.Right - margin.Right) * scale,
-                bounds.Y + (padding.Top + margin.Top - padding.Bottom - margin.Bottom) * scale,
-                (resolution.Width + margin.Horizontal) * scale,
-                (resolution.Height + margin.Vertical) * scale
+                bounds.X - (padding.Left + margin.Left - padding.Right - margin.Right) * scaleW,
+                bounds.Y - (padding.Top + margin.Top - padding.Bottom - margin.Bottom) * scaleH,
+                (resolution.Width + margin.Horizontal) * scaleW,
+                (resolution.Height + margin.Vertical) * scaleH
             );
         }
     }
