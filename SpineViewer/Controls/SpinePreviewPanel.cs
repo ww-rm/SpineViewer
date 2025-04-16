@@ -23,7 +23,7 @@ namespace SpineViewer.Controls
             renderWindow.SetActive(false);
 
             // 设置默认参数
-            Resolution = new(2048, 2048);
+            Resolution = Screen.PrimaryScreen.Bounds.Size;
             Center = new(0, 0);
             FlipY = true;
             MaxFps = 30;
@@ -423,27 +423,17 @@ namespace SpineViewer.Controls
             if (renderWindow is null)
                 return;
 
-            float parentX = panel_Render.Parent.Width;
-            float parentY = panel_Render.Parent.Height;
-            float sizeX = panel_Render.Width;
-            float sizeY = panel_Render.Height;
-
-            if ((sizeY / sizeX) < (parentY / parentX))
-            {
-                // 相同的 X, 子窗口 Y 更小
-                sizeY = parentX * sizeY / sizeX;
-                sizeX = parentX;
-            }
-            else
-            {
-                // 相同的 Y, 子窗口 X 更小
-                sizeX = parentY * sizeX / sizeY;
-                sizeY = parentY;
-            }
+            float parentW = panel_Render.Parent.Width;
+            float parentH = panel_Render.Parent.Height;
+            float renderW = panel_Render.Width;
+            float renderH = panel_Render.Height;
+            float scale = Math.Min(parentW / renderW, parentH / renderH); // 两方向取较小值, 保证 parent 覆盖 render
+            renderH *= scale;
+            renderW *= scale;
 
             // 必须通过 SFML 的方法调整窗口
-            renderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
-            renderWindow.Size = new((uint)sizeX, (uint)sizeY);
+            renderWindow.Position = new((int)(parentW - renderW) / 2, (int)(parentH - renderH) / 2);
+            renderWindow.Size = new((uint)renderW, (uint)renderH);
         }
 
         private void panel_Render_MouseDown(object sender, MouseEventArgs e)
