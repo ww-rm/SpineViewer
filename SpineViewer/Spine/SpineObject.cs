@@ -77,7 +77,7 @@ namespace SpineViewer.Spine
             // 除此之外, 似乎还和 tex 的 Dispose 有关
             // 如果不对 tex 进行 Dispose, 那么不管是否 Draw 都正常不会死锁
             var tex = new SFML.Graphics.RenderTexture((uint)PreviewResolution.Width, (uint)PreviewResolution.Height);
-            var bounds = getCurrentBounds().GetResolutionBounds(PreviewResolution, new(0), new(0));
+            var bounds = getCurrentBounds().GetCanvasBounds(PreviewResolution);
             using var view = new SFML.Graphics.View(
                 new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2),
                 new(bounds.Width, -bounds.Height)
