@@ -25,12 +25,17 @@ namespace SpineViewer.Spine.SpineExporter
         /// <summary>
         /// 可用于文件名的时间戳字符串
         /// </summary>
-        protected readonly string timestamp = DateTime.Now.ToString("yyMMddHHmmss");
+        protected string timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
         /// <summary>
         /// 模型包围盒缓存
         /// </summary>
         private readonly Dictionary<string, RectangleF> boundsCache = [];
+
+        /// <summary>
+        /// 非自动分辨率下导出视图缓存
+        /// </summary>
+        private SFML.Graphics.View? viewCache = null;
 
         ~Exporter() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
@@ -52,9 +57,9 @@ namespace SpineViewer.Spine.SpineExporter
         public Size Resolution { get; set; } = new(100, 100);
 
         /// <summary>
-        /// 渲染视窗, 接管对象生命周期
+        /// 渲染视窗
         /// </summary>
-        public SFML.Graphics.View View { get => view; set { view.Dispose(); view = value; } }
+        public SFML.Graphics.View View { get => view; set { view.Dispose(); view = new(value); } }
         private SFML.Graphics.View view = new();
 
         /// <summary>
@@ -89,7 +94,7 @@ namespace SpineViewer.Spine.SpineExporter
         /// <summary>
         /// 四周边缘距离, 单位为像素
         /// </summary>
-        public Padding Margin 
+        public Padding Margin
         {
             get => margin;
             set
@@ -121,6 +126,11 @@ namespace SpineViewer.Spine.SpineExporter
         private Padding padding = new(0);
 
         /// <summary>
+        /// 允许内容溢出到边缘和填充区域
+        /// </summary>
+        public bool AllowContentOverflow { get; set; } = false;
+
+        /// <summary>
         /// 自动分辨率, 将会忽略预览画面的分辨率和视图, 使用模型自身的包围盒
         /// </summary>
         public bool AutoResolution { get; set; } = true;
@@ -130,19 +140,24 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         private SFML.Graphics.RenderTexture GetRenderTexture()
         {
-            var x = View.Center.X - View.Size.X / 2;
-            var y = View.Center.Y - View.Size.Y / 2;
-            var w = View.Size.X;
-            var h = View.Size.Y;
-            var currentBounds = new RectangleF(x, y, w, h);
-            var bounds = currentBounds.GetResolutionBounds(Resolution, Margin, Padding);
+            if (viewCache is null)
+            {
+                viewCache = new SFML.Graphics.View(View);
 
-            using var view = new SFML.Graphics.View(View);
-            view.Center = new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
-            view.Size = new(bounds.Width, bounds.Height);
+                if (AllowContentOverflow)
+                {
+                    var bounds = View.GetBounds().GetCanvasBounds(Resolution, Margin, Padding);
+                    viewCache.Center = new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+                    viewCache.Size = new(bounds.Width, bounds.Height);
+                }
+                else
+                {
+                    viewCache.SetViewport(Resolution, Margin, Padding);
+                }
+            }
 
             var tex = new SFML.Graphics.RenderTexture((uint)(Resolution.Width + Margin.Horizontal), (uint)(Resolution.Height + Margin.Vertical));
-            tex.SetView(view);
+            tex.SetView(viewCache);
             tex.Clear(SFML.Graphics.Color.Transparent);
             return tex;
         }
@@ -152,7 +167,16 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         //private SFML.Graphics.RenderTexture GetRenderTexture(SpineObject[] spinesToRender)
         //{
-
+        //    var cacheKey = string.Join("|", spinesToRender.Select(v => v.ID));
+        //    var bounds = new RectangleF();
+        //    if (!boundsCache.TryGetValue(cacheKey, out bounds))
+        //    {
+        //        bounds = spinesToRender[0].GetBounds();
+        //        foreach (var sp in spinesToRender)
+        //        {
+        //            bounds.X = 
+        //        }
+        //    }
         //}
 
         /// <summary>
@@ -170,7 +194,7 @@ namespace SpineViewer.Spine.SpineExporter
 
             // 先将预乘结果准确绘制出来, 注意背景色也应当是预乘的
             texPma.Clear(BackgroundColorPma);
-            foreach (var spine in spinesToRender) texPma.Draw(spine);
+            foreach (var spine in spinesToRender) { spine.EnableDebug = true; texPma.Draw(spine); }
             texPma.Display();
 
             // 背景色透明度不为 1 时需要处理反预乘, 否则直接就是结果
@@ -244,13 +268,20 @@ namespace SpineViewer.Spine.SpineExporter
         {
             if (Validate() is string err) throw new ArgumentException(err);
 
-            boundsCache.Clear();
-
             var spinesToRender = spines.Where(sp => !RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
             if (spinesToRender.Length > 0)
             {
+                boundsCache.Clear();
+                viewCache?.Dispose();
+                viewCache = null;
+
+                timestamp = DateTime.Now.ToString("yyMMddHHmmss"); // 刷新时间戳
                 if (IsExportSingle) ExportSingle(spinesToRender, worker);
                 else ExportIndividual(spinesToRender, worker);
+
+                boundsCache.Clear();
+                viewCache?.Dispose();
+                viewCache = null;
             }
 
             logger.LogCurrentProcessMemoryUsage();
@@ -318,5 +349,11 @@ namespace SpineViewer.Spine.SpineExporter
         [TypeConverter(typeof(PaddingConverter))]
         [Category("[0] 导出"), DisplayName("四周填充距离"), Description("画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间")]
         public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
+
+        /// <summary>
+        /// 允许内容溢出到边缘和填充区域
+        /// </summary>
+        [Category("[0] 导出"), DisplayName("允许内容溢出"), Description("允许内容溢出到边缘和填充区域")]
+        public bool AllowContentOverflow { get => Exporter.AllowContentOverflow; set => Exporter.AllowContentOverflow = value; }
     }
 }
