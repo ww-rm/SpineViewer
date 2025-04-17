@@ -9,6 +9,18 @@ namespace SpineViewer.Extensions
     public static class SFMLExtension
     {
         /// <summary>
+        /// 获取并集范围
+        /// </summary>
+        public static RectangleF Union(this RectangleF bounds, RectangleF other)
+        {
+            var x = Math.Min(bounds.X, other.X);
+            var y = Math.Min(bounds.Y, other.Y);
+            var w = Math.Max(bounds.Right, other.Right) - x;
+            var h = Math.Max(bounds.Bottom, other.Bottom) - y;
+            return new(x, y, w, h);
+        }
+
+        /// <summary>
         /// 获取适合指定画布参数下能够覆盖包围盒的画布视区包围盒
         /// </summary>
         public static RectangleF GetCanvasBounds(this RectangleF bounds, Size resolution) => GetCanvasBounds(bounds, resolution, new(0), new(0));
@@ -62,10 +74,22 @@ namespace SpineViewer.Extensions
         }
 
         /// <summary>
-        /// 获取视图的包围盒
+        /// 获取视区的包围盒
         /// </summary>
         public static RectangleF GetBounds(this SFML.Graphics.View view)
-            => new(view.Center.X - view.Size.X / 2, view.Center.Y - view.Size.Y / 2, view.Size.X, view.Size.Y);
+        {
+            return new(
+                view.Center.X - view.Size.X / 2, 
+                view.Center.Y - view.Size.Y / 2, 
+                view.Size.X, 
+                view.Size.Y
+            );
+        }
+
+        /// <summary>
+        /// 按画布设置视区, 边缘和填充区域将不会出现内容
+        /// </summary>
+        public static void SetViewport(this SFML.Graphics.View view, Size resolution, Padding margin) => SetViewport(view, resolution, margin, new(0));
 
         /// <summary>
         /// 按画布设置视区, 边缘和填充区域将不会出现内容
