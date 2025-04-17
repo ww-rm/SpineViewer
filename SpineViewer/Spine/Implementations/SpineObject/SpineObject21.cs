@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineRuntime21;
+using SpineViewer.Extensions;
 using SpineViewer.Utils;
 
 namespace SpineViewer.Spine.Implementations.SpineObject
@@ -237,15 +238,13 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             tmpSkeleton.Update(0);
             tmpSkeleton.UpdateWorldTransform();
 
-            // 切成 100 帧获取边界最大值
+            // 按 10 帧每秒计算边框
             var bounds = getCurrentBounds();
-            for (float tick = 0, delta = maxDuration / 100; tick < maxDuration; tick += delta)
+            float[] _ = [];
+            for (float tick = 0, delta = 0.1f; tick < maxDuration; tick += delta)
             {
                 tmpSkeleton.GetBounds(out var x, out var y, out var w, out var h);
-                if (x < bounds.X) bounds.X = x;
-                if (y < bounds.Y) bounds.Y = y;
-                if (w > bounds.Width) bounds.Width = w;
-                if (h > bounds.Height) bounds.Height = h;
+                bounds = bounds.Union(new(x, y, w, h));
                 tmpAnimationState.Update(delta);
                 tmpAnimationState.Apply(tmpSkeleton);
                 tmpSkeleton.Update(delta);
