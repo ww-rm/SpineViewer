@@ -28,18 +28,23 @@ namespace SpineViewer.Spine.SpineExporter
         protected string timestamp = DateTime.Now.ToString("yyMMddHHmmss");
 
         /// <summary>
-        /// 模型包围盒缓存
+        /// 非自动分辨率下导出视区缓存
         /// </summary>
-        private readonly Dictionary<string, RectangleF> boundsCache = [];
+        private SFML.Graphics.View? exportViewCache = null;
 
         /// <summary>
-        /// 非自动分辨率下导出视图缓存
+        /// 模型分辨率缓存
         /// </summary>
-        private SFML.Graphics.View? viewCache = null;
+        private readonly Dictionary<string, Size> spineResolutionCache = [];
+
+        /// <summary>
+        /// 自动分辨率下每个模型的导出视区缓存
+        /// </summary>
+        private readonly Dictionary<string, SFML.Graphics.View> spineViewCache = [];
 
         ~Exporter() { Dispose(false); }
         public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
-        protected virtual void Dispose(bool disposing) { View.Dispose(); }
+        protected virtual void Dispose(bool disposing) { PreviewerView.Dispose(); }
 
         /// <summary>
         /// 输出文件夹
@@ -57,10 +62,10 @@ namespace SpineViewer.Spine.SpineExporter
         public Size Resolution { get; set; } = new(100, 100);
 
         /// <summary>
-        /// 渲染视窗
+        /// 预览画面的视区
         /// </summary>
-        public SFML.Graphics.View View { get => view; set { view.Dispose(); view = new(value); } }
-        private SFML.Graphics.View view = new();
+        public SFML.Graphics.View PreviewerView { get => previewerView; set { previewerView.Dispose(); previewerView = new(value); } }
+        private SFML.Graphics.View previewerView = new();
 
         /// <summary>
         /// 是否仅渲染选中
@@ -109,7 +114,7 @@ namespace SpineViewer.Spine.SpineExporter
         private Padding margin = new(0);
 
         /// <summary>
-        /// 四周填充距离, 单位为像素
+        /// 四周填充距离, 单位为像素, 自动分辨率下忽略该值
         /// </summary>
         public Padding Padding
         {
@@ -131,53 +136,67 @@ namespace SpineViewer.Spine.SpineExporter
         public bool AllowContentOverflow { get; set; } = false;
 
         /// <summary>
-        /// 自动分辨率, 将会忽略预览画面的分辨率和视图, 使用模型自身的包围盒
+        /// 自动分辨率, 将会忽略预览画面的分辨率和预览画面视区, 使用模型自身的包围盒, 四周填充会被忽略
         /// </summary>
-        public bool AutoResolution { get; set; } = true;
+        public bool AutoResolution { get; set; } = false;
 
         /// <summary>
-        /// 按照预览画面的参数获取供渲染的 SFML.Graphics.RenderTexture
+        /// 获取导出渲染对象, 如果提供了模型列表则分辨率为模型大小, 否则是预览画面大小
         /// </summary>
-        private SFML.Graphics.RenderTexture GetRenderTexture()
+        private SFML.Graphics.RenderTexture GetRenderTexture(SpineObject[]? spinesToRender = null)
         {
-            if (viewCache is null)
+            if (spinesToRender is null)
             {
-                viewCache = new SFML.Graphics.View(View);
-
-                if (AllowContentOverflow)
+                if (exportViewCache is null)
                 {
-                    var bounds = View.GetBounds().GetCanvasBounds(Resolution, Margin, Padding);
-                    viewCache.Center = new(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
-                    viewCache.Size = new(bounds.Width, bounds.Height);
+                    // 记录缓存
+                    exportViewCache = new SFML.Graphics.View(PreviewerView);
+                    if (AllowContentOverflow)
+                    {
+                        var canvasBounds = exportViewCache.GetBounds().GetCanvasBounds(Resolution, Margin, Padding);
+                        exportViewCache.Center = new(canvasBounds.X + canvasBounds.Width / 2, canvasBounds.Y + canvasBounds.Height / 2);
+                        exportViewCache.Size = new(canvasBounds.Width, canvasBounds.Height);
+                    }
+                    else
+                    {
+                        exportViewCache.SetViewport(Resolution, Margin, Padding);
+                    }
                 }
-                else
-                {
-                    viewCache.SetViewport(Resolution, Margin, Padding);
-                }
+                var tex = new SFML.Graphics.RenderTexture((uint)(Resolution.Width + Margin.Horizontal), (uint)(Resolution.Height + Margin.Vertical));
+                tex.SetView(exportViewCache);
+                return tex;
             }
+            else
+            {
+                var cacheKey = string.Join("|", spinesToRender.Select(v => v.ID));
 
-            var tex = new SFML.Graphics.RenderTexture((uint)(Resolution.Width + Margin.Horizontal), (uint)(Resolution.Height + Margin.Vertical));
-            tex.SetView(viewCache);
-            tex.Clear(SFML.Graphics.Color.Transparent);
-            return tex;
+                // 记录缓存
+                if (!spineViewCache.TryGetValue(cacheKey, out var spineView))
+                {
+                    var spineBounds = spinesToRender[0].GetBounds();
+                    foreach (var sp in spinesToRender.Skip(1))
+                        spineBounds = spineBounds.Union(sp.GetBounds());
+
+                    var spineResolution = new Size((int)Math.Ceiling(spineBounds.Width), (int)Math.Ceiling(spineBounds.Height));
+                    var canvasBounds = spineBounds.GetCanvasBounds(spineResolution, Margin); // 忽略填充
+
+                    spineResolutionCache[cacheKey] = spineResolution;
+                    spineViewCache[cacheKey] = spineView = new SFML.Graphics.View(
+                        new(canvasBounds.X + canvasBounds.Width / 2, canvasBounds.Y + canvasBounds.Height / 2),
+                        new(canvasBounds.Width, -canvasBounds.Height)
+                    );
+
+                    logger.Info("Auto resolusion: ({}, {})", spineResolution.Width, spineResolution.Height);
+                }
+
+                var tex = new SFML.Graphics.RenderTexture(
+                    (uint)(spineResolutionCache[cacheKey].Width + Margin.Horizontal), 
+                    (uint)(spineResolutionCache[cacheKey].Height + Margin.Vertical)
+                );
+                tex.SetView(spineViewCache[cacheKey]);
+                return tex;
+            }
         }
-
-        /// <summary>
-        /// 按照要被渲染的模型获取 SFML.Graphics.RenderTexture
-        /// </summary>
-        //private SFML.Graphics.RenderTexture GetRenderTexture(SpineObject[] spinesToRender)
-        //{
-        //    var cacheKey = string.Join("|", spinesToRender.Select(v => v.ID));
-        //    var bounds = new RectangleF();
-        //    if (!boundsCache.TryGetValue(cacheKey, out bounds))
-        //    {
-        //        bounds = spinesToRender[0].GetBounds();
-        //        foreach (var sp in spinesToRender)
-        //        {
-        //            bounds.X = 
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// 获取单个模型的单帧画面
@@ -190,11 +209,11 @@ namespace SpineViewer.Spine.SpineExporter
         protected SFMLImageVideoFrame GetFrame(SpineObject[] spinesToRender)
         {
             // RenderTexture 必须临时创建, 随用随取, 防止出现跨线程的情况
-            using var texPma = GetRenderTexture();
+            using var texPma = GetRenderTexture(AutoResolution ? spinesToRender : null);
 
             // 先将预乘结果准确绘制出来, 注意背景色也应当是预乘的
             texPma.Clear(BackgroundColorPma);
-            foreach (var spine in spinesToRender) { spine.EnableDebug = true; texPma.Draw(spine); }
+            foreach (var spine in spinesToRender) texPma.Draw(spine);
             texPma.Display();
 
             // 背景色透明度不为 1 时需要处理反预乘, 否则直接就是结果
@@ -218,7 +237,7 @@ namespace SpineViewer.Spine.SpineExporter
                 st.Shader = SFMLShader.InversePma;
 
                 // 在最终结果上二次渲染非预乘画面
-                using var tex = GetRenderTexture();
+                using var tex = GetRenderTexture(AutoResolution ? spinesToRender : null);
 
                 // 将非预乘结果覆盖式绘制在目标对象上, 注意背景色应该用非预乘的
                 tex.Clear(BackgroundColor);
@@ -258,6 +277,15 @@ namespace SpineViewer.Spine.SpineExporter
             return null;
         }
 
+        private void ClearCache()
+        {
+            exportViewCache?.Dispose();
+            exportViewCache = null;
+            spineResolutionCache.Clear();
+            foreach (var v in spineViewCache.Values) v.Dispose();
+            spineViewCache.Clear();
+        }
+
         /// <summary>
         /// 执行导出
         /// </summary>
@@ -271,17 +299,13 @@ namespace SpineViewer.Spine.SpineExporter
             var spinesToRender = spines.Where(sp => !RenderSelectedOnly || sp.IsSelected).Reverse().ToArray();
             if (spinesToRender.Length > 0)
             {
-                boundsCache.Clear();
-                viewCache?.Dispose();
-                viewCache = null;
+                ClearCache();
 
                 timestamp = DateTime.Now.ToString("yyMMddHHmmss"); // 刷新时间戳
                 if (IsExportSingle) ExportSingle(spinesToRender, worker);
                 else ExportIndividual(spinesToRender, worker);
 
-                boundsCache.Clear();
-                viewCache?.Dispose();
-                viewCache = null;
+                ClearCache();
             }
 
             logger.LogCurrentProcessMemoryUsage();
@@ -317,10 +341,10 @@ namespace SpineViewer.Spine.SpineExporter
         public Size Resolution { get => Exporter.Resolution; }
 
         /// <summary>
-        /// 渲染视窗
+        /// 预览画面视区
         /// </summary>
-        [Category("[0] 导出"), DisplayName("视图"), Description("画面的视图参数，请在预览画面参数面板进行调整")]
-        public SFML.Graphics.View View { get => Exporter.View; }
+        [Category("[0] 导出"), DisplayName("预览画面视区"), Description("预览画面的视区参数，请在预览画面参数面板进行调整")]
+        public SFML.Graphics.View View { get => Exporter.PreviewerView; }
 
         /// <summary>
         /// 是否仅渲染选中
@@ -355,5 +379,11 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         [Category("[0] 导出"), DisplayName("允许内容溢出"), Description("允许内容溢出到边缘和填充区域")]
         public bool AllowContentOverflow { get => Exporter.AllowContentOverflow; set => Exporter.AllowContentOverflow = value; }
+
+        /// <summary>
+        /// 自动分辨率
+        /// </summary>
+        [Category("[0] 导出"), DisplayName("自动分辨率"), Description("根据导出内容自动设置分辨率, 四周填充距离和内容溢出参数将会被忽略")]
+        public bool AutoResolution { get => Exporter.AutoResolution; set => Exporter.AutoResolution = value; }
     }
 }
