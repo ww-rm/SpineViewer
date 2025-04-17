@@ -131,12 +131,12 @@ namespace SpineViewer.Spine.SpineExporter
         private Padding padding = new(0);
 
         /// <summary>
-        /// 允许内容溢出到边缘和填充区域
+        /// 在使用预览画面分辨率的情况下, 允许内容溢出到边缘和填充区域, 自动分辨率下忽略该值
         /// </summary>
         public bool AllowContentOverflow { get; set; } = false;
 
         /// <summary>
-        /// 自动分辨率, 将会忽略预览画面的分辨率和预览画面视区, 使用模型自身的包围盒, 四周填充会被忽略
+        /// 自动分辨率, 将会忽略预览画面的分辨率和预览画面视区, 使用模型自身的包围盒, 四周填充和内容溢出会被忽略
         /// </summary>
         public bool AutoResolution { get; set; } = false;
 
@@ -377,7 +377,7 @@ namespace SpineViewer.Spine.SpineExporter
         /// <summary>
         /// 允许内容溢出到边缘和填充区域
         /// </summary>
-        [Category("[0] 导出"), DisplayName("允许内容溢出"), Description("允许内容溢出到边缘和填充区域")]
+        [Category("[0] 导出"), DisplayName("允许内容溢出"), Description("使用预览画面分辨率的情况下, 允许内容溢出到边缘和填充区域")]
         public bool AllowContentOverflow { get => Exporter.AllowContentOverflow; set => Exporter.AllowContentOverflow = value; }
 
         /// <summary>
