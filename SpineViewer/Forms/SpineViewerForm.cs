@@ -92,8 +92,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new FrameExporterProperty((FrameExporter)exporter));
@@ -112,8 +113,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new FrameSequenceExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new FrameSequenceExporterProperty((FrameSequenceExporter)exporter));
@@ -132,8 +134,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new GifExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new GifExporterProperty((GifExporter)exporter));
@@ -152,8 +155,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebpExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new WebpExporterProperty((WebpExporter)exporter));
@@ -172,8 +176,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new AvifExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new AvifExporterProperty((AvifExporter)exporter));
@@ -192,8 +197,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new Mp4Exporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new Mp4ExporterProperty((Mp4Exporter)exporter));
@@ -212,8 +218,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new WebmExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new WebmExporterProperty((WebmExporter)exporter));
@@ -232,8 +239,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MkvExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new MkvExporterProperty((MkvExporter)exporter));
@@ -252,8 +260,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new MovExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new MovExporterProperty((MovExporter)exporter));
@@ -272,8 +281,9 @@ namespace SpineViewer
             if (!exporterCache.ContainsKey(k)) exporterCache[k] = new CustomExporter();
 
             var exporter = exporterCache[k];
+            using var view = spinePreviewPanel.GetView();
             exporter.Resolution = spinePreviewPanel.Resolution;
-            exporter.View = spinePreviewPanel.GetView();
+            exporter.PreviewerView = view;
             exporter.RenderSelectedOnly = spinePreviewPanel.RenderSelectedOnly;
 
             var exportDialog = new Dialogs.ExportDialog(new CustomExporterProperty((CustomExporter)exporter));
@@ -307,7 +317,7 @@ namespace SpineViewer
 
         private void toolStripMenuItem_ManageResource_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void toolStripMenuItem_About_Click(object sender, EventArgs e)
