@@ -59,7 +59,23 @@ namespace SpineViewer.Spine.SpineExporter
         /// <summary>
         /// 画面分辨率
         /// </summary>
-        public Size Resolution { get; set; } = new(100, 100);
+        public Size Resolution 
+        {
+            get => resolution;
+            set
+            {
+                if (value.Width <= 0) value.Width = 100;
+                if (value.Height <= 0) value.Height = 100;
+                resolution = value;
+                exportResolution = new(value.Width + Margin.Horizontal, value.Height + Margin.Vertical);
+            }
+        }
+        private Size resolution = new(100, 100);
+
+        /// <summary>
+        /// 包含边缘的分辨率
+        /// </summary>
+        private Size exportResolution = new(100, 100);
 
         /// <summary>
         /// 预览画面的视区
@@ -86,7 +102,7 @@ namespace SpineViewer.Spine.SpineExporter
                 bcPma.R = (byte)(bcPma.R * a);
                 bcPma.G = (byte)(bcPma.G * a);
                 bcPma.B = (byte)(bcPma.B * a);
-                BackgroundColorPma = bcPma;
+                backgroundColorPma = bcPma;
             }
         }
         private SFML.Graphics.Color backgroundColor = SFML.Graphics.Color.Transparent;
@@ -94,7 +110,7 @@ namespace SpineViewer.Spine.SpineExporter
         /// <summary>
         /// 预乘后的背景颜色
         /// </summary>
-        public SFML.Graphics.Color BackgroundColorPma { get; private set; } = SFML.Graphics.Color.Transparent;
+        private SFML.Graphics.Color backgroundColorPma = SFML.Graphics.Color.Transparent;
 
         /// <summary>
         /// 四周边缘距离, 单位为像素
@@ -109,6 +125,7 @@ namespace SpineViewer.Spine.SpineExporter
                 if (value.Top < 0) value.Top = 0;
                 if (value.Bottom < 0) value.Bottom = 0;
                 margin = value;
+                exportResolution = new(Resolution.Width + value.Horizontal, Resolution.Height + value.Vertical);
             }
         }
         private Padding margin = new(0);
@@ -145,6 +162,10 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         private SFML.Graphics.RenderTexture GetRenderTexture(SpineObject[]? spinesToRender = null)
         {
+            uint width;
+            uint height;
+            SFML.Graphics.View view;
+
             if (spinesToRender is null)
             {
                 if (exportViewCache is null)
@@ -162,9 +183,9 @@ namespace SpineViewer.Spine.SpineExporter
                         exportViewCache.SetViewport(Resolution, Margin, Padding);
                     }
                 }
-                var tex = new SFML.Graphics.RenderTexture((uint)(Resolution.Width + Margin.Horizontal), (uint)(Resolution.Height + Margin.Vertical));
-                tex.SetView(exportViewCache);
-                return tex;
+                width = (uint)exportResolution.Width;
+                height = (uint)exportResolution.Height;
+                view = exportViewCache;
             }
             else
             {
@@ -180,7 +201,7 @@ namespace SpineViewer.Spine.SpineExporter
                     var spineResolution = new Size((int)Math.Ceiling(spineBounds.Width), (int)Math.Ceiling(spineBounds.Height));
                     var canvasBounds = spineBounds.GetCanvasBounds(spineResolution, Margin); // 忽略填充
 
-                    spineResolutionCache[cacheKey] = spineResolution;
+                    spineResolutionCache[cacheKey] = new(spineResolution.Width + Margin.Horizontal, spineResolution.Height + Margin.Vertical);
                     spineViewCache[cacheKey] = spineView = new SFML.Graphics.View(
                         new(canvasBounds.X + canvasBounds.Width / 2, canvasBounds.Y + canvasBounds.Height / 2),
                         new(canvasBounds.Width, -canvasBounds.Height)
@@ -188,14 +209,14 @@ namespace SpineViewer.Spine.SpineExporter
 
                     logger.Info("Auto resolusion: ({}, {})", spineResolution.Width, spineResolution.Height);
                 }
-
-                var tex = new SFML.Graphics.RenderTexture(
-                    (uint)(spineResolutionCache[cacheKey].Width + Margin.Horizontal), 
-                    (uint)(spineResolutionCache[cacheKey].Height + Margin.Vertical)
-                );
-                tex.SetView(spineViewCache[cacheKey]);
-                return tex;
+                width = (uint)spineResolutionCache[cacheKey].Width;
+                height = (uint)spineResolutionCache[cacheKey].Height;
+                view = spineViewCache[cacheKey];
             }
+
+            var tex = new SFML.Graphics.RenderTexture(width, height);
+            tex.SetView(view);
+            return tex;
         }
 
         /// <summary>
@@ -212,7 +233,7 @@ namespace SpineViewer.Spine.SpineExporter
             using var texPma = GetRenderTexture(AutoResolution ? spinesToRender : null);
 
             // 先将预乘结果准确绘制出来, 注意背景色也应当是预乘的
-            texPma.Clear(BackgroundColorPma);
+            texPma.Clear(backgroundColorPma);
             foreach (var spine in spinesToRender) texPma.Draw(spine);
             texPma.Display();
 
