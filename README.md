@@ -12,7 +12,7 @@
 
 ---
 
-:sparkles: `v0.12.5` 新特性: 支持自定义槽位附件 :sparkles:
+:sparkles: `v0.12.5` 新特性: 支持自定义插槽附件 :sparkles:
 
 ---
 
