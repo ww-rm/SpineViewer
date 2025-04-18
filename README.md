@@ -10,6 +10,12 @@
 
 ![previewer](img/preview.webp)
 
+---
+
+:sparkles: `v0.12.5` 新特性: 支持自定义槽位附件 :sparkles:
+
+---
+
 ## 安装
 
 前往 [Release](https://github.com/ww-rm/SpineViewer/releases) 界面下载压缩包.
