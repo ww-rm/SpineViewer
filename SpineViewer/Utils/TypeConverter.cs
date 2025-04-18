@@ -111,6 +111,8 @@ namespace SpineViewer.Utils
             public override void SetValue(object? component, object? value) => component?.GetType().GetField(Name)?.SetValue(component, value);
         }
 
+        private static PropertyDescriptorCollection pdCollection = null;
+
         public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
         {
             return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
@@ -156,18 +158,16 @@ namespace SpineViewer.Utils
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
         {
-            // 自定义属性集合
-            var properties = new List<PropertyDescriptor>
-            {
-                // 定义 R, G, B, A 四个字段的描述器
-                new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "R", typeof(byte)),
-                new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "G", typeof(byte)),
-                new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "B", typeof(byte)),
-                new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "A", typeof(byte))
-            };
-
-            // 返回自定义属性集合
-            return new PropertyDescriptorCollection(properties.ToArray());
+            pdCollection ??= new(
+                [
+                    new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "R", typeof(byte)),
+                    new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "G", typeof(byte)),
+                    new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "B", typeof(byte)),
+                    new SFMLColorPropertyDescriptor(typeof(SFML.Graphics.Color), "A", typeof(byte))
+                ],
+                true
+            );
+            return pdCollection;
         }
     }
 }
