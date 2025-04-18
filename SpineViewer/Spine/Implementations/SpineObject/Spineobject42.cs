@@ -12,7 +12,7 @@ using SpineViewer.Utils;
 namespace SpineViewer.Spine.Implementations.SpineObject
 {
     [SpineImplementation(SpineVersion.V42)]
-    internal class Spineobject42 : Spine.SpineObject
+    internal class SpineObject42 : Spine.SpineObject
     {
         private SFML.Graphics.BlendMode GetSFMLBlendMode(BlendMode spineBlendMode)
         {
@@ -59,7 +59,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         private readonly SkeletonClipping clipping = new();
 
-        public Spineobject42(string skelPath, string atlasPath) : base(skelPath, atlasPath)
+        public SpineObject42(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
             try
