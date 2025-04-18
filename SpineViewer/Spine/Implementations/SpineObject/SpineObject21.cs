@@ -137,8 +137,8 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 }
 
                 // reload skel-dependent data
+                skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
                 animationStateData = new AnimationStateData(skeletonData) { DefaultMix = animationStateData.DefaultMix };
-                skeleton = new Skeleton(skeletonData);
                 animationState = new AnimationState(animationStateData);
 
                 // 恢复状态
