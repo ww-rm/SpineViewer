@@ -64,7 +64,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         //private SkeletonClipping clipping = new(); 
 
         /// <summary>
-        /// 所有槽位在所有皮肤中可用的附件集合
+        /// 所有插槽在所有皮肤中可用的附件集合
         /// </summary>
         private readonly Dictionary<string, Dictionary<string, Attachment>> slotAttachments = [];
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SpineViewer.Spine.SpineView
 {
     /// <summary>
-    /// 用于在 PropertyGrid 上显示槽位附件加载情况包装类
+    /// 用于在 PropertyGrid 上显示插槽附件加载情况包装类
     /// </summary>
     public class SpineSlotProperty(SpineObject spine) : ICustomTypeDescriptor
     {
@@ -18,7 +18,7 @@ namespace SpineViewer.Spine.SpineView
         public SpineObject Spine { get; } = spine;
 
         /// <summary>
-        /// 显示所有槽位集合
+        /// 显示所有插槽集合
         /// </summary>
         public override string ToString() => $"[{string.Join(", ", Spine.SlotAttachmentNames.Keys)}]";
 
@@ -56,14 +56,14 @@ namespace SpineViewer.Spine.SpineView
             foreach (var slotName in Spine.SlotAttachmentNames.Keys)
             {
                 if (!pdCache.TryGetValue(slotName, out var pd))
-                    pdCache[slotName] = pd =new SlotPropertyDescriptor(slotName, [new DisplayNameAttribute($"{slotName}")]);
+                    pdCache[slotName] = pd = new SlotPropertyDescriptor(slotName, [new DisplayNameAttribute($"{slotName}")]);
                 props.Add(pd);
             }
             return props;
         }
 
         /// <summary>
-        /// 槽位属性描述符, 实现对属性的读取和赋值
+        /// 插槽属性描述符, 实现对属性的读取和赋值
         /// </summary>
         internal class SlotPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor(name, attributes)
         {
@@ -153,19 +153,15 @@ namespace SpineViewer.Spine.SpineView
                     if (slots.Spine.SlotAttachmentNames.TryGetValue(pd.Name, out var names))
                         return new StandardValuesCollection(names);
                 }
-                else if (context?.Instance is SpineSlotProperty[] spinesSlots)
+                else if (context?.Instance is object[] instances)
                 {
-                    // XXX: 莫名其妙好了, 不是 object[] 类型是具体的类型了
-                    if (spinesSlots.Length > 0)
+                    IEnumerable<string> common = [];
+                    foreach (SpineSlotProperty prop in instances.Where(inst => inst is SpineSlotProperty))
                     {
-                        IEnumerable<string> common = [];
-                        foreach (var t in spinesSlots)
-                        {
-                            if (t.Spine.SlotAttachmentNames.TryGetValue(pd.Name, out var names))
-                                common = common.Union(names);
-                        }
-                        return new StandardValuesCollection(common.ToArray());
+                        if (prop.Spine.SlotAttachmentNames.TryGetValue(pd.Name, out var names))
+                            common = common.Union(names);
                     }
+                    return new StandardValuesCollection(common.ToArray());
                 }
             }
             return base.GetStandardValues(context);

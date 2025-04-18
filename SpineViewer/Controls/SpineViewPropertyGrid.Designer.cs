@@ -194,7 +194,7 @@
             tabPage_Slot.Name = "tabPage_Slot";
             tabPage_Slot.Size = new Size(364, 370);
             tabPage_Slot.TabIndex = 6;
-            tabPage_Slot.Text = "槽位";
+            tabPage_Slot.Text = "插槽";
             // 
             // propertyGrid_Slot
             // 

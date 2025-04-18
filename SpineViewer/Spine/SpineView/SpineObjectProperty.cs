@@ -28,7 +28,7 @@ namespace SpineViewer.Spine.SpineView
         public SpineSkinProperty Skin { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("皮肤")]
+        [DisplayName("插槽")]
         public SpineSlotProperty Slot { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]

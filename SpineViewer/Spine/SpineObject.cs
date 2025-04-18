@@ -325,7 +325,7 @@ namespace SpineViewer.Spine
         protected bool debugClippings = false;
 
         /// <summary>
-        /// 所有槽位下可用的附件名
+        /// 所有插槽下可用的附件名
         /// </summary>
         public FrozenDictionary<string, ImmutableArray<string>> SlotAttachmentNames { get; protected set; }
 
@@ -340,13 +340,13 @@ namespace SpineViewer.Spine
         public ImmutableArray<string> AnimationNames { get; protected set; }
 
         /// <summary>
-        /// 获取某个槽位当前加载的附件
+        /// 获取某个插槽当前加载的附件
         /// </summary>
         public string GetSlotAttachment(string slot) { lock (_lock) return getSlotAttachment(slot); }
         protected abstract string getSlotAttachment(string slot);
 
         /// <summary>
-        /// 设置某个槽位当前加载的附件
+        /// 设置某个插槽当前加载的附件
         /// </summary>
         public void SetSlotAttachment(string slot, string name) { lock (_lock) setSlotAttachment(slot, name); }
         protected abstract void setSlotAttachment(string slot, string name);

@@ -186,16 +186,12 @@ namespace SpineViewer.Spine.SpineView
             {
                 return new StandardValuesCollection(tracks.Spine.AnimationNames);
             }
-            else if (context?.Instance is SpineAnimationProperty[] animTracks)
+            else if (context?.Instance is object[] instances)
             {
-                // XXX: 莫名其妙好了, 不是 object[] 类型是具体的类型了
-                if (animTracks.Length > 0)
-                {
-                    IEnumerable<string> common = animTracks[0].Spine.AnimationNames;
-                    foreach (var t in animTracks.Skip(1))
-                        common = common.Union(t.Spine.AnimationNames);
-                    return new StandardValuesCollection(common.ToArray());
-                }
+                IEnumerable<string> common = [];
+                foreach (SpineAnimationProperty prop in instances.Where(inst => inst is SpineAnimationProperty))
+                    common = common.Union(prop.Spine.AnimationNames);
+                return new StandardValuesCollection(common.ToArray());
             }
             return base.GetStandardValues(context);
         }
