@@ -53,9 +53,9 @@ namespace SpineViewer.Spine.SpineView
             var props = new PropertyDescriptorCollection(TypeDescriptor.GetProperties(this, attributes, true).Cast<PropertyDescriptor>().ToArray());
             foreach (var name in Spine.SkinNames)
             {
-                if (!pdCache.ContainsKey(name))
-                    pdCache[name] = new SkinPropertyDescriptor(name, [new DisplayNameAttribute(name)]);
-                props.Add(pdCache[name]);
+                if (!pdCache.TryGetValue(name, out var pd))
+                    pdCache[name] = pd = new SkinPropertyDescriptor(name, [new DisplayNameAttribute(name)]);
+                props.Add(pd);
             }
             return props;
         }

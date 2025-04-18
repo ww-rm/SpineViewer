@@ -85,9 +85,9 @@ namespace SpineViewer.Spine.SpineView
             var props = new PropertyDescriptorCollection(TypeDescriptor.GetProperties(this, attributes, true).Cast<PropertyDescriptor>().ToArray());
             foreach (var i in Spine.GetTrackIndices())
             {
-                if (!pdCache.ContainsKey(i))
-                    pdCache[i] = new TrackWrapperPropertyDescriptor(i, [new DisplayNameAttribute($"轨道 {i}")]);
-                props.Add(pdCache[i]);
+                if (!pdCache.TryGetValue(i, out var pd))
+                    pdCache[i] = pd = new TrackWrapperPropertyDescriptor(i, [new DisplayNameAttribute($"轨道 {i}")]);
+                props.Add(pd);
             }
             return props;
         }
