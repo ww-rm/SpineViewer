@@ -340,6 +340,18 @@ namespace SpineViewer.Spine
         public ImmutableArray<string> AnimationNames { get; protected set; }
 
         /// <summary>
+        /// 获取某个槽位当前加载的附件
+        /// </summary>
+        public string GetSlotAttachment(string slot) { lock (_lock) return getSlotAttachment(slot); }
+        protected abstract string getSlotAttachment(string slot);
+
+        /// <summary>
+        /// 设置某个槽位当前加载的附件
+        /// </summary>
+        public void SetSlotAttachment(string slot, string name) { lock (_lock) setSlotAttachment(slot, name); }
+        protected abstract void setSlotAttachment(string slot, string name);
+
+        /// <summary>
         /// 皮肤的加载情况记录表
         /// </summary>
         protected readonly Dictionary<string, bool> skinLoadStatus = [];

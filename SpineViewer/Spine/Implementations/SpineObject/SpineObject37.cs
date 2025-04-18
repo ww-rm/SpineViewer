@@ -59,6 +59,11 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         private readonly SkeletonClipping clipping = new();
 
+        /// <summary>
+        /// 所有槽位在所有皮肤中可用的附件集合
+        /// </summary>
+        private readonly Dictionary<string, Dictionary<string, Attachment>> slotAttachments = [];
+
         public SpineObject37(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
@@ -85,15 +90,17 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 }
             }
 
-            var _slotAttachmentNames = skeletonData.Slots.ToDictionary(v => v.Name, v => new List<string>() { EMPTY_ATTACHMENT });
             foreach (var sk in skeletonData.Skins)
             {
-                foreach (var (k, v) in sk.Attachments)
+                foreach (var (k, att) in sk.Attachments)
                 {
-                    _slotAttachmentNames[skeletonData.Slots.Items[k.slotIndex].Name].Add(v.Name);
+                    var slotName = skeletonData.Slots.Items[k.slotIndex].Name;
+                    if (!slotAttachments.TryGetValue(slotName, out var attachments))
+                        slotAttachments[slotName] = attachments = new() { [EMPTY_ATTACHMENT] = null };
+                    attachments[att.Name] = att;
                 }
             }
-            SlotAttachmentNames = _slotAttachmentNames.ToFrozenDictionary(item => item.Key, item => item.Value.ToImmutableArray());
+            SlotAttachmentNames = slotAttachments.ToFrozenDictionary(item => item.Key, item => item.Value.Keys.ToImmutableArray());
             SkinNames = skeletonData.Skins.Select(v => v.Name).Where(v => v != "default").ToImmutableArray();
             AnimationNames = skeletonData.Animations.Select(v => v.Name).ToImmutableArray();
 
@@ -148,6 +155,16 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
                     skeleton.ScaleY *= -1;
             }
+        }
+
+        protected override string getSlotAttachment(string slot) => skeleton.FindSlot(slot)?.Attachment.Name ?? EMPTY_ATTACHMENT;
+
+        protected override void setSlotAttachment(string slot, string name)
+        {
+            if (slotAttachments.TryGetValue(slot, out var attachments)
+                && attachments.TryGetValue(name, out var att)
+                && skeleton.FindSlot(slot) is Slot s)
+                s.Attachment = att;
         }
 
         protected override void addSkin(string name)
