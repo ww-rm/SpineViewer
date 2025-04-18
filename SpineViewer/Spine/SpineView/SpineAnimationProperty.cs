@@ -186,10 +186,9 @@ namespace SpineViewer.Spine.SpineView
             {
                 return new StandardValuesCollection(tracks.Spine.AnimationNames);
             }
-            else if (context?.Instance is object[] instances && instances.All(x => x is SpineAnimationProperty))
+            else if (context?.Instance is SpineAnimationProperty[] animTracks)
             {
-                // XXX: 这里不知道为啥总是会得到 object[] 类型而不是具体的类型
-                var animTracks = instances.Cast<SpineAnimationProperty>().ToArray();
+                // XXX: 莫名其妙好了, 不是 object[] 类型是具体的类型了
                 if (animTracks.Length > 0)
                 {
                     IEnumerable<string> common = animTracks[0].Spine.AnimationNames;

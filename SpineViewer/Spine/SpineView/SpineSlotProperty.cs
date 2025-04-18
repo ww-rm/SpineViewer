@@ -65,10 +65,8 @@ namespace SpineViewer.Spine.SpineView
         /// <summary>
         /// 槽位属性描述符, 实现对属性的读取和赋值
         /// </summary>
-        internal class SlotPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor($"Slot_{name}", attributes)
+        internal class SlotPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor(name, attributes)
         {
-            public string SlotName { get; } = name;
-
             public override Type ComponentType => typeof(SpineSlotProperty);
             public override bool IsReadOnly => false;
             public override Type PropertyType => typeof(SlotProperty);
@@ -82,7 +80,7 @@ namespace SpineViewer.Spine.SpineView
             public override object? GetValue(object? component)
             {
                 if (component is SpineSlotProperty slots)
-                    return slots.Spine.GetSlotAttachment(SlotName);
+                    return slots.Spine.GetSlotAttachment(Name);
                 return null;
             }
 
@@ -94,7 +92,7 @@ namespace SpineViewer.Spine.SpineView
                 if (component is SpineSlotProperty slots)
                 {
                     if (value is string s)
-                        slots.Spine.SetSlotAttachment(SlotName, s);
+                        slots.Spine.SetSlotAttachment(Name, s);
                 }
             }
         }
@@ -103,7 +101,7 @@ namespace SpineViewer.Spine.SpineView
     }
 
     /// <summary>
-    /// 对 <c><see cref="SpineSlotProperty"/>.Slot_{name}</c> 属性的包装类
+    /// 对 <c><see cref="SpineSlotProperty"/>.{name}</c> 属性的包装类
     /// </summary>
     [TypeConverter(typeof(SlotPropertyConverter))]
     public class SlotProperty(SpineObject spine, string name)
@@ -148,23 +146,22 @@ namespace SpineViewer.Spine.SpineView
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
-            if (context?.PropertyDescriptor is SpineSlotProperty.SlotPropertyDescriptor pd)
+            if (context?.PropertyDescriptor is PropertyDescriptor pd)
             {
                 if (context?.Instance is SpineSlotProperty slots)
                 {
-                    if (slots.Spine.SlotAttachmentNames.TryGetValue(pd.SlotName, out var names))
+                    if (slots.Spine.SlotAttachmentNames.TryGetValue(pd.Name, out var names))
                         return new StandardValuesCollection(names);
                 }
-                else if (context?.Instance is object[] instances && instances.All(x => x is SpineSlotProperty))
+                else if (context?.Instance is SpineSlotProperty[] spinesSlots)
                 {
-                    // XXX: 这里不知道为啥总是会得到 object[] 类型而不是具体的类型
-                    var spinesSlots = instances.Cast<SpineAnimationProperty>().ToArray();
+                    // XXX: 莫名其妙好了, 不是 object[] 类型是具体的类型了
                     if (spinesSlots.Length > 0)
                     {
                         IEnumerable<string> common = [];
                         foreach (var t in spinesSlots)
                         {
-                            if (t.Spine.SlotAttachmentNames.TryGetValue(pd.SlotName, out var names))
+                            if (t.Spine.SlotAttachmentNames.TryGetValue(pd.Name, out var names))
                                 common = common.Union(names);
                         }
                         return new StandardValuesCollection(common.ToArray());

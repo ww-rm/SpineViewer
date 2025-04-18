@@ -61,12 +61,10 @@ namespace SpineViewer.Spine.SpineView
         }
 
         /// <summary>
-        /// 皮肤属性描述符, 实现对皮肤的加载和卸载, <c><see cref="SpineSkinProperty"/>.Skin_{name}</c>
+        /// 皮肤属性描述符, 实现对皮肤的加载和卸载, <c><see cref="SpineSkinProperty"/>.{name}</c>
         /// </summary>
-        private class SkinPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor($"Skin_{name}", attributes)
+        private class SkinPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor(name, attributes)
         {
-            private readonly string name = name;
-
             public override Type ComponentType => typeof(SpineSkinProperty);
             public override bool IsReadOnly => false;
             public override Type PropertyType => typeof(bool);
@@ -77,7 +75,7 @@ namespace SpineViewer.Spine.SpineView
             public override object? GetValue(object? component)
             {
                 if (component is SpineSkinProperty prop)
-                    return prop.Spine.GetSkinStatus(name);
+                    return prop.Spine.GetSkinStatus(Name);
                 return null;
             }
 
@@ -86,7 +84,7 @@ namespace SpineViewer.Spine.SpineView
                 if (component is SpineSkinProperty prop)
                 {
                     if (value is bool s)
-                        prop.Spine.SetSkinStatus(name, s);
+                        prop.Spine.SetSkinStatus(Name, s);
                 }
             }
         }
