@@ -153,7 +153,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 position = pos;
                 flipX = fX;
                 flipY = fY;
-                foreach (var s in loadedSkins) addSkin(s);
+                reloadSkins();
                 for (int i = 0; i < animations.Length; i++) setAnimation(i, animations[i]);
             }
         }
@@ -191,7 +191,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             skeleton.SetSlotsToSetupPose();
         }
 
-        protected override void clearSkin()
+        protected override void clearSkins()
         {
             skeleton.Skin.Attachments.Clear();
             skeleton.SetSlotsToSetupPose();
@@ -229,7 +229,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             tmpSkeleton.FlipY = skeleton.FlipY;
             tmpSkeleton.X = skeleton.X;
             tmpSkeleton.Y = skeleton.Y;
-            foreach (var name in loadedSkins)
+            foreach (var (name, _) in skinLoadStatus.Where(e => e.Value))
             {
                 foreach (var (k, v) in skeletonData.FindSkin(name).Attachments)
                     tmpSkeleton.Skin.AddAttachment(k.Key, k.Value, v);

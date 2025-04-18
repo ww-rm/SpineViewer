@@ -166,7 +166,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             }
         }
 
-        protected override void clearSkin()
+        protected override void clearSkins()
         {
             skeleton.Skin.Clear();
             skeleton.SetSlotsToSetupPose();
@@ -205,7 +205,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             tmpSkeleton.ScaleY = skeleton.ScaleY;
             tmpSkeleton.X = skeleton.X;
             tmpSkeleton.Y = skeleton.Y;
-            foreach (var sk in loadedSkins) tmpSkeleton.Skin.AddSkin(skeletonData.FindSkin(sk));
+            foreach (var (sk, _) in skinLoadStatus.Where(e => e.Value)) tmpSkeleton.Skin.AddSkin(skeletonData.FindSkin(sk));
             foreach (var tr in animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null)) 
             {
                 var ani = animationState.GetCurrent(tr).Animation;

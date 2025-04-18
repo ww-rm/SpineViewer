@@ -8,6 +8,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Utils;
 using System.Collections.Immutable;
 using System.Collections.Frozen;
+using System.Linq;
 
 namespace SpineViewer.Spine
 {
@@ -92,13 +93,11 @@ namespace SpineViewer.Spine
             tex.Display();
             Preview = tex.Texture.CopyToBitmap();
 
-            // 默认初始化10个空位
-            for (int i = 0; i < 10; i++)
-            {
-                setAnimation(i, AnimationNames.First());
-                loadedSkins.Add(SkinNames.First());
-            }
-            reloadSkins();
+            // 初始化皮肤加载情况
+            foreach (var n in SkinNames) skinLoadStatus[n] = false;
+
+            // 默认初始化10个动画空位
+            for (int i = 0; i < 10; i++) setAnimation(i, AnimationNames.First());
 
             return this;
         }
@@ -341,70 +340,53 @@ namespace SpineViewer.Spine
         public ImmutableArray<string> AnimationNames { get; protected set; }
 
         /// <summary>
-        /// 获取已加载的皮肤列表快照, 允许出现重复值
+        /// 皮肤的加载情况记录表
         /// </summary>
-        public string[] GetLoadedSkins() { lock (_lock) return loadedSkins.ToArray(); }
-        protected readonly List<string> loadedSkins = [];
+        protected readonly Dictionary<string, bool> skinLoadStatus = [];
 
         /// <summary>
-        /// 加载指定皮肤, 添加至列表末尾, 如果不存在则忽略, 允许加载重复的值
+        /// 查询皮肤是否被加载, 皮肤不存在时返回 false
+        /// </summary>
+        public bool GetSkinStatus(string name) { lock (_lock) return skinLoadStatus.TryGetValue(name, out var status) && status; }
+
+        /// <summary>
+        /// 加载指定皮肤, 如果不存在则忽略, 允许重复加载
         /// </summary>
         public void LoadSkin(string name)
         {
-            if (!SkinNames.Contains(name)) return;
+            if (!skinLoadStatus.ContainsKey(name)) return;
             lock (_lock)
             {
-                loadedSkins.Add(name);
+                skinLoadStatus[name] = true;
                 reloadSkins();
             }
         }
 
         /// <summary>
-        /// 卸载列表指定位置皮肤, 如果超出范围则忽略
+        /// 卸载指定皮肤, 如果不存在则忽略, 允许重复卸载
         /// </summary>
-        public void UnloadSkin(int idx)
+        public void UnloadSkin(string name)
         {
+            if (!skinLoadStatus.ContainsKey(name)) return;
             lock (_lock)
             {
-                if (idx < 0 || idx >= loadedSkins.Count) return;
-                loadedSkins.RemoveAt(idx);
+                skinLoadStatus[name] = false;
                 reloadSkins();
             }
         }
 
         /// <summary>
-        /// 替换皮肤列表指定位置皮肤, 超出范围或者皮肤不存在则忽略
-        /// </summary>
-        public void ReplaceSkin(int idx, string name)
-        {
-            lock (_lock)
-            {
-                if (idx < 0 || idx >= loadedSkins.Count || !SkinNames.Contains(name)) return;
-                loadedSkins[idx] = name;
-                reloadSkins();
-            }
-        }
-
-        /// <summary>
-        /// 重新加载现有皮肤列表, 用于刷新等操作
+        /// 刷新已加载皮肤
         /// </summary>
         public void ReloadSkins() { lock (_lock) reloadSkins(); }
-        private void reloadSkins()
+        protected void reloadSkins()
         {
-            clearSkin();
-            foreach (var s in loadedSkins.Distinct()) addSkin(s);
+            clearSkins();
+            foreach (var (name, _) in skinLoadStatus.Where(e => e.Value)) addSkin(name);
             update(0);
         }
-
-        /// <summary>
-        /// 加载皮肤, 如果不存在则忽略
-        /// </summary>
         protected abstract void addSkin(string name);
-
-        /// <summary>
-        /// 清空加载的所有皮肤
-        /// </summary>
-        protected abstract void clearSkin();
+        protected abstract void clearSkins();
 
         /// <summary>
         /// 获取所有非 null 的轨道索引快照
