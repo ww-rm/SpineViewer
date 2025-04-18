@@ -28,6 +28,10 @@ namespace SpineViewer.Spine.SpineView
         public SpineSkinProperty Skin { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("皮肤")]
+        public SpineSlotProperty Slot { get; } = new(spine);
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("动画")]
         public SpineAnimationProperty Animation { get; } = new(spine);
 

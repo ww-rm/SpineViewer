@@ -106,7 +106,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             }
             SlotAttachmentNames = slotAttachments.ToFrozenDictionary(item => item.Key, item => item.Value.Keys.ToImmutableArray());
             SkinNames = skeletonData.Skins.Select(v => v.Name).Where(v => v != "default").ToImmutableArray();
-            AnimationNames = skeletonData.Animations.Select(v => v.Name).ToImmutableArray();
+            AnimationNames = [EMPTY_ANIMATION, .. skeletonData.Animations.Select(v => v.Name)];
 
             skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) }; // 挂载一个空皮肤当作容器
             animationStateData = new AnimationStateData(skeletonData);
@@ -187,7 +187,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             set => skeleton.FlipY = value;
         }
 
-        protected override string getSlotAttachment(string slot) => skeleton.FindSlot(slot)?.Attachment.Name ?? EMPTY_ATTACHMENT;
+        protected override string getSlotAttachment(string slot) => skeleton.FindSlot(slot)?.Attachment?.Name ?? EMPTY_ATTACHMENT;
 
         protected override void setSlotAttachment(string slot, string name)
         {

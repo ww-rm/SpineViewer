@@ -40,6 +40,8 @@
             propertyGrid_Skin = new PropertyGrid();
             contextMenuStrip_Skin = new ContextMenuStrip(components);
             toolStripMenuItem_ReloadSkins = new ToolStripMenuItem();
+            tabPage_Slot = new TabPage();
+            propertyGrid_Slot = new PropertyGrid();
             tabPage_Animation = new TabPage();
             propertyGrid_Animation = new PropertyGrid();
             contextMenuStrip_Animation = new ContextMenuStrip(components);
@@ -53,6 +55,7 @@
             tabPage_Transform.SuspendLayout();
             tabPage_Skin.SuspendLayout();
             contextMenuStrip_Skin.SuspendLayout();
+            tabPage_Slot.SuspendLayout();
             tabPage_Animation.SuspendLayout();
             contextMenuStrip_Animation.SuspendLayout();
             tabPage_Debug.SuspendLayout();
@@ -65,6 +68,7 @@
             tabControl.Controls.Add(tabPage_Render);
             tabControl.Controls.Add(tabPage_Transform);
             tabControl.Controls.Add(tabPage_Skin);
+            tabControl.Controls.Add(tabPage_Slot);
             tabControl.Controls.Add(tabPage_Animation);
             tabControl.Controls.Add(tabPage_Debug);
             tabControl.Dock = DockStyle.Fill;
@@ -181,6 +185,28 @@
             toolStripMenuItem_ReloadSkins.Text = "重新加载所选皮肤";
             toolStripMenuItem_ReloadSkins.Click += toolStripMenuItem_ReloadSkins_Click;
             // 
+            // tabPage_Slot
+            // 
+            tabPage_Slot.BackColor = SystemColors.Control;
+            tabPage_Slot.Controls.Add(propertyGrid_Slot);
+            tabPage_Slot.Location = new Point(4, 4);
+            tabPage_Slot.Margin = new Padding(0);
+            tabPage_Slot.Name = "tabPage_Slot";
+            tabPage_Slot.Size = new Size(364, 370);
+            tabPage_Slot.TabIndex = 6;
+            tabPage_Slot.Text = "槽位";
+            // 
+            // propertyGrid_Slot
+            // 
+            propertyGrid_Slot.Dock = DockStyle.Fill;
+            propertyGrid_Slot.HelpVisible = false;
+            propertyGrid_Slot.Location = new Point(0, 0);
+            propertyGrid_Slot.Name = "propertyGrid_Slot";
+            propertyGrid_Slot.PropertySort = PropertySort.Alphabetical;
+            propertyGrid_Slot.Size = new Size(364, 370);
+            propertyGrid_Slot.TabIndex = 2;
+            propertyGrid_Slot.ToolbarVisible = false;
+            // 
             // tabPage_Animation
             // 
             tabPage_Animation.BackColor = SystemColors.Control;
@@ -260,6 +286,7 @@
             tabPage_Transform.ResumeLayout(false);
             tabPage_Skin.ResumeLayout(false);
             contextMenuStrip_Skin.ResumeLayout(false);
+            tabPage_Slot.ResumeLayout(false);
             tabPage_Animation.ResumeLayout(false);
             contextMenuStrip_Animation.ResumeLayout(false);
             tabPage_Debug.ResumeLayout(false);
@@ -286,5 +313,7 @@
         private ToolStripMenuItem toolStripMenuItem_RemoveAnimation;
         private TabPage tabPage_Debug;
         private PropertyGrid propertyGrid_Debug;
+        private TabPage tabPage_Slot;
+        private PropertyGrid propertyGrid_Slot;
     }
 }
