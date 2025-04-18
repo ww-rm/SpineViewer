@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,11 +85,17 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 }
             }
 
-            foreach (var skin in skeletonData.Skins)
-                skinNames.Add(skin.Name);
-
-            foreach (var anime in skeletonData.Animations)
-                animationNames.Add(anime.Name);
+            var _slotAttachmentNames = skeletonData.Slots.ToDictionary(v => v.Name, v => new List<string>() { EMPTY_ATTACHMENT });
+            foreach (var sk in skeletonData.Skins)
+            {
+                foreach (var (k, v) in sk.Attachments)
+                {
+                    _slotAttachmentNames[skeletonData.Slots.Items[k.slotIndex].Name].Add(v.Name);
+                }
+            }
+            SlotAttachmentNames = _slotAttachmentNames.ToFrozenDictionary(item => item.Key, item => item.Value.ToImmutableArray());
+            SkinNames = skeletonData.Skins.Select(v => v.Name).Where(v => v != "default").ToImmutableArray();
+            AnimationNames = skeletonData.Animations.Select(v => v.Name).ToImmutableArray();
 
             skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) }; // 挂载一个空皮肤当作容器
             animationStateData = new AnimationStateData(skeletonData);
@@ -167,7 +175,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         {
             if (name == EMPTY_ANIMATION)
                 animationState.SetAnimation(track, EmptyAnimation, false);
-            else if (animationNames.Contains(name))
+            else if (AnimationNames.Contains(name))
                 animationState.SetAnimation(track, name, true);
         }
 

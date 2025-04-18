@@ -85,7 +85,7 @@ namespace SpineViewer.Controls
 
             var spine = selectedSpines[0].Skin.Spine;
 
-            if (spine.SkinNames.Count <= 0)
+            if (spine.SkinNames.Length <= 0)
             {
                 MessagePopup.Info("没有可用的皮肤");
                 return;

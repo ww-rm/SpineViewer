@@ -6,6 +6,8 @@ using NLog;
 using System.Xml.Linq;
 using SpineViewer.Extensions;
 using SpineViewer.Utils;
+using System.Collections.Immutable;
+using System.Collections.Frozen;
 
 namespace SpineViewer.Spine
 {
@@ -14,6 +16,11 @@ namespace SpineViewer.Spine
     /// </summary>
     public abstract class SpineObject : ImplementationResolver<SpineObject, SpineImplementationAttribute, SpineVersion>, SFML.Graphics.Drawable, IDisposable
     {
+        /// <summary>
+        /// 空附件标记
+        /// </summary>
+        protected const string EMPTY_ATTACHMENT = "<Empty>";
+
         /// <summary>
         /// 空动画标记
         /// </summary>
@@ -65,9 +72,6 @@ namespace SpineViewer.Spine
         /// </summary>
         private SpineObject PostInit()
         {
-            SkinNames = skinNames.AsReadOnly();
-            AnimationNames = animationNames.AsReadOnly();
-
             // 必须 Update 一次否则包围盒还没有值
             update(0);
 
@@ -202,18 +206,6 @@ namespace SpineViewer.Spine
         protected abstract bool flipY { get; set; }
 
         /// <summary>
-        /// 包含的所有皮肤名称
-        /// </summary>
-        public ReadOnlyCollection<string> SkinNames { get; private set; }
-        protected readonly List<string> skinNames = [];
-
-        /// <summary>
-        /// 包含的所有动画名称
-        /// </summary>
-        public ReadOnlyCollection<string> AnimationNames { get; private set; }
-        protected readonly List<string> animationNames = [EMPTY_ANIMATION];
-
-        /// <summary>
         /// 是否被选中
         /// </summary>
         public bool IsSelected
@@ -334,6 +326,21 @@ namespace SpineViewer.Spine
         protected bool debugClippings = false;
 
         /// <summary>
+        /// 所有槽位下可用的附件名
+        /// </summary>
+        public FrozenDictionary<string, ImmutableArray<string>> SlotAttachmentNames { get; protected set; }
+
+        /// <summary>
+        /// 包含的所有皮肤名称 (不含 default 默认皮肤)
+        /// </summary>
+        public ImmutableArray<string> SkinNames { get; protected set; }
+
+        /// <summary>
+        /// 包含的所有动画名称
+        /// </summary>
+        public ImmutableArray<string> AnimationNames { get; protected set; }
+
+        /// <summary>
         /// 获取已加载的皮肤列表快照, 允许出现重复值
         /// </summary>
         public string[] GetLoadedSkins() { lock (_lock) return loadedSkins.ToArray(); }
@@ -344,7 +351,7 @@ namespace SpineViewer.Spine
         /// </summary>
         public void LoadSkin(string name)
         {
-            if (!skinNames.Contains(name)) return;
+            if (!SkinNames.Contains(name)) return;
             lock (_lock)
             {
                 loadedSkins.Add(name);
@@ -372,7 +379,7 @@ namespace SpineViewer.Spine
         {
             lock (_lock)
             {
-                if (idx < 0 || idx >= loadedSkins.Count || !skinNames.Contains(name)) return;
+                if (idx < 0 || idx >= loadedSkins.Count || !SkinNames.Contains(name)) return;
                 loadedSkins[idx] = name;
                 reloadSkins();
             }
