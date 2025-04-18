@@ -345,32 +345,19 @@ namespace SpineViewer.Spine
         protected readonly Dictionary<string, bool> skinLoadStatus = [];
 
         /// <summary>
-        /// 查询皮肤是否被加载, 皮肤不存在时返回 false
+        /// 查询皮肤加载状态, 皮肤不存在时返回 false
         /// </summary>
         public bool GetSkinStatus(string name) { lock (_lock) return skinLoadStatus.TryGetValue(name, out var status) && status; }
 
         /// <summary>
-        /// 加载指定皮肤, 如果不存在则忽略, 允许重复加载
+        /// 设置皮肤加载状态, 忽略不存在的皮肤
         /// </summary>
-        public void LoadSkin(string name)
+        public void SetSkinStatus(string name, bool status)
         {
             if (!skinLoadStatus.ContainsKey(name)) return;
             lock (_lock)
             {
-                skinLoadStatus[name] = true;
-                reloadSkins();
-            }
-        }
-
-        /// <summary>
-        /// 卸载指定皮肤, 如果不存在则忽略, 允许重复卸载
-        /// </summary>
-        public void UnloadSkin(string name)
-        {
-            if (!skinLoadStatus.ContainsKey(name)) return;
-            lock (_lock)
-            {
-                skinLoadStatus[name] = false;
+                skinLoadStatus[name] = status;
                 reloadSkins();
             }
         }

@@ -51,20 +51,6 @@ namespace SpineViewer.Controls
         }
         private SpineObjectProperty[]? selectedSpines = null;
 
-        private void contextMenuStrip_Skin_Opening(object sender, CancelEventArgs e)
-        {
-            if (selectedSpines?.Length == 1)
-            {
-                toolStripMenuItem_AddSkin.Enabled = true;
-                toolStripMenuItem_RemoveSkin.Enabled = propertyGrid_Skin.SelectedGridItem.Value is SkinNameProperty;
-            }
-            else
-            {
-                toolStripMenuItem_AddSkin.Enabled = false;
-                toolStripMenuItem_RemoveSkin.Enabled = false;
-            }
-        }
-
         private void contextMenuStrip_Animation_Opening(object sender, CancelEventArgs e)
         {
             if (selectedSpines?.Length == 1)
@@ -79,31 +65,10 @@ namespace SpineViewer.Controls
             }
         }
 
-        private void toolStripMenuItem_AddSkin_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_ReloadSkins_Click(object sender, EventArgs e)
         {
-            if (selectedSpines?.Length != 1) return;
-
-            var spine = selectedSpines[0].Skin.Spine;
-
-            if (spine.SkinNames.Length <= 0)
-            {
-                MessagePopup.Info("没有可用的皮肤");
-                return;
-            }
-
-            spine.LoadSkin(spine.SkinNames[0]);
-            propertyGrid_Skin.Refresh();
-        }
-
-        private void toolStripMenuItem_RemoveSkin_Click(object sender, EventArgs e)
-        {
-            if (selectedSpines?.Length != 1) return;
-
-            if (propertyGrid_Skin.SelectedGridItem.Value is SkinNameProperty wrapper)
-            {
-                selectedSpines[0].Skin.Spine.UnloadSkin(wrapper.Index);
-                propertyGrid_Skin.Refresh();
-            }
+            foreach (var sp in selectedSpines)
+                sp.Spine.ReloadSkins();
         }
 
         private void toolStripMenuItem_AddAnimation_Click(object sender, EventArgs e)

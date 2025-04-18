@@ -39,8 +39,7 @@
             tabPage_Skin = new TabPage();
             propertyGrid_Skin = new PropertyGrid();
             contextMenuStrip_Skin = new ContextMenuStrip(components);
-            toolStripMenuItem_AddSkin = new ToolStripMenuItem();
-            toolStripMenuItem_RemoveSkin = new ToolStripMenuItem();
+            toolStripMenuItem_ReloadSkins = new ToolStripMenuItem();
             tabPage_Animation = new TabPage();
             propertyGrid_Animation = new PropertyGrid();
             contextMenuStrip_Animation = new ContextMenuStrip(components);
@@ -108,7 +107,7 @@
             tabPage_Render.Location = new Point(4, 4);
             tabPage_Render.Margin = new Padding(0);
             tabPage_Render.Name = "tabPage_Render";
-            tabPage_Render.Size = new Size(364, 380);
+            tabPage_Render.Size = new Size(364, 370);
             tabPage_Render.TabIndex = 1;
             tabPage_Render.Text = "渲染";
             // 
@@ -119,7 +118,7 @@
             propertyGrid_Render.Location = new Point(0, 0);
             propertyGrid_Render.Name = "propertyGrid_Render";
             propertyGrid_Render.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Render.Size = new Size(364, 380);
+            propertyGrid_Render.Size = new Size(364, 370);
             propertyGrid_Render.TabIndex = 1;
             propertyGrid_Render.ToolbarVisible = false;
             // 
@@ -130,7 +129,7 @@
             tabPage_Transform.Location = new Point(4, 4);
             tabPage_Transform.Margin = new Padding(0);
             tabPage_Transform.Name = "tabPage_Transform";
-            tabPage_Transform.Size = new Size(364, 380);
+            tabPage_Transform.Size = new Size(364, 370);
             tabPage_Transform.TabIndex = 2;
             tabPage_Transform.Text = "变换";
             // 
@@ -141,7 +140,7 @@
             propertyGrid_Transform.Location = new Point(0, 0);
             propertyGrid_Transform.Name = "propertyGrid_Transform";
             propertyGrid_Transform.PropertySort = PropertySort.Alphabetical;
-            propertyGrid_Transform.Size = new Size(364, 380);
+            propertyGrid_Transform.Size = new Size(364, 370);
             propertyGrid_Transform.TabIndex = 1;
             propertyGrid_Transform.ToolbarVisible = false;
             // 
@@ -152,7 +151,7 @@
             tabPage_Skin.Location = new Point(4, 4);
             tabPage_Skin.Margin = new Padding(0);
             tabPage_Skin.Name = "tabPage_Skin";
-            tabPage_Skin.Size = new Size(364, 380);
+            tabPage_Skin.Size = new Size(364, 370);
             tabPage_Skin.TabIndex = 3;
             tabPage_Skin.Text = "皮肤";
             // 
@@ -164,31 +163,23 @@
             propertyGrid_Skin.Location = new Point(0, 0);
             propertyGrid_Skin.Name = "propertyGrid_Skin";
             propertyGrid_Skin.PropertySort = PropertySort.NoSort;
-            propertyGrid_Skin.Size = new Size(364, 380);
+            propertyGrid_Skin.Size = new Size(364, 370);
             propertyGrid_Skin.TabIndex = 1;
             propertyGrid_Skin.ToolbarVisible = false;
             // 
             // contextMenuStrip_Skin
             // 
             contextMenuStrip_Skin.ImageScalingSize = new Size(24, 24);
-            contextMenuStrip_Skin.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_AddSkin, toolStripMenuItem_RemoveSkin });
+            contextMenuStrip_Skin.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_ReloadSkins });
             contextMenuStrip_Skin.Name = "contextMenuStrip1";
-            contextMenuStrip_Skin.Size = new Size(117, 64);
-            contextMenuStrip_Skin.Opening += contextMenuStrip_Skin_Opening;
+            contextMenuStrip_Skin.Size = new Size(225, 34);
             // 
-            // toolStripMenuItem_AddSkin
+            // toolStripMenuItem_ReloadSkins
             // 
-            toolStripMenuItem_AddSkin.Name = "toolStripMenuItem_AddSkin";
-            toolStripMenuItem_AddSkin.Size = new Size(116, 30);
-            toolStripMenuItem_AddSkin.Text = "添加";
-            toolStripMenuItem_AddSkin.Click += toolStripMenuItem_AddSkin_Click;
-            // 
-            // toolStripMenuItem_RemoveSkin
-            // 
-            toolStripMenuItem_RemoveSkin.Name = "toolStripMenuItem_RemoveSkin";
-            toolStripMenuItem_RemoveSkin.Size = new Size(116, 30);
-            toolStripMenuItem_RemoveSkin.Text = "移除";
-            toolStripMenuItem_RemoveSkin.Click += toolStripMenuItem_RemoveSkin_Click;
+            toolStripMenuItem_ReloadSkins.Name = "toolStripMenuItem_ReloadSkins";
+            toolStripMenuItem_ReloadSkins.Size = new Size(224, 30);
+            toolStripMenuItem_ReloadSkins.Text = "重新加载所选皮肤";
+            toolStripMenuItem_ReloadSkins.Click += toolStripMenuItem_ReloadSkins_Click;
             // 
             // tabPage_Animation
             // 
@@ -197,7 +188,7 @@
             tabPage_Animation.Location = new Point(4, 4);
             tabPage_Animation.Margin = new Padding(0);
             tabPage_Animation.Name = "tabPage_Animation";
-            tabPage_Animation.Size = new Size(364, 380);
+            tabPage_Animation.Size = new Size(364, 370);
             tabPage_Animation.TabIndex = 4;
             tabPage_Animation.Text = "动画";
             // 
@@ -209,7 +200,7 @@
             propertyGrid_Animation.Location = new Point(0, 0);
             propertyGrid_Animation.Name = "propertyGrid_Animation";
             propertyGrid_Animation.PropertySort = PropertySort.NoSort;
-            propertyGrid_Animation.Size = new Size(364, 380);
+            propertyGrid_Animation.Size = new Size(364, 370);
             propertyGrid_Animation.TabIndex = 1;
             propertyGrid_Animation.ToolbarVisible = false;
             // 
@@ -241,7 +232,7 @@
             tabPage_Debug.Controls.Add(propertyGrid_Debug);
             tabPage_Debug.Location = new Point(4, 4);
             tabPage_Debug.Name = "tabPage_Debug";
-            tabPage_Debug.Size = new Size(364, 380);
+            tabPage_Debug.Size = new Size(364, 370);
             tabPage_Debug.TabIndex = 5;
             tabPage_Debug.Text = "调试";
             // 
@@ -252,16 +243,16 @@
             propertyGrid_Debug.Location = new Point(0, 0);
             propertyGrid_Debug.Name = "propertyGrid_Debug";
             propertyGrid_Debug.PropertySort = PropertySort.NoSort;
-            propertyGrid_Debug.Size = new Size(364, 380);
+            propertyGrid_Debug.Size = new Size(364, 370);
             propertyGrid_Debug.TabIndex = 2;
             propertyGrid_Debug.ToolbarVisible = false;
             // 
-            // SpinePropertyGrid
+            // SpineViewPropertyGrid
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tabControl);
-            Name = "SpinePropertyGrid";
+            Name = "SpineViewPropertyGrid";
             Size = new Size(372, 448);
             tabControl.ResumeLayout(false);
             tabPage_BaseInfo.ResumeLayout(false);
@@ -290,8 +281,7 @@
         private PropertyGrid propertyGrid_Animation;
         private ContextMenuStrip contextMenuStrip_Skin;
         private ContextMenuStrip contextMenuStrip_Animation;
-        private ToolStripMenuItem toolStripMenuItem_AddSkin;
-        private ToolStripMenuItem toolStripMenuItem_RemoveSkin;
+        private ToolStripMenuItem toolStripMenuItem_ReloadSkins;
         private ToolStripMenuItem toolStripMenuItem_AddAnimation;
         private ToolStripMenuItem toolStripMenuItem_RemoveAnimation;
         private TabPage tabPage_Debug;
