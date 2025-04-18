@@ -176,13 +176,13 @@
             contextMenuStrip_Skin.ImageScalingSize = new Size(24, 24);
             contextMenuStrip_Skin.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_ReloadSkins });
             contextMenuStrip_Skin.Name = "contextMenuStrip1";
-            contextMenuStrip_Skin.Size = new Size(225, 34);
+            contextMenuStrip_Skin.Size = new Size(241, 67);
             // 
             // toolStripMenuItem_ReloadSkins
             // 
             toolStripMenuItem_ReloadSkins.Name = "toolStripMenuItem_ReloadSkins";
-            toolStripMenuItem_ReloadSkins.Size = new Size(224, 30);
-            toolStripMenuItem_ReloadSkins.Text = "重新加载所选皮肤";
+            toolStripMenuItem_ReloadSkins.Size = new Size(240, 30);
+            toolStripMenuItem_ReloadSkins.Text = "重新加载皮肤";
             toolStripMenuItem_ReloadSkins.Click += toolStripMenuItem_ReloadSkins_Click;
             // 
             // tabPage_Slot
