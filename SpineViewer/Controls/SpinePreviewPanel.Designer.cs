@@ -41,6 +41,7 @@
             button_ForwardStep = new Button();
             button_ForwardFast = new Button();
             toolTip = new ToolTip(components);
+            wallpaperForm = new WallpaperForm();
             tableLayoutPanel1.SuspendLayout();
             panel_Container.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
@@ -190,6 +191,19 @@
             button_ForwardFast.UseVisualStyleBackColor = true;
             button_ForwardFast.Click += button_ForwardFast_Click;
             // 
+            // wallpaperForm
+            // 
+            wallpaperForm.ClientSize = new Size(490, 456);
+            wallpaperForm.ControlBox = false;
+            wallpaperForm.MaximizeBox = false;
+            wallpaperForm.MinimizeBox = false;
+            wallpaperForm.Name = "WallpaperForm";
+            wallpaperForm.ShowIcon = false;
+            wallpaperForm.ShowInTaskbar = false;
+            wallpaperForm.StartPosition = FormStartPosition.Manual;
+            wallpaperForm.Text = "SpineViewerWallpaperForm";
+            wallpaperForm.Visible = false;
+            // 
             // SpinePreviewPanel
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
@@ -219,5 +233,6 @@
         private Button button_ForwardStep;
         private Button button_ForwardFast;
         private Button button_Restart;
+        private WallpaperForm wallpaperForm;
     }
 }

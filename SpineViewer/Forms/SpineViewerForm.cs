@@ -31,6 +31,9 @@ namespace SpineViewer
                 MessagePopup.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
             }
 
+#if DEBUG
+            toolStripMenuItem_Debug.Visible = true;
+#endif
         }
 
         /// <summary>
@@ -336,12 +339,6 @@ namespace SpineViewer
 
         private void splitContainer_MouseUp(object sender, MouseEventArgs e) => ActiveControl = null;
 
-        private void propertyGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
-        {
-            // 用来解决对面板某些值修改之后, 其他被联动修改的值不会实时刷新的问题
-            (sender as PropertyGrid)?.Refresh();
-        }
-
         private void Export_Work(object? sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;
@@ -395,7 +392,7 @@ namespace SpineViewer
                     }
                     var root = srcCvter.Read(skelPath);
                     root = srcCvter.ToVersion(root, args.TargetVersion);
-                    if (args.JsonTarget) tgtCvter.WriteJson(root, newPath); 
+                    if (args.JsonTarget) tgtCvter.WriteJson(root, newPath);
                     else tgtCvter.WriteBinary(root, newPath);
                     success++;
                 }
@@ -419,48 +416,30 @@ namespace SpineViewer
             }
         }
 
-        //private System.Windows.Forms.Timer timer = new();
-        //private PetForm pet = new PetForm();
-        //private IntPtr screenDC;
-        //private IntPtr memDC;
-        //private void _Test()
-        //{
-        //    screenDC = Win32.GetDC(IntPtr.Zero);
-        //    memDC = Win32.CreateCompatibleDC(screenDC);
-        //    pet.Show();
-        //    timer.Tick += Timer_Tick;
-        //    timer.Enabled = true;
-        //    timer.Interval = 50;
-        //    timer.Start();
-        //}
+        private void toolStripMenuItem_DesktopProjection_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem_DesktopProjection.Checked = !toolStripMenuItem_DesktopProjection.Checked;
+            spinePreviewPanel.EnableDesktopProjection = toolStripMenuItem_DesktopProjection.Checked;
+        }
 
-        //private void Timer_Tick(object? sender, EventArgs e)
-        //{
-        //    using var tex = new SFML.Graphics.RenderTexture((uint)pet.Width, (uint)pet.Height);
-        //    var v = spinePreviewer.GetView();
-        //    tex.SetView(v);
-        //    tex.Clear(new SFML.Graphics.Color(0, 0, 0, 0));
-        //    lock (spineListView.Spines)
-        //    {
-        //        foreach (var sp in spineListView.Spines)
-        //            tex.Draw(sp);
-        //    }
-        //    tex.Display();
-        //    using var frame = new SFMLImageVideoFrame(tex.Texture.CopyToImage());
-        //    using var bitmap = frame.CopyToBitmap();
+        private void toolStripMenuItem_Debug_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            //var cvt = SkeletonConverter.New(SpineVersion.V38);
+            //var root = cvt.ReadBinary(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs\aerhangeersike\aerhangeersike_3\aerhangeersike_3 - 副本.skel");
+            //cvt.WriteJson(root, @"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs\aerhangeersike\aerhangeersike_3\aerhangeersike_3.json");
 
-        //    var newBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
-        //    var oldBitmap = Win32.SelectObject(memDC, newBitmap);
+            //root = cvt.ReadJson(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs\aerhangeersike\aerhangeersike_3\aerhangeersike_3.json");
+            //cvt.WriteBinary(root, @"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs\aerhangeersike\aerhangeersike_3\aerhangeersike_3.skel");
+            //var sp = SpineObject.New(SpineVersion.V38, @"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs\aerhangeersike\aerhangeersike_3\aerhangeersike_3.skel");
 
-        //    Win32.SIZE size = new Win32.SIZE { cx = pet.Width, cy = pet.Height };
-        //    Win32.POINT srcPos = new Win32.POINT { x = 0, y = 0 };
-        //    Win32.BLENDFUNCTION blend = new Win32.BLENDFUNCTION { BlendOp = 0, BlendFlags = 0, SourceConstantAlpha = 255, AlphaFormat = Win32.AC_SRC_ALPHA };
-
-        //    Win32.UpdateLayeredWindow(pet.Handle, screenDC, IntPtr.Zero, ref size, memDC, ref srcPos, 0, ref blend, Win32.ULW_ALPHA);
-
-        //    Win32.SelectObject(memDC, oldBitmap);
-        //    Win32.DeleteObject(newBitmap);
-        //}
+            //var cvt = SkeletonConverter.New(SpineVersion.V38);
+            //var root = cvt.ReadJson(@"D:\ACGN\G\GirlsCreation\standing_spine\st4020069\st4020069.json");
+            //cvt.WriteBinary(root, @"D:\ACGN\G\GirlsCreation\standing_spine\st4020069\st4020069.skel");
+            //var sp = SpineObject.New(SpineVersion.V38, @"D:\ACGN\G\GirlsCreation\standing_spine\st4020069\st4020069.skel");
+            //_Test();
+#endif
+        }
 
         //private void spinePreviewer_KeyDown(object sender, KeyEventArgs e)
         //{

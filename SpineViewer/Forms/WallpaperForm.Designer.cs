@@ -1,6 +1,6 @@
 ﻿namespace SpineViewer
 {
-    partial class PetForm
+    partial class WallpaperForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,18 +30,18 @@
         {
             SuspendLayout();
             // 
-            // PetForm
+            // WallpaperForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(490, 456);
             ControlBox = false;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "PetForm";
+            Name = "WallpaperForm";
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
-            Text = "PetForm";
+            Text = "SpineViewerWallpaperForm";
             ResumeLayout(false);
         }
 
