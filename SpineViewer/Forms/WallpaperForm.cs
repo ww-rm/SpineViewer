@@ -18,41 +18,25 @@ namespace SpineViewer
     [DesignTimeVisible(true)]
     public partial class WallpaperForm: Form
     {
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Browsable(false)]
-        public nint RenderHandle { get => panel.Handle; }
-
         public WallpaperForm()
         {
             InitializeComponent();
         }
 
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        var cp = base.CreateParams;
-        //        // 先把“可见”样式关掉，这样 Win32 在创建完句柄时不会自动 ShowWindow
-        //        cp.Style &= ~Win32.WS_VISIBLE;
-        //        return cp;
-        //    }
-        //}
-
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        var cp = base.CreateParams;
-        //        cp.X = cp.Y = 0;
-        //        cp.Style = Win32.WS_POPUP;
-        //        cp.ExStyle = Win32.WS_EX_TOOLWINDOW;
-        //        return cp;
-        //    }
-        //}
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle = Win32.WS_EX_LAYERED;
+                return cp;
+            }
+        }
 
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
+            Win32.SetLayeredWindowAttributes(Handle, 0, 255, Win32.LWA_ALPHA);
             SetWallpaper();
         }
 

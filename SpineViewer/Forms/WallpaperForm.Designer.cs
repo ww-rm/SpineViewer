@@ -28,24 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel = new Panel();
             SuspendLayout();
-            // 
-            // panel
-            // 
-            panel.Dock = DockStyle.Fill;
-            panel.Location = new Point(0, 0);
-            panel.Margin = new Padding(0);
-            panel.Name = "panel";
-            panel.Size = new Size(512, 512);
-            panel.TabIndex = 0;
             // 
             // WallpaperForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(512, 512);
             ControlBox = false;
-            Controls.Add(panel);
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -57,7 +46,5 @@
         }
 
         #endregion
-
-        private Panel panel;
     }
 }

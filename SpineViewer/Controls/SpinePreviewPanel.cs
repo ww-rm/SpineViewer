@@ -11,7 +11,7 @@ using System.Security.Policy;
 using System.Diagnostics;
 using NLog;
 using SpineViewer.Utils;
-using SpineViewer.Natives;
+using System.Drawing.Design;
 
 namespace SpineViewer.Controls
 {
@@ -22,7 +22,8 @@ namespace SpineViewer.Controls
             InitializeComponent();
             renderWindow = new(panel_Render.Handle);
             renderWindow.SetActive(false);
-            wallpaperWindow = new(wallpaperForm.RenderHandle);
+            wallpaperWindow = new(wallpaperForm.Handle);
+            wallpaperWindow.SetVisible(false);
             wallpaperWindow.SetActive(false);
 
             // 设置默认参数
@@ -258,6 +259,11 @@ namespace SpineViewer.Controls
                 if (enableDesktopProjection == value) return;
                 if (value)
                 {
+                    var screenBounds = Screen.FromControl(this).Bounds;
+                    Resolution = screenBounds.Size;
+                    wallpaperWindow.Position = new(screenBounds.X, screenBounds.Y);
+                    wallpaperWindow.Size = new((uint)screenBounds.Size.Width, (uint)screenBounds.Size.Height);
+                    wallpaperForm.SetWallpaper(); // 窗口被创建和此处都需要设置一遍嵌入桌面, 否则无法正常显示, 原因未知
                     wallpaperForm.Show();
                 }
                 else
@@ -276,7 +282,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 预览画面背景色
         /// </summary>
-        private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
+        public SFML.Graphics.Color BackgroundColor { get; set; } = new(105, 105, 105);
 
         /// <summary>
         /// 预览画面坐标轴颜色
@@ -687,10 +693,10 @@ namespace SpineViewer.Controls
 
         private void button_FullScreen_Click(object sender, EventArgs e)
         {
-            var screen = Screen.FromControl(this);
-            Resolution = screen.Bounds.Size;
+            var screenBounds = Screen.FromControl(this).Bounds;
+            Resolution = screenBounds.Size;
             spinePreviewFullScreenForm.Controls.Add(panel_RenderContainer);
-            spinePreviewFullScreenForm.Bounds = screen.Bounds;
+            spinePreviewFullScreenForm.Bounds = screenBounds;
             spinePreviewFullScreenForm.Show();
             PropertyGrid?.Refresh();
         }
@@ -748,5 +754,10 @@ namespace SpineViewer.Controls
 
         [Category("[1] 预览"), DisplayName("最大帧率")]
         public uint MaxFps { get => PreviewPanel.MaxFps; set => PreviewPanel.MaxFps = value; }
+
+        [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(SFMLColorConverter))]
+        [Category("[1] 预览"), DisplayName("背景颜色")]
+        public SFML.Graphics.Color BackgroundColor { get => PreviewPanel.BackgroundColor; set => PreviewPanel.BackgroundColor = value; }
     }
 }
