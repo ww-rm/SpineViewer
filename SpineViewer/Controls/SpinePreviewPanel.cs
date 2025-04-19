@@ -506,7 +506,7 @@ namespace SpineViewer.Controls
         /// </summary>
         private SFML.System.Vector2f? draggingSrc = null;
 
-        private void SpinePreviewPanel_SizeChanged(object sender, EventArgs e)
+        private void panel_Container_SizeChanged(object sender, EventArgs e)
         {
             if (renderWindow is null)
                 return;

@@ -86,6 +86,7 @@
             panel_Container.Name = "panel_Container";
             panel_Container.Size = new Size(641, 594);
             panel_Container.TabIndex = 0;
+            panel_Container.SizeChanged += panel_Container_SizeChanged;
             // 
             // flowLayoutPanel1
             // 
@@ -211,7 +212,6 @@
             Controls.Add(tableLayoutPanel1);
             Name = "SpinePreviewPanel";
             Size = new Size(641, 636);
-            SizeChanged += SpinePreviewPanel_SizeChanged;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             panel_Container.ResumeLayout(false);
