@@ -93,8 +93,8 @@ namespace SpineViewer.Spine
             tex.Display();
             Preview = tex.Texture.CopyToBitmap();
 
-            // 初始化皮肤加载情况
-            foreach (var n in SkinNames) skinLoadStatus[n] = false;
+            // 初始化皮肤加载情况, 不需要记录 default
+            foreach (var n in SkinNames.Where(v => v != "default")) skinLoadStatus[n] = false;
 
             // 默认初始化10个动画空位
             for (int i = 0; i < 10; i++) setAnimation(i, AnimationNames.First());
@@ -359,7 +359,7 @@ namespace SpineViewer.Spine
         /// <summary>
         /// 查询皮肤加载状态, 皮肤不存在时返回 false
         /// </summary>
-        public bool GetSkinStatus(string name) { lock (_lock) return skinLoadStatus.TryGetValue(name, out var status) && status; }
+        public bool GetSkinStatus(string name) { lock (_lock) return name == "default" || skinLoadStatus.TryGetValue(name, out var status) && status; }
 
         /// <summary>
         /// 设置皮肤加载状态, 忽略不存在的皮肤

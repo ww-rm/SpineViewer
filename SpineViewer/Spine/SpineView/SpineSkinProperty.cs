@@ -66,7 +66,7 @@ namespace SpineViewer.Spine.SpineView
         private class SkinPropertyDescriptor(string name, Attribute[]? attributes) : PropertyDescriptor(name, attributes)
         {
             public override Type ComponentType => typeof(SpineSkinProperty);
-            public override bool IsReadOnly => false;
+            public override bool IsReadOnly => Name == "default";
             public override Type PropertyType => typeof(bool);
             public override bool CanResetValue(object component) => false;
             public override void ResetValue(object component) { }

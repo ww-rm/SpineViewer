@@ -101,7 +101,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 }
             }
             SlotAttachmentNames = slotAttachments.ToFrozenDictionary(item => item.Key, item => item.Value.Keys.ToImmutableArray());
-            SkinNames = skeletonData.Skins.Select(v => v.Name).Where(v => v != "default").ToImmutableArray();
+            SkinNames = skeletonData.Skins.Select(v => v.Name).ToImmutableArray();
             AnimationNames = [EMPTY_ANIMATION, .. skeletonData.Animations.Select(v => v.Name)];
 
             skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) }; // 挂载一个空皮肤当作容器
@@ -169,7 +169,8 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         protected override void addSkin(string name)
         {
-            if (skeletonData.FindSkin(name) is Skin sk)
+            // default 不需要加载
+            if (name != "default" && skeletonData.FindSkin(name) is Skin sk)
             {
                 // XXX: 3.7 及以下不支持 AddSkin
                 foreach (var (k, v) in sk.Attachments) 
