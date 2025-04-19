@@ -122,68 +122,42 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         protected override float scale
         {
-            get
-            {
-                if (skeletonBinary is not null)
-                    return skeletonBinary.Scale;
-                else if (skeletonJson is not null)
-                    return skeletonJson.Scale;
-                else
-                    return 1f;
-            }
+            get => Math.Abs(skeleton.ScaleX);
             set
             {
-                // 保存状态
-                var pos = position;
-                var fX = flipX;
-                var fY = flipY;
-                var animations = animationState.Tracks.Where(te => te is not null).Select(te => te.Animation.Name).ToArray();
-
-                if (skeletonBinary is not null)
-                {
-                    skeletonBinary.Scale = value;
-                    skeletonData = skeletonBinary.ReadSkeletonData(SkelPath);
-                }
-                else if (skeletonJson is not null)
-                {
-                    skeletonJson.Scale = value;
-                    skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
-                }
-
-                // reload skel-dependent data
-                skeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
-                animationStateData = new AnimationStateData(skeletonData) { DefaultMix = animationStateData.DefaultMix };
-                animationState = new AnimationState(animationStateData);
-
-                // 恢复状态
-                position = pos;
-                flipX = fX;
-                flipY = fY;
-                reloadSkins();
-                for (int i = 0; i < animations.Length; i++) setAnimation(i, animations[i]);
+                skeleton.ScaleX = Math.Sign(skeleton.ScaleX) * value;
+                skeleton.ScaleY = Math.Sign(skeleton.ScaleY) * value;
             }
         }
 
-        protected override PointF position 
-        { 
-            get => new(skeleton.X, skeleton.Y); 
-            set 
-            { 
-                skeleton.X = value.X; 
+        protected override PointF position
+        {
+            get => new(skeleton.X, skeleton.Y);
+            set
+            {
+                skeleton.X = value.X;
                 skeleton.Y = value.Y;
-            } 
+            }
         }
 
         protected override bool flipX
         {
-            get => skeleton.FlipX;
-            set => skeleton.FlipX = value;
+            get => skeleton.ScaleX < 0;
+            set
+            {
+                if (skeleton.ScaleX > 0 && value || skeleton.ScaleX < 0 && !value)
+                    skeleton.ScaleX *= -1;
+            }
         }
 
         protected override bool flipY
         {
-            get => skeleton.FlipY;
-            set => skeleton.FlipY = value;
+            get => skeleton.ScaleY < 0;
+            set
+            {
+                if (skeleton.ScaleY > 0 && value || skeleton.ScaleY < 0 && !value)
+                    skeleton.ScaleY *= -1;
+            }
         }
 
         protected override string getSlotAttachment(string slot) => skeleton.FindSlot(slot)?.Attachment?.Name ?? EMPTY_ATTACHMENT;
@@ -243,8 +217,8 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             var maxDuration = 0f;
             var tmpSkeleton = new Skeleton(skeletonData) { Skin = new(Guid.NewGuid().ToString()) };
             var tmpAnimationState = new AnimationState(animationStateData);
-            tmpSkeleton.FlipX = skeleton.FlipX;
-            tmpSkeleton.FlipY = skeleton.FlipY;
+            tmpSkeleton.ScaleX = skeleton.ScaleX;
+            tmpSkeleton.ScaleY = skeleton.ScaleY;
             tmpSkeleton.X = skeleton.X;
             tmpSkeleton.Y = skeleton.Y;
             foreach (var (name, _) in skinLoadStatus.Where(e => e.Value))
