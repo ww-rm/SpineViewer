@@ -1,6 +1,6 @@
-﻿namespace SpineViewer
+﻿namespace SpineViewer.Forms
 {
-    partial class WallpaperForm
+    partial class SpinePreviewFullScreenForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,36 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel = new Panel();
             SuspendLayout();
             // 
-            // panel
-            // 
-            panel.Dock = DockStyle.Fill;
-            panel.Location = new Point(0, 0);
-            panel.Margin = new Padding(0);
-            panel.Name = "panel";
-            panel.Size = new Size(512, 512);
-            panel.TabIndex = 0;
-            // 
-            // WallpaperForm
+            // SpinePreviewFullScreenForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(512, 512);
             ControlBox = false;
-            Controls.Add(panel);
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "WallpaperForm";
+            Name = "SpinePreviewFullScreenForm";
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
+            TopMost = true;
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel panel;
     }
 }

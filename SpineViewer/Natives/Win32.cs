@@ -17,6 +17,7 @@ namespace SpineViewer.Natives
         public const int GWL_STYLE = -16;
         public const int WS_SIZEBOX = 0x40000;
         public const int WS_BORDER = 0x800000;
+        public const int WS_VISIBLE = 0x10000000;
         public const int WS_POPUP = unchecked((int)0x80000000);
 
         public const int GWL_EXSTYLE = -20;
