@@ -28,7 +28,7 @@ namespace SpineViewer
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle = Win32.WS_EX_TOOLWINDOW | Win32.WS_EX_LAYERED;
+                cp.ExStyle |= Win32.WS_EX_TOOLWINDOW | Win32.WS_EX_LAYERED;
                 return cp;
             }
         }
