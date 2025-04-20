@@ -17,6 +17,8 @@ namespace SpineViewer.Natives
         public const int GWL_STYLE = -16;
         public const int WS_SIZEBOX = 0x40000;
         public const int WS_BORDER = 0x800000;
+        public const int WS_VISIBLE = 0x10000000;
+        public const int WS_CHILD = 0x40000000;
         public const int WS_POPUP = unchecked((int)0x80000000);
 
         public const int GWL_EXSTYLE = -20;
@@ -170,7 +172,7 @@ namespace SpineViewer.Natives
             if (progman == nint.Zero)
                 return nint.Zero;
             nint hWnd = FindWindowEx(progman, 0, "WorkerW", null);
-            Debug.WriteLine($"{hWnd:x8}");
+            Debug.WriteLine($"HWND(Progman.WorkerW): {hWnd:x8}");
             return hWnd;
         }
     }
