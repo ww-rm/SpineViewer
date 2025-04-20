@@ -248,15 +248,15 @@ namespace SpineViewer.Controls
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public uint MaxFps 
-        { 
-            get => maxFps; 
-            set 
+        public uint MaxFps
+        {
+            get => maxFps;
+            set
             {
                 if (renderWindow is null) return;
 
-                renderWindow.SetFramerateLimit(value); 
-                maxFps = value; 
+                renderWindow.SetFramerateLimit(value);
+                maxFps = value;
             }
         }
         private uint maxFps = 60;
@@ -437,7 +437,7 @@ namespace SpineViewer.Controls
                     }
 
                     renderWindow.Clear(BackgroundColor);
-                    if(enableDesktopProjection) wallpaperWindow.Clear(BackgroundColor);
+                    if (enableDesktopProjection) wallpaperWindow.Clear(BackgroundColor);
 
                     if (ShowAxis)
                     {
@@ -748,6 +748,16 @@ namespace SpineViewer.Controls
                 spinePreviewFullScreenForm.Hide();
                 panel_ViewContainer.Controls.Add(panel_RenderContainer);
             }
+        }
+
+        private void spinePreviewFullScreenForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = e.CloseReason == CloseReason.UserClosing;
+        }
+
+        private void wallpaperForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = e.CloseReason == CloseReason.UserClosing;
         }
 
         //public void ClickStopButton() => button_Stop_Click(button_Stop, EventArgs.Empty);

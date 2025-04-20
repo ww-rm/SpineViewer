@@ -236,6 +236,7 @@
             spinePreviewFullScreenForm.StartPosition = FormStartPosition.Manual;
             spinePreviewFullScreenForm.TopMost = true;
             spinePreviewFullScreenForm.Visible = false;
+            spinePreviewFullScreenForm.FormClosing += spinePreviewFullScreenForm_FormClosing;
             spinePreviewFullScreenForm.KeyDown += spinePreviewFullScreenForm_KeyDown;
             // 
             // wallpaperForm
@@ -251,6 +252,7 @@
             wallpaperForm.StartPosition = FormStartPosition.Manual;
             wallpaperForm.Visible = false;
             wallpaperForm.WindowState = FormWindowState.Minimized;
+            wallpaperForm.FormClosing += wallpaperForm_FormClosing;
             // 
             // SpinePreviewPanel
             // 
