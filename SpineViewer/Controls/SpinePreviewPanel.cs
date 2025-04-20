@@ -736,7 +736,9 @@ namespace SpineViewer.Controls
             var screenBounds = Screen.FromControl(this).Bounds;
             Resolution = screenBounds.Size;
             spinePreviewFullScreenForm.Controls.Add(panel_RenderContainer);
-            spinePreviewFullScreenForm.Bounds = screenBounds;
+            spinePreviewFullScreenForm.Location = screenBounds.Location;
+            spinePreviewFullScreenForm.Size = screenBounds.Size;
+            //spinePreviewFullScreenForm.Bounds = screenBounds; // XXX: DPI 在 V2 模式下貌似有奇怪的缓存 BUG 导致通过 Bounds 设置位置时 Size 无法在第一次正确响应
             spinePreviewFullScreenForm.Show();
             PropertyGrid?.Refresh();
         }
