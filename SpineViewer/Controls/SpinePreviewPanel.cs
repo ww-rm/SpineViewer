@@ -22,11 +22,13 @@ namespace SpineViewer.Controls
             InitializeComponent();
             renderWindow = new(panel_Render.Handle);
             renderWindow.SetActive(false);
-            wallpaperTexture = new(1, 1);
-            _wallpaperFormHandle = wallpaperForm.Handle;
+            wallpaperWindow = new(wallpaperForm.Handle);
+            wallpaperWindow.SetVisible(false);
+            wallpaperWindow.SetActive(false);
 
             // 设置默认参数
             Resolution = new(2048, 2048);
+            Zoom = 1;
             Center = new(0, 0);
             FlipY = true;
             MaxFps = 30;
@@ -71,49 +73,36 @@ namespace SpineViewer.Controls
             get => resolution;
             set
             {
+                if (value == resolution) return;
                 if (value.Width <= 0) value.Width = 100;
                 if (value.Height <= 0) value.Height = 100;
 
-                float parentX = panel_Render.Parent.Width;
-                float parentY = panel_Render.Parent.Height;
-                float sizeX = value.Width;
-                float sizeY = value.Height;
+                var previousZoom = Zoom;
 
-                if ((sizeY / sizeX) < (parentY / parentX))
-                {
-                    // 相同的 X, 子窗口 Y 更小
-                    sizeY = parentX * sizeY / sizeX;
-                    sizeX = parentX;
-                }
-                else
-                {
-                    // 相同的 Y, 子窗口 X 更小
-                    sizeX = parentY * sizeX / sizeY;
-                    sizeY = parentY;
-                }
+                float parentW = panel_Render.Parent.Width;
+                float parentH = panel_Render.Parent.Height;
+                float renderW = value.Width;
+                float renderH = value.Height;
+                float scale = Math.Min(parentW / renderW, parentH / renderH); // 两方向取较小值, 保证 parent 覆盖 render
+                renderW *= scale;
+                renderH *= scale;
 
                 // 必须通过 SFML 的方法调整窗口
-                renderWindow.Position = new((int)(parentX - sizeX) / 2, (int)(parentY - sizeY) / 2);
-                renderWindow.Size = new((uint)sizeX, (uint)sizeY);
-
-                // 将 view 的大小设置成于 resolution 相同的大小, 其余属性都不变
-                using var view = renderWindow.GetView();
-                var signX = Math.Sign(view.Size.X);
-                var signY = Math.Sign(view.Size.Y);
-                view.Size = new(value.Width * signX, value.Height * signY);
-                renderWindow.SetView(view);
-
+                renderWindow.Position = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
+                renderWindow.Size = new((uint)(renderW + 0.5), (uint)(renderH + 0.5));
                 resolution = value;
+
+                // 设置完 resolution 后还原缩放比例
+                Zoom = previousZoom;
 
                 // 设置壁纸窗口分辨率
                 wallpaperForm.Size = value;
-                _memDCsize = new() { cx = value.Width, cy = value.Height };
-                wallpaperTexture.Dispose();
-                wallpaperTexture = new((uint)value.Width, (uint)value.Height);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.Size = new((uint)value.Width, (uint)value.Height);
+                using var view = renderWindow.GetView();
+                wallpaperWindow.SetView(view);
             }
         }
-        private Size resolution = new(0, 0);
+        private Size resolution = new(100, 100);
 
         /// <summary>
         /// 画面中心点
@@ -133,7 +122,7 @@ namespace SpineViewer.Controls
                 using var view = renderWindow.GetView();
                 view.Center = new(value.X, value.Y);
                 renderWindow.SetView(view);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.SetView(view);
             }
         }
 
@@ -157,7 +146,7 @@ namespace SpineViewer.Controls
                 var signY = Math.Sign(view.Size.Y);
                 view.Size = new(resolution.Width / value * signX, resolution.Height / value * signY);
                 renderWindow.SetView(view);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.SetView(view);
             }
         }
 
@@ -178,7 +167,7 @@ namespace SpineViewer.Controls
                 using var view = renderWindow.GetView();
                 view.Rotation = value;
                 renderWindow.SetView(view);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.SetView(view);
             }
         }
 
@@ -202,7 +191,7 @@ namespace SpineViewer.Controls
                     size.X *= -1;
                 view.Size = size;
                 renderWindow.SetView(view);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.SetView(view);
             }
         }
 
@@ -226,7 +215,7 @@ namespace SpineViewer.Controls
                     size.Y *= -1;
                 view.Size = size;
                 renderWindow.SetView(view);
-                wallpaperTexture.SetView(view);
+                wallpaperWindow.SetView(view);
             }
         }
 
@@ -270,17 +259,16 @@ namespace SpineViewer.Controls
                 if (enableDesktopProjection == value) return;
                 if (value)
                 {
-                    screenDC = Win32.GetDC(IntPtr.Zero);
-                    memDC = Win32.CreateCompatibleDC(screenDC);
+                    var screenBounds = Screen.FromControl(this).Bounds;
+                    Resolution = screenBounds.Size;
+                    wallpaperWindow.Position = new(screenBounds.X, screenBounds.Y);
+                    wallpaperWindow.Size = new((uint)screenBounds.Size.Width, (uint)screenBounds.Size.Height);
+                    //wallpaperForm.SetWallpaper(); // 窗口被创建和此处都需要设置一遍嵌入桌面, 否则无法正常显示, 原因未知
                     wallpaperForm.Show();
                 }
                 else
                 {
                     wallpaperForm.Hide();
-                    Win32.DeleteDC(memDC);
-                    Win32.ReleaseDC(IntPtr.Zero, screenDC);
-                    memDC = 0;
-                    screenDC = 0;
                 }
                 enableDesktopProjection = value;
             }
@@ -312,23 +300,9 @@ namespace SpineViewer.Controls
         private readonly SFML.Graphics.RenderWindow renderWindow;
 
         /// <summary>
-        /// 屏幕 DC
-        /// </summary>
-        private IntPtr screenDC;
-
-        /// <summary>
-        /// 用于壁纸窗口的内存 DC
-        /// </summary>
-        private IntPtr memDC;
-        private readonly IntPtr _wallpaperFormHandle;
-        private Win32.SIZE _memDCsize = new();
-        private Win32.POINT _memDCptSrc = new() { x = 0, y = 0 };
-        private Win32.BLENDFUNCTION _memDCblend = new() { BlendOp = 0, BlendFlags = 0, SourceConstantAlpha = 255, AlphaFormat = Win32.AC_SRC_ALPHA };
-
-        /// <summary>
         /// 壁纸窗口
         /// </summary>
-        private SFML.Graphics.RenderTexture wallpaperTexture;
+        private SFML.Graphics.RenderWindow wallpaperWindow;
 
         /// <summary>
         /// 帧间隔计时器
@@ -406,7 +380,7 @@ namespace SpineViewer.Controls
             try
             {
                 renderWindow.SetActive(true);
-                wallpaperTexture.SetActive(true);
+                wallpaperWindow.SetActive(true);
 
                 float delta;
                 while (cancelToken is not null && !cancelToken.IsCancellationRequested)
@@ -425,7 +399,7 @@ namespace SpineViewer.Controls
                     }
 
                     renderWindow.Clear(BackgroundColor);
-                    if (enableDesktopProjection) wallpaperTexture.Clear(SFML.Graphics.Color.Transparent);
+                    if(enableDesktopProjection) wallpaperWindow.Clear(BackgroundColor);
 
                     if (ShowAxis)
                     {
@@ -460,30 +434,14 @@ namespace SpineViewer.Controls
                                 renderWindow.Draw(spine);
                                 spine.EnableDebug = false;
 
-                                if (enableDesktopProjection) wallpaperTexture.Draw(spine);
+                                if (enableDesktopProjection) wallpaperWindow.Draw(spine);
                             }
                         }
                     }
 
                     renderWindow.Display();
-                    
-                    // 桌面投影
-                    if (enableDesktopProjection)
-                    {
-                        wallpaperTexture.Display();
-                        using var img = wallpaperTexture.Texture.CopyToImage();
-                        img.SaveToMemory(out var imgBuffer, "bmp");
-                        using var stream = new MemoryStream(imgBuffer);
-                        using var bitmap = new Bitmap(stream);
 
-                        var newBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
-                        var oldBitmap = Win32.SelectObject(memDC, newBitmap);
-
-                        Win32.UpdateLayeredWindow(_wallpaperFormHandle, screenDC, IntPtr.Zero, ref _memDCsize, memDC, ref _memDCptSrc, 0, ref _memDCblend, Win32.ULW_ALPHA);
-
-                        Win32.SelectObject(memDC, oldBitmap);
-                        Win32.DeleteObject(newBitmap);
-                    }
+                    if (enableDesktopProjection) wallpaperWindow.Display();
                 }
             }
             catch (Exception ex)
@@ -495,7 +453,7 @@ namespace SpineViewer.Controls
             finally
             {
                 renderWindow.SetActive(false);
-                wallpaperTexture.SetActive(false);
+                wallpaperWindow.SetActive(false);
             }
         }
 
@@ -506,7 +464,7 @@ namespace SpineViewer.Controls
         /// </summary>
         private SFML.System.Vector2f? draggingSrc = null;
 
-        private void SpinePreviewPanel_SizeChanged(object sender, EventArgs e)
+        private void panel_RenderContainer_SizeChanged(object sender, EventArgs e)
         {
             if (renderWindow is null)
                 return;
@@ -516,12 +474,12 @@ namespace SpineViewer.Controls
             float renderW = panel_Render.Width;
             float renderH = panel_Render.Height;
             float scale = Math.Min(parentW / renderW, parentH / renderH); // 两方向取较小值, 保证 parent 覆盖 render
-            renderH *= scale;
             renderW *= scale;
+            renderH *= scale;
 
-            // 必须通过 SFML 的方法调整窗口
-            renderWindow.Position = new((int)(parentW - renderW) / 2, (int)(parentH - renderH) / 2);
-            renderWindow.Size = new((uint)renderW, (uint)renderH);
+            // 必须通过 SFML 的方法调整窗口, 此处必须四舍五入, 否则在全屏和小窗多次切换之后会有明显的舍入误差
+            renderWindow.Position = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
+            renderWindow.Size = new((uint)(renderW + 0.5), (uint)(renderH + 0.5));
         }
 
         private void panel_Render_MouseDown(object sender, MouseEventArgs e)
@@ -730,6 +688,25 @@ namespace SpineViewer.Controls
                     forwardDelta += 10f / maxFps;
                 else
                     forwardDelta += 0.01f;
+            }
+        }
+
+        private void button_FullScreen_Click(object sender, EventArgs e)
+        {
+            var screenBounds = Screen.FromControl(this).Bounds;
+            Resolution = screenBounds.Size;
+            spinePreviewFullScreenForm.Controls.Add(panel_RenderContainer);
+            spinePreviewFullScreenForm.Bounds = screenBounds;
+            spinePreviewFullScreenForm.Show();
+            PropertyGrid?.Refresh();
+        }
+
+        private void spinePreviewFullScreenForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                spinePreviewFullScreenForm.Hide();
+                panel_ViewContainer.Controls.Add(panel_RenderContainer);
             }
         }
 
