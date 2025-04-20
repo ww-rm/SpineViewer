@@ -33,15 +33,16 @@
             // WallpaperForm
             // 
             AutoScaleMode = AutoScaleMode.None;
-            ClientSize = new Size(490, 456);
+            ClientSize = new Size(512, 512);
             ControlBox = false;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "WallpaperForm";
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
-            Text = "SpineViewerWallpaperForm";
+            WindowState = FormWindowState.Minimized;
             ResumeLayout(false);
         }
 

@@ -380,7 +380,6 @@ namespace SpineViewer.Controls
                 renderWindow = new(panel_Render.Handle);
                 renderWindow.SetActive(false);
                 wallpaperWindow = new(wallpaperForm.Handle);
-                wallpaperWindow.SetVisible(false);
                 wallpaperWindow.SetActive(false);
 
                 // 设置默认参数

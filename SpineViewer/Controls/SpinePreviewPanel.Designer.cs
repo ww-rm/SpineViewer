@@ -249,7 +249,9 @@
             wallpaperForm.ShowIcon = false;
             wallpaperForm.ShowInTaskbar = false;
             wallpaperForm.StartPosition = FormStartPosition.Manual;
+            wallpaperForm.Text = "wallpaperForm1";
             wallpaperForm.Visible = false;
+            wallpaperForm.WindowState = FormWindowState.Minimized;
             // 
             // SpinePreviewPanel
             // 
