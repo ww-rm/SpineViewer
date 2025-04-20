@@ -17,13 +17,14 @@ namespace SpineViewer.Controls
         public SkelFileListBox()
         {
             InitializeComponent();
-            Items = listBox.Items;
         }
 
         /// <summary>
         /// ListBox.Items
         /// </summary>
-        public readonly ListBox.ObjectCollection Items;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        public ListBox.ObjectCollection Items { get => listBox.Items; }
 
         /// <summary>
         /// 从路径列表添加
