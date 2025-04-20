@@ -27,8 +27,10 @@ namespace SpineViewer.Natives
         public const int WS_EX_TOOLWINDOW = 0x80;
         public const int WS_EX_WINDOWEDGE = 0x100;
         public const int WS_EX_CLIENTEDGE = 0x200;
+        public const int WS_EX_APPWINDOW = 0x40000;
         public const int WS_EX_LAYERED = 0x80000;
         public const int WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE;
+        public const int WS_EX_NOACTIVATE = 0x8000000;
 
         public const uint LWA_COLORKEY = 0x1;
         public const uint LWA_ALPHA = 0x2;
@@ -46,7 +48,6 @@ namespace SpineViewer.Natives
         public const uint SWP_NOMOVE = 0x0002;
         public const uint SWP_NOZORDER = 0x0004;
         public const uint SWP_FRAMECHANGED = 0x0020;
-        public const uint SWP_REFRESHLONG = SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED;
 
         public const int WM_SPAWN_WORKER = 0x052C; // 一个未公开的神秘消息
 
