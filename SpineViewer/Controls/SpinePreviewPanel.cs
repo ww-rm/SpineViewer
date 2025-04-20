@@ -20,18 +20,6 @@ namespace SpineViewer.Controls
         public SpinePreviewPanel()
         {
             InitializeComponent();
-            renderWindow = new(panel_Render.Handle);
-            renderWindow.SetActive(false);
-            wallpaperWindow = new(wallpaperForm.Handle);
-            wallpaperWindow.SetVisible(false);
-            wallpaperWindow.SetActive(false);
-
-            // 设置默认参数
-            Resolution = new(2048, 2048);
-            Zoom = 1;
-            Center = new(0, 0);
-            FlipY = true;
-            MaxFps = 30;
         }
 
         /// <summary>
@@ -73,6 +61,8 @@ namespace SpineViewer.Controls
             get => resolution;
             set
             {
+                if (renderWindow is null) return;
+
                 if (value == resolution) return;
                 if (value.Width <= 0) value.Width = 100;
                 if (value.Height <= 0) value.Height = 100;
@@ -113,12 +103,16 @@ namespace SpineViewer.Controls
         {
             get
             {
+                if (renderWindow is null) return new(-1, -1);
+
                 using var view = renderWindow.GetView();
                 var center = view.Center;
                 return new(center.X, center.Y);
             }
             set
             {
+                if (renderWindow is null) return;
+
                 using var view = renderWindow.GetView();
                 view.Center = new(value.X, value.Y);
                 renderWindow.SetView(view);
@@ -135,11 +129,15 @@ namespace SpineViewer.Controls
         {
             get
             {
+                if (renderWindow is null) return -1;
+
                 using var view = renderWindow.GetView();
                 return resolution.Width / Math.Abs(view.Size.X);
             }
             set
             {
+                if (renderWindow is null) return;
+
                 value = Math.Clamp(value, 0.001f, 1000f);
                 using var view = renderWindow.GetView();
                 var signX = Math.Sign(view.Size.X);
@@ -159,11 +157,15 @@ namespace SpineViewer.Controls
         {
             get
             {
+                if (renderWindow is null) return -1;
+
                 using var view = renderWindow.GetView();
                 return view.Rotation;
             }
             set
             {
+                if (renderWindow is null) return;
+
                 using var view = renderWindow.GetView();
                 view.Rotation = value;
                 renderWindow.SetView(view);
@@ -180,11 +182,15 @@ namespace SpineViewer.Controls
         {
             get
             {
+                if (renderWindow is null) return false;
+
                 using var view = renderWindow.GetView();
                 return view.Size.X < 0;
             }
             set
             {
+                if (renderWindow is null) return;
+
                 using var view = renderWindow.GetView();
                 var size = view.Size;
                 if (size.X > 0 && value || size.X < 0 && !value)
@@ -204,11 +210,15 @@ namespace SpineViewer.Controls
         {
             get
             {
+                if (renderWindow is null) return false;
+
                 using var view = renderWindow.GetView();
                 return view.Size.Y < 0;
             }
             set
             {
+                if (renderWindow is null) return;
+
                 using var view = renderWindow.GetView();
                 var size = view.Size;
                 if (size.Y > 0 && value || size.Y < 0 && !value)
@@ -238,7 +248,17 @@ namespace SpineViewer.Controls
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public uint MaxFps { get => maxFps; set { renderWindow.SetFramerateLimit(value); maxFps = value; } }
+        public uint MaxFps 
+        { 
+            get => maxFps; 
+            set 
+            {
+                if (renderWindow is null) return;
+
+                renderWindow.SetFramerateLimit(value); 
+                maxFps = value; 
+            }
+        }
         private uint maxFps = 60;
 
         /// <summary>
@@ -256,6 +276,8 @@ namespace SpineViewer.Controls
             get => enableDesktopProjection;
             set
             {
+                if (renderWindow is null) return;
+
                 if (enableDesktopProjection == value) return;
                 if (value)
                 {
@@ -275,14 +297,16 @@ namespace SpineViewer.Controls
         }
         private bool enableDesktopProjection = false;
 
-        #endregion
-
-        #region 渲染管理
-
         /// <summary>
         /// 预览画面背景色
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public SFML.Graphics.Color BackgroundColor { get; set; } = new(105, 105, 105);
+
+        #endregion
+
+        #region 渲染管理
 
         /// <summary>
         /// 预览画面坐标轴颜色
@@ -297,7 +321,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 渲染窗口
         /// </summary>
-        private readonly SFML.Graphics.RenderWindow renderWindow;
+        private SFML.Graphics.RenderWindow renderWindow;
 
         /// <summary>
         /// 壁纸窗口
@@ -350,6 +374,23 @@ namespace SpineViewer.Controls
         /// </summary>
         public void StartRender()
         {
+            // 延迟到第一次开启渲染时进行初始化
+            if (renderWindow is null)
+            {
+                renderWindow = new(panel_Render.Handle);
+                renderWindow.SetActive(false);
+                wallpaperWindow = new(wallpaperForm.Handle);
+                wallpaperWindow.SetVisible(false);
+                wallpaperWindow.SetActive(false);
+
+                // 设置默认参数
+                Resolution = new(2048, 2048);
+                Zoom = 1;
+                Center = new(0, 0);
+                FlipY = true;
+                MaxFps = 30;
+            }
+
             if (task is not null) return;
             cancelToken = new();
             task = Task.Run(RenderTask, cancelToken.Token);
@@ -466,8 +507,7 @@ namespace SpineViewer.Controls
 
         private void panel_RenderContainer_SizeChanged(object sender, EventArgs e)
         {
-            if (renderWindow is null)
-                return;
+            if (renderWindow is null) return;
 
             float parentW = panel_Render.Parent.Width;
             float parentH = panel_Render.Parent.Height;
@@ -484,6 +524,8 @@ namespace SpineViewer.Controls
 
         private void panel_Render_MouseDown(object sender, MouseEventArgs e)
         {
+            if (renderWindow is null) return;
+
             // 右键优先级高, 进入画面拖动模式, 需要重新记录源点
             if ((e.Button & MouseButtons.Right) != 0)
             {
@@ -563,8 +605,9 @@ namespace SpineViewer.Controls
 
         private void panel_Render_MouseMove(object sender, MouseEventArgs e)
         {
-            if (draggingSrc is null)
-                return;
+            if (renderWindow is null) return;
+
+            if (draggingSrc is null) return;
 
             var src = (SFML.System.Vector2f)draggingSrc;
             var dst = renderWindow.MapPixelToCoords(new(e.X, e.Y));
