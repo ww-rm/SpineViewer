@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpineViewer.Natives;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -19,6 +20,16 @@ namespace SpineViewer.Forms
         public SpinePreviewFullScreenForm()
         {
             InitializeComponent();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= Win32.WS_EX_TOOLWINDOW;
+                return cp;
+            }
         }
     }
 }
