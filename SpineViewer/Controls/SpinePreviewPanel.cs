@@ -735,12 +735,16 @@ namespace SpineViewer.Controls
         {
             var screenBounds = Screen.FromControl(this).Bounds;
             Resolution = screenBounds.Size;
-            spinePreviewFullScreenForm.Controls.Add(panel_RenderContainer);
+            PropertyGrid?.Refresh();
+
+            // PerfMonitorV2 模式下, 位置和大小需要分开设置
+            // 因为目标位置的 DPI 可能发生变化, 因此在 WM_POSITIONCHANGED 之后会收到 WM_DPICHANGED
+            // 进而导致一次额外的 WM_SIZE 消息, 其大小是 DPI 修改前的大小, 这个消息在此次设置之后发生
+            // 因此如果同时设置位置和大小则大小可能设置失败
             spinePreviewFullScreenForm.Location = screenBounds.Location;
             spinePreviewFullScreenForm.Size = screenBounds.Size;
-            //spinePreviewFullScreenForm.Bounds = screenBounds; // XXX: DPI 在 V2 模式下貌似有奇怪的缓存 BUG 导致通过 Bounds 设置位置时 Size 无法在第一次正确响应
+            spinePreviewFullScreenForm.Controls.Add(panel_RenderContainer);
             spinePreviewFullScreenForm.Show();
-            PropertyGrid?.Refresh();
         }
 
         private void spinePreviewFullScreenForm_KeyDown(object sender, KeyEventArgs e)
