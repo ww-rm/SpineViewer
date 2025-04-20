@@ -10,17 +10,36 @@
 
 ![previewer](img/preview.webp)
 
-## 安装
+## 功能
 
-前往 [Release](https://github.com/ww-rm/SpineViewer/releases) 界面下载压缩包.
+- 支持多版本 spine 文件
+- 支持拖拽/复制粘贴批量打开文件
+- 支持列表式多骨骼查看和渲染层级管理
+- 支持列表多选批量设置骨骼参数
+- 支持多轨道动画设置
+- 支持皮肤/自定义插槽附件设置
+- 支持调试渲染
+- 支持全屏预览
+- 支持单帧/动图/视频文件导出
+- 支持自动分辨率批量导出
+- 支持 FFmpeg 自定义导出
+- ...
 
-软件需要安装依赖框架 [.NET 桌面运行时 8.0.x](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
+### Spine 版本支持
 
-也可以下载带有 `SelfContained` 后缀的压缩包, 可以独立运行.
+| 版本 | 查看&导出 | 格式转换 | 版本转换 |
+| :---: | :---: | :---: | :---: |
+| `2.1.x` | :white_check_mark: |  |  |
+| `3.6.x` | :white_check_mark: |  |  |
+| `3.7.x` | :white_check_mark: |  |  |
+| `3.8.x` | :white_check_mark: | :white_check_mark: |  |
+| `4.1.x` | :white_check_mark: |  |  |
+| `4.2.x` | :white_check_mark: |  |  |
+| `4.3.x` |  |  |  |
 
-导出 GIF 等视频格式需要在本地安装 ffmpeg 命令行, 并且添加至环境变量, [点击前往 FFmpeg-Windows 下载页面](https://ffmpeg.org/download.html#build-windows), 也可以点这个下载最新版本 [ffmpeg-release-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z).
+更多版本正在施工 :rocket: :rocket: :rocket:
 
-## 导出格式支持
+### 导出格式支持
 
 | 导出格式 | 适用场景 |
 | --- | --- |
@@ -32,34 +51,27 @@
 | MKV/MOV | 适合折腾. |
 | 自定义导出 | 除上述预设方案, 支持提供任意 FFmpeg 参数进行导出, 满足自定义复杂需求. |
 
-## Spine 版本支持
+## 安装
 
-| 版本 | 查看&导出 | 格式转换 | 版本转换 |
-| :---: | :---: | :---: | :---: |
-| `2.1.x` | :white_check_mark: |  |  |
-| `3.1.x` |  |  |  |
-| `3.4.x` |  |  |  |
-| `3.5.x` |  |  |  |
-| `3.6.x` | :white_check_mark: |  |  |
-| `3.7.x` | :white_check_mark: |  |  |
-| `3.8.x` | :white_check_mark: | :white_check_mark: |  |
-| `4.1.x` | :white_check_mark: |  |  |
-| `4.2.x` | :white_check_mark: |  |  |
-| `4.3.x` |  |  |  |
+前往 [Release](https://github.com/ww-rm/SpineViewer/releases) 界面下载压缩包.
 
-更多版本正在施工 :rocket: :rocket: :rocket:
+软件需要安装依赖框架 [.NET 桌面运行时 8.0.x](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
+
+也可以下载带有 `SelfContained` 后缀的压缩包, 可以独立运行.
+
+导出 GIF 等视频格式需要在本地安装 ffmpeg 命令行, 并且添加至环境变量, [点击前往 FFmpeg-Windows 下载页面](https://ffmpeg.org/download.html#build-windows), 也可以点这个下载最新版本 [ffmpeg-release-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z).
 
 ## 使用方法
 
 ### 骨骼导入
 
-有 3 种模式导入骨骼文件:
+有 3 种方式导入骨骼文件:
 
 - 拖放/粘贴需要导入的骨骼文件/目录到模型列表
 - 从文件菜单里批量打开骨骼文件
 - 从文件菜单选择单个模型打开
 
-### 预览内容调整
+### 内容调整
 
 模型列表支持右键菜单以及部分快捷键, 并且可以多选进行模型参数的批量调整.
 
@@ -67,12 +79,12 @@
 
 - 左键可以选择和拖拽模型, 按下 `Ctrl` 键可以实现多选, 与左侧列表选择是联动的.
 - 右键对整体画面进行拖动.
-- 滚轮进行画面缩放.
+- 滚轮进行画面缩放, 按住 `Ctrl` 可以对选中的模型进行批量缩放.
 - 仅渲染选中模式, 在该模式下, 预览画面仅包含被选中的模型, 并且只能通过左侧列表改变选中状态.
 
 预览画面下方按钮支持对画面时间进行调整, 可以当作一个简易的播放器.
 
-### 预览内容导出
+### 内容导出
 
 导出遵循 "所见即所得" 原则, 即实时预览的画面就是你导出的画面.
 
@@ -81,6 +93,7 @@
 - 仅渲染选中. 这个参数不仅影响预览模式, 也影响导出, 如果仅渲染选中, 那么在导出时只有被选中的模型会被考虑, 忽略其他模型.
 - 输出文件夹. 这个参数某些时候可选, 当不提供时, 则将输出产物输出到每个模型各自的模型文件夹, 否则输出产物全部输出到提供的输出文件夹.
 - 导出单个. 默认是每个模型独立导出, 即对模型列表进行批量操作, 如果选择仅导出单个, 那么被导出的所有模型将在同一个画面上被渲染, 输出产物只有一份.
+- 自动分辨率. 该模式会忽略预览画面的分辨率和视区参数, 导出产物的分辨率与被导出内容的实际大小一致, 如果是动图或者视频则会与完整显示动画的必需大小一致.
 
 ### 更多
 
