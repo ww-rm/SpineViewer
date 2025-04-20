@@ -23,25 +23,20 @@ namespace SpineViewer
             InitializeComponent();
         }
 
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        var cp = base.CreateParams;
-        //        cp.ExStyle = Win32.WS_EX_LAYERED;
-        //        return cp;
-        //    }
-        //}
-
-        //protected override void OnHandleCreated(EventArgs e)
-        //{
-        //    base.OnHandleCreated(e);
-        //    Win32.SetLayeredWindowAttributes(Handle, 0, 255, Win32.LWA_ALPHA);
-        //    SetWallpaper();
-        //}
-
-        public void SetWallpaper()
+        protected override CreateParams CreateParams
         {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle = Win32.WS_EX_TOOLWINDOW | Win32.WS_EX_LAYERED;
+                return cp;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
             // 设置成嵌入桌面
             var progman = Win32.FindWindow("Progman", null);
             if (progman != IntPtr.Zero)
@@ -51,10 +46,27 @@ namespace SpineViewer
                 var workerW = Win32.GetWorkerW();
                 if (workerW != IntPtr.Zero)
                 {
-                    Win32.SetWindowLong(Handle, Win32.GWL_EXSTYLE, Win32.GetWindowLong(Handle, Win32.GWL_EXSTYLE) | Win32.WS_EX_LAYERED);
                     Win32.SetLayeredWindowAttributes(Handle, 0, 255, Win32.LWA_ALPHA);
-                    Win32.SetParent(Handle, workerW);
+                    Win32.SetParent(Handle, workerW); // 嵌入之前必须保证有 WS_EX_LAYERED 标志
                 }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        public byte LayeredWindowAlpha
+        { 
+            get
+            {
+                uint crKey = 0;
+                byte bAlpha = 255;
+                uint dwFlags = Win32.LWA_ALPHA;
+                Win32.GetLayeredWindowAttributes(Handle, ref crKey, ref bAlpha, ref dwFlags);
+                return bAlpha;
+            }
+            set
+            {
+                Win32.SetLayeredWindowAttributes(Handle, 0, value, Win32.LWA_ALPHA);
             }
         }
     }
