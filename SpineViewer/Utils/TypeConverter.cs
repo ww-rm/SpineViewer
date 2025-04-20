@@ -104,21 +104,21 @@ namespace SpineViewer.Utils
         }
     }
 
-    public class ResolutionConverter : SizeConverter 
+    public class ResolutionConverter : SizeConverter
     {
-        private static readonly StandardValuesCollection standardValues = new(new string[] {
-            "4096, 4096",
-            "2048, 2048",
-            "1024, 1024",
-            "512, 512",
-            "3840, 2160",
-            "2560, 1440",
-            "1920, 1080",
-            "1280, 720",
-            "2160, 3840",
-            "1440, 2560",
-            "1080, 1920",
-            "720, 1280",
+        private static readonly StandardValuesCollection standardValues = new(new Size[] {
+            new(4096, 4096),
+            new(2048, 2048),
+            new(1024, 1024),
+            new(512, 512),
+            new(3840, 2160),
+            new(2560, 1440),
+            new(1920, 1080),
+            new(1280, 720),
+            new(2160, 3840),
+            new(1440, 2560),
+            new(1080, 1920),
+            new(720, 1280),
         });
 
         public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
@@ -128,16 +128,40 @@ namespace SpineViewer.Utils
 
     public class SFMLColorConverter : ExpandableObjectConverter
     {
-        private class SFMLColorPropertyDescriptor : SimplePropertyDescriptor
+        private static SFML.Graphics.Color ParseHexColor(string hex, bool includeAlpha)
         {
-            public SFMLColorPropertyDescriptor(Type componentType, string name, Type propertyType) : base(componentType, name, propertyType) { }
-
-            public override object? GetValue(object? component) => component?.GetType().GetField(Name)?.GetValue(component) ?? default;
-
-            public override void SetValue(object? component, object? value) => component?.GetType().GetField(Name)?.SetValue(component, value);
+            byte r = byte.Parse(hex.Substring(1, 2), NumberStyles.HexNumber);
+            byte g = byte.Parse(hex.Substring(3, 2), NumberStyles.HexNumber);
+            byte b = byte.Parse(hex.Substring(5, 2), NumberStyles.HexNumber);
+            byte a = includeAlpha ? byte.Parse(hex.Substring(7, 2), NumberStyles.HexNumber) : (byte)255;
+            return new SFML.Graphics.Color(r, g, b, a);
         }
 
-        private static PropertyDescriptorCollection pdCollection = null;
+        private static SFML.Graphics.Color ParseShortHexColor(string hex, bool includeAlpha)
+        {
+            byte r = Convert.ToByte($"{hex[1]}{hex[1]}", 16);
+            byte g = Convert.ToByte($"{hex[2]}{hex[2]}", 16);
+            byte b = Convert.ToByte($"{hex[3]}{hex[3]}", 16);
+            byte a = includeAlpha ? Convert.ToByte($"{hex[4]}{hex[4]}", 16) : (byte)255;
+            return new SFML.Graphics.Color(r, g, b, a);
+        }
+
+        private static readonly StandardValuesCollection standardValues;
+
+        static SFMLColorConverter()
+        {
+            // 初始化所有 KnownColor
+            var knownColors = Enum.GetValues(typeof(KnownColor))
+                .Cast<KnownColor>()
+                .Select(knownColor =>
+                {
+                    var color = Color.FromKnownColor(knownColor);
+                    return new SFML.Graphics.Color(color.R, color.G, color.B, color.A);
+                })
+                .ToArray();
+
+            standardValues = new StandardValuesCollection(knownColors);
+        }
 
         public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
         {
@@ -149,24 +173,48 @@ namespace SpineViewer.Utils
             if (value is string s)
             {
                 s = s.Trim();
-                if (s.StartsWith("#") && s.Length == 9)
+
+                try
                 {
-                    try
+                    // 处理 #RRGGBBAA 和 #RRGGBB 格式
+                    if (s.StartsWith("#"))
                     {
-                        // 解析 R, G, B, A 分量，注意16进制解析
-                        byte r = byte.Parse(s.Substring(1, 2), NumberStyles.HexNumber);
-                        byte g = byte.Parse(s.Substring(3, 2), NumberStyles.HexNumber);
-                        byte b = byte.Parse(s.Substring(5, 2), NumberStyles.HexNumber);
-                        byte a = byte.Parse(s.Substring(7, 2), NumberStyles.HexNumber);
+                        if (s.Length == 9) // #RRGGBBAA
+                            return ParseHexColor(s, includeAlpha: true);
+                        if (s.Length == 7) // #RRGGBB
+                            return ParseHexColor(s, includeAlpha: false);
+                        if (s.Length == 5) // #RGBA
+                            return ParseShortHexColor(s, includeAlpha: true);
+                        if (s.Length == 4) // #RGB
+                            return ParseShortHexColor(s, includeAlpha: false);
+
+                        throw new FormatException("无法解析颜色，请使用 #RRGGBBAA、#RRGGBB、#RGBA 或 #RGB 格式");
+                    }
+
+                    // 处理 R,G,B,A 和 R,G,B 格式
+                    var parts = s.Split(',');
+                    if (parts.Length == 3 || parts.Length == 4)
+                    {
+                        byte r = byte.Parse(parts[0].Trim());
+                        byte g = byte.Parse(parts[1].Trim());
+                        byte b = byte.Parse(parts[2].Trim());
+                        byte a = parts.Length == 4 ? byte.Parse(parts[3].Trim()) : (byte)255;
                         return new SFML.Graphics.Color(r, g, b, a);
                     }
-                    catch (Exception ex)
-                    {
-                        throw new FormatException("无法解析颜色，确保格式为 #RRGGBBAA", ex);
-                    }
+
+                    // 尝试解析为 KnownColor
+                    var color = Color.FromName(s);
+                    if (color.IsKnownColor || color.IsNamedColor)
+                        return new SFML.Graphics.Color(color.R, color.G, color.B, color.A);
+
+                    throw new FormatException("无法解析颜色，请使用已知的颜色名称");
                 }
-                throw new FormatException("格式错误，正确格式为 #RRGGBBAA");
+                catch (Exception ex)
+                {
+                    throw new FormatException("无法解析颜色，请检查格式", ex);
+                }
             }
+
             return base.ConvertFrom(context, culture, value);
         }
 
@@ -181,6 +229,21 @@ namespace SpineViewer.Utils
                 return $"#{color.R:X2}{color.G:X2}{color.B:X2}{color.A:X2}";
             return base.ConvertTo(context, culture, value, destinationType);
         }
+
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => false;
+        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context) => standardValues;
+
+        private class SFMLColorPropertyDescriptor : SimplePropertyDescriptor
+        {
+            public SFMLColorPropertyDescriptor(Type componentType, string name, Type propertyType) : base(componentType, name, propertyType) { }
+
+            public override object? GetValue(object? component) => component?.GetType().GetField(Name)?.GetValue(component) ?? default;
+
+            public override void SetValue(object? component, object? value) => component?.GetType().GetField(Name)?.SetValue(component, value);
+        }
+
+        private static PropertyDescriptorCollection pdCollection = null;
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
         {
