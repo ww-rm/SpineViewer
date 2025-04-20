@@ -86,10 +86,10 @@ namespace SpineViewer.Controls
                 Zoom = previousZoom;
 
                 // 设置壁纸窗口分辨率
-                wallpaperForm.Size = value;
-                wallpaperWindow.Size = new((uint)value.Width, (uint)value.Height);
                 using var view = renderWindow.GetView();
                 wallpaperWindow.SetView(view);
+                wallpaperForm.Size = value; // 必须两个 Size 都设置
+                wallpaperWindow.Size = new((uint)value.Width, (uint)value.Height);
             }
         }
         private Size resolution = new(100, 100);
@@ -284,8 +284,6 @@ namespace SpineViewer.Controls
                     var screenBounds = Screen.FromControl(this).Bounds;
                     Resolution = screenBounds.Size;
                     wallpaperWindow.Position = new(screenBounds.X, screenBounds.Y);
-                    wallpaperWindow.Size = new((uint)screenBounds.Size.Width, (uint)screenBounds.Size.Height);
-                    //wallpaperForm.SetWallpaper(); // 窗口被创建和此处都需要设置一遍嵌入桌面, 否则无法正常显示, 原因未知
                     wallpaperForm.Show();
                 }
                 else

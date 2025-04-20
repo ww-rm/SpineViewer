@@ -240,7 +240,7 @@
             // 
             // wallpaperForm
             // 
-            wallpaperForm.ClientSize = new Size(512, 512);
+            wallpaperForm.ClientSize = new Size(0, 0);
             wallpaperForm.ControlBox = false;
             wallpaperForm.FormBorderStyle = FormBorderStyle.None;
             wallpaperForm.MaximizeBox = false;
@@ -249,7 +249,6 @@
             wallpaperForm.ShowIcon = false;
             wallpaperForm.ShowInTaskbar = false;
             wallpaperForm.StartPosition = FormStartPosition.Manual;
-            wallpaperForm.Text = "wallpaperForm1";
             wallpaperForm.Visible = false;
             wallpaperForm.WindowState = FormWindowState.Minimized;
             // 
