@@ -11,7 +11,7 @@ using System.Security.Policy;
 using System.Diagnostics;
 using NLog;
 using SpineViewer.Utils;
-using SpineViewer.Natives;
+using System.Drawing.Design;
 
 namespace SpineViewer.Controls
 {
@@ -294,7 +294,7 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 预览画面背景色
         /// </summary>
-        private static readonly SFML.Graphics.Color BackgroundColor = new(105, 105, 105);
+        public SFML.Graphics.Color BackgroundColor { get; set; } = new(105, 105, 105);
 
         /// <summary>
         /// 预览画面坐标轴颜色
@@ -777,5 +777,10 @@ namespace SpineViewer.Controls
 
         [Category("[1] 预览"), DisplayName("最大帧率")]
         public uint MaxFps { get => PreviewPanel.MaxFps; set => PreviewPanel.MaxFps = value; }
+
+        [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(SFMLColorConverter))]
+        [Category("[1] 预览"), DisplayName("背景颜色")]
+        public SFML.Graphics.Color BackgroundColor { get => PreviewPanel.BackgroundColor; set => PreviewPanel.BackgroundColor = value; }
     }
 }
