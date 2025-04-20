@@ -79,6 +79,8 @@ namespace SpineViewer.Utils
             }
         }
 
+        private StandardValuesCollection standardValues;
+
         public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
 
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
@@ -89,15 +91,39 @@ namespace SpineViewer.Utils
 
         public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context)
         {
-            // 查找属性上的 StandardValuesAttribute
-            var attribute = context?.PropertyDescriptor?.Attributes.OfType<StandardValuesAttribute>().FirstOrDefault();
-            StandardValuesCollection result;
-            if (attribute != null)
-                result = new StandardValuesCollection(attribute.StandardValues);
-            else
-                result = new StandardValuesCollection(Array.Empty<string>());
-            return result;
+            if (standardValues is null)
+            {
+                // 查找属性上的 StandardValuesAttribute
+                var attribute = context?.PropertyDescriptor?.Attributes.OfType<StandardValuesAttribute>().FirstOrDefault();
+                if (attribute != null)
+                    standardValues = new StandardValuesCollection(attribute.StandardValues);
+                else
+                    standardValues = new StandardValuesCollection(Array.Empty<string>());
+            }
+            return standardValues;
         }
+    }
+
+    public class ResolutionConverter : SizeConverter 
+    {
+        private static readonly StandardValuesCollection standardValues = new(new string[] {
+            "4096, 4096",
+            "2048, 2048",
+            "1024, 1024",
+            "512, 512",
+            "3840, 2160",
+            "2560, 1440",
+            "1920, 1080",
+            "1280, 720",
+            "2160, 3840",
+            "1440, 2560",
+            "1080, 1920",
+            "720, 1280",
+        });
+
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => false;
+        public override StandardValuesCollection? GetStandardValues(ITypeDescriptorContext? context) => standardValues;
     }
 
     public class SFMLColorConverter : ExpandableObjectConverter

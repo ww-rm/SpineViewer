@@ -749,7 +749,7 @@ namespace SpineViewer.Controls
         public SpinePreviewPanel PreviewPanel { get; } = previewPanel;
 
         [RefreshProperties(RefreshProperties.All)]
-        [TypeConverter(typeof(SizeConverter))]
+        [TypeConverter(typeof(ResolutionConverter))]
         [Category("[0] 导出"), DisplayName("分辨率")]
         public Size Resolution { get => PreviewPanel.Resolution; set => PreviewPanel.Resolution = value; }
 
