@@ -222,7 +222,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         protected override void setAnimation(int track, string name)
         {
             if (name == EMPTY_ANIMATION)
-                animationState.SetAnimation(track, EmptyAnimation, false);
+                animationState.SetAnimation(track, EmptyAnimation, true);
             else if (AnimationNames.Contains(name))
                 animationState.SetAnimation(track, name, true);
         }
