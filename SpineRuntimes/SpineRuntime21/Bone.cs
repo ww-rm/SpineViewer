@@ -33,7 +33,7 @@ using System.Collections.Generic;
 
 namespace SpineRuntime21 {
 	public class Bone{
-		static public bool yDown;
+		static readonly public bool yDown = false;
 
 		internal BoneData data;
 		internal Skeleton skeleton;
@@ -84,7 +84,8 @@ namespace SpineRuntime21 {
 
 		/// <summary>Computes the world SRT using the parent bone and the local SRT.</summary>
 		public void UpdateWorldTransform () {
-			Bone parent = this.parent;
+            float sx = skeleton.scaleX, sy = skeleton.scaleY;
+            Bone parent = this.parent;
 			float x = this.x, y = this.y;
 			if (parent != null) {
 				worldX = x * parent.m00 + y * parent.m01 + parent.worldX;
@@ -100,34 +101,22 @@ namespace SpineRuntime21 {
 				worldFlipX = parent.worldFlipX != flipX;
 				worldFlipY = parent.worldFlipY != flipY;
 			} else {
-				Skeleton skeleton = this.skeleton;
-				bool skeletonFlipX = skeleton.flipX, skeletonFlipY = skeleton.flipY;
-				worldX = skeletonFlipX ? -x : x;
-				worldY = skeletonFlipY != yDown ? -y : y;
+                worldX = x * sx;
+				worldY = y * sy;
 				worldScaleX = scaleX;
 				worldScaleY = scaleY;
 				worldRotation = rotationIK;
-				worldFlipX = skeletonFlipX != flipX;
-				worldFlipY = skeletonFlipY != flipY;
+				worldFlipX = (sx < 0) != flipX;
+				worldFlipY = (sy < 0) != flipY;
 			}
 			float radians = worldRotation * (float)Math.PI / 180;
 			float cos = (float)Math.Cos(radians);
 			float sin = (float)Math.Sin(radians);
-			if (worldFlipX) {
-				m00 = -cos * worldScaleX;
-				m01 = sin * worldScaleY;
-			} else {
-				m00 = cos * worldScaleX;
-				m01 = -sin * worldScaleY;
-			}
-			if (worldFlipY != yDown) {
-				m10 = -sin * worldScaleX;
-				m11 = -cos * worldScaleY;
-			} else {
-				m10 = sin * worldScaleX;
-				m11 = cos * worldScaleY;
-			}
-		}
+            m00 = cos * worldScaleX * sx;
+            m01 = -sin * worldScaleY * sx;
+            m10 = sin * worldScaleX * sy;
+			m11 = cos * worldScaleY * sy;
+        }
 
 		public void SetToSetupPose () {
 			BoneData data = this.data;
