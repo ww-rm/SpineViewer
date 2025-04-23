@@ -29,12 +29,13 @@ A *WYSIWYG* Spine file viewer & exporter.
 
 | Version  | View & Export | Format Conversion | Version Conversion |
 | :------: | :-----------: | :---------------: | :----------------: |
-| `2.1.x`  | ✅            |                   |                    |
-| `3.6.x`  | ✅            |                   |                    |
-| `3.7.x`  | ✅            |                   |                    |
-| `3.8.x`  | ✅            | ✅                |                    |
-| `4.1.x`  | ✅            |                   |                    |
-| `4.2.x`  | ✅            |                   |                    |
+| `2.1.x`  | :white_check_mark:            |                   |                    |
+| `3.6.x`  | :white_check_mark:            |                   |                    |
+| `3.7.x`  | :white_check_mark:            |                   |                    |
+| `3.8.x`  | :white_check_mark:            | :white_check_mark:                |                    |
+| `4.0.x` | :white_check_mark: |  |  |
+| `4.1.x`  | :white_check_mark:            |                   |                    |
+| `4.2.x`  | :white_check_mark:            |                   |                    |
 | `4.3.x`  |               |                   |                    |
 
 More versions coming soon 🚀🚀🚀
