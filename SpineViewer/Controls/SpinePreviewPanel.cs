@@ -77,9 +77,8 @@ namespace SpineViewer.Controls
                 renderW *= scale;
                 renderH *= scale;
 
-                // 必须通过 SFML 的方法调整窗口
-                renderWindow.Position = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
-                renderWindow.Size = new((uint)(renderW + 0.5), (uint)(renderH + 0.5));
+                panel_Render.Location = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
+                panel_Render.Size = new((int)(renderW + 0.5), (int)(renderH + 0.5));
                 resolution = value;
 
                 // 设置完 resolution 后还原缩放比例
@@ -423,6 +422,9 @@ namespace SpineViewer.Controls
                 float delta;
                 while (cancelToken is not null && !cancelToken.IsCancellationRequested)
                 {
+                    // 必须让 SFML 有机会处理窗口消息, 例如位置和大小变化
+                    renderWindow.DispatchEvents();
+
                     delta = clock.ElapsedTime.AsSeconds();
                     clock.Restart();
 
@@ -514,9 +516,8 @@ namespace SpineViewer.Controls
             renderW *= scale;
             renderH *= scale;
 
-            // 必须通过 SFML 的方法调整窗口, 此处必须四舍五入, 否则在全屏和小窗多次切换之后会有明显的舍入误差
-            renderWindow.Position = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
-            renderWindow.Size = new((uint)(renderW + 0.5), (uint)(renderH + 0.5));
+            panel_Render.Location = new((int)((parentW - renderW) / 2 + 0.5), (int)((parentH - renderH) / 2 + 0.5));
+            panel_Render.Size = new((int)(renderW + 0.5), (int)(renderH + 0.5));
         }
 
         private void panel_Render_MouseDown(object sender, MouseEventArgs e)
