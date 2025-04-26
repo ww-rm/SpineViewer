@@ -1,6 +1,8 @@
 ﻿using NLog;
 using SpineViewer.Utils;
+using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace SpineViewer
@@ -44,9 +46,13 @@ namespace SpineViewer
             InitializeLogConfiguration();
             logger.Info("Program Started");
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+			string localize = ConfigurationManager.AppSettings["localize"];
+			LocalizeConfiguration.SetCulture(localize);
+            logger.Info($"Culture info: {CultureInfo.CurrentCulture}");
+
+			// To customize application configuration such as set high DPI settings or default font,
+			// see https://aka.ms/applicationconfiguration.
+			ApplicationConfiguration.Initialize();
 
             try
             {
