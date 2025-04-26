@@ -399,7 +399,8 @@ namespace SpineViewer.Controls
         /// </summary>
         public void StopRender()
         {
-            wallpaperForm.Hide();
+            if (wallpaperForm.InvokeRequired) wallpaperForm.Invoke(wallpaperForm.Hide);
+            else wallpaperForm.Hide();
             IsUpdating = false;
             if (task is null || cancelToken is null)
                 return;
