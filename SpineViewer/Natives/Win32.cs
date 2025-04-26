@@ -57,7 +57,20 @@ namespace SpineViewer.Natives
         public const uint SMTO_NOTIMEOUTIFNOTHUNG = 0x0008;
 
         public const uint GA_PARENT = 1;
+
         public const uint GW_OWNER = 4;
+
+        public const int SW_HIDE = 0;
+        public const int SW_SHOWNORMAL = 1;
+        public const int SW_SHOWMINIMIZED = 2;
+        public const int SW_SHOWMAXIMIZED = 3;
+        public const int SW_SHOWNOACTIVATE = 4;
+        public const int SW_SHOW = 5;
+        public const int SW_MINIMIZE = 6;
+        public const int SW_SHOWMINNOACTIVE = 7;
+        public const int SW_SHOWNA = 8;
+        public const int SW_RESTORE = 9;
+        public const int SW_SHOWDEFAULT = 10;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
@@ -87,6 +100,15 @@ namespace SpineViewer.Natives
         {
             public uint cbSize;
             public uint dwTime;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -139,6 +161,9 @@ namespace SpineViewer.Natives
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern nint GetWindow(nint hWnd, uint uCmd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool ShowWindow(nint hWnd, int nCmdShow);
 
         [DllImport("gdi32.dll", SetLastError = true)]
         public static extern nint CreateCompatibleDC(nint hdc);
