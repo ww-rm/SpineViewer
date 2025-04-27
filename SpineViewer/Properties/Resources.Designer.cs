@@ -61,6 +61,15 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 关于 .
+        /// </summary>
+        internal static string about {
+            get {
+                return ResourceManager.GetString("about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 自定义.
         /// </summary>
         internal static string categoryCustom {
@@ -88,6 +97,33 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  项，共 .
+        /// </summary>
+        internal static string countInfoStatusMidfix {
+            get {
+                return ResourceManager.GetString("countInfoStatusMidfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已选择 .
+        /// </summary>
+        internal static string countInfoStatusPrefix {
+            get {
+                return ResourceManager.GetString("countInfoStatusPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  项.
+        /// </summary>
+        internal static string countInfoStatusSuffix {
+            get {
+                return ResourceManager.GetString("countInfoStatusSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 相关联的 SpineListView.
         /// </summary>
         internal static string descAssociatedSpineListView {
@@ -102,6 +138,15 @@ namespace SpineViewer.Properties {
         internal static string descDisplayImageProperties {
             get {
                 return ResourceManager.GetString("descDisplayImageProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用于显示模型属性的组合属性页.
+        /// </summary>
+        internal static string descModelAttributes {
+            get {
+                return ResourceManager.GetString("descModelAttributes", resourceCulture);
             }
         }
         
@@ -196,6 +241,15 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 骨骼加载失败.
+        /// </summary>
+        internal static string errorLoadSkeleton {
+            get {
+                return ResourceManager.GetString("errorLoadSkeleton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 已选择 .
         /// </summary>
         internal static string itemCountPrefix {
@@ -210,6 +264,105 @@ namespace SpineViewer.Properties {
         internal static string itemCountSuffix {
             get {
                 return ResourceManager.GetString("itemCountSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 共发现 .
+        /// </summary>
+        internal static string loadAllSkeletonPrefix {
+            get {
+                return ResourceManager.GetString("loadAllSkeletonPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  个可加载骨骼，数量较多，是否一次性全部加载？.
+        /// </summary>
+        internal static string loadAllSkeletonSuffix {
+            get {
+                return ResourceManager.GetString("loadAllSkeletonSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 错误信息.
+        /// </summary>
+        internal static string msgBoxError {
+            get {
+                return ResourceManager.GetString("msgBoxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 提示信息.
+        /// </summary>
+        internal static string msgBoxInfo {
+            get {
+                return ResourceManager.GetString("msgBoxInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 操作确认.
+        /// </summary>
+        internal static string msgBoxQuest {
+            get {
+                return ResourceManager.GetString("msgBoxQuest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 警告信息.
+        /// </summary>
+        internal static string msgBoxWarning {
+            get {
+                return ResourceManager.GetString("msgBoxWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 链接已复制到剪贴板，请前往浏览器进行访问.
+        /// </summary>
+        internal static string notifyCopyGithubLink {
+            get {
+                return ResourceManager.GetString("notifyCopyGithubLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已处理 .
+        /// </summary>
+        internal static string process {
+            get {
+                return ResourceManager.GetString("process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认移除所有 .
+        /// </summary>
+        internal static string removeAllItemPrefix {
+            get {
+                return ResourceManager.GetString("removeAllItemPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确定移除所选 .
+        /// </summary>
+        internal static string removeItemConfirmPrefix {
+            get {
+                return ResourceManager.GetString("removeItemConfirmPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  项吗？.
+        /// </summary>
+        internal static string removeItemConfirmSuffix {
+            get {
+                return ResourceManager.GetString("removeItemConfirmSuffix", resourceCulture);
             }
         }
         
