@@ -12,11 +12,10 @@ namespace SpineViewer.Utils.Localize
 {
 	public static class LocalizeConfiguration
 	{
-		static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
 		public static void UpdateLocalizeSetting(string newCulture)
 		{
 			Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
 			if (config.AppSettings.Settings["localize"] != null)
 				config.AppSettings.Settings["localize"].Value = newCulture;
 			else
@@ -29,15 +28,14 @@ namespace SpineViewer.Utils.Localize
 		public static void SetCulture()
 		{
 			string cultureName = ConfigurationManager.AppSettings["localize"];
-			logger.Info($"Culture name: {cultureName}");
 
 			if (string.IsNullOrWhiteSpace(cultureName))
 			{
-				Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
-				Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
+				cultureName = "zh-CN";
 			}
 			try
 			{
+			
 				var culture = new CultureInfo(cultureName);
 				Thread.CurrentThread.CurrentCulture = culture;
 				Thread.CurrentThread.CurrentUICulture = culture;
@@ -47,6 +45,8 @@ namespace SpineViewer.Utils.Localize
 				Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
 				Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
 			}
+
+
 		}
 	}
 }

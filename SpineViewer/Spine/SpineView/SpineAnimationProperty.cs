@@ -1,5 +1,6 @@
 ﻿using SpineViewer.Spine;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace SpineViewer.Spine.SpineView
         /// <summary>
         /// 全轨道动画最大时长
         /// </summary>
-        [DisplayName("全轨道最大时长")]
+        [LocalizedDisplayName(typeof(Properties.Resources), "maximumTrackLength")]
         public float AnimationTracksMaxDuration => Spine.GetTrackIndices().Select(i => Spine.GetAnimationDuration(Spine.GetAnimation(i))).Max();
 
         /// <summary>
@@ -144,8 +145,8 @@ namespace SpineViewer.Spine.SpineView
         [Browsable(false)]
         public int Index { get; } = i;
 
-        [DisplayName("时长")]
-        public float Duration => spine.GetAnimationDuration(spine.GetAnimation(Index));
+		[LocalizedDisplayName(typeof(Properties.Resources), "duration")]
+		public float Duration => spine.GetAnimationDuration(spine.GetAnimation(Index));
 
         /// <summary>
         /// 实现了默认的转为字符串的方式

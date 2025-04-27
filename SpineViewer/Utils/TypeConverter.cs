@@ -188,7 +188,7 @@ namespace SpineViewer.Utils
                         if (s.Length == 4) // #RGB
                             return ParseShortHexColor(s, includeAlpha: false);
 
-                        throw new FormatException("无法解析颜色，请使用 #RRGGBBAA、#RRGGBB、#RGBA 或 #RGB 格式");
+                        throw new FormatException(Properties.Resources.formatExceptionParseColor);
                     }
 
                     // 处理 R,G,B,A 和 R,G,B 格式
@@ -207,11 +207,11 @@ namespace SpineViewer.Utils
                     if (color.IsKnownColor || color.IsNamedColor)
                         return new SFML.Graphics.Color(color.R, color.G, color.B, color.A);
 
-                    throw new FormatException("无法解析颜色，请使用已知的颜色名称");
+                    throw new FormatException(Properties.Resources.formatExceptionUnknownColor);
                 }
                 catch (Exception ex)
                 {
-                    throw new FormatException("无法解析颜色，请检查格式", ex);
+                    throw new FormatException(Properties.Resources.formatExceptionParseColorError, ex);
                 }
             }
 
