@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpineViewer.Utils.Localize;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -45,16 +46,20 @@ namespace SpineViewer.Spine.SpineExporter
         [Browsable(false)]
         public override string Suffix => Exporter.Suffix;
 
-        /// <summary>
-        /// 文件格式
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("文件格式"), Description("-f, 文件格式")]
+		/// <summary>
+		/// 文件格式
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFFmpegParameter")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFileFormat")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFileFormat")]
         public string CustomFormat { get => Exporter.CustomFormat; set => Exporter.CustomFormat = value; }
 
-        /// <summary>
-        /// 文件名后缀
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("文件名后缀"), Description("文件名后缀")]
+		/// <summary>
+		/// 文件名后缀
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFFmpegParameter")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFilenameSuffix")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFilenameSuffix")]
         public string CustomSuffix { get => Exporter.CustomSuffix; set => Exporter.CustomSuffix = value; }
     }
 }

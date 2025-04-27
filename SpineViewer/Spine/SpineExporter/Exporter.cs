@@ -288,11 +288,11 @@ namespace SpineViewer.Spine.SpineExporter
         public virtual string? Validate()
         {
             if (!string.IsNullOrWhiteSpace(OutputDir) && File.Exists(OutputDir))
-                return "输出文件夹无效";
+                return Properties.Resources.invalidInputFolder;
             if (!string.IsNullOrWhiteSpace(OutputDir) && !Directory.Exists(OutputDir))
-                return $"文件夹 {OutputDir} 不存在";
+                return $"{Properties.Resources.folderNotExistPrefix} {OutputDir} {Properties.Resources.folderNotExistSuffix}";
             if (IsExportSingle && string.IsNullOrWhiteSpace(OutputDir))
-                return "导出单个时必须提供输出文件夹";
+                return Properties.Resources.mustProvideOutputFolder;
 
             OutputDir = string.IsNullOrWhiteSpace(OutputDir) ? null : Path.GetFullPath(OutputDir);
             return null;
