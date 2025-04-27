@@ -47,7 +47,7 @@ namespace SpineViewer.Utils.Localize
 		public LocalizedDescriptionAttribute(Type resourceSource, string resourceKey)
 		{
 			_resourceManager = new ResourceManager(resourceSource);
-			_resourceKey = _resourceKey;
+			_resourceKey = resourceKey;
 		}
 
 		public override string Description => _resourceManager.GetString(_resourceKey) ?? $"[{_resourceKey}]";
