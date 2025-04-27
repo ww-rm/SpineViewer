@@ -61,6 +61,159 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 自定义.
+        /// </summary>
+        internal static string categoryCustom {
+            get {
+                return ResourceManager.GetString("categoryCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [0] 导出.
+        /// </summary>
+        internal static string categoryExport {
+            get {
+                return ResourceManager.GetString("categoryExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [1] 预览.
+        /// </summary>
+        internal static string categoryPreview {
+            get {
+                return ResourceManager.GetString("categoryPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 相关联的 SpineListView.
+        /// </summary>
+        internal static string descAssociatedSpineListView {
+            get {
+                return ResourceManager.GetString("descAssociatedSpineListView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用于显示画面属性的属性页.
+        /// </summary>
+        internal static string descDisplayImageProperties {
+            get {
+                return ResourceManager.GetString("descDisplayImageProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 背景颜色.
+        /// </summary>
+        internal static string displayBackgroundColor {
+            get {
+                return ResourceManager.GetString("displayBackgroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 画面中心点.
+        /// </summary>
+        internal static string displayCenter {
+            get {
+                return ResourceManager.GetString("displayCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 水平翻转.
+        /// </summary>
+        internal static string displayFlipHorizontal {
+            get {
+                return ResourceManager.GetString("displayFlipHorizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 垂直翻转.
+        /// </summary>
+        internal static string displayFlipVertical {
+            get {
+                return ResourceManager.GetString("displayFlipVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 最大帧率.
+        /// </summary>
+        internal static string displayMaximumFrameRate {
+            get {
+                return ResourceManager.GetString("displayMaximumFrameRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 仅渲染选中.
+        /// </summary>
+        internal static string displayRenderSelected {
+            get {
+                return ResourceManager.GetString("displayRenderSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 分辨率.
+        /// </summary>
+        internal static string displayResolution {
+            get {
+                return ResourceManager.GetString("displayResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 旋转.
+        /// </summary>
+        internal static string displayRotation {
+            get {
+                return ResourceManager.GetString("displayRotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 显示坐标轴.
+        /// </summary>
+        internal static string displayShowAxis {
+            get {
+                return ResourceManager.GetString("displayShowAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 缩放.
+        /// </summary>
+        internal static string displayZoom {
+            get {
+                return ResourceManager.GetString("displayZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已选择 .
+        /// </summary>
+        internal static string itemCountPrefix {
+            get {
+                return ResourceManager.GetString("itemCountPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  个文件.
+        /// </summary>
+        internal static string itemCountSuffix {
+            get {
+                return ResourceManager.GetString("itemCountSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 语言已设为英语。立即重启应用程序吗？.
         /// </summary>
         internal static string restartPrompt {

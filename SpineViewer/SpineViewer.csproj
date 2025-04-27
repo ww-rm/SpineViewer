@@ -49,6 +49,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Update="Controls\SpinePreviewPanel.resx">
+        <Generator></Generator>
+      </EmbeddedResource>
       <EmbeddedResource Update="Properties\Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>

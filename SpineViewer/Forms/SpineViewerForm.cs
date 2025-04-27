@@ -6,6 +6,7 @@ using SpineViewer.Natives;
 using SpineViewer.Utils;
 using SpineViewer.Spine.SpineExporter;
 using System.Configuration;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer
 {
