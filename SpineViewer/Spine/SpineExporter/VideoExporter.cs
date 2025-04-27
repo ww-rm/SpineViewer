@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Spine;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +35,7 @@ namespace SpineViewer.Spine.SpineExporter
             if (base.Validate() is string error)
                 return error;
             if (IsExportSingle && Duration < 0)
-                return "导出单个时导出时长不能为负数";
+                return Properties.Resources.negativeDuration;
             return null;
         }
 
@@ -55,11 +56,11 @@ namespace SpineViewer.Spine.SpineExporter
 
             int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
 
-            worker?.ReportProgress(0, $"{spine.Name} 已处理 0/{frameCount} 帧");
+            worker?.ReportProgress(0, $"{spine.Name} {Properties.Resources.process} 0/{frameCount} {Properties.Resources.frame}");
 
             // 导出首帧
             var firstFrame = GetFrame(spine);
-            worker?.ReportProgress(1 * 100 / frameCount, $"{spine.Name} 已处理 1/{frameCount} 帧");
+            worker?.ReportProgress(1 * 100 / frameCount, $"{spine.Name} {Properties.Resources.process} 1/{frameCount} {Properties.Resources.frame}");
             yield return firstFrame;
 
             // 导出完整帧
@@ -73,7 +74,7 @@ namespace SpineViewer.Spine.SpineExporter
 
                 spine.Update(delta);
                 var frame = GetFrame(spine);
-                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"{spine.Name} 已处理 {1 + i + 1}/{frameCount} 帧");
+                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"{spine.Name} {Properties.Resources.process} {1 + i + 1}/{frameCount} {Properties.Resources.frame}");
                 yield return frame;
             }
 
@@ -82,7 +83,7 @@ namespace SpineViewer.Spine.SpineExporter
             {
                 spine.Update(deltaFinal);
                 var finalFrame = GetFrame(spine);
-                worker?.ReportProgress(100, $"{spine.Name} 已处理 {frameCount}/{frameCount} 帧");
+                worker?.ReportProgress(100, $"{spine.Name} {Properties.Resources.process} {frameCount}/{frameCount} {Properties.Resources.frame}");
                 yield return finalFrame;
             }
         }
@@ -103,11 +104,11 @@ namespace SpineViewer.Spine.SpineExporter
 
             int frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
 
-            worker?.ReportProgress(0, $"已处理 0/{frameCount} 帧");
+            worker?.ReportProgress(0, $"{Properties.Resources.process} 0/{frameCount} {Properties.Resources.frame}");
 
             // 导出首帧
             var firstFrame = GetFrame(spinesToRender);
-            worker?.ReportProgress(1 * 100 / frameCount, $"已处理 1/{frameCount} 帧");
+            worker?.ReportProgress(1 * 100 / frameCount, $"{Properties.Resources.process} 1/{frameCount} {Properties.Resources.frame}");
             yield return firstFrame;
 
             // 导出完整帧
@@ -121,7 +122,7 @@ namespace SpineViewer.Spine.SpineExporter
 
                 foreach (var spine in spinesToRender) spine.Update(delta);
                 var frame = GetFrame(spinesToRender);
-                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"已处理 {1 + i + 1}/{frameCount} 帧");
+                worker?.ReportProgress((1 + i + 1) * 100 / frameCount, $"{Properties.Resources.process} {1 + i + 1}/{frameCount} {Properties.Resources.frame}");
                 yield return frame;
             }
 
@@ -130,7 +131,7 @@ namespace SpineViewer.Spine.SpineExporter
             {
                 foreach (var spine in spinesToRender) spine.Update(delta);
                 var finalFrame = GetFrame(spinesToRender);
-                worker?.ReportProgress(100, $"已处理 {frameCount}/{frameCount} 帧");
+                worker?.ReportProgress(100, $"{Properties.Resources.process} {frameCount}/{frameCount} {Properties.Resources.frame}");
                 yield return finalFrame;
             }
         }
@@ -148,22 +149,28 @@ namespace SpineViewer.Spine.SpineExporter
         [Browsable(false)]
         public override VideoExporter Exporter => (VideoExporter)base.Exporter;
 
-        /// <summary>
-        /// 导出时长
-        /// </summary>
-        [Category("[1] 视频参数"), DisplayName("时长"), Description("可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的所有轨道动画时长最大值")]
+		/// <summary>
+		/// 导出时长
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryVideoParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "duration")]
+		[LocalizedDescription(typeof(Properties.Resources), "descDuration")]
         public float Duration { get => Exporter.Duration; set => Exporter.Duration = value; }
 
-        /// <summary>
-        /// 帧率
-        /// </summary>
-        [Category("[1] 视频参数"), DisplayName("帧率"), Description("每秒画面数")]
-        public float FPS { get => Exporter.FPS; set => Exporter.FPS = value; }
+		/// <summary>
+		/// 帧率
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryVideoParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFPS")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFPS")]
+		public float FPS { get => Exporter.FPS; set => Exporter.FPS = value; }
 
-        /// <summary>
-        /// 保留最后一帧
-        /// </summary>
-        [Category("[1] 视频参数"), DisplayName("保留最后一帧"), Description("当设置保留最后一帧时, 动图会更为连贯, 但是帧数可能比预期帧数多 1")]
-        public bool KeepLast { get => Exporter.KeepLast; set => Exporter.KeepLast = value; }
+		/// <summary>
+		/// 保留最后一帧
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryVideoParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayKeepLastFrame")]
+		[LocalizedDescription(typeof(Properties.Resources), "descKeepLastFrame")]
+		public bool KeepLast { get => Exporter.KeepLast; set => Exporter.KeepLast = value; }
     }
 }

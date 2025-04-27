@@ -118,393 +118,394 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>关于 </value>
+    <value>About</value>
   </data>
   <data name="animation" xml:space="preserve">
-    <value>动画</value>
+    <value>Animation</value>
   </data>
   <data name="atlasNotExist" xml:space="preserve">
-    <value>atlas文件不存在</value>
+    <value>Atlas file doesn't exist.</value>
   </data>
   <data name="atlasPath" xml:space="preserve">
-    <value>atlas文件路径</value>
+    <value>Atlas file path</value>
   </data>
   <data name="basicInfo" xml:space="preserve">
-    <value>基本信息</value>
+    <value>Basic info</value>
   </data>
   <data name="categoryCustom" xml:space="preserve">
-    <value>自定义</value>
+    <value>Custom</value>
   </data>
   <data name="categoryExport" xml:space="preserve">
-    <value>[0] 导出</value>
+    <value>[0] Export</value>
   </data>
   <data name="categoryFormatParameters" xml:space="preserve">
-    <value>[3] 格式参数</value>
+    <value>[3] Format parameters</value>
   </data>
   <data name="categoryPreview" xml:space="preserve">
-    <value>[1] 预览</value>
+    <value>[1] Preview</value>
   </data>
   <data name="countInfoStatusMidfix" xml:space="preserve">
-    <value> 项，共 </value>
+    <value>item(s) selected,</value>
   </data>
   <data name="countInfoStatusPrefix" xml:space="preserve">
-    <value>已选择 </value>
+    <value>.</value>
   </data>
   <data name="countInfoStatusSuffix" xml:space="preserve">
-    <value> 项</value>
+    <value>in total.</value>
   </data>
   <data name="debug" xml:space="preserve">
-    <value>调试</value>
+    <value>Debug</value>
   </data>
   <data name="descAssociatedSpineListView" xml:space="preserve">
-    <value>相关联的 SpineListView</value>
+    <value>Associated SpineListView</value>
   </data>
   <data name="descDisplayImageProperties" xml:space="preserve">
-    <value>用于显示画面属性的属性页</value>
+    <value>Property page for displaying image properties</value>
   </data>
   <data name="descAvifEncoder" xml:space="preserve">
-    <value>-c:v, 要使用的编码器\n建议使用硬件加速, libaom-av1 速度非常非常非常慢</value>
+    <value>-c:v: Video encoder to use. Hardware acceleration is recommended. Note: libaom-av1 is extremely slow.</value>
   </data>
   <data name="descModelAttributes" xml:space="preserve">
-    <value>用于显示模型属性的组合属性页</value>
+    <value>Model attributes display page.</value>
   </data>
   <data name="displayBackgroundColor" xml:space="preserve">
-    <value>背景颜色</value>
+    <value>Background color</value>
   </data>
   <data name="displayCenter" xml:space="preserve">
-    <value>画面中心点</value>
+    <value>Center point of screen</value>
   </data>
   <data name="displayEncoder" xml:space="preserve">
-    <value>编码器</value>
+    <value>Encoder</value>
   </data>
   <data name="displayFlipHorizontal" xml:space="preserve">
-    <value>水平翻转</value>
+    <value>Flip horizontal</value>
   </data>
   <data name="displayFlipVertical" xml:space="preserve">
-    <value>垂直翻转</value>
+    <value>Flip vertical</value>
   </data>
   <data name="displayMaximumFrameRate" xml:space="preserve">
-    <value>最大帧率</value>
+    <value>Maximum frame rate</value>
   </data>
   <data name="displayRenderSelected" xml:space="preserve">
-    <value>仅渲染选中</value>
+    <value>Render selected only</value>
   </data>
   <data name="displayResolution" xml:space="preserve">
-    <value>分辨率</value>
+    <value>Resolution</value>
   </data>
   <data name="displayRotation" xml:space="preserve">
-    <value>旋转</value>
+    <value>Rotation</value>
   </data>
   <data name="displayShowAxis" xml:space="preserve">
-    <value>显示坐标轴</value>
+    <value>Show axis</value>
   </data>
   <data name="displayZoom" xml:space="preserve">
-    <value>缩放</value>
+    <value>Zoom</value>
   </data>
   <data name="duration" xml:space="preserve">
-    <value>时长</value>
+    <value>Duration</value>
   </data>
   <data name="errorLoadSkeleton" xml:space="preserve">
-    <value>骨骼加载失败</value>
+    <value>Failed to load skeleton</value>
   </data>
   <data name="fileVersion" xml:space="preserve">
-    <value>文件版本</value>
+    <value>File version</value>
   </data>
   <data name="flipX" xml:space="preserve">
-    <value>水平翻转</value>
+    <value>FlipX</value>
   </data>
   <data name="flipY" xml:space="preserve">
-    <value>垂直翻转</value>
+    <value>FlipY</value>
   </data>
   <data name="formatExceptionParseColor" xml:space="preserve">
-    <value>无法解析颜色，请使用 #RRGGBBAA、#RRGGBB、#RGBA 或 #RGB 格式</value>
+    <value>Unable to parse color, please use #RRGGBBAA, #RRGGBB, #RGBA or #RGB format.</value>
   </data>
   <data name="formatExceptionParseColorError" xml:space="preserve">
-    <value>无法解析颜色，请检查格式</value>
+    <value>Color format is invalid. Please check the format.</value>
   </data>
   <data name="formatExceptionUnknownColor" xml:space="preserve">
-    <value>无法解析颜色，请使用已知的颜色名称</value>
+    <value>Color not recognized. Please use a valid color name.</value>
   </data>
   <data name="isHidden" xml:space="preserve">
-    <value>是否隐藏</value>
+    <value>Is hidden</value>
   </data>
   <data name="itemCountPrefix" xml:space="preserve">
-    <value>已选择 </value>
+    <value>.</value>
   </data>
   <data name="itemCountSuffix" xml:space="preserve">
-    <value> 个文件</value>
+    <value> item(s) selected.</value>
   </data>
   <data name="loadAllSkeletonPrefix" xml:space="preserve">
-    <value>共发现 </value>
+    <value>A total of </value>
   </data>
   <data name="loadAllSkeletonSuffix" xml:space="preserve">
-    <value> 个可加载骨骼，数量较多，是否一次性全部加载？</value>
+    <value>skeletons found. Do you want to load them all at once?</value>
   </data>
   <data name="maximumTrackLength" xml:space="preserve">
-    <value>全轨道最大时长</value>
+    <value>Maximum Track Length</value>
   </data>
   <data name="msgBoxError" xml:space="preserve">
-    <value>错误信息</value>
+    <value>Error</value>
   </data>
   <data name="msgBoxInfo" xml:space="preserve">
-    <value>提示信息</value>
+    <value>Info</value>
   </data>
   <data name="msgBoxQuest" xml:space="preserve">
-    <value>操作确认</value>
+    <value>Action Confirmation</value>
   </data>
   <data name="msgBoxWarning" xml:space="preserve">
-    <value>警告信息</value>
+    <value>Warning</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>名称</value>
+    <value>Name</value>
   </data>
   <data name="notifyCopyGithubLink" xml:space="preserve">
-    <value>链接已复制到剪贴板，请前往浏览器进行访问</value>
+    <value>Link copied to clipboard. Please open it in browser</value>
   </data>
   <data name="parameterError" xml:space="preserve">
-    <value>参数错误</value>
+    <value>Invalid Parameters</value>
   </data>
   <data name="position" xml:space="preserve">
-    <value>位置</value>
+    <value>Position</value>
   </data>
   <data name="previewRenderStopped" xml:space="preserve">
-    <value>预览画面已停止渲染</value>
+    <value>Preview Render Stopped</value>
   </data>
   <data name="process" xml:space="preserve">
-    <value>已处理 </value>
+    <value>Processed </value>
   </data>
   <data name="programCrashed" xml:space="preserve">
-    <value>程序已崩溃</value>
+    <value>Application has crashed</value>
   </data>
   <data name="removeAllItemPrefix" xml:space="preserve">
-    <value>确认移除所有 </value>
+    <value>Remove all </value>
   </data>
   <data name="removeItemConfirmPrefix" xml:space="preserve">
-    <value>确定移除所选 </value>
+    <value>Remove </value>
   </data>
   <data name="removeItemConfirmSuffix" xml:space="preserve">
-    <value> 项吗？</value>
+    <value> item(s)?</value>
   </data>
   <data name="render" xml:space="preserve">
-    <value>渲染</value>
+    <value>Render</value>
   </data>
   <data name="resourcesPath" xml:space="preserve">
-    <value>资源目录</value>
+    <value>Resource Path</value>
   </data>
   <data name="restartPrompt" xml:space="preserve">
-    <value>语言已设为英语。立即重启应用程序吗？</value>
+    <value>Language set to Simplified Chinese. Restart application now?</value>
   </data>
   <data name="restartTitle" xml:space="preserve">
-    <value>需要重新启动应用程序!</value>
+    <value>Application restart required!</value>
   </data>
   <data name="runtimeError" xml:space="preserve">
-    <value>执行出错</value>
+    <value>Runtime error</value>
   </data>
   <data name="runtimeVersion" xml:space="preserve">
-    <value>运行时版本</value>
+    <value>Runtime version</value>
   </data>
   <data name="scale" xml:space="preserve">
-    <value>缩放比例</value>
+    <value>Scale</value>
   </data>
   <data name="skelNotExist" xml:space="preserve">
-    <value>skel文件不存在</value>
+    <value>Skel file doesn't exist.</value>
   </data>
   <data name="skelPath" xml:space="preserve">
-    <value>skel文件路径</value>
+    <value>Skel file path</value>
   </data>
   <data name="skin" xml:space="preserve">
-    <value>皮肤</value>
+    <value>Skin</value>
   </data>
   <data name="slot" xml:space="preserve">
-    <value>插槽</value>
+    <value>Slot</value>
   </data>
   <data name="transform" xml:space="preserve">
-    <value>变换</value>
+    <value>Transform</value>
   </data>
   <data name="usePremultipliedAlpha" xml:space="preserve">
-    <value>预乘Alpha通道</value>
+    <value>UsePremultipliedAlpha</value>
   </data>
   <data name="descCRF" xml:space="preserve">
-    <value>-crf, 取值范围 0-63, 建议范围 18-28, 默认取值 23, 数值越小则输出质量越高</value>
+    <value>-crf: Accepts values from 0 to 63. Recommended range is 18–28 (default is 23). Lower values result in higher output quality</value>
   </data>
   <data name="displayPixelFormat" xml:space="preserve">
-    <value>像素格式</value>
+    <value>Pixel format</value>
   </data>
   <data name="descPixelFormat" xml:space="preserve">
-    <value>-pix_fmt, 要使用的像素格式</value>
+    <value>-pix_fmt: Pixel format to use.</value>
   </data>
   <data name="displayLoopCount" xml:space="preserve">
-    <value>循环次数</value>
+    <value>Loop count</value>
   </data>
   <data name="descLoopCount" xml:space="preserve">
-    <value>-loop, 循环次数, 0 无限循环, 取值范围 [0, 65535]</value>
+    <value>-loop: Number of loops. 0 for infinite loops. Valid range: [0, 65535].</value>
   </data>
   <data name="invalidInputFolder" xml:space="preserve">
-    <value>输出文件夹无效</value>
+    <value>Invalid output folder</value>
   </data>
   <data name="folderNotExistPrefix" xml:space="preserve">
-    <value>文件夹 </value>
+    <value>Folder </value>
   </data>
   <data name="folderNotExistSuffix" xml:space="preserve">
-    <value>不存在</value>
+    <value>doesn't exist.</value>
   </data>
   <data name="mustProvideOutputFolder" xml:space="preserve">
-    <value>导出单个时必须提供输出文件夹</value>
+    <value>An output folder must be provided when exporting a single file.</value>
   </data>
   <data name="categoryFFmpegParameter" xml:space="preserve">
-    <value>[2] FFmpeg 基本参数</value>
+    <value>[2] FFmpeg Basic Parameters</value>
   </data>
   <data name="displayFileFormat" xml:space="preserve">
-    <value>文件格式</value>
+    <value>File format</value>
   </data>
   <data name="descFileFormat" xml:space="preserve">
-    <value>-f, 文件格式</value>
+    <value>-f: Specify the output file format</value>
   </data>
   <data name="displayFilenameSuffix" xml:space="preserve">
-    <value>文件名后缀</value>
+    <value>File extension</value>
   </data>
   <data name="descFilenameSuffix" xml:space="preserve">
-    <value>文件名后缀</value>
+    <value>File extension</value>
   </data>
   <data name="displayOutputFolder" xml:space="preserve">
-    <value>输出文件夹</value>
+    <value>Output folder</value>
   </data>
   <data name="descOutputFolder" xml:space="preserve">
-    <value>逐个导出时可以留空，将逐个导出到模型自身所在目录</value>
+    <value>Leave empty to export to each model's folder.</value>
   </data>
   <data name="displayExportSingle" xml:space="preserve">
-    <value>导出单个</value>
+    <value>Export single</value>
   </data>
   <data name="descExportSingle" xml:space="preserve">
-    <value>是否将模型在同一个画面上导出单个文件，否则逐个导出模型</value>
+    <value>Export all models in a single file, or export each model separately.</value>
   </data>
   <data name="descResolution" xml:space="preserve">
-    <value>是否将模型在同一个画面上导出单个文件，否则逐个导出模型</value>
+    <value>Set pixel size in preview panel.</value>
   </data>
   <data name="displayPreviewViewport" xml:space="preserve">
-    <value>预览画面视区</value>
+    <value>Preview viewport</value>
   </data>
   <data name="descPreviewViewport" xml:space="preserve">
-    <value>预览画面的视区参数，请在预览画面参数面板进行调整</value>
+    <value>Preview viewport settings. Adjust in the preview panel.</value>
   </data>
   <data name="descRenderSelected" xml:space="preserve">
-    <value>是否仅导出选中的模型，请在预览画面参数面板进行调整</value>
+    <value>Export selected models only. Adjust this in the preview settings panel.</value>
   </data>
   <data name="descBackgroundColor" xml:space="preserve">
-    <value>要使用的背景色, 格式为 #RRGGBBAA</value>
+    <value>Background color to use, in #RRGGBBAA format.</value>
   </data>
   <data name="displayMargin" xml:space="preserve">
-    <value>四周边缘距离</value>
+    <value>Margin</value>
   </data>
   <data name="descMargin" xml:space="preserve">
-    <value>画布外部的边缘距离 (Margin), 最终导出的分辨率需要加上这个边距</value>
+    <value>Outer canvas margin. This will be added to the final export resolution.</value>
   </data>
   <data name="displayPadding" xml:space="preserve">
-    <value>四周填充距离</value>
+    <value>Padding</value>
   </data>
   <data name="descPadding" xml:space="preserve">
-    <value>画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间</value>
+    <value>Internal canvas padding. The export resolution remains unchanged, but space will be left around the edges.</value>
   </data>
   <data name="displayAllowContentOverflow" xml:space="preserve">
-    <value>允许内容溢出</value>
+    <value>Allow content overflow</value>
   </data>
   <data name="descAllowContentOverflow" xml:space="preserve">
-    <value>使用预览画面分辨率的情况下, 允许内容溢出到边缘和填充区域</value>
+    <value>When using the preview resolution, allow content to overflow into the edges and padding areas.</value>
   </data>
   <data name="displayAutoResolution" xml:space="preserve">
-    <value>自动分辨率</value>
+    <value>Auto resolution</value>
   </data>
   <data name="descAutoResolution" xml:space="preserve">
-    <value>根据导出内容自动设置分辨率, 四周填充距离和内容溢出参数将会被忽略</value>
+    <value>Automatically set resolution based on export content. Edge padding and content overflow settings will be ignored.</value>
   </data>
   <data name="validFormatRequired" xml:space="preserve">
-    <value>需要提供有效的格式</value>
+    <value>Valid format required.</value>
   </data>
   <data name="validExtensionRequired" xml:space="preserve">
-    <value>需要提供有效的文件名后缀</value>
+    <value>Valie extension required.</value>
   </data>
   <data name="descCustomArgument" xml:space="preserve">
-    <value>使用 \"ffmpeg -h encoder=&lt;编码器&gt;\" 查看编码器支持的参数\n使用 \"ffmpeg -h muxer=&lt;文件格式&gt;\" 查看文件格式支持的参数</value>
+    <value>Use "ffmpeg -h encoder=&lt;encoder&gt;" to view supported encoder parameters.
+Use "ffmpeg -h muxer=&lt;file format&gt;" to view supported file format parameters.</value>
   </data>
   <data name="displayCustomArgument" xml:space="preserve">
-    <value>自定义参数</value>
+    <value>Custom arguments</value>
   </data>
   <data name="categorySingleFrame" xml:space="preserve">
-    <value>[1] 单帧画面</value>
+    <value>[1] Single Frame</value>
   </data>
   <data name="displayImageFormat" xml:space="preserve">
-    <value>图像格式</value>
+    <value>Image format</value>
   </data>
   <data name="descFileNameExtension" xml:space="preserve">
-    <value>与图像格式匹配的文件名后缀</value>
+    <value>Filename extension matching the image format.</value>
   </data>
   <data name="descDPI" xml:space="preserve">
-    <value>导出图像的每英寸像素数，用于调整图像的物理尺寸</value>
+    <value>Pixels per inch (PPI) for the exported image, used to adjust the physical size of the image.</value>
   </data>
   <data name="categoryFrameSequenceParameters" xml:space="preserve">
-    <value>[2] 帧序列参数</value>
+    <value>[2] Frame Sequence Parameters</value>
   </data>
   <data name="descFrameFileExtension" xml:space="preserve">
-    <value>帧文件的后缀，同时决定帧图像格式</value>
+    <value>Frame file extension, which also defines the image format of each frame.</value>
   </data>
   <data name="displayMaxColor" xml:space="preserve">
-    <value>调色板最大颜色数量</value>
+    <value>Max colors in palette</value>
   </data>
   <data name="descMaxColor" xml:space="preserve">
-    <value>设置调色板使用的最大颜色数量, 越多则色彩保留程度越高</value>
+    <value>Max colors in palette. Higher value = better color retention.</value>
   </data>
   <data name="displayAlphaThreshold" xml:space="preserve">
-    <value>透明度阈值</value>
+    <value>Alpha threshold</value>
   </data>
   <data name="descAlphaThreshold" xml:space="preserve">
-    <value>小于该值的像素点会被认为是透明像素</value>
+    <value>Pixels below this value will be considered transparent.</value>
   </data>
   <data name="displayPreset" xml:space="preserve">
-    <value>预设</value>
+    <value>Preset</value>
   </data>
   <data name="descPreset" xml:space="preserve">
-    <value>-profile, 预设配置</value>
+    <value>-profile: Preset configuration</value>
   </data>
   <data name="negativeDuration" xml:space="preserve">
-    <value>导出单个时导出时长不能为负数</value>
+    <value>Export duration cannot be negative when exporting a single file.</value>
   </data>
   <data name="frame" xml:space="preserve">
-    <value>帧</value>
+    <value>frame(s)</value>
   </data>
   <data name="categoryVideoParameters" xml:space="preserve">
-    <value>[1] 视频参数</value>
+    <value>[1] Video Parameters</value>
   </data>
   <data name="descDuration" xml:space="preserve">
-    <value>可以从模型列表查看动画时长, 如果小于 0, 则在逐个导出时每个模型使用各自的所有轨道动画时长最大值</value>
+    <value>Check animation duration in the model list. If less than 0, each model uses its longest track when exporting individually.</value>
   </data>
   <data name="displayFPS" xml:space="preserve">
-    <value>帧率</value>
+    <value>FPS</value>
   </data>
   <data name="descFPS" xml:space="preserve">
-    <value>每秒画面数</value>
+    <value>Frames Per Second (FPS)</value>
   </data>
   <data name="displayKeepLastFrame" xml:space="preserve">
-    <value>保留最后一帧</value>
+    <value>Keep last frame</value>
   </data>
   <data name="descKeepLastFrame" xml:space="preserve">
-    <value>当设置保留最后一帧时, 动图会更为连贯, 但是帧数可能比预期帧数多 1</value>
+    <value>Keeping the last frame smooths the animation, but may add one extra frame.</value>
   </data>
   <data name="displayLoseless" xml:space="preserve">
-    <value>无损</value>
+    <value>Loseless</value>
   </data>
   <data name="descLoseless" xml:space="preserve">
-    <value>-lossless, 0 表示有损, 1 表示无损</value>
+    <value>-lossless: 0 for lossy, 1 for lossless.</value>
   </data>
   <data name="displayQuality" xml:space="preserve">
-    <value>质量</value>
+    <value>Quality</value>
   </data>
   <data name="descQuality" xml:space="preserve">
-    <value>-quality, 取值范围 0-100, 默认值 75</value>
+    <value>-quality: Range 0-100, default is 75.</value>
   </data>
   <data name="failLoadingFragmentShader" xml:space="preserve">
-    <value>Fragment shader 加载失败，预乘Alpha通道属性失效</value>
+    <value>Fragment shader failed to load, pre-multiplied alpha channel property disabled.</value>
   </data>
   <data name="isUpdatingAndManuallyExportFrame" xml:space="preserve">
-    <value>画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？</value>
+    <value>The screen is still updating. It’s recommended to manually pause and export a fixed frame. Do you want to continue?</value>
   </data>
 </root>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineViewer.Spine;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Spine.SpineView
 {
@@ -14,28 +15,28 @@ namespace SpineViewer.Spine.SpineView
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;
 
-        [DisplayName("基本信息")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "basicInfo")]
         public SpineBaseInfoProperty BaseInfo { get; } = new(spine);
 
-        [DisplayName("渲染")]
-        public SpineRenderProperty Render { get; } = new(spine);
+		[LocalizedDisplayName(typeof(Properties.Resources), "render")]
+		public SpineRenderProperty Render { get; } = new(spine);
 
-        [DisplayName("变换")]
-        public SpineTransformProperty Transform { get; } = new(spine);
-
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("皮肤")]
-        public SpineSkinProperty Skin { get; } = new(spine);
+		[LocalizedDisplayName(typeof(Properties.Resources), "transform")]
+		public SpineTransformProperty Transform { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("插槽")]
-        public SpineSlotProperty Slot { get; } = new(spine);
+		[LocalizedDisplayName(typeof(Properties.Resources), "skin")]
+		public SpineSkinProperty Skin { get; } = new(spine);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("动画")]
-        public SpineAnimationProperty Animation { get; } = new(spine);
+		[LocalizedDisplayName(typeof(Properties.Resources), "slot")]
+		public SpineSlotProperty Slot { get; } = new(spine);
 
-        [DisplayName("调试")]
-        public SpineDebugProperty Debug { get; } = new(spine);
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+		[LocalizedDisplayName(typeof(Properties.Resources), "animation")]
+		public SpineAnimationProperty Animation { get; } = new(spine);
+
+		[LocalizedDisplayName(typeof(Properties.Resources), "debug")]
+		public SpineDebugProperty Debug { get; } = new(spine);
     }
 }

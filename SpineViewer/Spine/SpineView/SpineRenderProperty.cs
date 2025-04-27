@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpineViewer.Spine;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Spine.SpineView
 {
@@ -16,16 +17,16 @@ namespace SpineViewer.Spine.SpineView
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;
 
-        /// <summary>
-        /// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
-        /// </summary>
-        [DisplayName("是否隐藏")]
+		/// <summary>
+		/// 是否被隐藏, 被隐藏的模型将仅仅在列表显示, 不参与其他行为
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "isHidden")]
         public bool IsHidden { get => Spine.IsHidden; set => Spine.IsHidden = value; }
 
-        /// <summary>
-        /// 是否使用预乘Alpha
-        /// </summary>
-        [DisplayName("预乘Alpha通道")]
-        public bool UsePremultipliedAlpha { get => Spine.UsePma; set => Spine.UsePma = value; }
+		/// <summary>
+		/// 是否使用预乘Alpha
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "usePremultipliedAlpha")]
+		public bool UsePremultipliedAlpha { get => Spine.UsePma; set => Spine.UsePma = value; }
     }
 }

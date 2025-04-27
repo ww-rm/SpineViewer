@@ -16,7 +16,7 @@ namespace SpineViewer.Dialogs
         public AboutDialog()
         {
             InitializeComponent();
-            Text = $"关于 {ProgramName}";
+            Text = $"{Properties.Resources.about} {ProgramName}";
             label_Version.Text = $"v{InformationalVersion}";
         }
 
@@ -41,7 +41,7 @@ namespace SpineViewer.Dialogs
             else
             {
                 Clipboard.SetText(url);
-                MessagePopup.Info("链接已复制到剪贴板，请前往浏览器进行访问");
+                MessagePopup.Info(Properties.Resources.notifyCopyGithubLink, Properties.Resources.msgBoxInfo);
             }
         }
     }

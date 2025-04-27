@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Spine.SpineExporter
 {
@@ -45,9 +46,9 @@ namespace SpineViewer.Spine.SpineExporter
             if (base.Validate() is string error)
                 return error;
             if (string.IsNullOrWhiteSpace(Format))
-                return "需要提供有效的格式";
+                return Properties.Resources.validFormatRequired;
             if (string.IsNullOrWhiteSpace(Suffix))
-                return "需要提供有效的文件名后缀";
+                return Properties.Resources.validExtensionRequired;
             return null;
         }
 
@@ -114,22 +115,28 @@ namespace SpineViewer.Spine.SpineExporter
         [Browsable(false)]
         public override FFmpegVideoExporter Exporter => (FFmpegVideoExporter)base.Exporter;
 
-        /// <summary>
-        /// 文件格式
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("文件格式"), Description("-f, 文件格式")]
+		/// <summary>
+		/// 文件格式
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFFmpegParameter")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFileFormat")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFileFormat")]
         public virtual string Format => Exporter.Format;
 
-        /// <summary>
-        /// 文件名后缀
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("文件名后缀"), Description("文件名后缀")]
+		/// <summary>
+		/// 文件名后缀
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFFmpegParameter")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFilenameSuffix")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFilenameSuffix")]
         public virtual string Suffix => Exporter.Suffix;
 
-        /// <summary>
-        /// 文件名后缀
-        /// </summary>
-        [Category("[2] FFmpeg 基本参数"), DisplayName("自定义参数"), Description("使用 \"ffmpeg -h encoder=<编码器>\" 查看编码器支持的参数\n使用 \"ffmpeg -h muxer=<文件格式>\" 查看文件格式支持的参数")]
-        public string CustomArgument { get => Exporter.CustomArgument; set => Exporter.CustomArgument = value; }
+		/// <summary>
+		/// 文件名后缀
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFFmpegParameter")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayCustomArgument")]
+		[LocalizedDescription(typeof(Properties.Resources), "descCustomArgument")]
+		public string CustomArgument { get => Exporter.CustomArgument; set => Exporter.CustomArgument = value; }
     }
 }
