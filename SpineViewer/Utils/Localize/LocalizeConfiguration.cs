@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SpineViewer.Utils
+namespace SpineViewer.Utils.Localize
 {
 	public static class LocalizeConfiguration
 	{
