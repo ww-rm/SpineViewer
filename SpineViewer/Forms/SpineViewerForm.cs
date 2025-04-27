@@ -30,7 +30,7 @@ namespace SpineViewer
 			{
 				logger.Error(ex.ToString());
 				logger.Error("Failed to load fragment shader");
-				MessagePopup.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效", Properties.Resources.msgBoxWarning);
+				MessagePopup.Warn(Properties.Resources.failLoadingFragmentShader, Properties.Resources.msgBoxWarning);
 			}
 
 #if DEBUG
@@ -103,7 +103,7 @@ namespace SpineViewer
 
 		private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
 		{
-			if (spinePreviewPanel.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？", Properties.Resources.msgBoxQuest) != DialogResult.OK)
+			if (spinePreviewPanel.IsUpdating && MessagePopup.Quest(Properties.Resources.isUpdatingAndManuallyExportFrame, Properties.Resources.msgBoxQuest) != DialogResult.OK)
 				return;
 
 			var k = nameof(toolStripMenuItem_ExportFrame);
@@ -379,7 +379,7 @@ namespace SpineViewer
 			SkeletonConverter srcCvter = args.SourceVersion != SpineVersion.Auto ? SkeletonConverter.New(args.SourceVersion) : null;
 			SkeletonConverter tgtCvter = SkeletonConverter.New(args.TargetVersion);
 
-			worker.ReportProgress(0, $"已处理 0/{totalCount}");
+			worker.ReportProgress(0, $"{Properties.Resources.process} 0/{totalCount}");
 			for (int i = 0; i < totalCount; i++)
 			{
 				if (worker.CancellationPending)
@@ -418,7 +418,7 @@ namespace SpineViewer
 					error++;
 				}
 
-				worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+				worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"{Properties.Resources.process} {i + 1}/{totalCount}");
 			}
 
 			if (error > 0)
@@ -473,12 +473,13 @@ namespace SpineViewer
 				Properties.Resources.restartTitle,
 				MessageBoxButtons.YesNo,
 				MessageBoxIcon.Question);
+
 			if (result == DialogResult.Yes)
 			{
 				LocalizeConfiguration.UpdateLocalizeSetting(localize);
 				LocalizeConfiguration.SetCulture();
-				Application.Restart(); // Restarts the app
-				Environment.Exit(0);   // Ensures the current process ends
+				Application.Restart();
+				Environment.Exit(0);   
 			}
 		}
 

@@ -501,4 +501,10 @@
   <data name="descQuality" xml:space="preserve">
     <value>-quality, 取值范围 0-100, 默认值 75</value>
   </data>
+  <data name="failLoadingFragmentShader" xml:space="preserve">
+    <value>Fragment shader 加载失败，预乘Alpha通道属性失效</value>
+  </data>
+  <data name="isUpdatingAndManuallyExportFrame" xml:space="preserve">
+    <value>画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？</value>
+  </data>
 </root>

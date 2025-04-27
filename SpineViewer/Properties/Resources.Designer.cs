@@ -790,6 +790,15 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fragment shader 加载失败，预乘Alpha通道属性失效.
+        /// </summary>
+        internal static string failLoadingFragmentShader {
+            get {
+                return ResourceManager.GetString("failLoadingFragmentShader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 文件版本.
         /// </summary>
         internal static string fileVersion {
@@ -885,6 +894,15 @@ namespace SpineViewer.Properties {
         internal static string isHidden {
             get {
                 return ResourceManager.GetString("isHidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？.
+        /// </summary>
+        internal static string isUpdatingAndManuallyExportFrame {
+            get {
+                return ResourceManager.GetString("isUpdatingAndManuallyExportFrame", resourceCulture);
             }
         }
         

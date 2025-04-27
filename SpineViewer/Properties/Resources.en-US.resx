@@ -502,4 +502,10 @@ Use "ffmpeg -h muxer=&lt;file format&gt;" to view supported file format paramete
   <data name="descQuality" xml:space="preserve">
     <value>-quality: Range 0-100, default is 75.</value>
   </data>
+  <data name="failLoadingFragmentShader" xml:space="preserve">
+    <value>Fragment shader failed to load, pre-multiplied alpha channel property disabled.</value>
+  </data>
+  <data name="isUpdatingAndManuallyExportFrame" xml:space="preserve">
+    <value>The screen is still updating. It’s recommended to manually pause and export a fixed frame. Do you want to continue?</value>
+  </data>
 </root>
