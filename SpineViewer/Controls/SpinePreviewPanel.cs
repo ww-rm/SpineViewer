@@ -494,7 +494,7 @@ namespace SpineViewer.Controls
             {
                 logger.Fatal(ex.ToString());
                 logger.Fatal("Render task stopped");
-                MessagePopup.Error(ex.ToString(), "预览画面已停止渲染");
+                MessagePopup.Error(ex.ToString(), "预览画面已停止渲染", Properties.Resources.msgBoxError);
             }
             finally
             {

@@ -30,7 +30,7 @@ namespace SpineViewer
 			{
 				logger.Error(ex.ToString());
 				logger.Error("Failed to load fragment shader");
-				MessagePopup.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效");
+				MessagePopup.Warn("Fragment shader 加载失败，预乘Alpha通道属性失效", Properties.Resources.msgBoxWarning);
 			}
 
 #if DEBUG
@@ -103,7 +103,7 @@ namespace SpineViewer
 
 		private void toolStripMenuItem_ExportFrame_Click(object sender, EventArgs e)
 		{
-			if (spinePreviewPanel.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？") != DialogResult.OK)
+			if (spinePreviewPanel.IsUpdating && MessagePopup.Quest("画面仍在更新，建议手动暂停画面后导出固定的一帧，是否继续？", Properties.Resources.msgBoxQuest) != DialogResult.OK)
 				return;
 
 			var k = nameof(toolStripMenuItem_ExportFrame);

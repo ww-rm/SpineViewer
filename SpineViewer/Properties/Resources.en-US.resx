@@ -120,6 +120,9 @@
   <data name="about" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="atlasNotExist" xml:space="preserve">
+    <value>Atlas file doesn't exist.</value>
+  </data>
   <data name="categoryCustom" xml:space="preserve">
     <value>Custom</value>
   </data>
@@ -207,6 +210,9 @@
   <data name="notifyCopyGithubLink" xml:space="preserve">
     <value>Link copied to clipboard. Please open it in browser</value>
   </data>
+  <data name="parameterError" xml:space="preserve">
+    <value>Invalid Parameters</value>
+  </data>
   <data name="process" xml:space="preserve">
     <value>Processed </value>
   </data>
@@ -224,5 +230,8 @@
   </data>
   <data name="restartTitle" xml:space="preserve">
     <value>Application restart required!</value>
+  </data>
+  <data name="skelNotExist" xml:space="preserve">
+    <value>Skel file doesn't exist.</value>
   </data>
 </root>

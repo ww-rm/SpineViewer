@@ -120,6 +120,9 @@
   <data name="about" xml:space="preserve">
     <value>关于 </value>
   </data>
+  <data name="atlasNotExist" xml:space="preserve">
+    <value>atlas文件不存在</value>
+  </data>
   <data name="categoryCustom" xml:space="preserve">
     <value>自定义</value>
   </data>
@@ -207,6 +210,9 @@
   <data name="notifyCopyGithubLink" xml:space="preserve">
     <value>链接已复制到剪贴板，请前往浏览器进行访问</value>
   </data>
+  <data name="parameterError" xml:space="preserve">
+    <value>参数错误</value>
+  </data>
   <data name="process" xml:space="preserve">
     <value>已处理 </value>
   </data>
@@ -224,5 +230,8 @@
   </data>
   <data name="restartTitle" xml:space="preserve">
     <value>需要重新启动应用程序!</value>
+  </data>
+  <data name="skelNotExist" xml:space="preserve">
+    <value>skel文件不存在</value>
   </data>
 </root>

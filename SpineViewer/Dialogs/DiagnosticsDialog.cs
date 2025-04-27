@@ -93,7 +93,7 @@ namespace SpineViewer.Dialogs
             var properties = selectedObject.GetType().GetProperties();
             var result = string.Join(Environment.NewLine, properties.Select(p => $"{p.Name}\t{p.GetValue(selectedObject)?.ToString()}"));
             Clipboard.SetText(result);
-            MessagePopup.Info("已复制");
+            MessagePopup.Info("已复制", Properties.Resources.msgBoxInfo);
         }
     }
 }

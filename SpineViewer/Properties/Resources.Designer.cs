@@ -70,6 +70,15 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to atlas文件不存在.
+        /// </summary>
+        internal static string atlasNotExist {
+            get {
+                return ResourceManager.GetString("atlasNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 自定义.
         /// </summary>
         internal static string categoryCustom {
@@ -331,6 +340,15 @@ namespace SpineViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 参数错误.
+        /// </summary>
+        internal static string parameterError {
+            get {
+                return ResourceManager.GetString("parameterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 已处理 .
         /// </summary>
         internal static string process {
@@ -381,6 +399,15 @@ namespace SpineViewer.Properties {
         internal static string restartTitle {
             get {
                 return ResourceManager.GetString("restartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to skel文件不存在.
+        /// </summary>
+        internal static string skelNotExist {
+            get {
+                return ResourceManager.GetString("skelNotExist", resourceCulture);
             }
         }
     }

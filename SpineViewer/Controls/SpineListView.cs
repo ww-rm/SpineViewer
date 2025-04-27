@@ -224,7 +224,7 @@ namespace SpineViewer.Controls
             {
                 if (validPaths.Count > 100)
                 {
-                    if (MessagePopup.Quest($"{Properties.Resources.loadAllSkeletonPrefix}{validPaths.Count}{Properties.Resources.loadAllSkeletonSuffix}") == DialogResult.Cancel)
+                    if (MessagePopup.Quest($"{Properties.Resources.loadAllSkeletonPrefix}{validPaths.Count}{Properties.Resources.loadAllSkeletonSuffix}", Properties.Resources.msgBoxQuest) == DialogResult.Cancel)
                         return;
                 }
                 BatchAdd(new Dialogs.BatchOpenSpineDialogResult(SpineVersion.Auto, validPaths.ToArray()));
@@ -413,7 +413,7 @@ namespace SpineViewer.Controls
 
             if (listView.SelectedIndices.Count > 1)
             {
-                if (MessagePopup.Quest($"{Properties.Resources.removeItemConfirmPrefix} {listView.SelectedIndices.Count} {Properties.Resources.removeItemConfirmSuffix}") != DialogResult.OK)
+                if (MessagePopup.Quest($"{Properties.Resources.removeItemConfirmPrefix} {listView.SelectedIndices.Count} {Properties.Resources.removeItemConfirmSuffix}", Properties.Resources.msgBoxQuest) != DialogResult.OK)
                     return;
             }
 
@@ -513,7 +513,7 @@ namespace SpineViewer.Controls
             if (listView.Items.Count <= 0)
                 return;
 
-            if (MessagePopup.Quest($"{Properties.Resources.removeAllItemPrefix} {listView.Items.Count} {Properties.Resources.removeItemConfirmSuffix}") != DialogResult.OK)
+            if (MessagePopup.Quest($"{Properties.Resources.removeAllItemPrefix} {listView.Items.Count} {Properties.Resources.removeItemConfirmSuffix}", Properties.Resources.msgBoxQuest) != DialogResult.OK)
                 return;
 
             listView.Items.Clear();

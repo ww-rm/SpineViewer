@@ -59,7 +59,7 @@ namespace SpineViewer.Dialogs
 
             if (items.Count <= 0)
             {
-                MessagePopup.Info("未选择任何文件");
+                MessagePopup.Info("未选择任何文件", Properties.Resources.msgBoxInfo);
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace SpineViewer.Dialogs
                 outputDir = Path.GetFullPath(outputDir);
                 if (!Directory.Exists(outputDir))
                 {
-                    if (MessagePopup.Quest("输出文件夹不存在，是否创建？") == DialogResult.OK)
+                    if (MessagePopup.Quest("输出文件夹不存在，是否创建？", Properties.Resources.msgBoxQuest) == DialogResult.OK)
                     {
                         try
                         {
@@ -82,7 +82,7 @@ namespace SpineViewer.Dialogs
                         {
                             logger.Error(ex.ToString());
                             logger.Error("Failed to create output dir {}", outputDir);
-                            MessagePopup.Error(ex.ToString());
+                            MessagePopup.Error(ex.ToString(), Properties.Resources.msgBoxError);
                             return;
                         }
                     }
@@ -97,20 +97,20 @@ namespace SpineViewer.Dialogs
             {
                 if (!File.Exists(p))
                 {
-                    MessagePopup.Info($"{p}", "skel文件不存在");
+                    MessagePopup.Info($"{p}", Properties.Resources.skelNotExist);
                     return;
                 }
             }
 
             if (sourceVersion != SpineVersion.Auto && !SkeletonConverter.HasImplementation(sourceVersion))
             {
-                MessagePopup.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{sourceVersion.GetName()} 版本尚未实现（咕咕咕~）", Properties.Resources.msgBoxInfo);
                 return;
             }
 
             if (!SkeletonConverter.HasImplementation(targetVersion))
             {
-                MessagePopup.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{targetVersion.GetName()} 版本尚未实现（咕咕咕~）", Properties.Resources.msgBoxInfo);
                 return;
             }
 

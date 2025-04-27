@@ -65,7 +65,7 @@ namespace SpineViewer.Dialogs
         {
             if (wrapper.Exporter.Validate() is string error)
             {
-                MessagePopup.Info(error, "参数错误");
+                MessagePopup.Info(error, Properties.Resources.parameterError);
                 return;
             }
             DialogResult = DialogResult.OK;
