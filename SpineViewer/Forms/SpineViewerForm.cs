@@ -5,6 +5,7 @@ using System.Diagnostics;
 using SpineViewer.Natives;
 using SpineViewer.Utils;
 using SpineViewer.Spine.SpineExporter;
+using System.Configuration;
 
 namespace SpineViewer
 {
@@ -67,6 +68,19 @@ namespace SpineViewer
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			spinePreviewPanel.StartRender();
+			string cultureName = ConfigurationManager.AppSettings["localize"];
+			switch (cultureName)
+			{
+				case "zh-CN":
+					ToolStripMenuItem_Chinese.Enabled = false;
+					break;
+				case "en-US":
+					ToolStripMenuItem_English.Enabled = false;
+					break;
+				default:
+					ToolStripMenuItem_Chinese.Enabled = false;
+					break;
+			}
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -443,33 +457,25 @@ namespace SpineViewer
 
 		private void ToolStripMenuItem_English_Click(object sender, EventArgs e)
 		{
-			LocalizeConfiguration.SetCulture("en-US");
-			DialogResult result = MessageBox.Show(
-			"The language has been changed. The application needs to restart for changes to take effect.\nDo you want to restart now?",
-			"Restart Required",
-			MessageBoxButtons.YesNo,
-			MessageBoxIcon.Question
-			);
-
-			if (result == DialogResult.Yes)
-			{
-				Application.Restart(); // Restarts the app
-				Environment.Exit(0);   // Ensures the current process ends
-			}
+			ChangeLanguage("en-US");
 		}
 
 		private void ToolStripMenuItem_Chinese_Click(object sender, EventArgs e)
 		{
-			LocalizeConfiguration.SetCulture();
-			DialogResult result = MessageBox.Show(
-			"The language has been changed. The application needs to restart for changes to take effect.\nDo you want to restart now?",
-			"Restart Required",
-			MessageBoxButtons.YesNo,
-			MessageBoxIcon.Question
-			);
+			ChangeLanguage("zh-CN");
+		}
 
+		private void ChangeLanguage(string localize)
+		{
+			DialogResult result = MessageBox.Show(
+				Properties.Resources.restartPrompt,
+				Properties.Resources.restartTitle,
+				MessageBoxButtons.YesNo,
+				MessageBoxIcon.Question);
 			if (result == DialogResult.Yes)
 			{
+				LocalizeConfiguration.UpdateLocalizeSetting(localize);
+				LocalizeConfiguration.SetCulture();
 				Application.Restart(); // Restarts the app
 				Environment.Exit(0);   // Ensures the current process ends
 			}

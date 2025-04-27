@@ -46,15 +46,14 @@ namespace SpineViewer
             InitializeLogConfiguration();
             logger.Info("Program Started");
 
-			string localize = ConfigurationManager.AppSettings["localize"];
-			LocalizeConfiguration.SetCulture(localize);
-            logger.Info($"Culture info: {CultureInfo.CurrentCulture}");
+            
 
 			// To customize application configuration such as set high DPI settings or default font,
 			// see https://aka.ms/applicationconfiguration.
 			ApplicationConfiguration.Initialize();
-
-            try
+            LocalizeConfiguration.SetCulture();
+			logger.Info($"Culture info: {CultureInfo.CurrentCulture}");
+			try
             {
                 Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}"});
             }

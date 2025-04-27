@@ -160,7 +160,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="spineListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>288, 665</value>
+    <value>288, 650</value>
   </data>
   <data name="spineViewPropertyGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -172,7 +172,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="spineViewPropertyGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 426</value>
+    <value>354, 419</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="spineViewPropertyGrid.TabIndex" type="System.Int32, mscorlib">
@@ -218,7 +218,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="groupBox_SkelList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 689</value>
+    <value>292, 674</value>
   </data>
   <data name="groupBox_SkelList.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -275,7 +275,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="propertyGrid_Previewer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 208</value>
+    <value>354, 200</value>
   </data>
   <data name="propertyGrid_Previewer.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -305,7 +305,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="groupBox_PreviewConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 232</value>
+    <value>358, 224</value>
   </data>
   <data name="groupBox_PreviewConfig.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -350,7 +350,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="groupBox_SkelConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 450</value>
+    <value>358, 443</value>
   </data>
   <data name="groupBox_SkelConfig.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -383,10 +383,10 @@
     <value>1</value>
   </data>
   <data name="splitContainer_Config.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 689</value>
+    <value>358, 674</value>
   </data>
   <data name="splitContainer_Config.SplitterDistance" type="System.Int32, mscorlib">
-    <value>232</value>
+    <value>224</value>
   </data>
   <data name="splitContainer_Config.SplitterWidth" type="System.Int32, mscorlib">
     <value>7</value>
@@ -419,7 +419,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer_Information.Size" type="System.Drawing.Size, System.Drawing">
-    <value>657, 689</value>
+    <value>657, 674</value>
   </data>
   <data name="splitContainer_Information.SplitterDistance" type="System.Int32, mscorlib">
     <value>292</value>
@@ -464,7 +464,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="spinePreviewPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>798, 665</value>
+    <value>798, 650</value>
   </data>
   <data name="spinePreviewPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -494,7 +494,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="groupBox_Preview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>802, 689</value>
+    <value>802, 674</value>
   </data>
   <data name="groupBox_Preview.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -527,7 +527,7 @@
     <value>1</value>
   </data>
   <data name="splitContainer_Functional.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1466, 689</value>
+    <value>1466, 674</value>
   </data>
   <data name="splitContainer_Functional.SplitterDistance" type="System.Int32, mscorlib">
     <value>657</value>
@@ -575,7 +575,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="rtbLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1466, 141</value>
+    <value>1466, 156</value>
   </data>
   <data name="rtbLog.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -614,7 +614,7 @@
     <value>1466, 837</value>
   </data>
   <data name="splitContainer_MainForm.SplitterDistance" type="System.Int32, mscorlib">
-    <value>689</value>
+    <value>674</value>
   </data>
   <data name="splitContainer_MainForm.SplitterWidth" type="System.Int32, mscorlib">
     <value>7</value>
@@ -824,13 +824,13 @@
     <value>224, 26</value>
   </data>
   <data name="ToolStripMenuItem_Chinese.Text" xml:space="preserve">
-    <value>Chinese</value>
+    <value>简体中文</value>
   </data>
   <data name="ToolStripMenuItem_Language.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 26</value>
+    <value>152, 26</value>
   </data>
   <data name="ToolStripMenuItem_Language.Text" xml:space="preserve">
-    <value>Language</value>
+    <value>语言(&amp;L)</value>
   </data>
   <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
