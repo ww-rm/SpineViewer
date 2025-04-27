@@ -59,7 +59,7 @@ namespace SpineViewer
             catch (Exception ex)
             {
                 logger.Fatal(ex.ToString());
-                MessagePopup.Error(ex.ToString(), "程序已崩溃", Properties.Resources.msgBoxError);
+                MessagePopup.Error(ex.ToString(), Properties.Resources.programCrashed);
             }
         }
 

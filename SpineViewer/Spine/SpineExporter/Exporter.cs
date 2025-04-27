@@ -1,6 +1,7 @@
 ﻿using NLog;
 using SpineViewer.Extensions;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -345,66 +346,86 @@ namespace SpineViewer.Spine.SpineExporter
         /// 输出文件夹
         /// </summary>
         [Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
-        [Category("[0] 导出"), DisplayName("输出文件夹"), Description("逐个导出时可以留空，将逐个导出到模型自身所在目录")]
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayOutputFolder")]
+		[LocalizedDescription(typeof(Properties.Resources), "descOutputFolder")]
         public string? OutputDir { get => Exporter.OutputDir; set => Exporter.OutputDir = value; }
 
-        /// <summary>
-        /// 导出单个
-        /// </summary>
-        [Category("[0] 导出"), DisplayName("导出单个"), Description("是否将模型在同一个画面上导出单个文件，否则逐个导出模型")]
-        public bool IsExportSingle { get => Exporter.IsExportSingle; set => Exporter.IsExportSingle = value; }
+		/// <summary>
+		/// 导出单个
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayExportSingle")]
+		[LocalizedDescription(typeof(Properties.Resources), "descExportSingle")]
+		public bool IsExportSingle { get => Exporter.IsExportSingle; set => Exporter.IsExportSingle = value; }
 
         /// <summary>
         /// 画面分辨率
         /// </summary>
         [TypeConverter(typeof(SizeConverter))]
-        [Category("[0] 导出"), DisplayName("分辨率"), Description("画面的宽高像素大小，请在预览画面参数面板进行调整")]
-        public Size Resolution { get => Exporter.Resolution; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayResoulution")]
+		[LocalizedDescription(typeof(Properties.Resources), "descResolution")]
+		public Size Resolution { get => Exporter.Resolution; }
 
-        /// <summary>
-        /// 预览画面视区
-        /// </summary>
-        [Category("[0] 导出"), DisplayName("预览画面视区"), Description("预览画面的视区参数，请在预览画面参数面板进行调整")]
-        public SFML.Graphics.View View { get => Exporter.PreviewerView; }
+		/// <summary>
+		/// 预览画面视区
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayPreviewViewport")]
+		[LocalizedDescription(typeof(Properties.Resources), "descPreviewViewport")]
+		public SFML.Graphics.View View { get => Exporter.PreviewerView; }
 
-        /// <summary>
-        /// 是否仅渲染选中
-        /// </summary>
-        [Category("[0] 导出"), DisplayName("仅渲染选中"), Description("是否仅导出选中的模型，请在预览画面参数面板进行调整")]
-        public bool RenderSelectedOnly { get => Exporter.RenderSelectedOnly; }
+		/// <summary>
+		/// 是否仅渲染选中
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayRenderSelected")]
+		[LocalizedDescription(typeof(Properties.Resources), "descRenderSelected")]
+		public bool RenderSelectedOnly { get => Exporter.RenderSelectedOnly; }
 
         /// <summary>
         /// 背景颜色
         /// </summary>
         [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(SFMLColorConverter))]
-        [Category("[0] 导出"), DisplayName("背景颜色"), Description("要使用的背景色, 格式为 #RRGGBBAA")]
-        public SFML.Graphics.Color BackgroundColor { get => Exporter.BackgroundColor; set => Exporter.BackgroundColor = value; }
+        [LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayBackgroundColor")]
+		[LocalizedDescription(typeof(Properties.Resources), "descBackgroundColor")]
+		public SFML.Graphics.Color BackgroundColor { get => Exporter.BackgroundColor; set => Exporter.BackgroundColor = value; }
 
         /// <summary>
         /// 四周边缘距离
         /// </summary>
         [TypeConverter(typeof(PaddingConverter))]
-        [Category("[0] 导出"), DisplayName("四周边缘距离"), Description("画布外部的边缘距离 (Margin), 最终导出的分辨率需要加上这个边距")]
-        public Padding Margin { get => Exporter.Margin; set => Exporter.Margin = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayMargin")]
+		[LocalizedDescription(typeof(Properties.Resources), "descMargin")]
+		public Padding Margin { get => Exporter.Margin; set => Exporter.Margin = value; }
 
         /// <summary>
         /// 四周填充距离
         /// </summary>
         [TypeConverter(typeof(PaddingConverter))]
-        [Category("[0] 导出"), DisplayName("四周填充距离"), Description("画布内部的填充距离 (Padding), 导出的分辨率大小不会发生变化, 但是会留有四周空间")]
-        public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayPadding")]
+		[LocalizedDescription(typeof(Properties.Resources), "descPadding")]
+		public Padding Padding { get => Exporter.Padding; set => Exporter.Padding = value; }
 
-        /// <summary>
-        /// 允许内容溢出到边缘和填充区域
-        /// </summary>
-        [Category("[0] 导出"), DisplayName("允许内容溢出"), Description("使用预览画面分辨率的情况下, 允许内容溢出到边缘和填充区域")]
-        public bool AllowContentOverflow { get => Exporter.AllowContentOverflow; set => Exporter.AllowContentOverflow = value; }
+		/// <summary>
+		/// 允许内容溢出到边缘和填充区域
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayAllowContentOverflow")]
+		[LocalizedDescription(typeof(Properties.Resources), "descAllowContentOverflow")]
+		public bool AllowContentOverflow { get => Exporter.AllowContentOverflow; set => Exporter.AllowContentOverflow = value; }
 
-        /// <summary>
-        /// 自动分辨率
-        /// </summary>
-        [Category("[0] 导出"), DisplayName("自动分辨率"), Description("根据导出内容自动设置分辨率, 四周填充距离和内容溢出参数将会被忽略")]
-        public bool AutoResolution { get => Exporter.AutoResolution; set => Exporter.AutoResolution = value; }
+		/// <summary>
+		/// 自动分辨率
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayAutoResolution")]
+		[LocalizedDescription(typeof(Properties.Resources), "descAutoResolution")]
+		public bool AutoResolution { get => Exporter.AutoResolution; set => Exporter.AutoResolution = value; }
     }
 }

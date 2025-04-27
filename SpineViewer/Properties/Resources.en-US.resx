@@ -120,14 +120,26 @@
   <data name="about" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
   <data name="atlasNotExist" xml:space="preserve">
     <value>Atlas file doesn't exist.</value>
+  </data>
+  <data name="atlasPath" xml:space="preserve">
+    <value>Atlas file path</value>
+  </data>
+  <data name="basicInfo" xml:space="preserve">
+    <value>Basic info</value>
   </data>
   <data name="categoryCustom" xml:space="preserve">
     <value>Custom</value>
   </data>
   <data name="categoryExport" xml:space="preserve">
     <value>[0] Export</value>
+  </data>
+  <data name="categoryFormatParameters" xml:space="preserve">
+    <value>[3] Format parameters</value>
   </data>
   <data name="categoryPreview" xml:space="preserve">
     <value>[1] Preview</value>
@@ -141,11 +153,17 @@
   <data name="countInfoStatusSuffix" xml:space="preserve">
     <value>in total.</value>
   </data>
+  <data name="debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
   <data name="descAssociatedSpineListView" xml:space="preserve">
     <value>Associated SpineListView</value>
   </data>
   <data name="descDisplayImageProperties" xml:space="preserve">
     <value>Property page for displaying image properties</value>
+  </data>
+  <data name="descAvifEncoder" xml:space="preserve">
+    <value>-c:v: Video encoder to use. Hardware acceleration is recommended. Note: libaom-av1 is extremely slow.</value>
   </data>
   <data name="descModelAttributes" xml:space="preserve">
     <value>Model attributes display page.</value>
@@ -155,6 +173,9 @@
   </data>
   <data name="displayCenter" xml:space="preserve">
     <value>Center point of screen</value>
+  </data>
+  <data name="displayEncoder" xml:space="preserve">
+    <value>Encoder</value>
   </data>
   <data name="displayFlipHorizontal" xml:space="preserve">
     <value>Flip horizontal</value>
@@ -180,8 +201,32 @@
   <data name="displayZoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
+  <data name="duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
   <data name="errorLoadSkeleton" xml:space="preserve">
     <value>Failed to load skeleton</value>
+  </data>
+  <data name="fileVersion" xml:space="preserve">
+    <value>File version</value>
+  </data>
+  <data name="flipX" xml:space="preserve">
+    <value>FlipX</value>
+  </data>
+  <data name="flipY" xml:space="preserve">
+    <value>FlipY</value>
+  </data>
+  <data name="formatExceptionParseColor" xml:space="preserve">
+    <value>Unable to parse color, please use #RRGGBBAA, #RRGGBB, #RGBA or #RGB format.</value>
+  </data>
+  <data name="formatExceptionParseColorError" xml:space="preserve">
+    <value>Color format is invalid. Please check the format.</value>
+  </data>
+  <data name="formatExceptionUnknownColor" xml:space="preserve">
+    <value>Color not recognized. Please use a valid color name.</value>
+  </data>
+  <data name="isHidden" xml:space="preserve">
+    <value>Is hidden</value>
   </data>
   <data name="itemCountPrefix" xml:space="preserve">
     <value>.</value>
@@ -195,6 +240,9 @@
   <data name="loadAllSkeletonSuffix" xml:space="preserve">
     <value>skeletons found. Do you want to load them all at once?</value>
   </data>
+  <data name="maximumTrackLength" xml:space="preserve">
+    <value>Maximum Track Length</value>
+  </data>
   <data name="msgBoxError" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -207,14 +255,26 @@
   <data name="msgBoxWarning" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="notifyCopyGithubLink" xml:space="preserve">
     <value>Link copied to clipboard. Please open it in browser</value>
   </data>
   <data name="parameterError" xml:space="preserve">
     <value>Invalid Parameters</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="previewRenderStopped" xml:space="preserve">
+    <value>Preview Render Stopped</value>
+  </data>
   <data name="process" xml:space="preserve">
     <value>Processed </value>
+  </data>
+  <data name="programCrashed" xml:space="preserve">
+    <value>Application has crashed</value>
   </data>
   <data name="removeAllItemPrefix" xml:space="preserve">
     <value>Remove all </value>
@@ -225,13 +285,221 @@
   <data name="removeItemConfirmSuffix" xml:space="preserve">
     <value> item(s)?</value>
   </data>
+  <data name="render" xml:space="preserve">
+    <value>Render</value>
+  </data>
+  <data name="resourcesPath" xml:space="preserve">
+    <value>Resource Path</value>
+  </data>
   <data name="restartPrompt" xml:space="preserve">
     <value>Language set to Simplified Chinese. Restart application now?</value>
   </data>
   <data name="restartTitle" xml:space="preserve">
     <value>Application restart required!</value>
   </data>
+  <data name="runtimeError" xml:space="preserve">
+    <value>Runtime error</value>
+  </data>
+  <data name="runtimeVersion" xml:space="preserve">
+    <value>Runtime version</value>
+  </data>
+  <data name="scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
   <data name="skelNotExist" xml:space="preserve">
     <value>Skel file doesn't exist.</value>
+  </data>
+  <data name="skelPath" xml:space="preserve">
+    <value>Skel file path</value>
+  </data>
+  <data name="skin" xml:space="preserve">
+    <value>Skin</value>
+  </data>
+  <data name="slot" xml:space="preserve">
+    <value>Slot</value>
+  </data>
+  <data name="transform" xml:space="preserve">
+    <value>Transform</value>
+  </data>
+  <data name="usePremultipliedAlpha" xml:space="preserve">
+    <value>UsePremultipliedAlpha</value>
+  </data>
+  <data name="descCRF" xml:space="preserve">
+    <value>-crf: Accepts values from 0 to 63. Recommended range is 18–28 (default is 23). Lower values result in higher output quality</value>
+  </data>
+  <data name="displayPixelFormat" xml:space="preserve">
+    <value>Pixel format</value>
+  </data>
+  <data name="descPixelFormat" xml:space="preserve">
+    <value>-pix_fmt: Pixel format to use.</value>
+  </data>
+  <data name="displayLoopCount" xml:space="preserve">
+    <value>Loop count</value>
+  </data>
+  <data name="descLoopCount" xml:space="preserve">
+    <value>-loop: Number of loops. 0 for infinite loops. Valid range: [0, 65535].</value>
+  </data>
+  <data name="invalidInputFolder" xml:space="preserve">
+    <value>Invalid output folder</value>
+  </data>
+  <data name="folderNotExistPrefix" xml:space="preserve">
+    <value>Folder </value>
+  </data>
+  <data name="folderNotExistSuffix" xml:space="preserve">
+    <value>doesn't exist.</value>
+  </data>
+  <data name="mustProvideOutputFolder" xml:space="preserve">
+    <value>An output folder must be provided when exporting a single file.</value>
+  </data>
+  <data name="categoryFFmpegParameter" xml:space="preserve">
+    <value>[2] FFmpeg Basic Parameters</value>
+  </data>
+  <data name="displayFileFormat" xml:space="preserve">
+    <value>File format</value>
+  </data>
+  <data name="descFileFormat" xml:space="preserve">
+    <value>-f: Specify the output file format</value>
+  </data>
+  <data name="displayFilenameSuffix" xml:space="preserve">
+    <value>File extension</value>
+  </data>
+  <data name="descFilenameSuffix" xml:space="preserve">
+    <value>File extension</value>
+  </data>
+  <data name="displayOutputFolder" xml:space="preserve">
+    <value>Output folder</value>
+  </data>
+  <data name="descOutputFolder" xml:space="preserve">
+    <value>Leave empty to export to each model's folder.</value>
+  </data>
+  <data name="displayExportSingle" xml:space="preserve">
+    <value>Export single</value>
+  </data>
+  <data name="descExportSingle" xml:space="preserve">
+    <value>Export all models in a single file, or export each model separately.</value>
+  </data>
+  <data name="descResolution" xml:space="preserve">
+    <value>Set pixel size in preview panel.</value>
+  </data>
+  <data name="displayPreviewViewport" xml:space="preserve">
+    <value>Preview viewport</value>
+  </data>
+  <data name="descPreviewViewport" xml:space="preserve">
+    <value>Preview viewport settings. Adjust in the preview panel.</value>
+  </data>
+  <data name="descRenderSelected" xml:space="preserve">
+    <value>Export selected models only. Adjust this in the preview settings panel.</value>
+  </data>
+  <data name="descBackgroundColor" xml:space="preserve">
+    <value>Background color to use, in #RRGGBBAA format.</value>
+  </data>
+  <data name="displayMargin" xml:space="preserve">
+    <value>Margin</value>
+  </data>
+  <data name="descMargin" xml:space="preserve">
+    <value>Outer canvas margin. This will be added to the final export resolution.</value>
+  </data>
+  <data name="displayPadding" xml:space="preserve">
+    <value>Padding</value>
+  </data>
+  <data name="descPadding" xml:space="preserve">
+    <value>Internal canvas padding. The export resolution remains unchanged, but space will be left around the edges.</value>
+  </data>
+  <data name="displayAllowContentOverflow" xml:space="preserve">
+    <value>Allow content overflow</value>
+  </data>
+  <data name="descAllowContentOverflow" xml:space="preserve">
+    <value>When using the preview resolution, allow content to overflow into the edges and padding areas.</value>
+  </data>
+  <data name="displayAutoResolution" xml:space="preserve">
+    <value>Auto resolution</value>
+  </data>
+  <data name="descAutoResolution" xml:space="preserve">
+    <value>Automatically set resolution based on export content. Edge padding and content overflow settings will be ignored.</value>
+  </data>
+  <data name="validFormatRequired" xml:space="preserve">
+    <value>Valid format required.</value>
+  </data>
+  <data name="validExtensionRequired" xml:space="preserve">
+    <value>Valie extension required.</value>
+  </data>
+  <data name="descCustomArgument" xml:space="preserve">
+    <value>Use "ffmpeg -h encoder=&lt;encoder&gt;" to view supported encoder parameters.
+Use "ffmpeg -h muxer=&lt;file format&gt;" to view supported file format parameters.</value>
+  </data>
+  <data name="displayCustomArgument" xml:space="preserve">
+    <value>Custom arguments</value>
+  </data>
+  <data name="categorySingleFrame" xml:space="preserve">
+    <value>[1] Single Frame</value>
+  </data>
+  <data name="displayImageFormat" xml:space="preserve">
+    <value>Image format</value>
+  </data>
+  <data name="descFileNameExtension" xml:space="preserve">
+    <value>Filename extension matching the image format.</value>
+  </data>
+  <data name="descDPI" xml:space="preserve">
+    <value>Pixels per inch (PPI) for the exported image, used to adjust the physical size of the image.</value>
+  </data>
+  <data name="categoryFrameSequenceParameters" xml:space="preserve">
+    <value>[2] Frame Sequence Parameters</value>
+  </data>
+  <data name="descFrameFileExtension" xml:space="preserve">
+    <value>Frame file extension, which also defines the image format of each frame.</value>
+  </data>
+  <data name="displayMaxColor" xml:space="preserve">
+    <value>Max colors in palette</value>
+  </data>
+  <data name="descMaxColor" xml:space="preserve">
+    <value>Max colors in palette. Higher value = better color retention.</value>
+  </data>
+  <data name="displayAlphaThreshold" xml:space="preserve">
+    <value>Alpha threshold</value>
+  </data>
+  <data name="descAlphaThreshold" xml:space="preserve">
+    <value>Pixels below this value will be considered transparent.</value>
+  </data>
+  <data name="displayPreset" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="descPreset" xml:space="preserve">
+    <value>-profile: Preset configuration</value>
+  </data>
+  <data name="negativeDuration" xml:space="preserve">
+    <value>Export duration cannot be negative when exporting a single file.</value>
+  </data>
+  <data name="frame" xml:space="preserve">
+    <value>frame(s)</value>
+  </data>
+  <data name="categoryVideoParameters" xml:space="preserve">
+    <value>[1] Video Parameters</value>
+  </data>
+  <data name="descDuration" xml:space="preserve">
+    <value>Check animation duration in the model list. If less than 0, each model uses its longest track when exporting individually.</value>
+  </data>
+  <data name="displayFPS" xml:space="preserve">
+    <value>FPS</value>
+  </data>
+  <data name="descFPS" xml:space="preserve">
+    <value>Frames Per Second (FPS)</value>
+  </data>
+  <data name="displayKeepLastFrame" xml:space="preserve">
+    <value>Keep last frame</value>
+  </data>
+  <data name="descKeepLastFrame" xml:space="preserve">
+    <value>Keeping the last frame smooths the animation, but may add one extra frame.</value>
+  </data>
+  <data name="displayLoseless" xml:space="preserve">
+    <value>Loseless</value>
+  </data>
+  <data name="descLoseless" xml:space="preserve">
+    <value>-lossless: 0 for lossy, 1 for lossless.</value>
+  </data>
+  <data name="displayQuality" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="descQuality" xml:space="preserve">
+    <value>-quality: Range 0-100, default is 75.</value>
   </data>
 </root>
