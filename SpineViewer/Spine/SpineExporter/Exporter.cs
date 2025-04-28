@@ -364,7 +364,7 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         [TypeConverter(typeof(SizeConverter))]
 		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
-		[LocalizedDisplayName(typeof(Properties.Resources), "displayResoulution")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayResolution")]
 		[LocalizedDescription(typeof(Properties.Resources), "descResolution")]
 		public Size Resolution { get => Exporter.Resolution; }
 
