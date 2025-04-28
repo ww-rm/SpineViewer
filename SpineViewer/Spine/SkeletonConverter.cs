@@ -168,7 +168,7 @@ namespace SpineViewer.Spine
                 // 无符号右移, 符号按原样设置在最高位, 其他位与符号异或
                 return optimizePositive ? val : (val >>> 1) ^ -(val & 1);
             }
-            public string ReadString()
+            public string? ReadString()
             {
                 int byteCount = ReadVarInt();
                 switch (byteCount)
@@ -181,7 +181,7 @@ namespace SpineViewer.Spine
                 ReadFully(buffer, 0, byteCount);
                 return System.Text.Encoding.UTF8.GetString(buffer, 0, byteCount);
             }
-            public string ReadStringRef()
+            public string? ReadStringRef()
             {
                 int index = ReadVarInt();
                 return index == 0 ? null : StringTable[index - 1];
@@ -276,7 +276,7 @@ namespace SpineViewer.Spine
                 }
                 output.WriteByte(b);
             }
-            public void WriteString(string val)
+            public void WriteString(string? val)
             {
                 if (val == null)
                 {
@@ -294,7 +294,7 @@ namespace SpineViewer.Spine
                 System.Text.Encoding.UTF8.GetBytes(val, 0, val.Length, buffer, 0);
                 WriteFully(buffer, 0, byteCount);
             }
-            public void WriteStringRef(string val)
+            public void WriteStringRef(string? val)
             {
                 if (val is null)
                 {
