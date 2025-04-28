@@ -73,13 +73,16 @@ namespace SpineViewer
 			switch (cultureName)
 			{
 				case "zh-CN":
-					ToolStripMenuItem_Chinese.Enabled = false;
+					ToolStripMenuItem_Chinese.Checked = true;
+					ToolStripMenuItem_English.Checked = false;
 					break;
 				case "en-US":
-					ToolStripMenuItem_English.Enabled = false;
+					ToolStripMenuItem_English.Checked = true;
+					ToolStripMenuItem_Chinese.Checked = false;
 					break;
 				default:
-					ToolStripMenuItem_Chinese.Enabled = false;
+					ToolStripMenuItem_Chinese.Checked = true;
+					ToolStripMenuItem_English.Checked = false;
 					break;
 			}
 		}
@@ -458,11 +461,13 @@ namespace SpineViewer
 
 		private void ToolStripMenuItem_English_Click(object sender, EventArgs e)
 		{
+			if (ToolStripMenuItem_English.Checked) return;
 			ChangeLanguage("en-US");
 		}
 
 		private void ToolStripMenuItem_Chinese_Click(object sender, EventArgs e)
 		{
+			if (ToolStripMenuItem_Chinese.Checked) return;
 			ChangeLanguage("zh-CN");
 		}
 
