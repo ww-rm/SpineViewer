@@ -117,229 +117,379 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button_Start.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="button_FullScreen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>317, 2</value>
-  </data>
-  <data name="&gt;&gt;button_Restart.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;button_FullScreen.Name" xml:space="preserve">
-    <value>button_FullScreen</value>
-  </data>
-  <data name="panel_Render.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;panel_RenderContainer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel_RenderContainer.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="panel_ViewContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>466, 530</value>
+  <data name="button_ForwardStep.ImageKey" xml:space="preserve">
+    <value>forward-step</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel_Render.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="spinePreviewFullScreenForm.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel_ViewContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="&gt;&gt;button_ForwardFast.Name" xml:space="preserve">
+    <value>button_ForwardFast</value>
   </data>
-  <data name="button_Start.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="button_ForwardFast.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="&gt;&gt;button_Restart.Name" xml:space="preserve">
-    <value>button_Restart</value>
-  </data>
-  <data name="button_Stop.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="button_Start.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="&gt;&gt;wallpaperForm.Name" xml:space="preserve">
-    <value>wallpaperForm</value>
-  </data>
-  <data name="&gt;&gt;panel_Render.Name" xml:space="preserve">
-    <value>panel_Render</value>
-  </data>
-  <data name="panel_Render.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 113</value>
-  </data>
-  <data name="button_Start.ImageKey" xml:space="preserve">
-    <value>pause</value>
-  </data>
-  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="flowLayoutPanel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel_ViewContainer" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="button_ForwardStep.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="panel_RenderContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="button_ForwardStep.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="flowLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="button_FullScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;button_Stop.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="button_Restart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>65, 2</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardStep.Name" xml:space="preserve">
-    <value>button_ForwardStep</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;button_FullScreen.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="button_ForwardFast.ToolTip" xml:space="preserve">
-    <value>快进 10 帧</value>
-  </data>
-  <data name="button_ForwardFast.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="panel_RenderContainer.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardStep.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="flowLayoutPanel1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="button_FullScreen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="&gt;&gt;button_ForwardFast.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;panel_ViewContainer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel_Render.Parent" xml:space="preserve">
-    <value>panel_RenderContainer</value>
-  </data>
-  <data name="button_ForwardFast.ImageKey" xml:space="preserve">
-    <value>forward-fast</value>
-  </data>
-  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 492</value>
-  </data>
-  <data name="wallpaperForm.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;button_ForwardStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="button_Stop.ImageKey" xml:space="preserve">
-    <value>stop</value>
-  </data>
-  <data name="panel_ViewContainer.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="spinePreviewFullScreenForm.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>2560, 1440</value>
-  </data>
-  <data name="&gt;&gt;panel_RenderContainer.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;panel_RenderContainer.Name" xml:space="preserve">
-    <value>panel_RenderContainer</value>
-  </data>
-  <data name="button_ForwardFast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="button_Stop.ToolTip" xml:space="preserve">
-    <value>停止播放并重置时间到初始</value>
-  </data>
-  <data name="&gt;&gt;imageList.Name" xml:space="preserve">
-    <value>imageList</value>
-  </data>
-  <data name="button_FullScreen.ToolTip" xml:space="preserve">
-    <value>全屏预览</value>
-  </data>
-  <data name="&gt;&gt;panel_ViewContainer.ZOrder" xml:space="preserve">
+  <data name="button_Restart.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;wallpaperForm.Type" xml:space="preserve">
-    <value>SpineViewer.WallpaperForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="button_Start.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
   </data>
-  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
+    <value>toolTip</value>
   </data>
-  <data name="spinePreviewFullScreenForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>Manual</value>
-  </data>
-  <data name="button_Restart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;button_Start.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="button_FullScreen.ImageKey" xml:space="preserve">
+    <value>arrows-maximize</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewFullScreenForm.Type" xml:space="preserve">
+    <value>SpineViewer.Forms.SpinePreviewFullScreenForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;wallpaperForm.Name" xml:space="preserve">
+    <value>wallpaperForm</value>
+  </data>
+  <data name="button_Restart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 530</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="button_Restart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 2</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="button_ForwardStep.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="button_ForwardStep.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
   </data>
-  <data name="&gt;&gt;panel_ViewContainer.Name" xml:space="preserve">
-    <value>panel_ViewContainer</value>
+  <data name="button_ForwardFast.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;button_Stop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button_Start.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
   </data>
-  <data name="button_FullScreen.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="&gt;&gt;panel_RenderContainer.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
   </data>
   <data name="button_FullScreen.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
+  <data name="button_ForwardStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="button_Start.ImageKey" xml:space="preserve">
+    <value>pause</value>
+  </data>
+  <data name="panel_Render.Location" type="System.Drawing.Point, System.Drawing">
+    <value>114, 113</value>
+  </data>
+  <data name="button_Start.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.Name" xml:space="preserve">
+    <value>panel_ViewContainer</value>
+  </data>
+  <data name="button_Stop.ToolTip" xml:space="preserve">
+    <value>停止播放并重置时间到初始</value>
+  </data>
+  <data name="button_Restart.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Name" xml:space="preserve">
+    <value>panel_Render</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SpinePreviewPanel</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="spinePreviewFullScreenForm.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>2560, 1440</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Parent" xml:space="preserve">
+    <value>panel_RenderContainer</value>
+  </data>
+  <data name="panel_ViewContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Parent" xml:space="preserve">
+    <value>panel_ViewContainer</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="wallpaperForm.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button_ForwardStep.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="panel_Render.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.Name" xml:space="preserve">
+    <value>button_Stop</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;imageList.Name" xml:space="preserve">
+    <value>imageList</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Stop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="panel_RenderContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 492</value>
+  </data>
+  <data name="button_Restart.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="button_ForwardFast.Location" type="System.Drawing.Point, System.Drawing">
     <value>254, 2</value>
+  </data>
+  <data name="&gt;&gt;button_Start.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_ForwardStep.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>378, 38</value>
+  </data>
+  <data name="flowLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel_Render.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="panel_ViewContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel_RenderContainer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;imageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="button_Restart.ToolTip" xml:space="preserve">
+    <value>从头开始播放</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="panel_Render.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_ForwardFast.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="button_Start.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 2</value>
+  </data>
+  <data name="spinePreviewFullScreenForm.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_Start.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="panel_RenderContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="button_FullScreen.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="panel_ViewContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 492</value>
+  </data>
+  <data name="button_ForwardStep.ToolTip" xml:space="preserve">
+    <value>快进 1 帧</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_ForwardFast.ToolTip" xml:space="preserve">
+    <value>快进 10 帧</value>
+  </data>
+  <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="button_FullScreen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 2</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="flowLayoutPanel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_ForwardFast.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="button_FullScreen.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.Name" xml:space="preserve">
+    <value>button_Restart</value>
+  </data>
+  <data name="button_Stop.ImageKey" xml:space="preserve">
+    <value>stop</value>
+  </data>
+  <data name="panel_Render.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 267</value>
+  </data>
+  <data name="panel_RenderContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="wallpaperForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>Manual</value>
+  </data>
+  <data name="button_ForwardStep.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="button_Stop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="panel_ViewContainer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;wallpaperForm.Type" xml:space="preserve">
+    <value>SpineViewer.WallpaperForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="button_Stop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 2</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_FullScreen.ToolTip" xml:space="preserve">
+    <value>全屏预览</value>
+  </data>
+  <data name="button_FullScreen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_Stop.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Stop.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="flowLayoutPanel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel_ViewContainer" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="button_FullScreen.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="button_Stop.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Stop.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Name" xml:space="preserve">
+    <value>button_ForwardStep</value>
+  </data>
+  <data name="panel_RenderContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="button_ForwardStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>191, 2</value>
+  </data>
+  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 492</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="imageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAEZTeXN0ZW0uV2luZG93cy5Gb3JtcywgQ3VsdHVyZT1uZXV0cmFs
         LCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5BQEAAAAmU3lzdGVtLldpbmRvd3MuRm9ybXMu
         SW1hZ2VMaXN0U3RyZWFtZXIBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAA9CMAAAJNU0Z0AUkBTAIBAQcB
-        AAGkAQABqAEAAR8BAAEYAQAE/wEhARAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
+        AAGkAQABrAEAAR8BAAEYAQAE/wEhARAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
         AAMEAQUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf9DAAH/AwAB/wMAAf8DAAH/A1UB
         sWQAA1kB7wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/Ay0BRbcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
@@ -495,274 +645,121 @@
         /wH4AT8BBwHwFgAL
 </value>
   </data>
-  <data name="button_ForwardStep.ImageKey" xml:space="preserve">
-    <value>forward-step</value>
-  </data>
-  <data name="button_Restart.ImageKey" xml:space="preserve">
-    <value>rotate-left</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardFast.Name" xml:space="preserve">
-    <value>button_ForwardFast</value>
-  </data>
-  <data name="wallpaperForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+  <data name="spinePreviewFullScreenForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>Manual</value>
   </data>
-  <data name="panel_Render.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 267</value>
-  </data>
-  <data name="wallpaperForm.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="button_ForwardFast.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SpinePreviewPanel</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardFast.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="button_Restart.ToolTip" xml:space="preserve">
-    <value>从头开始播放</value>
+  <data name="button_Restart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="&gt;&gt;panel_Render.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="button_ForwardStep.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardStep.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="button_Stop.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="button_Restart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="panel_RenderContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_Restart.Parent" xml:space="preserve">
+  <data name="&gt;&gt;button_Stop.Parent" xml:space="preserve">
     <value>flowLayoutPanel1</value>
   </data>
-  <data name="panel_RenderContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>466, 492</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardFast.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="panel_ViewContainer.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>466, 530</value>
-  </data>
-  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 38</value>
-  </data>
-  <data name="&gt;&gt;button_Start.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;button_FullScreen.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="panel_Render.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="button_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="button_Stop.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="button_Restart.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;button_Start.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="button_ForwardFast.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="button_Restart.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="panel_ViewContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>466, 492</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="panel_RenderContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="button_ForwardFast.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="&gt;&gt;button_Stop.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="button_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 2</value>
-  </data>
-  <data name="wallpaperForm.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;imageList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="button_ForwardStep.ToolTip" xml:space="preserve">
-    <value>快进 1 帧</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 20</value>
-  </data>
-  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="button_Stop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="panel_ViewContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;spinePreviewFullScreenForm.Type" xml:space="preserve">
-    <value>SpineViewer.Forms.SpinePreviewFullScreenForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="button_Stop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="button_FullScreen.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="button_ForwardStep.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="spinePreviewFullScreenForm.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;spinePreviewFullScreenForm.Name" xml:space="preserve">
-    <value>spinePreviewFullScreenForm</value>
+  <data name="&gt;&gt;button_FullScreen.Name" xml:space="preserve">
+    <value>button_FullScreen</value>
   </data>
   <data name="&gt;&gt;button_Start.Name" xml:space="preserve">
     <value>button_Start</value>
   </data>
-  <data name="tableLayoutPanel1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="button_Start.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
-  <data name="&gt;&gt;button_Restart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
   </data>
-  <data name="button_Start.ToolTip" xml:space="preserve">
-    <value>开始/暂停</value>
-  </data>
-  <data name="button_Start.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="button_Stop.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;panel_RenderContainer.Parent" xml:space="preserve">
-    <value>panel_ViewContainer</value>
-  </data>
-  <data name="button_ForwardStep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 34</value>
-  </data>
-  <data name="&gt;&gt;button_FullScreen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_ForwardFast.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;button_Stop.Name" xml:space="preserve">
-    <value>button_Stop</value>
-  </data>
-  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
-    <value>toolTip</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="button_FullScreen.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>11, 2, 11, 2</value>
-  </data>
-  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+  <data name="button_Start.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="&gt;&gt;panel_ViewContainer.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
-  <data name="button_FullScreen.ImageKey" xml:space="preserve">
-    <value>arrows-maximize</value>
+  <data name="panel_RenderContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;panel_Render.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button_Restart.ImageKey" xml:space="preserve">
+    <value>rotate-left</value>
+  </data>
+  <data name="button_Restart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="wallpaperForm.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="button_ForwardFast.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Name" xml:space="preserve">
+    <value>panel_RenderContainer</value>
+  </data>
+  <data name="panel_ViewContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="wallpaperForm.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="button_Start.ToolTip" xml:space="preserve">
+    <value>开始/暂停</value>
+  </data>
+  <data name="button_Start.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="tableLayoutPanel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_ForwardFast.ImageKey" xml:space="preserve">
+    <value>forward-fast</value>
   </data>
   <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="button_Restart.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="button_FullScreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
   </data>
-  <data name="button_Stop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 2</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 530</value>
   </data>
-  <data name="button_Start.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="button_ForwardFast.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>8, 20</value>
+  </data>
+  <data name="button_ForwardFast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_ForwardStep.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="button_Restart.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="&gt;&gt;spinePreviewFullScreenForm.Name" xml:space="preserve">
+    <value>spinePreviewFullScreenForm</value>
   </data>
-  <data name="spinePreviewFullScreenForm.ToolTip" xml:space="preserve">
-    <value />
+  <data name="panel_ViewContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="button_ForwardStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>191, 2</value>
-  </data>
-  <data name="button_Start.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;button_Start.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="spinePreviewFullScreenForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>307, 18</value>
   </metadata>
-  <metadata name="imageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
-    <value>en</value>
-  </metadata>
   <metadata name="wallpaperForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>618, 18</value>
   </metadata>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>165, 17</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="imageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>165, 17</value>
   </metadata>
 </root>

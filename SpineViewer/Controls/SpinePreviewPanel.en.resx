@@ -117,15 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="panel_Render.ToolTip" xml:space="preserve">
-    <value />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panel_Render.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 136</value>
+  </data>
+  <data name="panel_Render.Size" type="System.Drawing.Size, System.Drawing">
+    <value>320, 320</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>641, 636</value>
+  </data>
+  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>101, 598</value>
+  </data>
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>438, 38</value>
   </data>
   <data name="imageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAEZTeXN0ZW0uV2luZG93cy5Gb3JtcywgQ3VsdHVyZT1uZXV0cmFs
         LCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5BQEAAAAmU3lzdGVtLldpbmRvd3MuRm9ybXMu
         SW1hZ2VMaXN0U3RyZWFtZXIBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAA8iMAAAJNU0Z0AUkBTAIBAQcB
-        AAGsAQABrAEAAR8BAAEYAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
+        AAG4AQABuAEAAR8BAAEYAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
         AAMEAQUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf9DAAH/AwAB/wMAAf8DAAH/A1UB
         sWQAA1kB7wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/Ay0BRbcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
@@ -138,7 +151,7 @@
         AAH/Ay4BSE8AAf8DAAH/AwAB/0sAAf8DAAH/AwAB/+AAAxUBHQMAAf8DAAH/AwAB/y8AAf8DAAH/EwAB
         /wMAAf8DAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf/kAAMmATgDAAH/AwAB/wMAAf8r
         AAH/AwAB/xsAAf8DAAH/AwAB/wMAAf8DAAH/QwAB/wMAAf8DAAH/SwAB/wMAAf8DAAH/6wAB/wMAAf8D
-        AAH/KwAB/wMAAf8cAANGAfYDAAH/AwAB/wMAAf8DAAH/AwQBBTsAAf8DAAH/AwAB/0sAAf8DAAH/AwAB
+        AAH/KwAB/wMAAf8cAANIAfYDAAH/AwAB/wMAAf8DAAH/AwQBBTsAAf8DAAH/AwAB/0sAAf8DAAH/AwAB
         /+8AAf8DAAH/AwAB/ycAAf8DAAH/JwAB/wMAAf8DAAH/AwAB/wMAAf83AAH/AwAB/wMAAf9LAAH/AwAB
         /wMAAf/vAAH/AwAB/wMAAf8nAAH/AwAB/ygAAwcBCQMAAf8DAAH/AwAB/wMAAf8DYAHjLwAB/wMAAf8D
         AAH/SwAB/wMAAf8DAAH/7AADIAEtAwAB/wMAAf8nAAH/AwAB/zMAAf8DAAH/AwAB/wMAAf8DAAH/KwAB
@@ -155,7 +168,7 @@
         /5QAAwUBBgMAAf8DAAH/CwAB/wMAAf8DAAH/AxMBGjMAAf8DAAH/AwAB/ysAAf8DAAH/GwAB/wMAAf8D
         AAH/AwAB/wMAAf9DAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf+UAAMFAQYDAAH/AwAB/wcAAf8DAAH/AwAB
         /wMbASYzAAH/AwAB/wMAAf8vAAH/AwAB/xMAAf8DAAH/AwAB/wMAAf8DAAH/SwAB/wMAAf8DAAH/SwAB
-        /wMAAf8DAAH/lAADBQEGAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMdASgkAANbAe4DAAH/AwAB
+        /wMAAf8DAAH/lAADBQEGAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMdASgkAANcAe4DAAH/AwAB
         /wMAAf8EAS8AAf8DAAH/CAADGAEhAwAB/wMAAf8DAAH/AwAB/wNcActPAAH/AwAB/wMAAf9LAAH/AwAB
         /wMAAf+UAAMFAQYDAAH/AwAB/wMAAf8DAAH/A2AB4wMAAf8DAAH/AwAB/wMAAf8DUAGfFwAB/wMAAf8D
         AAH/AwAB/wMAAf83AAH/AwAB/wcAAf8DAAH/AwAB/wMAAf8DAAH/VwAB/wMAAf8DAAH/AwAB/wMqAUAD
@@ -173,82 +186,82 @@
         AAH/AwAB/zsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/KwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/FAADAwEEAwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DAAH/AwAB/yQAA1YBtgMAAf8DAAH/AwAB
-        /wMAAf8kAAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AwAB/wMAAf8DPgH4IwAB/wMAAf8DAAH/NwAB
+        /wMAAf8kAAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AwAB/wMAAf8DPwH4IwAB/wMAAf8DAAH/NwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/JwAB/wMAAf8DAAH/AwAB/wMAAf87AAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8D
-        AAH/AwAB/wMAAf8DAAH/IAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8gAAM7AfkDAAH/AwAB/xwAA1kB
+        AAH/AwAB/wMAAf8DAAH/IAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8gAAM+AfkDAAH/AwAB/xwAA1oB
         8QMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/x8AAf8DAAH/AwAB/zcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/ycAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxQB/jMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/AwAB/wMAAf8D
-        AAH/AwAB/wNZAbsYAANWAbUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUQGeGAADOwH5AwAB/wMAAf8c
-        AANZAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A1ABnRcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
+        /wMAAf8DAAH/AxUB/jMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/AwAB/wMAAf8D
+        AAH/AwAB/wNZAbsYAANWAbUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUQGeGAADPgH5AwAB/wMAAf8c
+        AANaAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A1ABnRcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
         /w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB
         /wMAAf8rAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoAwAB/wMAAf8D
-        AAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB/wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzsB+QMAAf8D
-        AAH/HAADWQHxAwAB/wMAAf8DEQEWBAEDAAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/zcAAf8D
+        AAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB/wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAz4B+QMAAf8D
+        AAH/HAADWgHxAwAB/wMAAf8DEQEWBAEDAAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/zcAAf8D
         AAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswcAAf8D
         AAH/AwAB/wMAAf8jAAH/AwAB/wMAAf8DAAH/BwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoBwAB
-        /wMAAf8DAAH/AwAB/wMAAf8QAANWAbUDAAH/AwAB/wMzAVAHAAH/AwAB/wMAAf8DAAH/AwAB/xAAAzsB
-        +QMAAf8DAAH/HAADWQHxAwAB/wMAAf8DEQEWCwAB/wMAAf8DAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf83
+        /wMAAf8DAAH/AwAB/wMAAf8QAANWAbUDAAH/AwAB/wMzAVAHAAH/AwAB/wMAAf8DAAH/AwAB/xAAAz4B
+        +QMAAf8DAAH/HAADWgHxAwAB/wMAAf8DEQEWCwAB/wMAAf8DAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf83
         AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8nAAH/AwAB/wNWAbML
-        AAH/AwAB/wMAAf8DFAH+GwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/Az0B
+        AAH/AwAB/wMAAf8DFQH+GwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/Az0B
         aAgAA2AB2wMAAf8DAAH/AwAB/wMAAf8MAANWAbUDAAH/AwAB/wMzAVAIAANgAeMDAAH/AwAB/wMAAf8D
-        AAH/DAADOwH5AwAB/wMAAf8cAANZAfEDAAH/AwAB/wMRARYMAAMzAVIDAAH/AwAB/wMAAf8DAAH/AwAB
+        AAH/DAADPgH5AwAB/wMAAf8cAANaAfEDAAH/AwAB/wMRARYMAAMzAVIDAAH/AwAB/wMAAf8DAAH/AwAB
         /wcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB
         /ycAAf8DAAH/A1YBsw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/DAAD
         VAGrAwAB/wMAAf8DPQFoDAADJQE3AwAB/wMAAf8DAAH/AwAB/wgAA1YBtQMAAf8DAAH/AzMBUAwAAzIB
-        TwMAAf8DAAH/AwAB/wMAAf8IAAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxQB/gMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB
+        TwMAAf8DAAH/AwAB/wMAAf8IAAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB
+        /wMAAf8DAAH/AxUB/gMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB
         /wMAAf8DAAH/JwAB/wMAAf8XAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/xAAAwwBDwMAAf8D
-        RgH2DAADVAGrAwAB/wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8D
-        AAH/AwAB/wMAAf8EAAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFhgAA1oB6QMAAf8DAAH/AwAB
+        SAH2DAADVAGrAwAB/wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8D
+        AAH/AwAB/wMAAf8EAAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFhgAA1oB6QMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB
-        /0cAAf8DAAH/AwAB/wMUAf4DAAH/AwAB/wMAAf8DAAH/LAADVAGrAwAB/wMAAf8DPQFoGwAB/wMAAf8D
-        AAH/AwAB/wNdAc4DAAH/AwAB/wMzAVAbAAH/AwAB/wMAAf8DAAH/AygB+gMAAf8DAAH/HAADWQHxAwAB
+        /0cAAf8DAAH/AwAB/wMVAf4DAAH/AwAB/wMAAf8DAAH/LAADVAGrAwAB/wMAAf8DPQFoGwAB/wMAAf8D
+        AAH/AwAB/wNdAc4DAAH/AwAB/wMzAVAbAAH/AwAB/wMAAf8DAAH/AykB+gMAAf8DAAH/HAADWgHxAwAB
         /wMAAf8DEQEWIwAB/wMAAf8DAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB
         /wMAAf8PAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8wAANUAasDAAH/AwAB/wM9AWgf
-        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DMwFQHwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/HAADWQHxAwAB
+        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DMwFQHwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/HAADWgHxAwAB
         /wMAAf8DEQEWJwAB/wMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB
         /w8AAf8DAAH/AwAB/08AAf8DAAH/AwAB/wMAAf80AANUAasDAAH/AwAB/wM9AWgjAAH/AwAB/wMAAf8D
-        AAH/AwAB/wMzAVAjAAH/AwAB/wMAAf8DAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFisAAf8DAAH/AwAB
+        AAH/AwAB/wMzAVAjAAH/AwAB/wMAAf8DAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFisAAf8DAAH/AwAB
         /zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/0sAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxQB/jAAA1QBqwMAAf8DAAH/Az0BaB8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMzAVAf
-        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8cAANZAfEDAAH/AwAB/wMRARYkAANcAdkDAAH/AwAB/wMAAf83
+        /wMAAf8DAAH/AxUB/jAAA1QBqwMAAf8DAAH/Az0BaB8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMzAVAf
+        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8cAANaAfEDAAH/AwAB/wMRARYkAANcAdkDAAH/AwAB/wMAAf83
         AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf9HAAH/AwAB/wMAAf8D
-        AAH/AwAB/wMAAf8DAAH/AwAB/ywAA1QBqwMAAf8DAAH/Az0BaBsAAf8DAAH/AwAB/wMAAf8DWQHxAwAB
-        /wMAAf8DMwFQGwAB/wMAAf8DAAH/AwAB/wMUAf4DAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFiMAAf8D
+        AAH/AwAB/wMAAf8DAAH/AwAB/ywAA1QBqwMAAf8DAAH/Az0BaBsAAf8DAAH/AwAB/wMAAf8DWgHxAwAB
+        /wMAAf8DMwFQGwAB/wMAAf8DAAH/AwAB/wMVAf4DAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFiMAAf8D
         AAH/AwAB/wMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB/wMAAf8D
         AAH/JwAB/wMAAf8XAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/xcAAf8DWAG4DAADVAGrAwAB
         /wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8DAAH/AwAB/wMAAf8E
-        AAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFhgAAzABSgMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
+        AAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFhgAAzABSgMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YB
-        sw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DFAH+DwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
+        sw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DFQH+DwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
         PQFoEwAB/wMAAf8DAAH/AwAB/wgAA1YBtQMAAf8DAAH/AzMBUAwAAwkBDAMAAf8DAAH/AwAB/wMAAf8I
-        AAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB/wMAAf8DAAH/AygB/QMAAf8D
+        AAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB/wMAAf8DAAH/AyoB/QMAAf8D
         AAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/JwAB/wMAAf8D
         VgGzCwAB/wMAAf8DAAH/AwAB/xsAAf8DAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8MAANUAasDAAH/AwAB
         /wM9AWgIAAM6AWADAAH/AwAB/wMAAf8DAAH/DAADVgG1AwAB/wMAAf8DMwFQCAADSwGMAwAB/wMAAf8D
-        AAH/AwAB/wwAAzsB+QMAAf8DAAH/HAADWQHxAwAB/wMAAf8DEQEWDAADBwEJAwAB/wMAAf8DAAH/AwAB
+        AAH/AwAB/wwAAz4B+QMAAf8DAAH/HAADWgHxAwAB/wMAAf8DEQEWDAADBwEJAwAB/wMAAf8DAAH/AwAB
         /wMAAf8HAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
         /wMAAf8nAAH/AwAB/wNWAbMHAAH/AwAB/wMAAf8DAAH/IwAB/wMAAf8DAAH/AwAB/wcAAf8DAAH/AwAB
         /wwAA1QBqwMAAf8DAAH/Az0BaAcAAf8DAAH/AwAB/wMAAf8DAAH/EAADVgG1AwAB/wMAAf8DMwFQBwAB
-        /wMAAf8DAAH/AwAB/wMAAf8QAAM7AfkDAAH/AwAB/xwAA1kB8QMAAf8DAAH/AxEBFgsAAf8DAAH/AwAB
+        /wMAAf8DAAH/AwAB/wMAAf8QAAM+AfkDAAH/AwAB/xwAA1oB8QMAAf8DAAH/AxEBFgsAAf8DAAH/AwAB
         /wMAAf8DAAH/A08BmQsAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB
-        /w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB/wMAAf8rAAH/AwAB/wMAAf8DFAH+AwAB
+        /w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB/wMAAf8rAAH/AwAB/wMAAf8DFQH+AwAB
         /wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoAwAB/wMAAf8DAAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB
-        /wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzsB+QMAAf8DAAH/HAADWQHxAwAB/wMAAf8DEQEWBwAB
+        /wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAz4B+QMAAf8DAAH/HAADWgHxAwAB/wMAAf8DEQEWBwAB
         /wMAAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB
         /wMAAf8PAAH/AwAB/wMAAf8nAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8zAAH/AwAB/wMAAf8DAAH/AwAB
-        /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUQH0GAADVgG1AwAB/wMAAf8DAAH/AwAB
-        /wMAAf8DAAH/A10B7BgAAzsB+QMAAf8DAAH/HAADWQHxAwAB/wMAAf8DYQHrAwAB/wMAAf8DAAH/AwAB
-        /wNRAfQXAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
+        /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUwH0GAADVgG1AwAB/wMAAf8DAAH/AwAB
+        /wMAAf8DAAH/A10B7BgAAz4B+QMAAf8DAAH/HAADWgHxAwAB/wMAAf8DYQHrAwAB/wMAAf8DAAH/AwAB
+        /wNTAfQXAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
         /wMAAf8nAAH/AwAB/wMAAf8DAAH/AwAB/zsAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
-        AAH/AwAB/wMAAf8DQwF3HAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8DMAFMHAADOwH5AwAB/wMAAf8c
-        AANZAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8fAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8DKgFAAyoB
+        AAH/AwAB/wMAAf8DQwF3HAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8DMAFMHAADPgH5AwAB/wMAAf8c
+        AANaAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8fAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8DKgFAAyoB
         QAMqAUADAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8DKgFAAyoBQAMqAUADAAH/AwAB/wMAAf8nAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8bAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwYBCCAAA1YBtgMAAf8DAAH/AwAB/wMAAf8DAgEDIAAD
-        OwH5AwAB/wMAAf8cAANZAfEDAAH/AwAB/wMAAf8DAAH/AwAB/yMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
+        PgH5AwAB/wMAAf8cAANaAfEDAAH/AwAB/wMAAf8DAAH/AwAB/yMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /ycAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/xQAA0wBkAMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/y8AAf8DAAH/AwAB/ygAAzYBWAMAAf8DAAH/IwAB
@@ -281,43 +294,110 @@
         /wH4AT8BBwHwCw==
 </value>
   </data>
+  <data name="button_Stop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 2</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button_Stop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_Stop.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_Stop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
+  </data>
   <data name="button_Stop.ToolTip" xml:space="preserve">
     <value>Stop playback and reset time.</value>
+  </data>
+  <data name="button_Restart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>76, 2</value>
+  </data>
+  <data name="button_Restart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_Restart.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_Restart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
   </data>
   <data name="button_Restart.ToolTip" xml:space="preserve">
     <value>Play from the beginning.</value>
   </data>
+  <data name="button_Start.Location" type="System.Drawing.Point, System.Drawing">
+    <value>149, 2</value>
+  </data>
+  <data name="button_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_Start.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_Start.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
+  </data>
   <data name="button_Start.ToolTip" xml:space="preserve">
     <value>Play/Pause</value>
+  </data>
+  <data name="button_ForwardStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 2</value>
+  </data>
+  <data name="button_ForwardStep.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_ForwardStep.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_ForwardStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
   </data>
   <data name="button_ForwardStep.ToolTip" xml:space="preserve">
     <value>Fast forward 1 frame</value>
   </data>
+  <data name="button_ForwardFast.Location" type="System.Drawing.Point, System.Drawing">
+    <value>295, 2</value>
+  </data>
+  <data name="button_ForwardFast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_ForwardFast.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_ForwardFast.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
+  </data>
   <data name="button_ForwardFast.ToolTip" xml:space="preserve">
     <value>Fast forward 10 frames.</value>
+  </data>
+  <data name="button_FullScreen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>368, 2</value>
+  </data>
+  <data name="button_FullScreen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="button_FullScreen.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 2, 15, 2</value>
+  </data>
+  <data name="button_FullScreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 34</value>
   </data>
   <data name="button_FullScreen.ToolTip" xml:space="preserve">
     <value>Fullscreen preview.</value>
   </data>
-  <data name="flowLayoutPanel1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="panel_ViewContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>641, 598</value>
   </data>
-  <data name="panel_RenderContainer.ToolTip" xml:space="preserve">
-    <value />
+  <data name="panel_RenderContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>641, 598</value>
   </data>
-  <data name="panel_ViewContainer.ToolTip" xml:space="preserve">
-    <value />
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>11, 24</value>
   </data>
-  <data name="tableLayoutPanel1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
   </data>
-  <data name="spinePreviewFullScreenForm.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="wallpaperForm.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>641, 636</value>
   </data>
 </root>

@@ -117,171 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="toolStripMenuItem_DetailsView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
-  </data>
-  <data name="toolStripMenuItem_MoveTop.Text" xml:space="preserve">
-    <value>置顶</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 20</value>
-  </data>
-  <data name="toolStripMenuItem_BatchAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="toolStripMenuItem_SelectAll.Text" xml:space="preserve">
-    <value>全选</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Insert.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ChangeView.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ChangeView</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Add.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 6</value>
-  </data>
-  <data name="toolStripMenuItem_ChangeView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_SelectAll.Name" xml:space="preserve">
-    <value>toolStripMenuItem_SelectAll</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_DetailsView.Name" xml:space="preserve">
-    <value>toolStripMenuItem_DetailsView</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="columnHeader_Name.Width" type="System.Int32, mscorlib">
-    <value>300</value>
-  </data>
-  <data name="listView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 345</value>
-  </data>
-  <data name="toolStripMenuItem_LargeIconView.Text" xml:space="preserve">
-    <value>大图标</value>
-  </data>
-  <data name="&gt;&gt;listView.Parent" xml:space="preserve">
-    <value>tableLayoutPanel</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 6</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
-    <value>toolStripSeparator3</value>
-  </data>
-  <data name="&gt;&gt;listView.Name" xml:space="preserve">
-    <value>listView</value>
-  </data>
-  <data name="toolStripMenuItem_MoveBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SpineListView</value>
-  </data>
-  <data name="toolStripMenuItem_MoveDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="&gt;&gt;listView.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="toolStripMenuItem_Add.Text" xml:space="preserve">
-    <value>添加...</value>
-  </data>
-  <data name="toolStripMenuItem_MoveUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
+  <data name="&gt;&gt;imageList_LargeIcon.Name" xml:space="preserve">
+    <value>imageList_LargeIcon</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_LargeIconView.Type" xml:space="preserve">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStripMenuItem_AddFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_MoveDown.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItem_CopyPreview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
+  <data name="&gt;&gt;imageList_SmallIcon.Name" xml:space="preserve">
+    <value>imageList_SmallIcon</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="toolStripMenuItem_MoveTop.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+Shift+W</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_MoveBottom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="contextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 340</value>
-  </data>
-  <data name="&gt;&gt;timer_SelectedIndexChangedDebounce.Name" xml:space="preserve">
-    <value>timer_SelectedIndexChangedDebounce</value>
-  </data>
-  <data name="toolStripMenuItem_AddFromClipboard.Text" xml:space="preserve">
-    <value>从剪贴板添加</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel.Name" xml:space="preserve">
-    <value>tableLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;columnHeader_Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="listView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="listView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 371</value>
-  </data>
-  <data name="toolStripMenuItem_Add.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="toolStripMenuItem_Remove.Text" xml:space="preserve">
-    <value>移除</value>
-  </data>
-  <data name="&gt;&gt;imageList_SmallIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="imageList_LargeIcon.ImageSize" type="System.Drawing.Size, System.Drawing">
-    <value>96, 96</value>
-  </data>
-  <data name="statusStrip.Text" xml:space="preserve">
-    <value>statusStrip1</value>
-  </data>
-  <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="toolStripMenuItem_ListView.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+2</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_CopyPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_SelectAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_DetailsView.Text" xml:space="preserve">
-    <value>详细信息</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_MoveTop.Name" xml:space="preserve">
-    <value>toolStripMenuItem_MoveTop</value>
-  </data>
-  <data name="toolStripMenuItem_Remove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="tableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_LargeIconView.Name" xml:space="preserve">
-    <value>toolStripMenuItem_LargeIconView</value>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
   </data>
   <data name="toolStripStatusLabel_CountInfo.Text" xml:space="preserve">
     <value>已选择 0 项，共 0 项</value>
@@ -289,119 +142,167 @@
   <data name="&gt;&gt;toolStripMenuItem_Insert.Name" xml:space="preserve">
     <value>toolStripMenuItem_Insert</value>
   </data>
-  <data name="toolStripMenuItem_MoveBottom.Text" xml:space="preserve">
-    <value>置底</value>
+  <data name="toolStripMenuItem_Add.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
   </data>
-  <data name="toolStripMenuItem_MoveUp.Text" xml:space="preserve">
-    <value>上移</value>
+  <data name="&gt;&gt;toolStripMenuItem_DetailsView.Name" xml:space="preserve">
+    <value>toolStripMenuItem_DetailsView</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_MoveDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItem_LargeIconView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 34</value>
   </data>
-  <data name="tableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 371</value>
+  <data name="&gt;&gt;imageList_SmallIcon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="listView.Alignment" type="System.Windows.Forms.ListViewAlignment, System.Windows.Forms">
-    <value>Left</value>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_BatchAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_Insert.Text" xml:space="preserve">
-    <value>插入...</value>
-  </data>
-  <data name="toolStripMenuItem_CopyPreview.Text" xml:space="preserve">
-    <value>复制预览图</value>
-  </data>
-  <data name="toolStripMenuItem_ChangeView.Text" xml:space="preserve">
-    <value>切换视图</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 6</value>
-  </data>
-  <data name="columnHeader_Name.Text" xml:space="preserve">
-    <value>名称</value>
-  </data>
-  <data name="toolStripMenuItem_RemoveAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
+  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 414</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem_AddFromClipboard.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_DetailsView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 445</value>
   </data>
-  <data name="toolStripMenuItem_CopyPreview.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+C</value>
+  <data name="statusStrip.Text" xml:space="preserve">
+    <value>statusStrip1</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_AddFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ListView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip.Name" xml:space="preserve">
-    <value>contextMenuStrip</value>
-  </data>
-  <data name="tableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Remove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tableLayoutPanel.Name" xml:space="preserve">
     <value>tableLayoutPanel</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_RemoveAll.Name" xml:space="preserve">
-    <value>toolStripMenuItem_RemoveAll</value>
+  <data name="toolStripMenuItem_MoveBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
   </data>
-  <data name="toolStripMenuItem_MoveDown.Text" xml:space="preserve">
-    <value>下移</value>
+  <data name="columnHeader_Name.Text" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem_MoveTop.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 6</value>
+  <data name="toolStripMenuItem_MoveBottom.Text" xml:space="preserve">
+    <value>置底</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_BatchAdd.Name" xml:space="preserve">
+    <value>toolStripMenuItem_BatchAdd</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="&gt;&gt;columnHeader_Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_RemoveAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
   </data>
   <data name="toolStripMenuItem_RemoveAll.Text" xml:space="preserve">
     <value>移除全部</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_AddFromClipboard.Name" xml:space="preserve">
-    <value>toolStripMenuItem_AddFromClipboard</value>
+  <data name="&gt;&gt;toolStripMenuItem_Add.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripStatusLabel_CountInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;listView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItem_ListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+  <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="toolStripMenuItem_MoveTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
+  <data name="&gt;&gt;toolStripMenuItem_Remove.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Remove</value>
   </data>
-  <data name="toolStripMenuItem_MoveUp.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+W</value>
+  <data name="&gt;&gt;statusStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Remove.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SpineListView</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_MoveUp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="toolStripMenuItem_ListView.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_LargeIconView.Name" xml:space="preserve">
+    <value>toolStripMenuItem_LargeIconView</value>
   </data>
   <data name="toolStripMenuItem_LargeIconView.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Alt+1</value>
   </data>
-  <data name="toolStripMenuItem_AddFromClipboard.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+V</value>
+  <data name="tableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="listView" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="statusStrip" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;timer_SelectedIndexChangedDebounce.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;listView.Name" xml:space="preserve">
+    <value>listView</value>
+  </data>
+  <data name="toolStripMenuItem_MoveUp.Text" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="toolStripMenuItem_Remove.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Insert.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_DetailsView.Text" xml:space="preserve">
+    <value>详细信息</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_MoveTop.Name" xml:space="preserve">
+    <value>toolStripMenuItem_MoveTop</value>
+  </data>
+  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 31</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
   </data>
   <data name="&gt;&gt;statusStrip.Name" xml:space="preserve">
     <value>statusStrip</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
+  <data name="toolStripMenuItem_MoveBottom.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+Shift+S</value>
   </data>
-  <data name="listView.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="toolStripMenuItem_SelectAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="toolStripMenuItem_AddFromClipboard.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+V</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_MoveBottom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_MoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
   </data>
   <data name="toolStripMenuItem_BatchAdd.Text" xml:space="preserve">
     <value>批量添加...</value>
@@ -409,164 +310,257 @@
   <data name="&gt;&gt;imageList_LargeIcon.Type" xml:space="preserve">
     <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="toolStripMenuItem_ChangeView.Text" xml:space="preserve">
+    <value>切换视图</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ListView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;listView.Parent" xml:space="preserve">
+    <value>tableLayoutPanel</value>
+  </data>
   <data name="&gt;&gt;toolStripMenuItem_MoveBottom.Name" xml:space="preserve">
     <value>toolStripMenuItem_MoveBottom</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_Add.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Add</value>
+  <data name="listView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="&gt;&gt;imageList_LargeIcon.Name" xml:space="preserve">
-    <value>imageList_LargeIcon</value>
+  <data name="&gt;&gt;toolStripMenuItem_AddFromClipboard.Name" xml:space="preserve">
+    <value>toolStripMenuItem_AddFromClipboard</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_MoveUp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="columnHeader_Name.Width" type="System.Int32, mscorlib">
+    <value>300</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_ChangeView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
   </data>
-  <data name="imageList_SmallIcon.ImageSize" type="System.Drawing.Size, System.Drawing">
-    <value>48, 48</value>
-  </data>
-  <data name="toolStripMenuItem_LargeIconView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_MoveDown.Name" xml:space="preserve">
-    <value>toolStripMenuItem_MoveDown</value>
-  </data>
-  <data name="tableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
-    <value>toolStripSeparator4</value>
-  </data>
-  <data name="statusStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
-  </data>
-  <data name="&gt;&gt;columnHeader_Name.Name" xml:space="preserve">
-    <value>columnHeader_Name</value>
-  </data>
-  <data name="toolStripMenuItem_DetailsView.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+3</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Remove.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Remove</value>
-  </data>
-  <data name="toolStripMenuItem_Remove.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Del</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_BatchAdd.Name" xml:space="preserve">
-    <value>toolStripMenuItem_BatchAdd</value>
-  </data>
-  <data name="tableLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;timer_SelectedIndexChangedDebounce.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_SelectAll.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+A</value>
+  <data name="toolStripMenuItem_Remove.Text" xml:space="preserve">
+    <value>移除</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;imageList_SmallIcon.Name" xml:space="preserve">
-    <value>imageList_SmallIcon</value>
-  </data>
-  <data name="tableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="listView" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="statusStrip" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_RemoveAll.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem_BatchAdd.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripStatusLabel_CountInfo.Name" xml:space="preserve">
-    <value>toolStripStatusLabel_CountInfo</value>
+  <data name="&gt;&gt;toolStripMenuItem_RemoveAll.Name" xml:space="preserve">
+    <value>toolStripMenuItem_RemoveAll</value>
   </data>
-  <data name="listView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="toolStripMenuItem_MoveTop.Text" xml:space="preserve">
+    <value>置顶</value>
   </data>
-  <data name="toolStripMenuItem_MoveBottom.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+Shift+S</value>
-  </data>
-  <data name="tableLayoutPanel.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="statusStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="toolStripStatusLabel_CountInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
+  <data name="&gt;&gt;toolStripMenuItem_DetailsView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem_ListView.Name" xml:space="preserve">
     <value>toolStripMenuItem_ListView</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="toolStripMenuItem_ListView.Text" xml:space="preserve">
-    <value>列表</value>
-  </data>
-  <data name="&gt;&gt;listView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_Insert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_SelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 24</value>
-  </data>
-  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 345</value>
+  <data name="toolStripMenuItem_ListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 34</value>
   </data>
   <data name="toolStripMenuItem_MoveDown.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Alt+S</value>
   </data>
-  <data name="&gt;&gt;statusStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;toolStripStatusLabel_CountInfo.Name" xml:space="preserve">
+    <value>toolStripStatusLabel_CountInfo</value>
+  </data>
+  <data name="tableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="toolStripMenuItem_MoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="&gt;&gt;listView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
+    <value>tableLayoutPanel</value>
+  </data>
+  <data name="listView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_CopyPreview.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem_MoveUp.Name" xml:space="preserve">
     <value>toolStripMenuItem_MoveUp</value>
   </data>
+  <data name="listView.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="toolStripMenuItem_Insert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="toolStripMenuItem_Remove.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Del</value>
+  </data>
+  <data name="toolStripMenuItem_MoveUp.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+W</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="toolStripMenuItem_ChangeView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="&gt;&gt;timer_SelectedIndexChangedDebounce.Name" xml:space="preserve">
+    <value>timer_SelectedIndexChangedDebounce</value>
+  </data>
+  <data name="toolStripMenuItem_CopyPreview.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="toolStripMenuItem_CopyPreview.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+C</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_SelectAll.Name" xml:space="preserve">
+    <value>toolStripMenuItem_SelectAll</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Add.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Add</value>
+  </data>
+  <data name="listView.Alignment" type="System.Windows.Forms.ListViewAlignment, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="toolStripMenuItem_ListView.Text" xml:space="preserve">
+    <value>列表</value>
+  </data>
+  <data name="toolStripMenuItem_AddFromClipboard.Text" xml:space="preserve">
+    <value>从剪贴板添加</value>
+  </data>
+  <data name="toolStripMenuItem_LargeIconView.Text" xml:space="preserve">
+    <value>大图标</value>
+  </data>
+  <data name="tableLayoutPanel.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="toolStripMenuItem_DetailsView.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+3</value>
+  </data>
+  <data name="toolStripMenuItem_SelectAll.Text" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="toolStripMenuItem_BatchAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="contextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>255, 418</value>
+  </data>
+  <data name="statusStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_LargeIconView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripStatusLabel_CountInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 24</value>
+  </data>
+  <data name="toolStripMenuItem_MoveDown.Text" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="imageList_SmallIcon.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>48, 48</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="tableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ChangeView.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ChangeView</value>
+  </data>
+  <data name="&gt;&gt;columnHeader_Name.Name" xml:space="preserve">
+    <value>columnHeader_Name</value>
+  </data>
+  <data name="listView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 414</value>
+  </data>
   <data name="&gt;&gt;toolStripMenuItem_CopyPreview.Name" xml:space="preserve">
     <value>toolStripMenuItem_CopyPreview</value>
   </data>
-  <data name="statusStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 0, 10, 0</value>
+  <data name="imageList_LargeIcon.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>96, 96</value>
   </data>
-  <data name="tableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;toolStripMenuItem_RemoveAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
+  <data name="listView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip.Name" xml:space="preserve">
+    <value>contextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_MoveDown.Name" xml:space="preserve">
+    <value>toolStripMenuItem_MoveDown</value>
+  </data>
+  <data name="toolStripMenuItem_SelectAll.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+A</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="statusStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="toolStripMenuItem_DetailsView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 34</value>
+  </data>
+  <data name="toolStripMenuItem_MoveTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 30</value>
+  </data>
+  <data name="toolStripMenuItem_CopyPreview.Text" xml:space="preserve">
+    <value>复制预览图</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>11, 24</value>
+  </data>
+  <data name="toolStripMenuItem_MoveTop.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+Shift+W</value>
+  </data>
+  <data name="toolStripMenuItem_Insert.Text" xml:space="preserve">
+    <value>插入...</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ChangeView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_SelectAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripStatusLabel_CountInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Add.Text" xml:space="preserve">
+    <value>添加...</value>
+  </data>
+  <data name="tableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 445</value>
+  </data>
+  <metadata name="timer_SelectedIndexChangedDebounce.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>771, 24</value>
   </metadata>
   <metadata name="statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1176, 24</value>
   </metadata>
-  <metadata name="timer_SelectedIndexChangedDebounce.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>771, 24</value>
+  <metadata name="contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>30, 22</value>
   </metadata>
   <metadata name="imageList_LargeIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>511, 20</value>
   </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
-    <value>ebu-KE</value>
-  </metadata>
-  <metadata name="contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
   <metadata name="imageList_SmallIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>252, 19</value>

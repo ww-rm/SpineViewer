@@ -117,615 +117,1059 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="groupBox_SkelConfig.Text" xml:space="preserve">
-    <value>模型参数</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Open.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel_MainForm.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="panel_MainForm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 30</value>
+  <data name="toolStripMenuItem_ManageResource.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 34</value>
   </data>
-  <data name="propertyGrid_Previewer.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Experiment.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel_MainForm.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>8, 4, 8, 8</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportFrameSequence.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportFrameSequence</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
-    <value>toolStripSeparator4</value>
-  </data>
-  <data name="menuStrip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_BatchOpen.Name" xml:space="preserve">
-    <value>toolStripMenuItem_BatchOpen</value>
-  </data>
-  <data name="groupBox_SkelList.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Name" xml:space="preserve">
-    <value>splitContainer_Information</value>
-  </data>
-  <data name="splitContainer_Information.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="spineViewPropertyGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportGif.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportGif</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer_Information</value>
-  </data>
-  <data name="splitContainer_Config.Panel2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_ManageResource.Text" xml:space="preserve">
-    <value>管理下载资源(&amp;M)...</value>
-  </data>
-  <data name="toolStripMenuItem_Debug.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 26</value>
-  </data>
-  <data name="&gt;&gt;propertyGrid_Previewer.Parent" xml:space="preserve">
-    <value>groupBox_PreviewConfig</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Tool.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Tool</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Preview.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="splitContainer_Config.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="splitContainer_MainForm.SplitterWidth" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="spinePreviewPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="rtbLog.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_Chinese.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_PreviewConfig.Parent" xml:space="preserve">
-    <value>splitContainer_Config.Panel1</value>
-  </data>
-  <data name="&gt;&gt;panel_MainForm.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_Tool.Text" xml:space="preserve">
-    <value>工具(&amp;T)</value>
-  </data>
-  <data name="spineViewPropertyGrid.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="splitContainer_Information.Size" type="System.Drawing.Size, System.Drawing">
-    <value>657, 671</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_Debug.Text" xml:space="preserve">
-    <value>调试</value>
-  </data>
-  <data name="splitContainer_Functional.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;groupBox_PreviewConfig.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportAvif.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportAvif</value>
-  </data>
-  <data name="&gt;&gt;panel_MainForm.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer_Information</value>
-  </data>
-  <data name="toolStripMenuItem_ExportCustom.Text" xml:space="preserve">
-    <value>FFmpeg 自定义导出...</value>
-  </data>
-  <data name="splitContainer_Functional.Panel2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="toolStripMenuItem_File.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 26</value>
-  </data>
-  <data name="&gt;&gt;propertyGrid_Previewer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;toolStripMenuItem_Debug.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Debug</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator5.Name" xml:space="preserve">
     <value>toolStripSeparator5</value>
   </data>
-  <data name="groupBox_SkelList.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rtbLog.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="toolStripMenuItem_ExportWebm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Exit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="spineListView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="toolStripMenuItem_Experiment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 26</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SkelList.Parent" xml:space="preserve">
-    <value>splitContainer_Information.Panel1</value>
+  <data name="&gt;&gt;ToolStripMenuItem_Chinese.Name" xml:space="preserve">
+    <value>ToolStripMenuItem_Chinese</value>
   </data>
   <data name="&gt;&gt;groupBox_SkelConfig.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel2.Name" xml:space="preserve">
-    <value>splitContainer_Information.Panel2</value>
-  </data>
-  <data name="toolStripMenuItem_Download.Text" xml:space="preserve">
-    <value>下载(&amp;D)</value>
-  </data>
-  <data name="groupBox_SkelList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 671</value>
-  </data>
-  <data name="groupBox_PreviewConfig.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;groupBox_PreviewConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox_Preview.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="toolStripMenuItem_DesktopProjection.Text" xml:space="preserve">
-    <value>桌面投影</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer_Config</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Parent" xml:space="preserve">
-    <value>splitContainer_MainForm.Panel1</value>
-  </data>
-  <data name="&gt;&gt;spinePreviewPanel.Parent" xml:space="preserve">
-    <value>groupBox_Preview</value>
-  </data>
-  <data name="groupBox_SkelList.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="splitContainer_MainForm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="groupBox_SkelConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="splitContainer_Config.SplitterDistance" type="System.Int32, mscorlib">
-    <value>223</value>
-  </data>
-  <data name="toolStripMenuItem_About.Text" xml:space="preserve">
-    <value>关于(&amp;A)</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="menuStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 2, 0, 2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_BatchOpen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="spineListView.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel1.Name" xml:space="preserve">
-    <value>splitContainer_Config.Panel1</value>
-  </data>
-  <data name="panel_MainForm.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMp4.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportMp4</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 6</value>
-  </data>
-  <data name="panel_MainForm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1482, 849</value>
-  </data>
-  <data name="propertyGrid_Previewer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;spineListView.Type" xml:space="preserve">
-    <value>SpineViewer.Controls.SpineListView, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;spinePreviewPanel.Type" xml:space="preserve">
-    <value>SpineViewer.Controls.SpinePreviewPanel, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="toolStripMenuItem_ExportMp4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportFrameSequence.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="propertyGrid_Previewer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="toolStripMenuItem_ExportCustom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Download.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Download</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer_Functional</value>
-  </data>
-  <data name="groupBox_SkelList.Text" xml:space="preserve">
-    <value>模型列表</value>
-  </data>
-  <data name="splitContainer_Information.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SkelConfig.Parent" xml:space="preserve">
-    <value>splitContainer_Config.Panel2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="spineViewPropertyGrid.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="splitContainer_Config.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Help.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="rtbLog.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="groupBox_Preview.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_File.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Experiment.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Experiment</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportGif.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_About.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 26</value>
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_English.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_ExportMkv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Name" xml:space="preserve">
-    <value>splitContainer_Functional</value>
-  </data>
-  <data name="toolStripMenuItem_ExportMov.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="splitContainer_MainForm.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainer_Config.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_ManageResource.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ManageResource</value>
+  <data name="toolStripMenuItem_ExportMp4.Text" xml:space="preserve">
+    <value>MP4...</value>
+  </data>
+  <data name="spineViewPropertyGrid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 25</value>
+  </data>
+  <data name="splitContainer_Config.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainer_Information.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_About.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;propertyGrid_Previewer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="&gt;&gt;panel_MainForm.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="splitContainer_Information.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="toolStripMenuItem_ExportFrameSequence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
   </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>285, 6</value>
   </data>
-  <data name="propertyGrid_Previewer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="toolStripMenuItem_Open.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+O</value>
   </data>
-  <data name="spinePreviewPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1778, 1055</value>
   </data>
-  <data name="ToolStripMenuItem_Chinese.Text" xml:space="preserve">
-    <value>简体中文</value>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_Help.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Help</value>
+  <data name="propertyGrid_Previewer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 25</value>
+  </data>
+  <data name="&gt;&gt;propertyGrid_Previewer.Parent" xml:space="preserve">
+    <value>groupBox_PreviewConfig</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel1.Name" xml:space="preserve">
+    <value>splitContainer_Information.Panel1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Preview.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="toolStripMenuItem_ExportWebp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="&gt;&gt;rtbLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>285, 6</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMov.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportMov</value>
+  </data>
+  <data name="&gt;&gt;ToolStripMenuItem_Language.Name" xml:space="preserve">
+    <value>ToolStripMenuItem_Language</value>
   </data>
   <data name="&gt;&gt;splitContainer_MainForm.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="splitContainer_Config.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 671</value>
+  <data name="groupBox_Preview.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 802</value>
   </data>
-  <data name="toolStripMenuItem_ExportFrame.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
+  <data name="&gt;&gt;toolStripMenuItem_BatchOpen.Name" xml:space="preserve">
+    <value>toolStripMenuItem_BatchOpen</value>
   </data>
-  <data name="ToolStripMenuItem_Language.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 26</value>
+  <data name="&gt;&gt;toolStripMenuItem_Export.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Export</value>
   </data>
-  <data name="splitContainer_Functional.Panel1.ToolTip" xml:space="preserve">
+  <data name="splitContainer_Information.Panel1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="toolStripMenuItem_Exit.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Alt+F4</value>
+  <data name="menuStrip.Text" xml:space="preserve">
+    <value>菜单</value>
   </data>
-  <data name="toolStripMenuItem_Help.Text" xml:space="preserve">
-    <value>帮助(&amp;H)</value>
+  <data name="splitContainer_Information.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;spineListView.Parent" xml:space="preserve">
-    <value>groupBox_SkelList</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Open.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Open</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportWebm.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="propertyGrid_Previewer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Parent" xml:space="preserve">
-    <value>panel_MainForm</value>
-  </data>
-  <data name="splitContainer_Config.TabIndex" type="System.Int32, mscorlib">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="spineViewPropertyGrid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;menuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;splitContainer_Config.Parent" xml:space="preserve">
+    <value>splitContainer_Information.Panel2</value>
   </data>
-  <data name="toolStripMenuItem_ExportFrameSequence.Text" xml:space="preserve">
-    <value>帧序列...</value>
+  <data name="toolStripMenuItem_ConvertFileFormat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 34</value>
   </data>
-  <data name="&gt;&gt;groupBox_SkelList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="menuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1482, 30</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="splitContainer_Functional.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolStripMenuItem_English.Text" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Export.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Exit.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Exit</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItem_DesktopProjection.Text" xml:space="preserve">
+    <value>桌面投影</value>
   </data>
   <data name="&gt;&gt;propertyGrid_Previewer.Name" xml:space="preserve">
     <value>propertyGrid_Previewer</value>
   </data>
+  <data name="groupBox_SkelList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>350, 802</value>
+  </data>
+  <data name="ToolStripMenuItem_English.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 34</value>
+  </data>
+  <data name="&gt;&gt;rtbLog.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="splitContainer_MainForm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="splitContainer_MainForm.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
+  </data>
+  <data name="toolStripMenuItem_ExportFrame.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="groupBox_SkelList.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="toolStripMenuItem_Diagnostics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 34</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMkv.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Name" xml:space="preserve">
+    <value>splitContainer_Config</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Name" xml:space="preserve">
+    <value>splitContainer_Information</value>
+  </data>
+  <data name="panel_MainForm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="splitContainer_Config.Size" type="System.Drawing.Size, System.Drawing">
+    <value>430, 802</value>
+  </data>
+  <data name="toolStripMenuItem_ExportWebm.Text" xml:space="preserve">
+    <value>WebM...</value>
+  </data>
+  <data name="groupBox_SkelConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelConfig.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMkv.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportMkv</value>
+  </data>
+  <data name="spinePreviewPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>958, 775</value>
+  </data>
+  <data name="&gt;&gt;ToolStripMenuItem_Chinese.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_Functional.SplitterDistance" type="System.Int32, mscorlib">
+    <value>788</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_ExportCustom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="groupBox_SkelList.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMp4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_ExportGif.Text" xml:space="preserve">
+    <value>GIF...</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_About.Name" xml:space="preserve">
+    <value>toolStripMenuItem_About</value>
+  </data>
+  <data name="menuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1778, 36</value>
+  </data>
+  <data name="&gt;&gt;spineListView.Type" xml:space="preserve">
+    <value>SpineViewer.Controls.SpineListView, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="splitContainer_Config.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripMenuItem_Exit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 34</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewPanel.Type" xml:space="preserve">
+    <value>SpineViewer.Controls.SpinePreviewPanel, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator6.Name" xml:space="preserve">
+    <value>toolStripSeparator6</value>
+  </data>
+  <data name="toolStripMenuItem_ExportWebp.Text" xml:space="preserve">
+    <value>WebP...</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel1.Name" xml:space="preserve">
+    <value>splitContainer_Config.Panel1</value>
+  </data>
+  <data name="&gt;&gt;rtbLog.Parent" xml:space="preserve">
+    <value>splitContainer_MainForm.Panel2</value>
+  </data>
+  <data name="&gt;&gt;spineViewPropertyGrid.Name" xml:space="preserve">
+    <value>spineViewPropertyGrid</value>
+  </data>
+  <data name="toolStripMenuItem_ManageResource.Text" xml:space="preserve">
+    <value>管理下载资源(&amp;M)...</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer_Functional</value>
+  </data>
+  <data name="toolStripMenuItem_ExportMp4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="ToolStripMenuItem_Language.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 32</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Tool.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_Config.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_SkelList.Text" xml:space="preserve">
+    <value>模型列表</value>
+  </data>
+  <data name="groupBox_Preview.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="splitContainer_Information.Size" type="System.Drawing.Size, System.Drawing">
+    <value>788, 802</value>
+  </data>
+  <data name="toolStripMenuItem_Exit.Text" xml:space="preserve">
+    <value>退出(&amp;X)</value>
+  </data>
+  <data name="spineViewPropertyGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panel_MainForm.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Download.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Download</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Name" xml:space="preserve">
+    <value>splitContainer_MainForm</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_BatchOpen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewPanel.Parent" xml:space="preserve">
+    <value>groupBox_Preview</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="propertyGrid_Previewer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelConfig.Parent" xml:space="preserve">
+    <value>splitContainer_Config.Panel2</value>
+  </data>
+  <data name="ToolStripMenuItem_Chinese.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 34</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>SpineViewer</value>
+  </data>
+  <data name="toolStripMenuItem_Debug.Text" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="splitContainer_Functional.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_Preview.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="splitContainer_Config.SplitterWidth" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
-  <data name="toolStripMenuItem_ExportMov.Text" xml:space="preserve">
-    <value>MOV...</value>
+  <data name="toolStripMenuItem_Debug.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 34</value>
   </data>
-  <data name="toolStripMenuItem_ExportMkv.Text" xml:space="preserve">
-    <value>MKV...</value>
+  <data name="&gt;&gt;spineViewPropertyGrid.Parent" xml:space="preserve">
+    <value>groupBox_SkelConfig</value>
   </data>
-  <data name="&gt;&gt;groupBox_Preview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="splitContainer_Information.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="splitContainer_MainForm.Panel1.ToolTip" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem_Experiment.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Experiment</value>
+  </data>
+  <data name="groupBox_Preview.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="toolStripMenuItem_ExportFrame.Text" xml:space="preserve">
+    <value>单帧画面...</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer_Information</value>
+  </data>
+  <data name="splitContainer_Information.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="rtbLog.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9pt</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ManageResource.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ManageResource</value>
+  </data>
+  <data name="ToolStripMenuItem_Language.Text" xml:space="preserve">
+    <value>语言(&amp;L)</value>
+  </data>
+  <data name="spineViewPropertyGrid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>426, 501</value>
+  </data>
+  <data name="groupBox_PreviewConfig.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="menuStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 2, 0, 2</value>
+  </data>
+  <data name="groupBox_SkelList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="menuStrip.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;rtbLog.Name" xml:space="preserve">
+    <value>rtbLog</value>
+  </data>
+  <data name="splitContainer_MainForm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1758, 1004</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
+    <value>menuStrip</value>
+  </data>
+  <data name="panel_MainForm.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 36</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Name" xml:space="preserve">
+    <value>splitContainer_MainForm.Panel1</value>
+  </data>
+  <data name="toolStripMenuItem_DesktopProjection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 34</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewPanel.Name" xml:space="preserve">
+    <value>spinePreviewPanel</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelList.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="menuStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="spinePreviewPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="splitContainer_Information.SplitterWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer_MainForm</value>
+  </data>
+  <data name="rtbLog.WordWrap" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportWebp.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportWebp</value>
+  </data>
+  <data name="propertyGrid_Previewer.HelpVisible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="splitContainer_Information.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer_Information.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportFrame.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportFrame</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportWebm.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportWebm</value>
+  </data>
+  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
+    <value>toolTip</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>144, 144</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMov.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel_MainForm.Name" xml:space="preserve">
+    <value>panel_MainForm</value>
+  </data>
+  <data name="&gt;&gt;spineListView.Name" xml:space="preserve">
+    <value>spineListView</value>
+  </data>
+  <data name="&gt;&gt;groupBox_PreviewConfig.Name" xml:space="preserve">
+    <value>groupBox_PreviewConfig</value>
+  </data>
+  <data name="&gt;&gt;spineViewPropertyGrid.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel_MainForm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1778, 1019</value>
+  </data>
+  <data name="groupBox_PreviewConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_SkelConfig.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="groupBox_SkelList.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="splitContainer_Information.SplitterWidth" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="groupBox_Preview.Text" xml:space="preserve">
+    <value>预览画面</value>
   </data>
-  <data name="splitContainer_Functional.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="splitContainer_Functional.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1758, 802</value>
   </data>
-  <data name="toolStripMenuItem_BatchOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 26</value>
-  </data>
-  <data name="toolStripMenuItem_Open.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 26</value>
-  </data>
-  <data name="groupBox_Preview.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Name" xml:space="preserve">
-    <value>splitContainer_MainForm.Panel1</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;spinePreviewPanel.Name" xml:space="preserve">
-    <value>spinePreviewPanel</value>
+  <data name="&gt;&gt;splitContainer_Functional.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItem_Diagnostics.Text" xml:space="preserve">
     <value>诊断信息(&amp;D)</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>SpineViewer</value>
+  <data name="toolStripMenuItem_Exit.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Alt+F4</value>
   </data>
-  <data name="groupBox_Preview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>802, 671</value>
+  <data name="rtbLog.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="groupBox_PreviewConfig.Text" xml:space="preserve">
-    <value>画面参数</value>
-  </data>
-  <data name="rtbLog.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rtbLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="spineListView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="groupBox_PreviewConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>430, 266</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Exit.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Exit</value>
   </data>
   <data name="&gt;&gt;spinePreviewPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="toolStripMenuItem_ExportWebp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
+  <data name="&gt;&gt;splitContainer_Functional.Panel2.Name" xml:space="preserve">
+    <value>splitContainer_Functional.Panel2</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportWebm.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportWebm</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Preview.Name" xml:space="preserve">
-    <value>groupBox_Preview</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 6</value>
-  </data>
-  <data name="groupBox_PreviewConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 223</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_DesktopProjection.Name" xml:space="preserve">
-    <value>toolStripMenuItem_DesktopProjection</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="splitContainer_Config.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="splitContainer_MainForm.Panel2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_English.Name" xml:space="preserve">
-    <value>ToolStripMenuItem_English</value>
-  </data>
-  <data name="ToolStripMenuItem_Language.Text" xml:space="preserve">
-    <value>语言(&amp;L)</value>
-  </data>
-  <data name="rtbLog.WordWrap" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="panel_MainForm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="spineListView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1482, 879</value>
+  <data name="&gt;&gt;splitContainer_Information.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer_Information</value>
   </data>
-  <data name="spineViewPropertyGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 417</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;rtbLog.Name" xml:space="preserve">
-    <value>rtbLog</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItem_ExportFrameSequence.Text" xml:space="preserve">
+    <value>帧序列...</value>
   </data>
   <data name="groupBox_PreviewConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="menuStrip.Text" xml:space="preserve">
-    <value>菜单</value>
+  <data name="&gt;&gt;toolStripMenuItem_ExportGif.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportGif</value>
   </data>
-  <data name="spineViewPropertyGrid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="rtbLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1758, 194</value>
   </data>
-  <data name="&gt;&gt;splitContainer_Config.Name" xml:space="preserve">
-    <value>splitContainer_Config</value>
+  <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelList.Parent" xml:space="preserve">
+    <value>splitContainer_Information.Panel1</value>
+  </data>
+  <data name="&gt;&gt;spineListView.Parent" xml:space="preserve">
+    <value>groupBox_SkelList</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Help.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel_MainForm.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;spineListView.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel_MainForm.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportFrameSequence.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportFrameSequence</value>
+  </data>
+  <data name="spineListView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>346, 775</value>
+  </data>
+  <data name="toolStripMenuItem_ExportMov.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer_Functional</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportCustom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportGif.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_MainForm.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ConvertFileFormat.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ConvertFileFormat</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_BatchOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 34</value>
+  </data>
+  <data name="spineListView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 25</value>
+  </data>
+  <data name="splitContainer_MainForm.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Tool.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Tool</value>
+  </data>
+  <data name="propertyGrid_Previewer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>426, 239</value>
+  </data>
+  <data name="spinePreviewPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolStripMenuItem_Help.Text" xml:space="preserve">
+    <value>帮助(&amp;H)</value>
+  </data>
+  <data name="propertyGrid_Previewer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="splitContainer_Functional.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;groupBox_PreviewConfig.Parent" xml:space="preserve">
+    <value>splitContainer_Config.Panel1</value>
+  </data>
+  <data name="splitContainer_Config.SplitterDistance" type="System.Int32, mscorlib">
+    <value>266</value>
+  </data>
+  <data name="spineViewPropertyGrid.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;groupBox_Preview.Parent" xml:space="preserve">
+    <value>splitContainer_Functional.Panel2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Help.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Help</value>
+  </data>
+  <data name="toolStripMenuItem_Tool.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 32</value>
   </data>
   <data name="toolStripMenuItem_File.Text" xml:space="preserve">
     <value>文件(&amp;F)</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportFrame.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportFrame</value>
+  <data name="toolStripMenuItem_Experiment.Text" xml:space="preserve">
+    <value>实验性功能(&amp;E)</value>
   </data>
-  <data name="groupBox_SkelConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="splitContainer_Functional.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Open.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Experiment.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 32</value>
+  </data>
+  <data name="splitContainer_Config.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_File.Name" xml:space="preserve">
+    <value>toolStripMenuItem_File</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Parent" xml:space="preserve">
+    <value>splitContainer_Functional.Panel1</value>
+  </data>
+  <data name="&gt;&gt;ToolStripMenuItem_English.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_SkelList.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_Preview.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelConfig.Name" xml:space="preserve">
+    <value>groupBox_SkelConfig</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Diagnostics.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Diagnostics</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportCustom.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportCustom</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer_Config</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer_MainForm</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ManageResource.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="splitContainer_Functional.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_PreviewConfig.Text" xml:space="preserve">
+    <value>画面参数</value>
+  </data>
+  <data name="splitContainer_MainForm.SplitterDistance" type="System.Int32, mscorlib">
+    <value>802</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel2.Name" xml:space="preserve">
+    <value>splitContainer_Information.Panel2</value>
+  </data>
+  <data name="splitContainer_Functional.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="spinePreviewPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer_MainForm.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="toolStripMenuItem_ExportAvif.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="splitContainer_Config.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 6</value>
+  </data>
+  <data name="ToolStripMenuItem_Chinese.Text" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="groupBox_SkelList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
   </data>
+  <data name="rtbLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="toolStripMenuItem_ExportWebm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="toolStripMenuItem_ExportMov.Text" xml:space="preserve">
+    <value>MOV...</value>
+  </data>
+  <data name="splitContainer_Functional.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="groupBox_PreviewConfig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="propertyGrid_Previewer.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;spineViewPropertyGrid.Type" xml:space="preserve">
+    <value>SpineViewer.Controls.SpineViewPropertyGrid, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SpineViewerForm</value>
+  </data>
   <data name="&gt;&gt;splitContainer_Information.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItem_ConvertFileFormat.Text" xml:space="preserve">
-    <value>转换文件格式(&amp;C)...</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ConvertFileFormat.Type" xml:space="preserve">
+  <data name="&gt;&gt;ToolStripMenuItem_Language.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="spinePreviewPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>798, 647</value>
-  </data>
-  <data name="ToolStripMenuItem_Chinese.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 26</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;menuStrip.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Download.Text" xml:space="preserve">
+    <value>下载(&amp;D)</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Parent" xml:space="preserve">
+    <value>splitContainer_MainForm.Panel1</value>
+  </data>
+  <data name="spineViewPropertyGrid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="toolStripMenuItem_Export.Text" xml:space="preserve">
     <value>导出(&amp;E)</value>
   </data>
-  <data name="menuStrip.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;toolStripMenuItem_Diagnostics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_BatchOpen.Text" xml:space="preserve">
+    <value>批量打开(&amp;B)...</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Name" xml:space="preserve">
+    <value>splitContainer_Functional</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_DesktopProjection.Name" xml:space="preserve">
+    <value>toolStripMenuItem_DesktopProjection</value>
+  </data>
+  <data name="groupBox_SkelConfig.Text" xml:space="preserve">
+    <value>模型参数</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Experiment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Open.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 34</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_DesktopProjection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="panel_MainForm.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="rtbLog.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Download.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Help.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 32</value>
+  </data>
+  <data name="&gt;&gt;menuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_ExportMkv.Text" xml:space="preserve">
+    <value>MKV...</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;groupBox_SkelConfig.ZOrder" xml:space="preserve">
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
+  </data>
+  <data name="groupBox_SkelConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="toolStripMenuItem_Tool.Text" xml:space="preserve">
+    <value>工具(&amp;T)</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel1.Name" xml:space="preserve">
+    <value>splitContainer_Functional.Panel1</value>
+  </data>
+  <data name="groupBox_Preview.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 6</value>
+  </data>
+  <data name="rtbLog.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="spineListView.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_File.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Debug.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolStripMenuItem_Open.Text" xml:space="preserve">
+    <value>打开(&amp;O)...</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="spinePreviewPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 25</value>
+  </data>
+  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>285, 6</value>
+  </data>
+  <data name="&gt;&gt;groupBox_PreviewConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_About.Text" xml:space="preserve">
+    <value>关于(&amp;A)</value>
+  </data>
+  <data name="toolStripMenuItem_ExportMkv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportAvif.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_Config.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer_Config</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Exit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_MainForm.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 5</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Preview.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportAvif.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportAvif</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportWebp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Export.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="propertyGrid_Previewer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainer_Functional.SplitterWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Open.Name" xml:space="preserve">
+    <value>toolStripMenuItem_Open</value>
+  </data>
+  <data name="rtbLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="groupBox_SkelConfig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="spineListView.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="propertyGrid_Previewer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 199</value>
+  <data name="panel_MainForm.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_SkelConfig.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportFrame.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ConvertFileFormat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="spinePreviewPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="toolStripMenuItem_ExportCustom.Text" xml:space="preserve">
+    <value>FFmpeg 自定义导出...</value>
+  </data>
+  <data name="toolStripMenuItem_Download.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 32</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportMp4.Name" xml:space="preserve">
+    <value>toolStripMenuItem_ExportMp4</value>
+  </data>
+  <data name="toolStripMenuItem_ConvertFileFormat.Text" xml:space="preserve">
+    <value>转换文件格式(&amp;C)...</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_ExportFrameSequence.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_Export.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 34</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Information.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splitContainer_MainForm.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_SkelConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>430, 528</value>
+  </data>
+  <data name="groupBox_PreviewConfig.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;splitContainer_Config.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="splitContainer_Functional.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1466, 671</value>
+  <data name="splitContainer_MainForm.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_Diagnostics.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Diagnostics</value>
+  <data name="splitContainer_MainForm.SplitterWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="toolStripMenuItem_File.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 32</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Parent" xml:space="preserve">
+    <value>panel_MainForm</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SkelList.Name" xml:space="preserve">
+    <value>groupBox_SkelList</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem_Debug.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItem_About.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 34</value>
+  </data>
+  <data name="&gt;&gt;ToolStripMenuItem_English.Name" xml:space="preserve">
+    <value>ToolStripMenuItem_English</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Name" xml:space="preserve">
+    <value>splitContainer_MainForm.Panel2</value>
+  </data>
+  <data name="&gt;&gt;propertyGrid_Previewer.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel_MainForm.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 5, 10, 10</value>
+  </data>
+  <data name="ToolStripMenuItem_English.Text" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="splitContainer_Config.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Functional.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;splitContainer_Config.Panel2.Name" xml:space="preserve">
+    <value>splitContainer_Config.Panel2</value>
+  </data>
+  <data name="rtbLog.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox_PreviewConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="splitContainer_Information.SplitterDistance" type="System.Int32, mscorlib">
+    <value>350</value>
+  </data>
+  <data name="toolStripMenuItem_ExportAvif.Text" xml:space="preserve">
+    <value>AVIF...</value>
+  </data>
+  <data name="toolStripMenuItem_ExportGif.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 34</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -3873,479 +4317,32 @@
         ////////wAAAAAAAB///////
 </value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportFrame.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;groupBox_Preview.Name" xml:space="preserve">
+    <value>groupBox_Preview</value>
   </data>
-  <data name="propertyGrid_Previewer.HelpVisible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;groupBox_PreviewConfig.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem_Debug.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox_SkelConfig.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="splitContainer_MainForm.SplitterDistance" type="System.Int32, mscorlib">
-    <value>671</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel2.Name" xml:space="preserve">
-    <value>splitContainer_Config.Panel2</value>
-  </data>
-  <data name="splitContainer_Information.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="splitContainer_Functional.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Parent" xml:space="preserve">
-    <value>splitContainer_Functional.Panel1</value>
-  </data>
-  <data name="splitContainer_MainForm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 4</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Download.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem_ExportWebm.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="splitContainer_Information.Panel2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;menuStrip.Name" xml:space="preserve">
-    <value>menuStrip</value>
-  </data>
-  <data name="splitContainer_MainForm.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
-    <value>toolTip</value>
-  </data>
-  <data name="splitContainer_Config.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
-    <value>Horizontal</value>
-  </data>
-  <data name="toolStripMenuItem_BatchOpen.Text" xml:space="preserve">
-    <value>批量打开(&amp;B)...</value>
-  </data>
-  <data name="&gt;&gt;spineViewPropertyGrid.Parent" xml:space="preserve">
-    <value>groupBox_SkelConfig</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMkv.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportMkv</value>
-  </data>
-  <data name="spinePreviewPanel.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="toolStripMenuItem_Tool.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 26</value>
-  </data>
-  <data name="splitContainer_Config.Panel1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="toolStripMenuItem_Export.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 26</value>
-  </data>
-  <data name="groupBox_SkelConfig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="toolStripMenuItem_Diagnostics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportCustom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;propertyGrid_Previewer.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="spineListView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="toolStripMenuItem_ExportWebp.Text" xml:space="preserve">
-    <value>WebP...</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator6.Name" xml:space="preserve">
-    <value>toolStripSeparator6</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SpineViewerForm</value>
-  </data>
-  <data name="&gt;&gt;spineListView.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_Language.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_Chinese.Name" xml:space="preserve">
-    <value>ToolStripMenuItem_Chinese</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
-    <value>toolStripSeparator3</value>
-  </data>
-  <data name="&gt;&gt;spineViewPropertyGrid.Type" xml:space="preserve">
-    <value>SpineViewer.Controls.SpineViewPropertyGrid, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="toolStripMenuItem_Download.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 26</value>
-  </data>
-  <data name="groupBox_PreviewConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="spineListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>288, 647</value>
-  </data>
-  <data name="splitContainer_MainForm.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer_Functional</value>
-  </data>
-  <data name="toolStripMenuItem_ExportAvif.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;groupBox_PreviewConfig.Name" xml:space="preserve">
-    <value>groupBox_PreviewConfig</value>
-  </data>
-  <data name="menuStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>120, 120</value>
-  </data>
-  <data name="toolStripMenuItem_Exit.Text" xml:space="preserve">
-    <value>退出(&amp;X)</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
-  </data>
-  <data name="splitContainer_Information.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolStripMenuItem_English.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 26</value>
-  </data>
-  <data name="splitContainer_Information.Panel1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportWebp.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportWebp</value>
-  </data>
-  <data name="toolStripMenuItem_Debug.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;panel_MainForm.Name" xml:space="preserve">
-    <value>panel_MainForm</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer_Config</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 6</value>
-  </data>
-  <data name="toolStripMenuItem_ConvertFileFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 26</value>
-  </data>
-  <data name="spineListView.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="splitContainer_Functional.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.Parent" xml:space="preserve">
-    <value>splitContainer_Information.Panel2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Name" xml:space="preserve">
-    <value>splitContainer_MainForm</value>
-  </data>
-  <data name="groupBox_SkelConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SkelConfig.Name" xml:space="preserve">
-    <value>groupBox_SkelConfig</value>
-  </data>
-  <data name="groupBox_Preview.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer_MainForm</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Preview.Parent" xml:space="preserve">
-    <value>splitContainer_Functional.Panel2</value>
-  </data>
-  <data name="rtbLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1466, 159</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panel_MainForm.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;spineViewPropertyGrid.Name" xml:space="preserve">
-    <value>spineViewPropertyGrid</value>
-  </data>
-  <data name="toolStripMenuItem_ExportFrame.Text" xml:space="preserve">
-    <value>单帧画面...</value>
-  </data>
-  <data name="toolStripMenuItem_ExportFrameSequence.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportWebp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMov.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportMov</value>
-  </data>
-  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 6</value>
-  </data>
-  <data name="groupBox_SkelList.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Tool.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMp4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
-  </data>
-  <data name="groupBox_SkelConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 441</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ConvertFileFormat.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ConvertFileFormat</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_About.Name" xml:space="preserve">
-    <value>toolStripMenuItem_About</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rtbLog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_Experiment.Text" xml:space="preserve">
-    <value>实验性功能(&amp;E)</value>
-  </data>
-  <data name="splitContainer_Information.SplitterDistance" type="System.Int32, mscorlib">
-    <value>292</value>
-  </data>
-  <data name="toolStripMenuItem_Open.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+O</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel1.Name" xml:space="preserve">
-    <value>splitContainer_Information.Panel1</value>
-  </data>
-  <data name="splitContainer_Config.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="splitContainer_MainForm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1466, 837</value>
-  </data>
-  <data name="toolStripMenuItem_ExportMp4.Text" xml:space="preserve">
-    <value>MP4...</value>
-  </data>
-  <data name="toolStripMenuItem_ExportGif.Text" xml:space="preserve">
-    <value>GIF...</value>
-  </data>
-  <data name="&gt;&gt;rtbLog.Parent" xml:space="preserve">
-    <value>splitContainer_MainForm.Panel2</value>
-  </data>
-  <data name="spineListView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="rtbLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="spineViewPropertyGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel2.ZOrder" xml:space="preserve">
+  <data name="groupBox_Preview.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="groupBox_SkelConfig.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel1.Name" xml:space="preserve">
-    <value>splitContainer_Functional.Panel1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_About.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox_PreviewConfig.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="toolStripMenuItem_Exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 26</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer_MainForm</value>
-  </data>
-  <data name="spinePreviewPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="rtbLog.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Consolas, 9pt</value>
-  </data>
-  <data name="splitContainer_Functional.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportAvif.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_ExportGif.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 26</value>
-  </data>
-  <data name="toolStripMenuItem_ManageResource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 26</value>
-  </data>
-  <data name="splitContainer_MainForm.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="groupBox_Preview.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Information.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportCustom.Name" xml:space="preserve">
-    <value>toolStripMenuItem_ExportCustom</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMkv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox_PreviewConfig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SkelList.Name" xml:space="preserve">
-    <value>groupBox_SkelList</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_File.Name" xml:space="preserve">
-    <value>toolStripMenuItem_File</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBox_SkelList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="groupBox_Preview.Text" xml:space="preserve">
-    <value>预览画面</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_MainForm.Panel2.Name" xml:space="preserve">
-    <value>splitContainer_MainForm.Panel2</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem_ExportWebm.Text" xml:space="preserve">
-    <value>WebM...</value>
-  </data>
-  <data name="&gt;&gt;spineListView.Name" xml:space="preserve">
-    <value>spineListView</value>
-  </data>
-  <data name="&gt;&gt;ToolStripMenuItem_Language.Name" xml:space="preserve">
-    <value>ToolStripMenuItem_Language</value>
-  </data>
-  <data name="toolStripMenuItem_Open.Text" xml:space="preserve">
-    <value>打开(&amp;O)...</value>
-  </data>
-  <data name="&gt;&gt;rtbLog.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="spinePreviewPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Export.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Export</value>
-  </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 6</value>
-  </data>
-  <data name="groupBox_Preview.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Diagnostics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ManageResource.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SkelList.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Config.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="toolStripMenuItem_ExportAvif.Text" xml:space="preserve">
-    <value>AVIF...</value>
-  </data>
-  <data name="splitContainer_Functional.SplitterWidth" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="toolStripMenuItem_Help.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 26</value>
-  </data>
-  <data name="groupBox_PreviewConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer_Functional.Panel2.Name" xml:space="preserve">
-    <value>splitContainer_Functional.Panel2</value>
-  </data>
-  <data name="splitContainer_Functional.SplitterDistance" type="System.Int32, mscorlib">
-    <value>657</value>
-  </data>
-  <data name="toolStripMenuItem_DesktopProjection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 26</value>
-  </data>
-  <data name="&gt;&gt;spineViewPropertyGrid.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_Debug.Name" xml:space="preserve">
-    <value>toolStripMenuItem_Debug</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_DesktopProjection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem_ExportMov.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 6</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>89</value>
   </metadata>
+  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>26, 24</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
-    <value>en</value>
-  </metadata>
-  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
   </metadata>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>187, 20</value>
