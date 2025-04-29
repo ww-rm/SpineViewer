@@ -117,17 +117,231 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="imageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="button_Start.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="button_FullScreen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 2</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.Name" xml:space="preserve">
+    <value>button_FullScreen</value>
+  </data>
+  <data name="panel_Render.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="panel_RenderContainer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="panel_ViewContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 530</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panel_Render.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="panel_ViewContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="button_Start.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="button_ForwardFast.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.Name" xml:space="preserve">
+    <value>button_Restart</value>
+  </data>
+  <data name="button_Stop.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Start.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="&gt;&gt;wallpaperForm.Name" xml:space="preserve">
+    <value>wallpaperForm</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Name" xml:space="preserve">
+    <value>panel_Render</value>
+  </data>
+  <data name="panel_Render.Location" type="System.Drawing.Point, System.Drawing">
+    <value>114, 113</value>
+  </data>
+  <data name="button_Start.ImageKey" xml:space="preserve">
+    <value>pause</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="flowLayoutPanel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel_ViewContainer" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button_ForwardStep.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="panel_RenderContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="button_ForwardStep.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="flowLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="button_FullScreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="button_Restart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 2</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Name" xml:space="preserve">
+    <value>button_ForwardStep</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="button_ForwardFast.ToolTip" xml:space="preserve">
+    <value>快进 10 帧</value>
+  </data>
+  <data name="button_ForwardFast.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="panel_RenderContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="flowLayoutPanel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_FullScreen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Parent" xml:space="preserve">
+    <value>panel_RenderContainer</value>
+  </data>
+  <data name="button_ForwardFast.ImageKey" xml:space="preserve">
+    <value>forward-fast</value>
+  </data>
+  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 492</value>
+  </data>
+  <data name="wallpaperForm.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Stop.ImageKey" xml:space="preserve">
+    <value>stop</value>
+  </data>
+  <data name="panel_ViewContainer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="spinePreviewFullScreenForm.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>2560, 1440</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Name" xml:space="preserve">
+    <value>panel_RenderContainer</value>
+  </data>
+  <data name="button_ForwardFast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_Stop.ToolTip" xml:space="preserve">
+    <value>停止播放并重置时间到初始</value>
+  </data>
+  <data name="&gt;&gt;imageList.Name" xml:space="preserve">
+    <value>imageList</value>
+  </data>
+  <data name="button_FullScreen.ToolTip" xml:space="preserve">
+    <value>全屏预览</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;wallpaperForm.Type" xml:space="preserve">
+    <value>SpineViewer.WallpaperForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="spinePreviewFullScreenForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>Manual</value>
+  </data>
+  <data name="button_Restart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_ForwardStep.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.Name" xml:space="preserve">
+    <value>panel_ViewContainer</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_FullScreen.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="button_FullScreen.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="button_ForwardFast.Location" type="System.Drawing.Point, System.Drawing">
+    <value>254, 2</value>
+  </data>
   <data name="imageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAEZTeXN0ZW0uV2luZG93cy5Gb3JtcywgQ3VsdHVyZT1uZXV0cmFs
         LCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5BQEAAAAmU3lzdGVtLldpbmRvd3MuRm9ybXMu
-        SW1hZ2VMaXN0U3RyZWFtZXIBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAA8iMAAAJNU0Z0AUkBTAIBAQcB
-        AAGQAQABkAEAAR8BAAEYAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
+        SW1hZ2VMaXN0U3RyZWFtZXIBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAA9CMAAAJNU0Z0AUkBTAIBAQcB
+        AAGkAQABqAEAAR8BAAEYAQAE/wEhARAI/wFCAU0BNgcAATYDAAEoAwABfAMAATADAAEBAQABIAYAAV0+
         AAMEAQUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf9DAAH/AwAB/wMAAf8DAAH/A1UB
-        sWQAA1gB7wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
+        sWQAA1kB7wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/Ay0BRbcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf87AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf9cAANEAXgDAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
@@ -138,7 +352,7 @@
         AAH/Ay4BSE8AAf8DAAH/AwAB/0sAAf8DAAH/AwAB/+AAAxUBHQMAAf8DAAH/AwAB/y8AAf8DAAH/EwAB
         /wMAAf8DAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf/kAAMmATgDAAH/AwAB/wMAAf8r
         AAH/AwAB/xsAAf8DAAH/AwAB/wMAAf8DAAH/QwAB/wMAAf8DAAH/SwAB/wMAAf8DAAH/6wAB/wMAAf8D
-        AAH/KwAB/wMAAf8cAANCAfYDAAH/AwAB/wMAAf8DAAH/AwQBBTsAAf8DAAH/AwAB/0sAAf8DAAH/AwAB
+        AAH/KwAB/wMAAf8cAANEAfYDAAH/AwAB/wMAAf8DAAH/AwQBBTsAAf8DAAH/AwAB/0sAAf8DAAH/AwAB
         /+8AAf8DAAH/AwAB/ycAAf8DAAH/JwAB/wMAAf8DAAH/AwAB/wMAAf83AAH/AwAB/wMAAf9LAAH/AwAB
         /wMAAf/vAAH/AwAB/wMAAf8nAAH/AwAB/ygAAwcBCQMAAf8DAAH/AwAB/wMAAf8DYAHjLwAB/wMAAf8D
         AAH/SwAB/wMAAf8DAAH/7AADIAEtAwAB/wMAAf8nAAH/AwAB/zMAAf8DAAH/AwAB/wMAAf8DAAH/KwAB
@@ -155,7 +369,7 @@
         /5QAAwUBBgMAAf8DAAH/CwAB/wMAAf8DAAH/AxMBGjMAAf8DAAH/AwAB/ysAAf8DAAH/GwAB/wMAAf8D
         AAH/AwAB/wMAAf9DAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf+UAAMFAQYDAAH/AwAB/wcAAf8DAAH/AwAB
         /wMbASYzAAH/AwAB/wMAAf8vAAH/AwAB/xMAAf8DAAH/AwAB/wMAAf8DAAH/SwAB/wMAAf8DAAH/SwAB
-        /wMAAf8DAAH/lAADBQEGAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMdASgkAANZAe4DAAH/AwAB
+        /wMAAf8DAAH/lAADBQEGAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMdASgkAANaAe4DAAH/AwAB
         /wMAAf8EAS8AAf8DAAH/CAADGAEhAwAB/wMAAf8DAAH/AwAB/wNcActPAAH/AwAB/wMAAf9LAAH/AwAB
         /wMAAf+UAAMFAQYDAAH/AwAB/wMAAf8DAAH/A2AB4wMAAf8DAAH/AwAB/wMAAf8DUAGfFwAB/wMAAf8D
         AAH/AwAB/wMAAf83AAH/AwAB/wcAAf8DAAH/AwAB/wMAAf8DAAH/VwAB/wMAAf8DAAH/AwAB/wMqAUAD
@@ -173,82 +387,82 @@
         AAH/AwAB/zsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8D
         AAH/KwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/FAADAwEEAwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DAAH/AwAB/yQAA1YBtgMAAf8DAAH/AwAB
-        /wMAAf8kAAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AwAB/wMAAf8DPAH4IwAB/wMAAf8DAAH/NwAB
+        /wMAAf8kAAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AwAB/wMAAf8DPQH4IwAB/wMAAf8DAAH/NwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/JwAB/wMAAf8DAAH/AwAB/wMAAf87AAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8D
-        AAH/AwAB/wMAAf8DAAH/IAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8gAAM1AfkDAAH/AwAB/xwAA1cB
+        AAH/AwAB/wMAAf8DAAH/IAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8gAAM4AfkDAAH/AwAB/xwAA1gB
         8QMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/x8AAf8DAAH/AwAB/zcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/ycAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxIB/jMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/AwAB/wMAAf8D
-        AAH/AwAB/wNZAbsYAANWAbUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUQGeGAADNQH5AwAB/wMAAf8c
-        AANXAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A1ABnRcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
+        /wMAAf8DAAH/AxMB/jMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/AwAB/wMAAf8D
+        AAH/AwAB/wNZAbsYAANWAbUDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUQGeGAADOAH5AwAB/wMAAf8c
+        AANYAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A1ABnRcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
         /w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB
         /wMAAf8rAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoAwAB/wMAAf8D
-        AAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB/wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzUB+QMAAf8D
-        AAH/HAADVwHxAwAB/wMAAf8DEQEWBAEDAAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/zcAAf8D
+        AAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB/wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzgB+QMAAf8D
+        AAH/HAADWAHxAwAB/wMAAf8DEQEWBAEDAAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/zcAAf8D
         AAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswcAAf8D
         AAH/AwAB/wMAAf8jAAH/AwAB/wMAAf8DAAH/BwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoBwAB
-        /wMAAf8DAAH/AwAB/wMAAf8QAANWAbUDAAH/AwAB/wMzAVAHAAH/AwAB/wMAAf8DAAH/AwAB/xAAAzUB
-        +QMAAf8DAAH/HAADVwHxAwAB/wMAAf8DEQEWCwAB/wMAAf8DAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf83
+        /wMAAf8DAAH/AwAB/wMAAf8QAANWAbUDAAH/AwAB/wMzAVAHAAH/AwAB/wMAAf8DAAH/AwAB/xAAAzgB
+        +QMAAf8DAAH/HAADWAHxAwAB/wMAAf8DEQEWCwAB/wMAAf8DAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf83
         AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8nAAH/AwAB/wNWAbML
-        AAH/AwAB/wMAAf8DEgH+GwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/Az0B
+        AAH/AwAB/wMAAf8DEwH+GwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wwAA1QBqwMAAf8DAAH/Az0B
         aAgAA2AB2wMAAf8DAAH/AwAB/wMAAf8MAANWAbUDAAH/AwAB/wMzAVAIAANgAeMDAAH/AwAB/wMAAf8D
-        AAH/DAADNQH5AwAB/wMAAf8cAANXAfEDAAH/AwAB/wMRARYMAAMzAVIDAAH/AwAB/wMAAf8DAAH/AwAB
+        AAH/DAADOAH5AwAB/wMAAf8cAANYAfEDAAH/AwAB/wMRARYMAAMzAVIDAAH/AwAB/wMAAf8DAAH/AwAB
         /wcAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB
         /ycAAf8DAAH/A1YBsw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/DAAD
         VAGrAwAB/wMAAf8DPQFoDAADJQE3AwAB/wMAAf8DAAH/AwAB/wgAA1YBtQMAAf8DAAH/AzMBUAwAAzIB
-        TwMAAf8DAAH/AwAB/wMAAf8IAAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxIB/gMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB
+        TwMAAf8DAAH/AwAB/wMAAf8IAAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB
+        /wMAAf8DAAH/AxMB/gMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB
         /wMAAf8DAAH/JwAB/wMAAf8XAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/xAAAwwBDwMAAf8D
-        QgH2DAADVAGrAwAB/wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8D
-        AAH/AwAB/wMAAf8EAAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFhgAA1oB6QMAAf8DAAH/AwAB
+        RAH2DAADVAGrAwAB/wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8D
+        AAH/AwAB/wMAAf8EAAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFhgAA1oB6QMAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB
-        /0cAAf8DAAH/AwAB/wMSAf4DAAH/AwAB/wMAAf8DAAH/LAADVAGrAwAB/wMAAf8DPQFoGwAB/wMAAf8D
-        AAH/AwAB/wNdAc4DAAH/AwAB/wMzAVAbAAH/AwAB/wMAAf8DAAH/AyYB+gMAAf8DAAH/HAADVwHxAwAB
+        /0cAAf8DAAH/AwAB/wMTAf4DAAH/AwAB/wMAAf8DAAH/LAADVAGrAwAB/wMAAf8DPQFoGwAB/wMAAf8D
+        AAH/AwAB/wNdAc4DAAH/AwAB/wMzAVAbAAH/AwAB/wMAAf8DAAH/AycB+gMAAf8DAAH/HAADWAHxAwAB
         /wMAAf8DEQEWIwAB/wMAAf8DAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB
         /wMAAf8PAAH/AwAB/wMAAf9LAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8wAANUAasDAAH/AwAB/wM9AWgf
-        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DMwFQHwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/HAADVwHxAwAB
+        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DMwFQHwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/HAADWAHxAwAB
         /wMAAf8DEQEWJwAB/wMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB
         /w8AAf8DAAH/AwAB/08AAf8DAAH/AwAB/wMAAf80AANUAasDAAH/AwAB/wM9AWgjAAH/AwAB/wMAAf8D
-        AAH/AwAB/wMzAVAjAAH/AwAB/wMAAf8DAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFisAAf8DAAH/AwAB
+        AAH/AwAB/wMzAVAjAAH/AwAB/wMAAf8DAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFisAAf8DAAH/AwAB
         /zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/0sAAf8DAAH/AwAB
-        /wMAAf8DAAH/AxIB/jAAA1QBqwMAAf8DAAH/Az0BaB8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMzAVAf
-        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8cAANXAfEDAAH/AwAB/wMRARYkAANcAdkDAAH/AwAB/wMAAf83
+        /wMAAf8DAAH/AxMB/jAAA1QBqwMAAf8DAAH/Az0BaB8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMzAVAf
+        AAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8cAANYAfEDAAH/AwAB/wMRARYkAANcAdkDAAH/AwAB/wMAAf83
         AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB/wMAAf9HAAH/AwAB/wMAAf8D
-        AAH/AwAB/wMAAf8DAAH/AwAB/ywAA1QBqwMAAf8DAAH/Az0BaBsAAf8DAAH/AwAB/wMAAf8DVwHxAwAB
-        /wMAAf8DMwFQGwAB/wMAAf8DAAH/AwAB/wMSAf4DAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFiMAAf8D
+        AAH/AwAB/wMAAf8DAAH/AwAB/ywAA1QBqwMAAf8DAAH/Az0BaBsAAf8DAAH/AwAB/wMAAf8DWAHxAwAB
+        /wMAAf8DMwFQGwAB/wMAAf8DAAH/AwAB/wMTAf4DAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFiMAAf8D
         AAH/AwAB/wMAAf8DAAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB/wMAAf8D
         AAH/JwAB/wMAAf8XAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/xcAAf8DWAG4DAADVAGrAwAB
         /wMAAf8DPQFoFwAB/wMAAf8DAAH/AwAB/wQAA1YBtQMAAf8DAAH/AzMBUBcAAf8DAAH/AwAB/wMAAf8E
-        AAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFhgAAzABSgMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
+        AAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFhgAAzABSgMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YB
-        sw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DEgH+DwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
+        sw8AAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf8DEwH+DwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
         PQFoEwAB/wMAAf8DAAH/AwAB/wgAA1YBtQMAAf8DAAH/AzMBUAwAAwkBDAMAAf8DAAH/AwAB/wMAAf8I
-        AAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB/wMAAf8DAAH/AyQB/QMAAf8D
+        AAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFhcAAf8DAAH/AwAB/wMAAf8DAAH/AyYB/QMAAf8D
         AAH/NwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/DwAB/wMAAf8DAAH/JwAB/wMAAf8D
         VgGzCwAB/wMAAf8DAAH/AwAB/xsAAf8DAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8MAANUAasDAAH/AwAB
         /wM9AWgIAAM6AWADAAH/AwAB/wMAAf8DAAH/DAADVgG1AwAB/wMAAf8DMwFQCAADSwGMAwAB/wMAAf8D
-        AAH/AwAB/wwAAzUB+QMAAf8DAAH/HAADVwHxAwAB/wMAAf8DEQEWDAADBwEJAwAB/wMAAf8DAAH/AwAB
+        AAH/AwAB/wwAAzgB+QMAAf8DAAH/HAADWAHxAwAB/wMAAf8DEQEWDAADBwEJAwAB/wMAAf8DAAH/AwAB
         /wMAAf8HAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
         /wMAAf8nAAH/AwAB/wNWAbMHAAH/AwAB/wMAAf8DAAH/IwAB/wMAAf8DAAH/AwAB/wcAAf8DAAH/AwAB
         /wwAA1QBqwMAAf8DAAH/Az0BaAcAAf8DAAH/AwAB/wMAAf8DAAH/EAADVgG1AwAB/wMAAf8DMwFQBwAB
-        /wMAAf8DAAH/AwAB/wMAAf8QAAM1AfkDAAH/AwAB/xwAA1cB8QMAAf8DAAH/AxEBFgsAAf8DAAH/AwAB
+        /wMAAf8DAAH/AwAB/wMAAf8QAAM4AfkDAAH/AwAB/xwAA1gB8QMAAf8DAAH/AxEBFgsAAf8DAAH/AwAB
         /wMAAf8DAAH/A08BmQsAAf8DAAH/AwAB/zcAAf8DAAH/AwAB/w8AAf8DAAH/AwAB/wsAAf8DAAH/AwAB
-        /w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB/wMAAf8rAAH/AwAB/wMAAf8DEgH+AwAB
+        /w8AAf8DAAH/AwAB/ycAAf8DAAH/A1YBswMAAf8DAAH/AwAB/wMAAf8rAAH/AwAB/wMAAf8DEwH+AwAB
         /wMAAf8DAAH/DAADVAGrAwAB/wMAAf8DPQFoAwAB/wMAAf8DAAH/AwAB/wMAAf8UAANWAbUDAAH/AwAB
-        /wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzUB+QMAAf8DAAH/HAADVwHxAwAB/wMAAf8DEQEWBwAB
+        /wMzAVADAAH/AwAB/wMAAf8DAAH/AwAB/xQAAzgB+QMAAf8DAAH/HAADWAHxAwAB/wMAAf8DEQEWBwAB
         /wMAAf8DAAH/AwAB/wMAAf8TAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB
         /wMAAf8PAAH/AwAB/wMAAf8nAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8zAAH/AwAB/wMAAf8DAAH/AwAB
-        /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DTQH0GAADVgG1AwAB/wMAAf8DAAH/AwAB
-        /wMAAf8DAAH/A10B7BgAAzUB+QMAAf8DAAH/HAADVwHxAwAB/wMAAf8DYQHrAwAB/wMAAf8DAAH/AwAB
-        /wNNAfQXAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
+        /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DTwH0GAADVgG1AwAB/wMAAf8DAAH/AwAB
+        /wMAAf8DAAH/A10B7BgAAzgB+QMAAf8DAAH/HAADWAHxAwAB/wMAAf8DYQHrAwAB/wMAAf8DAAH/AwAB
+        /wNPAfQXAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8PAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8PAAH/AwAB
         /wMAAf8nAAH/AwAB/wMAAf8DAAH/AwAB/zsAAf8DAAH/AwAB/wMAAf8DAAH/DAADVAGrAwAB/wMAAf8D
-        AAH/AwAB/wMAAf8DQwF3HAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8DMAFMHAADNQH5AwAB/wMAAf8c
-        AANXAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8fAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8DKgFAAyoB
+        AAH/AwAB/wMAAf8DQwF3HAADVgG1AwAB/wMAAf8DAAH/AwAB/wMAAf8DMAFMHAADOAH5AwAB/wMAAf8c
+        AANYAfEDAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8fAAH/AwAB/wMAAf83AAH/AwAB/wMAAf8DKgFAAyoB
         QAMqAUADAAH/AwAB/wMAAf8LAAH/AwAB/wMAAf8DKgFAAyoBQAMqAUADAAH/AwAB/wMAAf8nAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8bAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /wMAAf8MAANUAasDAAH/AwAB/wMAAf8DAAH/AwYBCCAAA1YBtgMAAf8DAAH/AwAB/wMAAf8DAgEDIAAD
-        NQH5AwAB/wMAAf8cAANXAfEDAAH/AwAB/wMAAf8DAAH/AwAB/yMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
+        OAH5AwAB/wMAAf8cAANYAfEDAAH/AwAB/wMAAf8DAAH/AwAB/yMAAf8DAAH/AwAB/zcAAf8DAAH/AwAB
         /wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB
         /ycAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/xQAA0wBkAMAAf8DAAH/AwAB/wMAAf8D
         AAH/AwAB/wMAAf8DAAH/AwAB/xMAAf8DAAH/AwAB/y8AAf8DAAH/AwAB/ygAAzYBWAMAAf8DAAH/IwAB
@@ -278,16 +492,277 @@
         4wGMAXEC8AEfAfgBDgEAAfgBAwHjAfgBQQHjAf8B4wGMAXEC8AE/AfwBDgEBAfgBBwHjAfgBAwHjAf8B
         4wGMAXEC8AF/Af4BDgEDAfgBDwHjAfgBDwHjAf8B4AEMAQEC8AEHAeABDgEHAfgBHwHjAfgBHwHjAf8B
         4AEMAQEC8AEHAcABDwEfAfwBfwHjAfwBPwHjAf8B8AEeAQMB8AH4AQcB4AEfAb8B/gH/AfcB/gH/AfcB
-        /wH4AT8BBwHwCw==
+        /wH4AT8BBwHwFgAL
 </value>
   </data>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>165, 17</value>
-  </metadata>
+  <data name="button_ForwardStep.ImageKey" xml:space="preserve">
+    <value>forward-step</value>
+  </data>
+  <data name="button_Restart.ImageKey" xml:space="preserve">
+    <value>rotate-left</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.Name" xml:space="preserve">
+    <value>button_ForwardFast</value>
+  </data>
+  <data name="wallpaperForm.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>Manual</value>
+  </data>
+  <data name="panel_Render.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 267</value>
+  </data>
+  <data name="wallpaperForm.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="button_ForwardFast.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SpinePreviewPanel</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Restart.ToolTip" xml:space="preserve">
+    <value>从头开始播放</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button_ForwardStep.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardStep.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="button_Stop.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="button_Restart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="panel_RenderContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_Restart.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="panel_RenderContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 492</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="panel_ViewContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 530</value>
+  </data>
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>378, 38</value>
+  </data>
+  <data name="&gt;&gt;button_Start.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="panel_Render.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="button_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_Stop.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="button_Restart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;button_Start.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="button_ForwardFast.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="button_Restart.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="panel_ViewContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 492</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="panel_RenderContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="button_ForwardFast.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_Start.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 2</value>
+  </data>
+  <data name="wallpaperForm.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;imageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_ForwardStep.ToolTip" xml:space="preserve">
+    <value>快进 1 帧</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>8, 20</value>
+  </data>
+  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="button_Stop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="panel_ViewContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewFullScreenForm.Type" xml:space="preserve">
+    <value>SpineViewer.Forms.SpinePreviewFullScreenForm, SpineViewer, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="button_Stop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="button_FullScreen.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="button_ForwardStep.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="spinePreviewFullScreenForm.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;spinePreviewFullScreenForm.Name" xml:space="preserve">
+    <value>spinePreviewFullScreenForm</value>
+  </data>
+  <data name="&gt;&gt;button_Start.Name" xml:space="preserve">
+    <value>button_Start</value>
+  </data>
+  <data name="tableLayoutPanel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_Restart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Start.ToolTip" xml:space="preserve">
+    <value>开始/暂停</value>
+  </data>
+  <data name="button_Start.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="button_Stop.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;panel_RenderContainer.Parent" xml:space="preserve">
+    <value>panel_ViewContainer</value>
+  </data>
+  <data name="button_ForwardStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 34</value>
+  </data>
+  <data name="&gt;&gt;button_FullScreen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_ForwardFast.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;button_Stop.Name" xml:space="preserve">
+    <value>button_Stop</value>
+  </data>
+  <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
+    <value>toolTip</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="button_FullScreen.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>11, 2, 11, 2</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;panel_ViewContainer.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="button_FullScreen.ImageKey" xml:space="preserve">
+    <value>arrows-maximize</value>
+  </data>
+  <data name="&gt;&gt;panel_Render.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Restart.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="button_Stop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 2</value>
+  </data>
+  <data name="button_Start.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="button_Restart.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="spinePreviewFullScreenForm.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_ForwardStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>191, 2</value>
+  </data>
+  <data name="button_Start.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;button_Start.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
   <metadata name="spinePreviewFullScreenForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>307, 18</value>
   </metadata>
+  <metadata name="imageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+    <value>en</value>
+  </metadata>
   <metadata name="wallpaperForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>618, 18</value>
+  </metadata>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>165, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
 </root>

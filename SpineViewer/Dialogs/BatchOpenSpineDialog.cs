@@ -36,7 +36,7 @@ namespace SpineViewer.Dialogs
 
             if (items.Count <= 0)
             {
-                MessagePopup.Info("未选择任何文件");
+                MessagePopup.Info("未选择任何文件", Properties.Resources.msgBoxInfo);
                 return;
             }
 
@@ -44,14 +44,14 @@ namespace SpineViewer.Dialogs
             {
                 if (!File.Exists(p))
                 {
-                    MessagePopup.Info($"{p}", "skel文件不存在");
+                    MessagePopup.Info($"{p}", Properties.Resources.skelNotExist);
                     return;
                 }
             }
 
             if (version != SpineVersion.Auto && !Spine.SpineObject.HasImplementation(version))
             {
-                MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）", Properties.Resources.msgBoxInfo);
                 return;
             }
 

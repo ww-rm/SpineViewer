@@ -16,6 +16,7 @@ using NLog;
 using SpineViewer.Extensions;
 using SpineViewer.Utils;
 using SpineViewer.Spine.SpineView;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Controls
 {
@@ -47,11 +48,12 @@ namespace SpineViewer.Controls
             Spines = spines.AsReadOnly();
         }
 
-        /// <summary>
-        /// 显示骨骼信息的属性面板
-        /// </summary>
-        [Category("自定义"), Description("用于显示模型属性的组合属性页")]
-        public SpineViewPropertyGrid? SpinePropertyGrid { get; set; }
+		/// <summary>
+		/// 显示骨骼信息的属性面板
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDescription(typeof(Properties.Resources), "descModelAttributes")]
+		public SpineViewPropertyGrid? SpinePropertyGrid { get; set; }
 
         /// <summary>
         /// 选中的索引
@@ -101,7 +103,7 @@ namespace SpineViewer.Controls
             {
                 logger.Error(ex.ToString());
                 logger.Error("Failed to load {} {}", result.SkelPath, result.AtlasPath);
-                MessagePopup.Error(ex.ToString(), "骨骼加载失败");
+                MessagePopup.Error(ex.ToString(), Properties.Resources.errorLoadSkeleton);
             }
 
             logger.LogCurrentProcessMemoryUsage();
@@ -142,7 +144,7 @@ namespace SpineViewer.Controls
             int success = 0;
             int error = 0;
 
-            worker.ReportProgress(0, $"已处理 0/{totalCount}");
+            worker.ReportProgress(0, $"{Properties.Resources.process} 0/{totalCount}");
             for (int i = 0; i < totalCount; i++)
             {
                 if (worker.CancellationPending)
@@ -174,7 +176,7 @@ namespace SpineViewer.Controls
                     error++;
                 }
 
-                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"已处理 {i + 1}/{totalCount}");
+                worker.ReportProgress((int)((i + 1) * 100.0) / totalCount, $"{Properties.Resources.process} {i + 1}/{totalCount}");
             }
 
             // 选中最后一项
@@ -222,7 +224,7 @@ namespace SpineViewer.Controls
             {
                 if (validPaths.Count > 100)
                 {
-                    if (MessagePopup.Quest($"共发现 {validPaths.Count} 个可加载骨骼，数量较多，是否一次性全部加载？") == DialogResult.Cancel)
+                    if (MessagePopup.Quest($"{Properties.Resources.loadAllSkeletonPrefix}{validPaths.Count}{Properties.Resources.loadAllSkeletonSuffix}", Properties.Resources.msgBoxQuest) == DialogResult.Cancel)
                         return;
                 }
                 BatchAdd(new Dialogs.BatchOpenSpineDialogResult(SpineVersion.Auto, validPaths.ToArray()));
@@ -276,7 +278,7 @@ namespace SpineViewer.Controls
             if (listView.SelectedItems.Count > 0)
                 listView.SelectedItems[0].EnsureVisible();
 
-            toolStripStatusLabel_CountInfo.Text = $"已选择 {listView.SelectedItems.Count} 项，共 {listView.Items.Count} 项";
+            toolStripStatusLabel_CountInfo.Text = $"{Properties.Resources.countInfoStatusPrefix} {listView.SelectedItems.Count} {Properties.Resources.countInfoStatusMidfix} {listView.Items.Count} {Properties.Resources.countInfoStatusSuffix}";
         }
 
         private void listView_ItemDrag(object sender, ItemDragEventArgs e)
@@ -411,7 +413,7 @@ namespace SpineViewer.Controls
 
             if (listView.SelectedIndices.Count > 1)
             {
-                if (MessagePopup.Quest($"确定移除所选 {listView.SelectedIndices.Count} 项吗？") != DialogResult.OK)
+                if (MessagePopup.Quest($"{Properties.Resources.removeItemConfirmPrefix} {listView.SelectedIndices.Count} {Properties.Resources.removeItemConfirmSuffix}", Properties.Resources.msgBoxQuest) != DialogResult.OK)
                     return;
             }
 
@@ -511,7 +513,7 @@ namespace SpineViewer.Controls
             if (listView.Items.Count <= 0)
                 return;
 
-            if (MessagePopup.Quest($"确认移除所有 {listView.Items.Count} 项吗？") != DialogResult.OK)
+            if (MessagePopup.Quest($"{Properties.Resources.removeAllItemPrefix} {listView.Items.Count} {Properties.Resources.removeItemConfirmSuffix}", Properties.Resources.msgBoxQuest) != DialogResult.OK)
                 return;
 
             listView.Items.Clear();

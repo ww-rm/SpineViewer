@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpineViewer.Spine;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Spine.SpineView
 {
@@ -17,29 +18,29 @@ namespace SpineViewer.Spine.SpineView
         [Browsable(false)]
         public SpineObject Spine { get; } = spine;
 
-        /// <summary>
-        /// 缩放比例
-        /// </summary>
-        [DisplayName("缩放比例")]
+		/// <summary>
+		/// 缩放比例
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "scale")]
         public float Scale { get => Spine.Scale; set => Spine.Scale = value; }
 
         /// <summary>
         /// 位置
         /// </summary>
         [TypeConverter(typeof(PointFConverter))]
-        [DisplayName("位置")]
-        public PointF Position { get => Spine.Position; set => Spine.Position = value; }
+		[LocalizedDisplayName(typeof(Properties.Resources), "position")]
+		public PointF Position { get => Spine.Position; set => Spine.Position = value; }
 
-        /// <summary>
-        /// 水平翻转
-        /// </summary>
-        [DisplayName("水平翻转")]
-        public bool FlipX { get => Spine.FlipX; set => Spine.FlipX = value; }
+		/// <summary>
+		/// 水平翻转
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "flipX")]
+		public bool FlipX { get => Spine.FlipX; set => Spine.FlipX = value; }
 
-        /// <summary>
-        /// 垂直翻转
-        /// </summary>
-        [DisplayName("垂直翻转")]
-        public bool FlipY { get => Spine.FlipY; set => Spine.FlipY = value; }
+		/// <summary>
+		/// 垂直翻转
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "flipY")]
+		public bool FlipY { get => Spine.FlipY; set => Spine.FlipY = value; }
     }
 }

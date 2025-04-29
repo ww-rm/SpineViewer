@@ -1,4 +1,5 @@
 ﻿using FFMpegCore;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,22 +59,28 @@ namespace SpineViewer.Spine.SpineExporter
         [Browsable(false)]
         public override GifExporter Exporter => (GifExporter)base.Exporter;
 
-        /// <summary>
-        /// 调色板最大颜色数量
-        /// </summary>
-        [Category("[3] 格式参数"), DisplayName("调色板最大颜色数量"), Description("设置调色板使用的最大颜色数量, 越多则色彩保留程度越高")]
+		/// <summary>
+		/// 调色板最大颜色数量
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFormatParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayMaxColor")]
+		[LocalizedDescription(typeof(Properties.Resources), "descMaxColor")]
         public uint MaxColors { get => Exporter.MaxColors; set => Exporter.MaxColors = value; }
 
-        /// <summary>
-        /// 透明度阈值
-        /// </summary>
-        [Category("[3] 格式参数"), DisplayName("透明度阈值"), Description("小于该值的像素点会被认为是透明像素")]
+		/// <summary>
+		/// 透明度阈值
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFormatParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayAlphaThreshold")]
+		[LocalizedDescription(typeof(Properties.Resources), "descAlphaThreshold")]
         public byte AlphaThreshold { get => Exporter.AlphaThreshold; set => Exporter.AlphaThreshold = value; }
 
-        /// <summary>
-        /// 透明度阈值
-        /// </summary>
-        [Category("[3] 格式参数"), DisplayName("循环次数"), Description("-loop, 循环次数, -1 不循环, 0 无限循环, 取值范围 [-1, 65535]")]
+		/// <summary>
+		/// 透明度阈值
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFormatParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayLoopCount")]
+		[LocalizedDescription(typeof(Properties.Resources), "descLoopCount")]
         public int Loop { get => Exporter.Loop; set => Exporter.Loop = value; }
     }
 }

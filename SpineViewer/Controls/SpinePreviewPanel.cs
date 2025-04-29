@@ -12,6 +12,9 @@ using System.Diagnostics;
 using NLog;
 using SpineViewer.Utils;
 using System.Drawing.Design;
+using System.Reflection;
+using System.Resources;
+using SpineViewer.Utils.Localize;
 
 namespace SpineViewer.Controls
 {
@@ -30,15 +33,17 @@ namespace SpineViewer.Controls
         /// <summary>
         /// 要绑定的 Spine 列表控件
         /// </summary>
-        [Category("自定义"), Description("相关联的 SpineListView")]
+        [LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDescription(typeof(Properties.Resources), "descAssociatedSpineListView")]
         public SpineListView? SpineListView { get; set; }
 
-        /// <summary>
-        /// 属性信息面板
-        /// </summary>
-        [Category("自定义"), Description("用于显示画面属性的属性页")]
-        public PropertyGrid? PropertyGrid
-        {
+		/// <summary>
+		/// 属性信息面板
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDescription(typeof(Properties.Resources), "descDisplayImageProperties")]
+		public PropertyGrid? PropertyGrid
+        {        
             get => propertyGrid;
             set
             {
@@ -489,7 +494,7 @@ namespace SpineViewer.Controls
             {
                 logger.Fatal(ex.ToString());
                 logger.Fatal("Render task stopped");
-                MessagePopup.Error(ex.ToString(), "预览画面已停止渲染");
+                MessagePopup.Error(ex.ToString(), Properties.Resources.previewRenderStopped);
             }
             finally
             {
@@ -507,6 +512,7 @@ namespace SpineViewer.Controls
 
         private void panel_RenderContainer_SizeChanged(object sender, EventArgs e)
         {
+            
             if (renderWindow is null) return;
 
             float parentW = panel_Render.Parent.Width;
@@ -785,37 +791,47 @@ namespace SpineViewer.Controls
 
         [RefreshProperties(RefreshProperties.All)]
         [TypeConverter(typeof(ResolutionConverter))]
-        [Category("[0] 导出"), DisplayName("分辨率")]
+        [LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+        [LocalizedDisplayName(typeof(Properties.Resources), "displayResolution")]
         public Size Resolution { get => PreviewPanel.Resolution; set => PreviewPanel.Resolution = value; }
 
         [TypeConverter(typeof(PointFConverter))]
-        [Category("[0] 导出"), DisplayName("画面中心点")]
-        public PointF Center { get => PreviewPanel.Center; set => PreviewPanel.Center = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayCenter")]
+		public PointF Center { get => PreviewPanel.Center; set => PreviewPanel.Center = value; }
 
-        [Category("[0] 导出"), DisplayName("缩放")]
-        public float Zoom { get => PreviewPanel.Zoom; set => PreviewPanel.Zoom = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayZoom")]
+		public float Zoom { get => PreviewPanel.Zoom; set => PreviewPanel.Zoom = value; }
 
-        [Category("[0] 导出"), DisplayName("旋转")]
-        public float Rotation { get => PreviewPanel.Rotation; set => PreviewPanel.Rotation = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayRotation")]
+		public float Rotation { get => PreviewPanel.Rotation; set => PreviewPanel.Rotation = value; }
 
-        [Category("[0] 导出"), DisplayName("水平翻转")]
-        public bool FlipX { get => PreviewPanel.FlipX; set => PreviewPanel.FlipX = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFlipHorizontal")]
+		public bool FlipX { get => PreviewPanel.FlipX; set => PreviewPanel.FlipX = value; }
 
-        [Category("[0] 导出"), DisplayName("垂直翻转")]
-        public bool FlipY { get => PreviewPanel.FlipY; set => PreviewPanel.FlipY = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFlipVertical")]
+		public bool FlipY { get => PreviewPanel.FlipY; set => PreviewPanel.FlipY = value; }
 
-        [Category("[0] 导出"), DisplayName("仅渲染选中")]
-        public bool RenderSelectedOnly { get => PreviewPanel.RenderSelectedOnly; set => PreviewPanel.RenderSelectedOnly = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryCustom")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayRenderSelected")]
+		public bool RenderSelectedOnly { get => PreviewPanel.RenderSelectedOnly; set => PreviewPanel.RenderSelectedOnly = value; }
 
-        [Category("[1] 预览"), DisplayName("显示坐标轴")]
-        public bool ShowAxis { get => PreviewPanel.ShowAxis; set => PreviewPanel.ShowAxis = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayShowAxis")]
+		public bool ShowAxis { get => PreviewPanel.ShowAxis; set => PreviewPanel.ShowAxis = value; }
 
-        [Category("[1] 预览"), DisplayName("最大帧率")]
-        public uint MaxFps { get => PreviewPanel.MaxFps; set => PreviewPanel.MaxFps = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayMaximumFrameRate")]
+		public uint MaxFps { get => PreviewPanel.MaxFps; set => PreviewPanel.MaxFps = value; }
 
         [Editor(typeof(SFMLColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(SFMLColorConverter))]
-        [Category("[1] 预览"), DisplayName("背景颜色")]
-        public SFML.Graphics.Color BackgroundColor { get => PreviewPanel.BackgroundColor; set => PreviewPanel.BackgroundColor = value; }
+		[LocalizedCategory(typeof(Properties.Resources), "categoryExport")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayBackgroundColor")]
+		public SFML.Graphics.Color BackgroundColor { get => PreviewPanel.BackgroundColor; set => PreviewPanel.BackgroundColor = value; }
     }
 }

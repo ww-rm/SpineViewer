@@ -1,5 +1,6 @@
 ﻿using SpineViewer.Spine;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,37 +22,37 @@ namespace SpineViewer.Spine.SpineView
         /// 获取所属版本
         /// </summary>
         [TypeConverter(typeof(SpineVersionConverter))]
-        [DisplayName("运行时版本")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "runtimeVersion")]
         public SpineVersion Version => Spine.Version;
 
-        /// <summary>
-        /// 资源所在完整目录
-        /// </summary>
-        [DisplayName("资源目录")]
-        public string AssetsDir => Spine.AssetsDir;
+		/// <summary>
+		/// 资源所在完整目录
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "resourcesPath")]
+		public string AssetsDir => Spine.AssetsDir;
 
-        /// <summary>
-        /// skel 文件完整路径
-        /// </summary>
-        [DisplayName("skel文件路径")]
-        public string SkelPath => Spine.SkelPath;
+		/// <summary>
+		/// skel 文件完整路径
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "skelPath")]
+		public string SkelPath => Spine.SkelPath;
 
-        /// <summary>
-        /// atlas 文件完整路径
-        /// </summary>
-        [DisplayName("atlas文件路径")]
-        public string AtlasPath => Spine.AtlasPath;
+		/// <summary>
+		/// atlas 文件完整路径
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "atlasPath")]
+		public string AtlasPath => Spine.AtlasPath;
 
-        /// <summary>
-        /// 名称
-        /// </summary>
-        [DisplayName("名称")]
-        public string Name => Spine.Name;
+		/// <summary>
+		/// 名称
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "name")]
+		public string Name => Spine.Name;
 
-        /// <summary>
-        /// 获取所属文件版本
-        /// </summary>
-        [DisplayName("文件版本")]
-        public string FileVersion => Spine.FileVersion;
+		/// <summary>
+		/// 获取所属文件版本
+		/// </summary>
+		[LocalizedDisplayName(typeof(Properties.Resources), "fileVersion")]
+		public string FileVersion => Spine.FileVersion;
     }
 }

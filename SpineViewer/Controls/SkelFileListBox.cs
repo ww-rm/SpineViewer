@@ -64,7 +64,7 @@ namespace SpineViewer.Controls
                 }
             }
 
-            label_Tip.Text = $"已选择 {listBox.Items.Count} 个文件";
+            label_Tip.Text = $"{Properties.Resources.itemCountPrefix}{listBox.Items.Count}{Properties.Resources.itemCountSuffix}";
         }
 
         private void button_AddFile_Click(object sender, EventArgs e)
@@ -75,7 +75,7 @@ namespace SpineViewer.Controls
             foreach (var p in openFileDialog_Skel.FileNames)
                 listBox.Items.Add(Path.GetFullPath(p));
 
-            label_Tip.Text = $"已选择 {listBox.Items.Count} 个文件";
+            label_Tip.Text = $"{Properties.Resources.itemCountPrefix}{listBox.Items.Count}{Properties.Resources.itemCountSuffix}";
         }
 
         private void listBox_DragEnter(object sender, DragEventArgs e)
@@ -92,7 +92,7 @@ namespace SpineViewer.Controls
                 return;
 
             AddFromFileDrop((string[])e.Data.GetData(DataFormats.FileDrop));
-            label_Tip.Text = $"已选择 {listBox.Items.Count} 个文件";
+            label_Tip.Text = $"{Properties.Resources.itemCountPrefix}{listBox.Items.Count}{Properties.Resources.itemCountSuffix}";
         }
 
         private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
@@ -110,7 +110,7 @@ namespace SpineViewer.Controls
             var paths = new string[fileDropList.Count];
             fileDropList.CopyTo(paths, 0);
             AddFromFileDrop(paths);
-            label_Tip.Text = $"已选择 {listBox.Items.Count} 个文件";
+            label_Tip.Text = $"{Properties.Resources.itemCountPrefix}{listBox.Items.Count}{Properties.Resources.itemCountSuffix}";
         }
 
         private void toolStripMenuItem_Remove_Click(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace SpineViewer.Controls
             listBox.SelectedIndices.CopyTo(indices, 0);
             for (int i = indices.Length - 1; i >= 0; i--)
                 listBox.Items.RemoveAt(indices[i]);
-            label_Tip.Text = $"已选择 {listBox.Items.Count} 个文件";
+            label_Tip.Text = $"{Properties.Resources.itemCountPrefix}{listBox.Items.Count}{Properties.Resources.itemCountSuffix}";
         }
     }
 }

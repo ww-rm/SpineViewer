@@ -1,11 +1,14 @@
 ﻿using NLog;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
+using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace SpineViewer
 {
-    internal static class Program
+	internal static class Program
     {
         ///// <summary>
         ///// 程序路径
@@ -42,20 +45,21 @@ namespace SpineViewer
         {
             // 此处先初始化全局配置再触发静态字段 Logger 引用构造, 才能将配置应用到新的日志器上
             InitializeLogConfiguration();
-            logger.Info("Program Started");
+            logger.Info("Program Started");            
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+			// To customize application configuration such as set high DPI settings or default font,
+			// see https://aka.ms/applicationconfiguration.
+			ApplicationConfiguration.Initialize();
+            LocalizeConfiguration.SetCulture();
 
-            try
+			try
             {
                 Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}"});
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex.ToString());
-                MessagePopup.Error(ex.ToString(), "程序已崩溃");
+                MessagePopup.Error(ex.ToString(), Properties.Resources.programCrashed);
             }
         }
 

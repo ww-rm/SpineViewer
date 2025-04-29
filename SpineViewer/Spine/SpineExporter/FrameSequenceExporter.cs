@@ -1,5 +1,6 @@
 ﻿using SpineViewer.Spine;
 using SpineViewer.Utils;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,7 +94,9 @@ namespace SpineViewer.Spine.SpineExporter
         /// 文件名后缀
         /// </summary>
         [TypeConverter(typeof(StringEnumConverter)), StringEnumConverter.StandardValues(".png", ".jpg", ".tga", ".bmp")]
-        [Category("[2] 帧序列参数"), DisplayName("文件名后缀"), Description("帧文件的后缀，同时决定帧图像格式")]
+		[LocalizedCategory(typeof(Properties.Resources), "categoryFrameSequenceParameters")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFilenameSuffix")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFrameFileExtension")]
         public string Suffix { get => Exporter.Suffix; set => Exporter.Suffix = value; }
     }
 }

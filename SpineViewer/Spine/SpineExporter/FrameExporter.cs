@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Spine;
+using SpineViewer.Utils.Localize;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +50,7 @@ namespace SpineViewer.Spine.SpineExporter
             var filename = $"frame_{timestamp}{ImageFormat.GetSuffix()}";
             var savePath = Path.Combine(OutputDir, filename);
 
-            worker?.ReportProgress(0, $"已处理 0/1");
+            worker?.ReportProgress(0, $"{Properties.Resources.process} 0/1");
             try
             {
                 using var frame = GetFrame(spinesToRender);
@@ -62,7 +63,7 @@ namespace SpineViewer.Spine.SpineExporter
                 logger.Error(ex.ToString());
                 logger.Error("Failed to save single frame");
             }
-            worker?.ReportProgress(100, $"已处理 1/1");
+            worker?.ReportProgress(100, $"{Properties.Resources.process} 1/1");
         }
 
         protected override void ExportIndividual(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
@@ -71,7 +72,7 @@ namespace SpineViewer.Spine.SpineExporter
             int success = 0;
             int error = 0;
 
-            worker?.ReportProgress(0, $"已处理 0/{total}");
+            worker?.ReportProgress(0, $"{Properties.Resources.process} 0/{total}");
             for (int i = 0; i < total; i++)
             {
                 var spine = spinesToRender[i];
@@ -95,7 +96,7 @@ namespace SpineViewer.Spine.SpineExporter
                     error++;
                 }
 
-                worker?.ReportProgress((int)((i + 1) * 100.0) / total, $"已处理 {i + 1}/{total}");
+                worker?.ReportProgress((int)((i + 1) * 100.0) / total, $"{Properties.Resources.process} {i + 1}/{total}");
             }
 
             if (error > 0)
@@ -114,20 +115,24 @@ namespace SpineViewer.Spine.SpineExporter
         /// 单帧画面格式
         /// </summary>
         [TypeConverter(typeof(ImageFormatConverter))]
-        [Category("[1] 单帧画面"), DisplayName("图像格式")]
+		[LocalizedCategory(typeof(Properties.Resources), "categorySingleFrame")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayImageFormat")]
         public ImageFormat ImageFormat { get => Exporter.ImageFormat; set => Exporter.ImageFormat = value; }
 
-        /// <summary>
-        /// 文件名后缀
-        /// </summary>
-        [Category("[1] 单帧画面"), DisplayName("文件名后缀"), Description("与图像格式匹配的文件名后缀")]
+		/// <summary>
+		/// 文件名后缀
+		/// </summary>
+		[LocalizedCategory(typeof(Properties.Resources), "categorySingleFrame")]
+		[LocalizedDisplayName(typeof(Properties.Resources), "displayFilenameSuffix")]
+		[LocalizedDescription(typeof(Properties.Resources), "descFileNameExtension")]
         public string Suffix { get => Exporter.ImageFormat.GetSuffix(); }
 
         /// <summary>
         /// DPI
         /// </summary>
         [TypeConverter(typeof(SizeFConverter))]
-        [Category("[1] 单帧画面"), DisplayName("DPI"), Description("导出图像的每英寸像素数，用于调整图像的物理尺寸")]
+		[LocalizedCategory(typeof(Properties.Resources), "categorySingleFrame")]
+		[LocalizedDescription(typeof(Properties.Resources), "descDPI")]
         public SizeF DPI { get => Exporter.DPI; set => Exporter.DPI = value; }
     }
 }

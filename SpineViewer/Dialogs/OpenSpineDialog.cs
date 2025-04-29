@@ -58,7 +58,7 @@ namespace SpineViewer.Dialogs
 
             if (!File.Exists(skelPath))
             {
-                MessagePopup.Info($"{skelPath}", "skel文件不存在");
+                MessagePopup.Info($"{skelPath}", Properties.Resources.skelNotExist);
                 return;
             }
             else
@@ -72,7 +72,7 @@ namespace SpineViewer.Dialogs
             }
             else if (!File.Exists(atlasPath))
             {
-                MessagePopup.Info($"{atlasPath}", "atlas文件不存在");
+                MessagePopup.Info($"{atlasPath}", Properties.Resources.atlasNotExist);
                 return;
             }
             else
@@ -82,7 +82,7 @@ namespace SpineViewer.Dialogs
 
             if (version != SpineVersion.Auto && !Spine.SpineObject.HasImplementation(version))
             {
-                MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）");
+                MessagePopup.Info($"{version.GetName()} 版本尚未实现（咕咕咕~）", Properties.Resources.msgBoxInfo);
                 return;
             }
 
