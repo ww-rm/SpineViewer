@@ -212,6 +212,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void ReadPath()
         {
             JsonArray bones = root["bones"].AsArray();
+            JsonArray slots = root["slots"].AsArray();
             JsonArray path = [];
             for (int i = 0, n = reader.ReadVarInt(); i < n; i++)
             {
@@ -220,7 +221,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["order"] = reader.ReadVarInt();
                 data["skin"] = reader.ReadBoolean();
                 data["bones"] = ReadNames(bones);
-                data["target"] = (string)bones[reader.ReadVarInt()]["name"];
+                data["target"] = (string)slots[reader.ReadVarInt()]["name"];
                 data["positionMode"] = PositionModeJsonValue[(PositionMode)reader.ReadVarInt()];
                 data["spacingMode"] = SpacingModeJsonValue[(SpacingMode)reader.ReadVarInt()];
                 data["rotateMode"] = RotateModeJsonValue[(RotateMode)reader.ReadVarInt()];
@@ -1048,7 +1049,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteVarInt((int)(data["order"] ?? 0));
                 writer.WriteBoolean((bool)(data["skin"] ?? false));
                 WriteNames(bone2idx, (JsonArray)(data["bones"] ?? new JsonArray()));
-                writer.WriteVarInt(bone2idx[(string)data["target"]]);
+                writer.WriteVarInt(slot2idx[(string)data["target"]]);
                 writer.WriteVarInt((int)Enum.Parse<PositionMode>((string)(data["positionMode"] ?? "percent"), true));
                 writer.WriteVarInt((int)Enum.Parse<SpacingMode>((string)(data["spacingMode"] ?? "length"), true));
                 writer.WriteVarInt((int)Enum.Parse<RotateMode>((string)(data["rotateMode"] ?? "tangent"), true));
