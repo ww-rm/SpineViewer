@@ -209,7 +209,7 @@ namespace SpineViewer.Spine
             protected Stream output;
 
             public BinaryWriter(Stream output) { this.output = output; }
-            public void Write(int val) => output.WriteByte((byte)val);
+            public void Write(byte val) => output.WriteByte(val);
             public void WriteByte(byte val) => output.WriteByte(val);
             public void WriteUByte(byte val) => output.WriteByte(val);
             public void WriteSByte(sbyte val) => output.WriteByte((byte)val);
