@@ -898,14 +898,14 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             var version = (string)skeleton["spine"];
             if (version == "3.8.75") version = "3.8.76"; // replace 3.8.75 to another version to avoid detection in official runtime
             writer.WriteString(version);
-            writer.WriteFloat((float)(skeleton["x"] ?? 0));
-            writer.WriteFloat((float)(skeleton["y"] ?? 0));
-            writer.WriteFloat((float)(skeleton["width"] ?? 0));
-            writer.WriteFloat((float)(skeleton["height"] ?? 0));
+            writer.WriteFloat((float)(skeleton["x"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["y"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["width"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["height"] ?? 0f));
             writer.WriteBoolean(nonessential);
             if (nonessential)
             {
-                writer.WriteFloat((float)(skeleton["fps"] ?? 30));
+                writer.WriteFloat((float)(skeleton["fps"] ?? 30f));
                 writer.WriteString((string)skeleton["images"]);
                 writer.WriteString((string)skeleton["audio"]);
             }
@@ -933,15 +933,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)data["name"];
                 writer.WriteString(name);
                 if (i > 0) writer.WriteVarInt(bone2idx[(string)data["parent"]]);
-                writer.WriteFloat((float)(data["rotation"] ?? 0));
-                writer.WriteFloat((float)(data["x"] ?? 0));
-                writer.WriteFloat((float)(data["y"] ?? 0));
-                writer.WriteFloat((float)(data["scaleX"] ?? 1));
-                writer.WriteFloat((float)(data["scaleY"] ?? 1));
-                writer.WriteFloat((float)(data["shearX"] ?? 0));
-                writer.WriteFloat((float)(data["shearY"] ?? 0));
-                writer.WriteFloat((float)(data["length"] ?? 0));
+                writer.WriteFloat((float)(data["rotation"] ?? 0f));
+                writer.WriteFloat((float)(data["x"] ?? 0f));
+                writer.WriteFloat((float)(data["y"] ?? 0f));
+                writer.WriteFloat((float)(data["scaleX"] ?? 1f));
+                writer.WriteFloat((float)(data["scaleY"] ?? 1f));
+                writer.WriteFloat((float)(data["shearX"] ?? 0f));
+                writer.WriteFloat((float)(data["shearY"] ?? 0f));
+                writer.WriteFloat((float)(data["length"] ?? 0f));
                 writer.WriteVarInt(Array.IndexOf(SkeletonBinary.TransformModeValues, Enum.Parse<TransformMode>((string)(data["transform"] ?? "normal"), true)));
+                writer.WriteBoolean((bool)(data["skin"] ?? false));
                 if (nonessential) writer.WriteInt(0);
                 bone2idx[name] = i;
             }
@@ -986,10 +987,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteString(name);
                 writer.WriteVarInt((int)(data["order"] ?? 0));
                 writer.WriteBoolean((bool)(data["skin"] ?? false));
-                WriteNames(bone2idx, (JsonArray)(data["bones"] ?? new JsonArray()));
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
-                writer.WriteFloat((float)(data["mix"] ?? 1));
-                writer.WriteFloat((float)(data["softness"] ?? 0));
+                writer.WriteFloat((float)(data["mix"] ?? 1f));
+                writer.WriteFloat((float)(data["softness"] ?? 0f));
                 writer.WriteSByte((sbyte)((bool)(data["bendPositive"] ?? true) ? 1 : -1));
                 writer.WriteBoolean((bool)(data["compress"] ?? false));
                 writer.WriteBoolean((bool)(data["stretch"] ?? false));
@@ -1014,20 +1015,20 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteString(name);
                 writer.WriteVarInt((int)(data["order"] ?? 0));
                 writer.WriteBoolean((bool)(data["skin"] ?? false));
-                WriteNames(bone2idx, (JsonArray)(data["bones"] ?? new JsonArray()));
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
                 writer.WriteBoolean((bool)(data["local"] ?? false));
                 writer.WriteBoolean((bool)(data["relative"] ?? false));
-                writer.WriteFloat((float)(data["rotation"] ?? 0));
-                writer.WriteFloat((float)(data["x"] ?? 0));
-                writer.WriteFloat((float)(data["y"] ?? 0));
-                writer.WriteFloat((float)(data["scaleX"] ?? 0));
-                writer.WriteFloat((float)(data["scaleY"] ?? 0));
-                writer.WriteFloat((float)(data["shearY"] ?? 0));
-                writer.WriteFloat((float)(data["rotateMix"] ?? 1));
-                writer.WriteFloat((float)(data["translateMix"] ?? 1));
-                writer.WriteFloat((float)(data["scaleMix"] ?? 1));
-                writer.WriteFloat((float)(data["shearMix"] ?? 1));
+                writer.WriteFloat((float)(data["rotation"] ?? 0f));
+                writer.WriteFloat((float)(data["x"] ?? 0f));
+                writer.WriteFloat((float)(data["y"] ?? 0f));
+                writer.WriteFloat((float)(data["scaleX"] ?? 0f));
+                writer.WriteFloat((float)(data["scaleY"] ?? 0f));
+                writer.WriteFloat((float)(data["shearY"] ?? 0f));
+                writer.WriteFloat((float)(data["rotateMix"] ?? 1f));
+                writer.WriteFloat((float)(data["translateMix"] ?? 1f));
+                writer.WriteFloat((float)(data["scaleMix"] ?? 1f));
+                writer.WriteFloat((float)(data["shearMix"] ?? 1f));
                 transform2idx[name] = i;
             }
         }
@@ -1048,16 +1049,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteString(name);
                 writer.WriteVarInt((int)(data["order"] ?? 0));
                 writer.WriteBoolean((bool)(data["skin"] ?? false));
-                WriteNames(bone2idx, (JsonArray)(data["bones"] ?? new JsonArray()));
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(slot2idx[(string)data["target"]]);
                 writer.WriteVarInt((int)Enum.Parse<PositionMode>((string)(data["positionMode"] ?? "percent"), true));
                 writer.WriteVarInt((int)Enum.Parse<SpacingMode>((string)(data["spacingMode"] ?? "length"), true));
                 writer.WriteVarInt((int)Enum.Parse<RotateMode>((string)(data["rotateMode"] ?? "tangent"), true));
-                writer.WriteFloat((float)(data["rotation"] ?? 0));
-                writer.WriteFloat((float)(data["position"] ?? 0));
-                writer.WriteFloat((float)(data["spacing"] ?? 0));
-                writer.WriteFloat((float)(data["rotateMix"] ?? 1));
-                writer.WriteFloat((float)(data["translateMix"] ?? 1));
+                writer.WriteFloat((float)(data["rotation"] ?? 0f));
+                writer.WriteFloat((float)(data["position"] ?? 0f));
+                writer.WriteFloat((float)(data["spacing"] ?? 0f));
+                writer.WriteFloat((float)(data["rotateMix"] ?? 1f));
+                writer.WriteFloat((float)(data["translateMix"] ?? 1f));
                 path2idx[name] = i;
             }
         }
@@ -1117,10 +1118,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             else
             {
                 writer.WriteStringRef((string)skin["name"]);
-                WriteNames(bone2idx, (JsonArray)(skin["bones"] ?? new JsonArray()));
-                WriteNames(bone2idx, (JsonArray)(skin["ik"] ?? new JsonArray()));
-                WriteNames(bone2idx, (JsonArray)(skin["transform"] ?? new JsonArray()));
-                WriteNames(bone2idx, (JsonArray)(skin["path"] ?? new JsonArray()));
+                if (skin["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
+                if (skin["ik"] is JsonArray ik) WriteNames(ik2idx, ik); else writer.WriteVarInt(0);
+                if (skin["transform"] is JsonArray transform) WriteNames(transform2idx, transform); else writer.WriteVarInt(0);
+                if (skin["path"] is JsonArray path) WriteNames(path2idx, path); else writer.WriteVarInt(0);
                 if (skin["attachments"] is JsonObject attachments) skinAttachments = attachments;
                 writer.WriteVarInt(skinAttachments?.Count ?? 0);
             }
@@ -1157,13 +1158,13 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 case AttachmentType.Region:
                     writer.WriteStringRef((string)attachment["path"]);
-                    writer.WriteFloat((float)(attachment["rotation"] ?? 0));
-                    writer.WriteFloat((float)(attachment["x"] ?? 0));
-                    writer.WriteFloat((float)(attachment["y"] ?? 0));
-                    writer.WriteFloat((float)(attachment["scaleX"] ?? 1));
-                    writer.WriteFloat((float)(attachment["scaleY"] ?? 1));
-                    writer.WriteFloat((float)(attachment["width"] ?? 32));
-                    writer.WriteFloat((float)(attachment["height"] ?? 32));
+                    writer.WriteFloat((float)(attachment["rotation"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["x"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["y"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["scaleX"] ?? 1f));
+                    writer.WriteFloat((float)(attachment["scaleY"] ?? 1f));
+                    writer.WriteFloat((float)(attachment["width"] ?? 32f));
+                    writer.WriteFloat((float)(attachment["height"] ?? 32f));
                     writer.WriteInt(int.Parse((string)(attachment["color"] ?? "ffffffff"), NumberStyles.HexNumber));
                     break;
                 case AttachmentType.Boundingbox:
@@ -1183,9 +1184,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     writer.WriteVarInt((int)(attachment["hull"] ?? 0));
                     if (nonessential)
                     {
-                        WriteShortArray((JsonArray)(attachment["edges"] ?? new JsonArray()));
-                        writer.WriteFloat((float)(attachment["width"] ?? 0));
-                        writer.WriteFloat((float)(attachment["height"] ?? 0));
+                        if (attachment["edges"] is JsonArray edges) WriteShortArray(edges); else writer.WriteVarInt(0);
+                        writer.WriteFloat((float)(attachment["width"] ?? 0f));
+                        writer.WriteFloat((float)(attachment["height"] ?? 0f));
                     }
                     break;
                 case AttachmentType.Linkedmesh:
@@ -1196,8 +1197,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     writer.WriteBoolean((bool)(attachment["deform"] ?? true));
                     if (nonessential)
                     {
-                        writer.WriteFloat((float)(attachment["width"] ?? 0));
-                        writer.WriteFloat((float)(attachment["height"] ?? 0));
+                        writer.WriteFloat((float)(attachment["width"] ?? 0f));
+                        writer.WriteFloat((float)(attachment["height"] ?? 0f));
                     }
                     break;
                 case AttachmentType.Path:
@@ -1210,9 +1211,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Point:
-                    writer.WriteFloat((float)(attachment["rotation"] ?? 0));
-                    writer.WriteFloat((float)(attachment["x"] ?? 0));
-                    writer.WriteFloat((float)(attachment["y"] ?? 0));
+                    writer.WriteFloat((float)(attachment["rotation"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["x"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["y"] ?? 0f));
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Clipping:
@@ -1242,7 +1243,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = _data.AsObject();
                 writer.WriteStringRef(name);
                 writer.WriteVarInt((int)(data["int"] ?? 0));
-                writer.WriteFloat((float)(data["float"] ?? 0));
+                writer.WriteFloat((float)(data["float"] ?? 0f));
                 writer.WriteString((string)(data["string"] ?? ""));
                 if (data["audio"] is JsonValue _audio)
                 {
@@ -1250,8 +1251,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     writer.WriteString(audio);
                     if (audio is not null)
                     {
-                        writer.WriteFloat((float)(data["volume"] ?? 1));
-                        writer.WriteFloat((float)(data["balance"] ?? 0));
+                        writer.WriteFloat((float)(data["volume"] ?? 1f));
+                        writer.WriteFloat((float)(data["balance"] ?? 0f));
                     }
                 }
                 else
@@ -1276,14 +1277,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = _data.AsObject();
                 writer.WriteString(name);
-                WriteSlotTimelines((JsonObject)(data["slots"] ?? new JsonObject()));
-                WriteBoneTimelines((JsonObject)(data["bones"] ?? new JsonObject()));
-                WriteIKTimelines((JsonObject)(data["ik"] ?? new JsonObject()));
-                WriteTransformTimelines((JsonObject)(data["transform"] ?? new JsonObject()));
-                WritePathTimelines((JsonObject)(data["path"] ?? new JsonObject()));
-                WriteDeformTimelines((JsonObject)(data["deform"] ?? new JsonObject()));
-                WriteDrawOrderTimelines((JsonArray)(data["drawOrder"] ?? data["draworder"] ?? new JsonArray()));
-                WriteEventTimelines((JsonArray)(data["events"] ?? new JsonArray()));
+                if (data["slots"] is JsonObject slots) WriteSlotTimelines(slots); else writer.WriteVarInt(0);
+                if (data["bones"] is JsonObject bones) WriteBoneTimelines(bones); else writer.WriteVarInt(0);
+                if (data["ik"] is JsonObject ik) WriteIKTimelines(ik); else writer.WriteVarInt(0);
+                if (data["transform"] is JsonObject transform) WriteTransformTimelines(transform); else writer.WriteVarInt(0);
+                if (data["path"] is JsonObject path) WritePathTimelines(path); else writer.WriteVarInt(0);
+                if (data["deform"] is JsonObject deform) WriteDeformTimelines(deform);
+                if (data["drawOrder"] is JsonArray drawOrder) WriteDrawOrderTimelines(drawOrder);
+                else if (data["draworder"] is JsonArray draworder) WriteDrawOrderTimelines(draworder);
+                else writer.WriteVarInt(0);
+                if (data["events"] is JsonArray events) WriteEventTimelines(events); else writer.WriteVarInt(0);
             }
         }
 
@@ -1304,7 +1307,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         writer.WriteVarInt(frames.Count);
                         foreach (JsonObject o in frames)
                         {
-                            writer.WriteFloat((float)(o["time"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
                             writer.WriteStringRef((string)o["name"]);
                         }
                     }
@@ -1315,7 +1318,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
                             writer.WriteInt(int.Parse((string)o["color"], NumberStyles.HexNumber));
                             if (i < n - 1) WriteCurve(o);
                         }
@@ -1327,7 +1330,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
                             writer.WriteInt(int.Parse((string)o["light"], NumberStyles.HexNumber));
                             writer.WriteInt(int.Parse((string)o["dark"], NumberStyles.HexNumber));
                             if (i < n - 1) WriteCurve(o);
@@ -1355,8 +1358,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["angle"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["angle"] ?? 0f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1367,9 +1370,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["x"] ?? 0));
-                            writer.WriteFloat((float)(o["y"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["x"] ?? 0f));
+                            writer.WriteFloat((float)(o["y"] ?? 0f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1380,9 +1383,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["x"] ?? 1));
-                            writer.WriteFloat((float)(o["y"] ?? 1));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["x"] ?? 1f));
+                            writer.WriteFloat((float)(o["y"] ?? 1f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1393,9 +1396,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["x"] ?? 0));
-                            writer.WriteFloat((float)(o["y"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["x"] ?? 0f));
+                            writer.WriteFloat((float)(o["y"] ?? 0f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1414,9 +1417,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 for (int i = 0, n = frames.Count; i < n; i++)
                 {
                     JsonObject o = frames[i].AsObject();
-                    writer.WriteFloat((float)(o["time"] ?? 0));
-                    writer.WriteFloat((float)(o["mix"] ?? 1));
-                    writer.WriteFloat((float)(o["softness"] ?? 0));
+                    writer.WriteFloat((float)(o["time"] ?? 0f));
+                    writer.WriteFloat((float)(o["mix"] ?? 1f));
+                    writer.WriteFloat((float)(o["softness"] ?? 0f));
                     writer.WriteSByte((sbyte)((bool)(o["bendPositive"] ?? true) ? 1 : -1));
                     writer.WriteBoolean((bool)(o["compress"] ?? false));
                     writer.WriteBoolean((bool)(o["stretch"] ?? false));
@@ -1436,11 +1439,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 for (int i = 0, n = frames.Count; i < n; i++)
                 {
                     JsonObject o = frames[i].AsObject();
-                    writer.WriteFloat((float)(o["time"] ?? 0));
-                    writer.WriteFloat((float)(o["rotateMix"] ?? 1));
-                    writer.WriteFloat((float)(o["translateMix"] ?? 1));
-                    writer.WriteFloat((float)(o["scaleMix"] ?? 1));
-                    writer.WriteFloat((float)(o["shearMix"] ?? 1));
+                    writer.WriteFloat((float)(o["time"] ?? 0f));
+                    writer.WriteFloat((float)(o["rotateMix"] ?? 1f));
+                    writer.WriteFloat((float)(o["translateMix"] ?? 1f));
+                    writer.WriteFloat((float)(o["scaleMix"] ?? 1f));
+                    writer.WriteFloat((float)(o["shearMix"] ?? 1f));
                     if (i < n - 1) WriteCurve(o);
                 }
             }
@@ -1464,8 +1467,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["position"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["position"] ?? 0f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1476,8 +1479,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["spacing"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["spacing"] ?? 0f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1488,9 +1491,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
-                            writer.WriteFloat((float)(o["rotateMix"] ?? 1));
-                            writer.WriteFloat((float)(o["translateMix"] ?? 1));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteFloat((float)(o["rotateMix"] ?? 1f));
+                            writer.WriteFloat((float)(o["translateMix"] ?? 1f));
                             if (i < n - 1) WriteCurve(o);
                         }
                     }
@@ -1519,7 +1522,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         for (int i = 0, n = frames.Count; i < n; i++)
                         {
                             JsonObject o = frames[i].AsObject();
-                            writer.WriteFloat((float)(o["time"] ?? 0));
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
                             if (o["vertices"] is JsonArray vertices)
                             {
                                 writer.WriteVarInt(vertices.Count);
@@ -1545,7 +1548,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             writer.WriteVarInt(drawOrderTimelines.Count);
             foreach (JsonObject data in drawOrderTimelines)
             {
-                writer.WriteFloat((float)(data["time"] ?? 0));
+                writer.WriteFloat((float)(data["time"] ?? 0f));
                 if (data["offsets"] is JsonArray offsets)
                 {
                     writer.WriteVarInt(offsets.Count);
@@ -1570,10 +1573,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             foreach(JsonObject data in eventTimelines)
             {
                 JsonObject eventData = events[(string)data["name"]].AsObject();
-                writer.WriteFloat((float)(data["time"] ?? 0));
+                writer.WriteFloat((float)(data["time"] ?? 0f));
                 writer.WriteVarInt(event2idx[(string)data["name"]]);
                 writer.WriteVarInt((int)(data["int"] ?? eventData["int"] ?? 0));
-                writer.WriteFloat((float)(data["float"] ?? eventData["float"] ?? 0));
+                writer.WriteFloat((float)(data["float"] ?? eventData["float"] ?? 0f));
                 if (data["string"] is JsonValue @string)
                 {
                     writer.WriteBoolean(true);
@@ -1586,8 +1589,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
                 if (eventData.ContainsKey("audio"))
                 {
-                    writer.WriteFloat((float)(data["volume"] ?? eventData["volume"] ?? 1));
-                    writer.WriteFloat((float)(data["balance"] ?? eventData["balance"] ?? 0));
+                    writer.WriteFloat((float)(data["volume"] ?? eventData["volume"] ?? 1f));
+                    writer.WriteFloat((float)(data["balance"] ?? eventData["balance"] ?? 0f));
                 }
             }
         }
@@ -1653,9 +1656,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 {
                     writer.WriteByte(SkeletonBinary.CURVE_BEZIER);
                     writer.WriteFloat((float)curve);
-                    writer.WriteFloat((float)(obj["c2"] ?? 0));
-                    writer.WriteFloat((float)(obj["c3"] ?? 1));
-                    writer.WriteFloat((float)(obj["c4"] ?? 1));
+                    writer.WriteFloat((float)(obj["c2"] ?? 0f));
+                    writer.WriteFloat((float)(obj["c3"] ?? 1f));
+                    writer.WriteFloat((float)(obj["c4"] ?? 1f));
                 }
             }
             else
