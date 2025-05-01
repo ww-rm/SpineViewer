@@ -181,12 +181,14 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     skeleton.Skin.AddAttachment(k.Key, k.Value, v);
             }
             skeleton.SetSlotsToSetupPose();
+            skeleton.UpdateCache();
         }
 
         protected override void clearSkins()
         {
             skeleton.Skin.Attachments.Clear();
             skeleton.SetSlotsToSetupPose();
+            skeleton.UpdateCache();
         }
 
         protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks[i] is not null).ToArray();

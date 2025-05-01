@@ -181,6 +181,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             {
                 skeleton.Skin.AddSkin(sk);
                 skeleton.SetSlotsToSetupPose();
+                skeleton.UpdateCache();
             }
         }
 
@@ -188,6 +189,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         {
             skeleton.Skin.Clear();
             skeleton.SetSlotsToSetupPose();
+            skeleton.UpdateCache();
         }
 
         protected override int[] getTrackIndices() => animationState.Tracks.Select((_, i) => i).Where(i => animationState.Tracks.Items[i] is not null).ToArray();
