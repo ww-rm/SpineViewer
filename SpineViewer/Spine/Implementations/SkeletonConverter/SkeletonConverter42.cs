@@ -376,10 +376,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
             int flags = reader.ReadUByte();
 
-            var name = (flags & 8) != 0 ? reader.ReadStringRef() : keyName;
             var type = (AttachmentType)(flags & 0x7);
 
-            attachment["name"] = name;
+            if ((flags & 8) != 0) attachment["name"] = reader.ReadStringRef();
             attachment["type"] = AttachmentTypeJsonValue[type];
 
             switch (type)
@@ -951,7 +950,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject timeline = [];
 
-                physicsTimelines[(string)physics[reader.ReadVarInt() - 1]["name"]] = timeline;
+                var index = reader.ReadVarInt();
+                physicsTimelines[index > 0 ? (string)physics[index - 1]["name"] : ""] = timeline;
                 for (int ii = 0, timelineCount = reader.ReadVarInt(); ii < timelineCount; ii++)
                 {
                     JsonArray frames = [];
@@ -1006,18 +1006,18 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
 
         private JsonObject? ReadAttachmentTimelines()
         {
-            JsonArray skin = root["skins"].AsArray();
-            JsonArray slot = root["slots"].AsArray();
+            JsonArray skins = root["skins"].AsArray();
+            JsonArray slots = root["slots"].AsArray();
             JsonObject attachmentTimelines = [];
 
             for (int i = 0, skinCount = reader.ReadVarInt(); i < skinCount; i++)
             {
                 JsonObject skinValue = [];
-                attachmentTimelines[(string)skin[reader.ReadVarInt()]["name"]] = skinValue;
+                attachmentTimelines[(string)skins[reader.ReadVarInt()]["name"]] = skinValue;
                 for (int ii = 0, slotCount = reader.ReadVarInt(); ii < slotCount; ii++)
                 {
                     JsonObject slotValue = [];
-                    skinValue[(string)slot[reader.ReadVarInt()]["name"]] = slotValue;
+                    skinValue[(string)slots[reader.ReadVarInt()]["name"]] = slotValue;
                     for (int iii = 0, attachmentCount = reader.ReadVarInt(); iii < attachmentCount; iii++)
                     {
                         JsonObject timeline = [];
@@ -1151,10 +1151,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             return array;
         }
 
-        private JsonArray ReadShortArray(int count)
+        private JsonArray ReadShortArray(int n)
         {
             JsonArray array = [];
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < n; i++)
                 array.Add(reader.ReadVarInt());
             return array;
         }
@@ -1181,7 +1181,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             return vertices;
         }
 
-        private void ReadCurve(JsonObject obj, int count)
+        private void ReadCurve(JsonObject frame, int n)
         {
             var type = reader.ReadUByte();
             switch (type)
@@ -1189,10 +1189,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 case SkeletonBinary.CURVE_LINEAR:
                     break;
                 case SkeletonBinary.CURVE_STEPPED:
-                    obj["curve"] = "stepped";
+                    frame["curve"] = "stepped";
                     break;
                 case SkeletonBinary.CURVE_BEZIER:
-                    obj["curve"] = ReadFloatArray(count * 4);
+                    frame["curve"] = ReadFloatArray(n * 4);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Invalid curve type: {type}");
@@ -1246,6 +1246,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             ik2idx.Clear();
             transform2idx.Clear();
             path2idx.Clear();
+            physics2idx.Clear();
             skin2idx.Clear();
             event2idx.Clear();
         }
@@ -1254,28 +1255,19 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteSkeleton()
         {
             JsonObject skeleton = root["skeleton"].AsObject();
-            if (skeleton["hash"].GetValueKind() == JsonValueKind.String)
-            {
-                writer.WriteLong(114514);//我不知道那个hash该怎么转，随便写一个数字也不影响使用
-            }
-            else
-            {
-                writer.WriteLong((long.Parse((string)skeleton["hash"])));
-            }
-            var version = (string)skeleton["spine"];
-            //if (version == "3.8.75") version = "3.8.76"; // replace 3.8.75 to another version to avoid detection in official runtime
-            writer.WriteString(version);
-            if (skeleton.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("width", out var width)) writer.WriteFloat((float)width); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("height", out var height)) writer.WriteFloat((float)height); else writer.WriteFloat(0);
-            if (skeleton.TryGetPropertyValue("referenceScale", out var reference)) writer.WriteFloat((float)reference); else writer.WriteFloat(0f);
+            writer.WriteLong(long.Parse(Convert.ToHexString(Convert.FromBase64String(skeleton["hash"] + "=")), NumberStyles.HexNumber));
+            writer.WriteString((string)skeleton["spine"]);
+            if (skeleton["x"] is JsonValue x) writer.WriteFloat((float)x); else writer.WriteFloat(0);
+            if (skeleton["y"] is JsonValue y) writer.WriteFloat((float)y); else writer.WriteFloat(0);
+            if (skeleton["width"] is JsonValue width) writer.WriteFloat((float)width); else writer.WriteFloat(0);
+            if (skeleton["height"] is JsonValue height) writer.WriteFloat((float)height); else writer.WriteFloat(0);
+            if (skeleton["referenceScale"] is JsonValue referenceScale) writer.WriteFloat((float)referenceScale); else writer.WriteFloat(100);
             writer.WriteBoolean(nonessential);
             if (nonessential)
             {
-                if (skeleton.TryGetPropertyValue("fps", out var fps)) writer.WriteFloat((float)fps); else writer.WriteFloat(30);
-                if (skeleton.TryGetPropertyValue("images", out var images)) writer.WriteString((string)images); else writer.WriteString(null);
-                if (skeleton.TryGetPropertyValue("audio", out var audio)) writer.WriteString((string)audio); else writer.WriteString(null);
+                if (skeleton["fps"] is JsonValue fps) writer.WriteFloat((float)fps); else writer.WriteFloat(30);
+                if (skeleton["images"] is JsonValue images) writer.WriteString((string)images); else writer.WriteString(null);
+                if (skeleton["audio"] is JsonValue audio) writer.WriteString((string)audio); else writer.WriteString(null);
             }
         }
 
@@ -1301,16 +1293,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)data["name"];
                 writer.WriteString(name);
                 if (i > 0) writer.WriteVarInt(bone2idx[(string)data["parent"]]);
-                if (data.TryGetPropertyValue("rotation", out var rotation)) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("x", out var x)) writer.WriteFloat((float)x); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("y", out var y)) writer.WriteFloat((float)y); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("scaleX", out var scaleX)) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
-                if (data.TryGetPropertyValue("scaleY", out var scaleY)) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
-                if (data.TryGetPropertyValue("shearX", out var shearX)) writer.WriteFloat((float)shearX); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("shearY", out var shearY)) writer.WriteFloat((float)shearY); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("length", out var length)) writer.WriteFloat((float)length); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("inherit", out var inherit)) writer.WriteVarInt((int)Enum.Parse<Inherit>((string)inherit, true)); else writer.WriteVarInt((int)Inherit.Normal);
-                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (data["rotation"] is JsonValue rotation) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
+                if (data["x"] is JsonValue x) writer.WriteFloat((float)x); else writer.WriteFloat(0);
+                if (data["y"] is JsonValue y) writer.WriteFloat((float)y); else writer.WriteFloat(0);
+                if (data["scaleX"] is JsonValue scaleX) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
+                if (data["scaleY"] is JsonValue scaleY) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
+                if (data["shearX"] is JsonValue shearX) writer.WriteFloat((float)shearX); else writer.WriteFloat(0);
+                if (data["shearY"] is JsonValue shearY) writer.WriteFloat((float)shearY); else writer.WriteFloat(0);
+                if (data["length"] is JsonValue length) writer.WriteFloat((float)length); else writer.WriteFloat(0);
+                if (data["inherit"] is JsonValue inherit) writer.WriteVarInt((int)Enum.Parse<Inherit>((string)inherit, true)); else writer.WriteVarInt((int)Inherit.Normal);
+                if (data["skin"] is JsonValue skin) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
                 if (nonessential)
                 {
                     writer.WriteInt(0);
@@ -1336,14 +1328,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)data["name"];
                 writer.WriteString(name);
                 writer.WriteVarInt(bone2idx[(string)data["bone"]]);
-                if (data.TryGetPropertyValue("color", out var color)) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(-1); // 默认值是全 255
-                if (data.TryGetPropertyValue("dark", out var dark)) writer.WriteInt(int.Parse((string)dark, NumberStyles.HexNumber)); else writer.WriteInt(-1);
-                if (data.TryGetPropertyValue("attachment", out var attachment)) writer.WriteStringRef((string)attachment); else writer.WriteStringRef(null);
-                if (data.TryGetPropertyValue("blend", out var blend)) writer.WriteVarInt((int)Enum.Parse<BlendMode>((string)blend, true)); else writer.WriteVarInt((int)BlendMode.Normal);
-                if (nonessential)
-                {
-                    writer.WriteBoolean(false);
-                }
+                if (data["color"] is JsonValue color) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(-1); // 默认值是全 255
+                if (data["dark"] is JsonValue dark) writer.WriteInt(int.Parse((string)dark, NumberStyles.HexNumber)); else writer.WriteInt(-1);
+                if (data["attachment"] is JsonValue attachment) writer.WriteStringRef((string)attachment); else writer.WriteStringRef(null);
+                if (data["blend"] is JsonValue blend) writer.WriteVarInt((int)Enum.Parse<BlendMode>((string)blend, true)); else writer.WriteVarInt((int)BlendMode.Normal);
+                if (nonessential) writer.WriteBoolean(false);
                 slot2idx[name] = i;
             }
         }
@@ -1357,39 +1346,26 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             JsonArray ik = root["ik"].AsArray();
             writer.WriteVarInt(ik.Count);
-            int flag = 0;
             for (int i = 0, n = ik.Count; i < n; i++)
             {
                 JsonObject data = ik[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                //if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
-                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
 
-                flag = 0;
-                if (data.TryGetPropertyValue("skin", out var skin) && (bool)skin)
-                    flag |= 1;
-                if (!data.TryGetPropertyValue("bendPositive", out var bendPositive) || (bool)bendPositive)
-                    flag |= 2;
-                if (data.TryGetPropertyValue("compress", out var compress) && (bool)compress)
-                    flag |= 4;
-                if (data.TryGetPropertyValue("stretch", out var stretch) && (bool)stretch)
-                    flag |= 8;
-                if (data.TryGetPropertyValue("uniform", out var uniform) && (bool)uniform)
-                    flag |= 16;
-                if (data.TryGetPropertyValue("mix", out var mix))
-                {
-                    flag |= 32;
-                    if ((float)mix != 1)
-                        flag |= 64;
-                }
-                if (data.TryGetPropertyValue("softness", out var softness))
-                    flag |= 128;
-                writer.WriteByte((byte)flag);
-                if ((flag & 64) != 0) writer.WriteFloat((float)data["mix"]);
-                if ((flag & 128) != 0) writer.WriteFloat((float)data["softness"]);
+                int flags = 0;
+                if (data["skin"] is JsonValue skin && (bool)skin) flags |= 1;
+                if (data["bendPositive"] is not JsonValue bendPositive || (bool)bendPositive) flags |= 2;
+                if (data["compress"] is JsonValue compress && (bool)compress) flags |= 4;
+                if (data["stretch"] is JsonValue stretch && (bool)stretch) flags |= 8;
+                if (data["uniform"] is JsonValue uniform && (bool)uniform) flags |= 16;
+                if (data["mix"] is JsonValue) flags |= 32 + 64; else flags |= 32;
+                if (data["softness"] is JsonValue) flags |= 128;
+                writer.WriteByte((byte)flags);
+                if ((flags & 64) != 0) writer.WriteFloat((float)data["mix"]);
+                if ((flags & 128) != 0) writer.WriteFloat((float)data["softness"]);
                 ik2idx[name] = i;
             }
         }
@@ -1401,7 +1377,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteVarInt(0);
                 return;
             }
-            int flag = 0;
             JsonArray transform = root["transform"].AsArray();
             writer.WriteVarInt(transform.Count);
             for (int i = 0, n = transform.Count; i < n; i++)
@@ -1409,140 +1384,42 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = transform[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                //if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
-                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
-                flag = 0;
-                if (data.TryGetPropertyValue("skin", out var skin) && (bool)skin)
-                    flag |= 1;
-                if (data.TryGetPropertyValue("local", out var local) && (bool)local)
-                    flag |= 2;
-                if (data.TryGetPropertyValue("relative", out var relative) && (bool)relative)
-                    flag |= 4;
-                if (data.ContainsKey("rotation"))
-                    flag |= 8;
-                if (data.ContainsKey("x"))
-                    flag |= 16;
-                if (data.ContainsKey("y"))
-                    flag |= 32;
-                if (data.ContainsKey("scaleX"))
-                    flag |= 64;
-                if (data.ContainsKey("scaleY"))
-                    flag |= 128;
-                writer.WriteByte((byte)flag);
-                if ((flag & 8) != 0) writer.WriteFloat((float)data["rotation"]);
-                if ((flag & 16) != 0) writer.WriteFloat((float)data["x"]); // * scale 如果有的话
-                if ((flag & 32) != 0) writer.WriteFloat((float)data["y"]);
-                if ((flag & 64) != 0) writer.WriteFloat((float)data["scaleX"]);
-                if ((flag & 128) != 0) writer.WriteFloat((float)data["scaleY"]);
-                //if ((flag & 8) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("rotation", out var rotation))
-                //        writer.WriteFloat((float)rotation);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                //if ((flag & 16) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("x", out var x))
-                //        writer.WriteFloat((float)x);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                //if ((flag & 32) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("y", out var y))
-                //        writer.WriteFloat((float)y);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                //if ((flag & 64) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("scaleX", out var scaleX))
-                //        writer.WriteFloat((float)scaleX);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                //if ((flag & 128) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("scaleY", out var scaleY))
-                //        writer.WriteFloat((float)scaleY);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                flag = 0;
-                if (data.ContainsKey("shearY"))
-                    flag |= 1;
-                if (data.ContainsKey("mixRotate"))
-                    flag |= 2;
-                if (data.ContainsKey("mixX"))
-                    flag |= 4;
-                if (data.ContainsKey("mixY"))
-                    flag |= 8;
-                if (data.ContainsKey("mixScaleX"))
-                    flag |= 16;
-                if (data.ContainsKey("mixScaleY"))
-                    flag |= 32;
-                if (data.ContainsKey("mixShearY"))
-                    flag |= 64;
-                writer.WriteByte((byte)flag);
-                if ((flag & 1) != 0) writer.WriteFloat((float)data["shearY"]);
-                if ((flag & 2) != 0) writer.WriteFloat((float)data["mixRotate"]);
-                if ((flag & 4) != 0) writer.WriteFloat((float)data["mixX"]);
-                if ((flag & 8) != 0) writer.WriteFloat((float)data["mixY"]);
-                if ((flag & 16) != 0) writer.WriteFloat((float)data["mixScaleX"]);
-                if ((flag & 32) != 0) writer.WriteFloat((float)data["mixScaleY"]);
-                if ((flag & 64) != 0) writer.WriteFloat((float)data["mixShearY"]);
-                //if ((flag & 1) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("shearY", out var shearY))
-                //        writer.WriteFloat((float)shearY);
-                //    else
-                //        writer.WriteFloat(0);
-                //}
-                //if ((flag & 2) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixRotate", out var mixRotate))
-                //        writer.WriteFloat((float)mixRotate);
-                //    else
-                //        writer.WriteFloat(1);
-                //}
-                //if ((flag & 4) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixX", out var mixX))
-                //        writer.WriteFloat((float)mixX);
-                //    else
-                //        writer.WriteFloat(1);
-                //}
-                //if ((flag & 8) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixY", out var mixY))
-                //        writer.WriteFloat((float)mixY);
-                //    else
-                //        if (data.TryGetPropertyValue("mixX", out var mixX)) writer.WriteFloat((float)mixX); else writer.WriteFloat(1);
-                //}
-                //if ((flag & 16) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixScaleX", out var mixScaleX))
-                //        writer.WriteFloat((float)mixScaleX);
-                //    else
-                //        writer.WriteFloat(1);
-                //}
-                //if ((flag & 32) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixScaleY", out var mixScaleY))
-                //        writer.WriteFloat((float)mixScaleY);
-                //    else
-                //        if (data.TryGetPropertyValue("mixScaleX", out var mixScaleX)) writer.WriteFloat((float)mixScaleX); else writer.WriteFloat(1);
-                //}
-                //if ((flag & 64) != 0)
-                //{
-                //    if (data.TryGetPropertyValue("mixShearY", out var mixShearY))
-                //        writer.WriteFloat((float)mixShearY);
-                //    else
-                //        writer.WriteFloat(1);
-                //}
+
+                int flags = 0;
+                if (data["skin"] is JsonValue skin && (bool)skin) flags |= 1;
+                if (data["local"] is JsonValue local && (bool)local) flags |= 2;
+                if (data["relative"] is JsonValue relative && (bool)relative) flags |= 4;
+                if (data["rotation"] is JsonValue) flags |= 8;
+                if (data["x"] is JsonValue) flags |= 16;
+                if (data["y"] is JsonValue) flags |= 32;
+                if (data["scaleX"] is JsonValue) flags |= 64;
+                if (data["scaleY"] is JsonValue) flags |= 128;
+                writer.WriteByte((byte)flags);
+                if ((flags & 8) != 0) writer.WriteFloat((float)data["rotation"]);
+                if ((flags & 16) != 0) writer.WriteFloat((float)data["x"]);
+                if ((flags & 32) != 0) writer.WriteFloat((float)data["y"]);
+                if ((flags & 64) != 0) writer.WriteFloat((float)data["scaleX"]);
+                if ((flags & 128) != 0) writer.WriteFloat((float)data["scaleY"]);
+
+                flags = 0;
+                if (data["shearY"] is JsonValue) flags |= 1;
+                if (data["mixRotate"] is JsonValue) flags |= 2;
+                if (data["mixX"] is JsonValue) flags |= 4;
+                if (data["mixY"] is JsonValue) flags |= 8;
+                if (data["mixScaleX"] is JsonValue) flags |= 16;
+                if (data["mixScaleY"] is JsonValue) flags |= 32;
+                if (data["mixShearY"] is JsonValue) flags |= 64;
+                writer.WriteByte((byte)flags);
+                if ((flags & 1) != 0) writer.WriteFloat((float)data["shearY"]);
+                if ((flags & 2) != 0) writer.WriteFloat((float)data["mixRotate"]);
+                if ((flags & 4) != 0) writer.WriteFloat((float)data["mixX"]);
+                if ((flags & 8) != 0) writer.WriteFloat((float)data["mixY"]);
+                if ((flags & 16) != 0) writer.WriteFloat((float)data["mixScaleX"]);
+                if ((flags & 32) != 0) writer.WriteFloat((float)data["mixScaleY"]);
+                if ((flags & 64) != 0) writer.WriteFloat((float)data["mixShearY"]);
                 transform2idx[name] = i;
             }
         }
@@ -1556,51 +1433,32 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             JsonArray path = root["path"].AsArray();
             writer.WriteVarInt(path.Count);
-            int flag = 0;
             for (int i = 0, n = path.Count; i < n; i++)
             {
                 JsonObject data = path[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("skin", out var skin)) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
-                if (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
+                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data["skin"] is JsonValue skin) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(slot2idx[(string)data["target"]]);
 
-                flag = 0;
-                if (data.TryGetPropertyValue("positionMode", out var posModeStr))
-                {
-                    var posMode = (int)Enum.Parse<PositionMode>((string)posModeStr, true);
-                    flag |= posMode & 1;
-                }
-                if (data.TryGetPropertyValue("spacingMode", out var spacingModeStr))
-                {
-                    var spacingMode = (int)Enum.Parse<SpacingMode>((string)spacingModeStr, true);
-                    flag |= (spacingMode & 0b11) << 1;
-                }
-                if (data.TryGetPropertyValue("rotateMode", out var rotateModeStr))
-                {
-                    var rotateMode = (int)Enum.Parse<RotateMode>((string)rotateModeStr, true);
-                    flag |= (rotateMode & 0b11) << 3;
-                }
-                if (data.TryGetPropertyValue("rotation", out var rotationVal))
-                    flag |= 128;
-                writer.WriteByte((byte)flag);
-                if ((flag & 128) != 0)
-                    writer.WriteFloat((float)data["rotation"]);
-                if (data.TryGetPropertyValue("position", out var position)) writer.WriteFloat((float)position); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("spacing", out var spacing)) writer.WriteFloat((float)spacing); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("mixRotate", out var rotateMix)) writer.WriteFloat((float)rotateMix); else writer.WriteFloat(1);
-                if (data.TryGetPropertyValue("mixX", out var translatex)) writer.WriteFloat((float)translatex); else writer.WriteFloat(1);
-                if (data.TryGetPropertyValue("mixY", out var translatey))
-                {
-                    writer.WriteFloat((float)translatey);
-                }
-                else
-                {
-                    if (data.TryGetPropertyValue("mixX", out var translatex1)) writer.WriteFloat((float)translatex1); else writer.WriteFloat(1);
-                }
-                //mixScaleX,mixScaleY,mixShearY在从二进制里读取时未出现，但在从json加载中有体现
+                int flags = 0;
+                if (data["positionMode"] is JsonValue positionMode) flags |= ((int)Enum.Parse<PositionMode>((string)positionMode, true)) & 0b1;
+                else flags |= (int)PositionMode.Percent & 0b1;
+                if (data["spacingMode"] is JsonValue spacingMode) flags |= ((int)Enum.Parse<SpacingMode>((string)spacingMode, true) & 0b11) << 1;
+                else flags |= ((int)SpacingMode.Length & 0b11) << 1;
+                if (data["rotateMode"] is JsonValue rotateMode) flags |= ((int)Enum.Parse<RotateMode>((string)rotateMode, true) & 0b11) << 3;
+                else flags |= ((int)RotateMode.Tangent & 0b11) << 3;
+                if (data["rotation"] is JsonValue) flags |= 128;
+                writer.WriteByte((byte)flags);
+                if ((flags & 128) != 0) writer.WriteFloat((float)data["rotation"]);
+
+                if (data["position"] is JsonValue position) writer.WriteFloat((float)position); else writer.WriteFloat(0);
+                if (data["spacing"] is JsonValue spacing) writer.WriteFloat((float)spacing); else writer.WriteFloat(0);
+                if (data["mixRotate"] is JsonValue mixRotate) writer.WriteFloat((float)mixRotate); else writer.WriteFloat(1);
+                if (data["mixX"] is JsonValue mixX) writer.WriteFloat((float)mixX); else writer.WriteFloat(1);
+                if (data["mixY"] is JsonValue mixY) writer.WriteFloat((float)mixY); else if (data["mixX"] is JsonValue mixX2) writer.WriteFloat((float)mixX2); else writer.WriteFloat(1);
                 path2idx[name] = i;
             }
         }
@@ -1614,97 +1472,72 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
             JsonArray physics = root["physics"].AsArray();
             writer.WriteVarInt(physics.Count);
-            int flag = 0;
             for (int i = 0; i < physics.Count; i++)
             {
                 JsonObject data = physics[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data.TryGetPropertyValue("order", out var order)) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("bone", out var bone)) writer.WriteVarInt(bone2idx[(string)bone]); else writer.WriteVarInt(0);
-                // (data.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
-                //writer.WriteVarInt(bone2idx[(string)data["target"]]);
+                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                if (data["bone"] is JsonValue bone) writer.WriteVarInt(bone2idx[(string)bone]); else writer.WriteVarInt(0);
 
-                flag = 0;
-                //忽略等于默认值的情况
-                if (data.TryGetPropertyValue("skin", out var _skin) && (bool)_skin) flag |= 1;
-                if (data.TryGetPropertyValue("x", out var x)) flag |= 2;
-                if (data.TryGetPropertyValue("y", out var y)) flag |= 4;
-                if (data.TryGetPropertyValue("rotate", out var rot)) flag |= 8;
-                if (data.TryGetPropertyValue("scalex", out var scaleX)) flag |= 16;
-                if (data.TryGetPropertyValue("shearx", out var shearX)) flag |= 32;
-                if (data.TryGetPropertyValue("limit", out var limit)) flag |= 64;
-                if (data.TryGetPropertyValue("mass", out var mass)) flag |= 128;
+                int flags = 0;
+                if (data["skin"] is JsonValue skin && (bool)skin) flags |= 1;
+                if (data["x"] is JsonValue) flags |= 2;
+                if (data["y"] is JsonValue) flags |= 4;
+                if (data["rotate"] is JsonValue) flags |= 8;
+                if (data["scaleX"] is JsonValue) flags |= 16;
+                if (data["shearX"] is JsonValue) flags |= 32;
+                if (data["limit"] is JsonValue) flags |= 64;
+                if (data["mass"] is JsonValue) flags |= 128;
+                writer.WriteByte((byte)flags);
+                if ((flags & 2) != 0) writer.WriteFloat((float)data["x"]);
+                if ((flags & 4) != 0) writer.WriteFloat((float)data["y"]);
+                if ((flags & 8) != 0) writer.WriteFloat((float)data["rotate"]);
+                if ((flags & 16) != 0) writer.WriteFloat((float)data["scaleX"]);
+                if ((flags & 32) != 0) writer.WriteFloat((float)data["shearX"]);
+                if ((flags & 64) != 0) writer.WriteFloat((float)data["limit"]);
+                if (data["fps"] is JsonValue fps) writer.WriteByte((byte)(int)fps); else writer.WriteByte(60);
+                if (data["inertia"] is JsonValue inertia) writer.WriteFloat((float)inertia); else writer.WriteFloat(1);
+                if (data["strength"] is JsonValue strength) writer.WriteFloat((float)strength); else writer.WriteFloat(100);
+                if (data["damping"] is JsonValue damping) writer.WriteFloat((float)damping); else writer.WriteFloat(1);
+                if ((flags & 128) != 0)  writer.WriteFloat(1f / (float)data["mass"]);
+                if (data["wind"] is JsonValue wind) writer.WriteFloat((float)wind); else writer.WriteFloat(0);
+                if (data["gravity"] is JsonValue gravity) writer.WriteFloat((float)gravity); else writer.WriteFloat(0);
 
-                writer.Write(flag);
-                if ((flag & 2) != 0) writer.WriteFloat((float)x);
-                if ((flag & 4) != 0) writer.WriteFloat((float)y);
-                if ((flag & 8) != 0) writer.WriteFloat((float)rot);
-                if ((flag & 16) != 0) writer.WriteFloat((float)scaleX);
-                if ((flag & 32) != 0) writer.WriteFloat((float)shearX);
-                if ((flag & 64) != 0) writer.WriteFloat((float)limit);
+                flags = 0;
+                if (data["inertiaGlobal"] is JsonValue inertiaGlobal && (bool)inertiaGlobal) flags |= 1;
+                if (data["strengthGlobal"] is JsonValue strengthGlobal && (bool)strengthGlobal) flags |= 2;
+                if (data["dampingGlobal"] is JsonValue dampingGlobal && (bool)dampingGlobal) flags |= 4;
+                if (data["massGlobal"] is JsonValue massGlobal && (bool)massGlobal) flags |= 8;
+                if (data["windGlobal"] is JsonValue windGlobal && (bool)windGlobal) flags |= 16;
+                if (data["gravityGlobal"] is JsonValue gravityGlobal && (bool)gravityGlobal) flags |= 32;
+                if (data["mixGlobal"] is JsonValue mixGlobal && (bool)mixGlobal) flags |= 64;
+                if (data["mix"] is JsonValue) flags |= 128;
+                writer.WriteByte((byte)flags);
+                if ((flags & 128) != 0) writer.WriteFloat((float)data["mix"]);
 
-                //writer.WriteByte((byte)data["fps"]);
-                //writer.WriteFloat((float)data["inertia"]);
-                //writer.WriteFloat((float)data["strength"]);
-                //writer.WriteFloat((float)data["damping"]);
-                if (data.TryGetPropertyValue("fps", out var fps)) writer.WriteByte((byte)fps); else writer.WriteByte(60);//无需取倒，因为在SkeltonBinary和SkeletonJson里面读取的时候都取倒了。
-                if (data.TryGetPropertyValue("inertia", out var inertia)) writer.WriteFloat((float)inertia); else writer.WriteFloat(1);
-                if (data.TryGetPropertyValue("strength", out var strength)) writer.WriteFloat((float)strength); else writer.WriteFloat(100);
-                if (data.TryGetPropertyValue("damping", out var damping)) writer.WriteFloat((float)damping); else writer.WriteFloat(1);
-                if ((flag & 128) != 0)
-                {
-                    if (data.TryGetPropertyValue("mass", out var ma)) writer.WriteFloat(1f / (float)ma); else writer.WriteFloat(1);
-                }
-                //writer.WriteFloat((float)data["wind"]);
-                //writer.WriteFloat((float)data["gravity"]);
-                if (data.TryGetPropertyValue("wind", out var wind)) writer.WriteFloat((float)wind); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("gravity", out var gravity)) writer.WriteFloat((float)gravity); else writer.WriteFloat(0);
-
-                flag = 0;
-                if (data.TryGetPropertyValue("inertiaGlobal", out var ig) && (bool)ig) flag |= 1;
-                if (data.TryGetPropertyValue("strengthGlobal", out var sg) && (bool)sg) flag |= 2;
-                if (data.TryGetPropertyValue("dampingGlobal", out var dg) && (bool)dg) flag |= 4;
-                if (data.TryGetPropertyValue("massGlobal", out var mg) && (bool)mg) flag |= 8;
-                if (data.TryGetPropertyValue("windGlobal", out var wg) && (bool)wg) flag |= 16;
-                if (data.TryGetPropertyValue("gravityGlobal", out var gg) && (bool)gg) flag |= 32;
-                if (data.TryGetPropertyValue("mixGlobal", out var mgVal) && (bool)mgVal) flag |= 64;
-                if (data.TryGetPropertyValue("mix", out var mixVal)) flag |= 128;
-                writer.Write(flag);
-
-                if ((flag & 128) != 0)
-                    writer.WriteFloat((float)mixVal);
                 physics2idx[name] = i;
             }
         }
 
         private void WriteSkins()
         {
-
             if (!root.ContainsKey("skins"))
             {
                 writer.WriteVarInt(0); // default 的 slotCount
                 writer.WriteVarInt(0); // 其他皮肤数量
-                //skin2idx["default"] = skin2idx.Count;
                 return;
             }
 
             JsonArray skins = root["skins"].AsArray();
-            //在官方的example中，出现了前面的skinAttachmentname
-            foreach (var sk in skins)
-            {
-                skin2idx[(string)sk["name"]] = skin2idx.Count;
-            }
-
             bool hasDefault = false;
             foreach (JsonObject skin in skins)
             {
                 if ((string)skin["name"] == "default")
                 {
                     hasDefault = true;
-                    //skin2idx["default"] = skin2idx.Count;
                     WriteSkin(skin, true);
-
+                    skin2idx["default"] = skin2idx.Count;
                     break;
                 }
             }
@@ -1724,9 +1557,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)skin["name"];
                 if (name != "default")
                 {
-                    //skin2idx[name] = skin2idx.Count;
                     WriteSkin(skin);
-
+                    skin2idx[name] = skin2idx.Count;
                 }
             }
         }
@@ -1744,13 +1576,12 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 writer.WriteString((string)skin["name"]);
                 if (nonessential) writer.WriteInt(0);
-                if (skin.TryGetPropertyValue("bones", out var bones)) WriteNames(bone2idx, bones.AsArray()); else writer.WriteVarInt(0);
-                if (skin.TryGetPropertyValue("ik", out var ik)) WriteNames(ik2idx, ik.AsArray()); else writer.WriteVarInt(0);
-                if (skin.TryGetPropertyValue("transform", out var transform)) WriteNames(transform2idx, transform.AsArray()); else writer.WriteVarInt(0);
-                if (skin.TryGetPropertyValue("path", out var path)) WriteNames(path2idx, path.AsArray()); else writer.WriteVarInt(0);
-                //if (skin.TryGetPropertyValue("attachments", out var attachments)) skinAttachments = attachments.AsObject();
-                if (skin.TryGetPropertyValue("physics", out var physics)) WriteNames(physics2idx, physics.AsArray()); else writer.WriteVarInt(0);
-                if (skin.TryGetPropertyValue("attachments", out var attachments)) skinAttachments = attachments.AsObject();
+                if (skin["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
+                if (skin["ik"] is JsonArray ik) WriteNames(ik2idx, ik); else writer.WriteVarInt(0);
+                if (skin["transform"] is JsonArray transform) WriteNames(transform2idx, transform); else writer.WriteVarInt(0);
+                if (skin["path"] is JsonArray path) WriteNames(path2idx, path); else writer.WriteVarInt(0);
+                if (skin["physics"] is JsonArray physics) WriteNames(physics2idx, physics); else writer.WriteVarInt(0);
+                if (skin["attachments"] is JsonObject attachments) skinAttachments = attachments;
                 writer.WriteVarInt(skinAttachments?.Count ?? 0);
             }
 
@@ -1773,236 +1604,134 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteAttachment(JsonObject attachment, string keyName)
         {
             int vertexCount;
-            JsonArray vertices;
 
-            string name = keyName;
+            int flags = 0;
+
             AttachmentType type = AttachmentType.Region;
-            bool hasName = false;
 
-            //<---计算flag开始
-            if (attachment.TryGetPropertyValue("name", out var _name))
-            {
-                name = (string)_name;
-                hasName = name != keyName;
-            }
-            if (attachment.TryGetPropertyValue("type", out var _type))
-                type = Enum.Parse<AttachmentType>((string)_type, true);
-            byte flag = (byte)type;
-            if (hasName)
-                flag |= 8;
+            if (attachment["type"] is JsonValue _type) { type = Enum.Parse<AttachmentType>((string)_type, true); flags |= (int)type & 0x7; }
+            if (attachment["name"] is JsonValue) flags |= 8;
+
             switch (type)
             {
                 case AttachmentType.Region:
-                    if (attachment.TryGetPropertyValue("path", out var _))
-                        flag |= 16;
-                    if (attachment.TryGetPropertyValue("color", out var _color) && int.Parse((string)_color, NumberStyles.HexNumber) != -1)
-                        flag |= 32;
-                    if (attachment.TryGetPropertyValue("sequence", out var _))
-                        flag |= 64;
-                    if (attachment.TryGetPropertyValue("rotation", out var rotation) && (float)rotation != 0)
-                        flag |= 128;
+                    if (attachment["path"] is JsonValue) flags |= 16;
+                    if (attachment["color"] is JsonValue) flags |= 32;
+                    if (attachment["sequence"] is JsonObject) flags |= 64;
+                    if (attachment["rotation"] is JsonValue) flags |= 128;
                     break;
-
                 case AttachmentType.Boundingbox:
-                    vertices = attachment["vertices"].AsArray();
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount) && vertices.Count != (int)_vertexCount << 1) flag |= 16;
+                    if (attachment["vertexCount"] is JsonValue _vc1 && attachment["vertices"].AsArray().Count != (int)_vc1 << 1) flags |= 16;
                     break;
-
                 case AttachmentType.Mesh:
-                    if (attachment.TryGetPropertyValue("path", out _))
-                        flag |= 16;
-                    if (attachment.TryGetPropertyValue("color", out var _color1) && int.Parse((string)_color1, NumberStyles.HexNumber) != -1)
-                        flag |= 32;
-                    if (attachment.TryGetPropertyValue("sequence", out _))
-                        flag |= 64;
-                    vertices = attachment["vertices"].AsArray();
-                    if (attachment.TryGetPropertyValue("uvs", out var _uvs) && vertices.Count != _uvs.AsArray().Count)
-                        flag |= 128;
-                    //if (vertices.Count > 0 && vertices[0] is JsonValue v1 && v1.TryGetValue(out int _))
-                    //    flag |= 128;
+                    if (attachment["path"] is JsonValue) flags |= 16;
+                    if (attachment["color"] is JsonValue) flags |= 32;
+                    if (attachment["sequence"] is JsonObject) flags |= 64;
+                    if (attachment["vertices"].AsArray().Count != attachment["uvs"].AsArray().Count) flags |= 128;
                     break;
-
                 case AttachmentType.Linkedmesh:
-                    if (attachment.TryGetPropertyValue("path", out _))
-                        flag |= 16;
-                    if (attachment.TryGetPropertyValue("color", out var _color2) && int.Parse((string)_color2, NumberStyles.HexNumber) != -1)
-                        flag |= 32;
-                    if (attachment.TryGetPropertyValue("sequence", out var _))
-                        flag |= 64;
-                    if (attachment.TryGetPropertyValue("timeline", out var timeline) && (bool)timeline)
-                        flag |= 128;
+                    if (attachment["path"] is JsonValue) flags |= 16;
+                    if (attachment["color"] is JsonValue) flags |= 32;
+                    if (attachment["sequence"] is JsonObject) flags |= 64;
+                    if (attachment["timeline"] is not JsonValue timeline || (bool)timeline) flags |= 128;
                     break;
-
                 case AttachmentType.Path:
-                    if (attachment.TryGetPropertyValue("closed", out var _closed) && (bool)_closed)
-                        flag |= 16;
-                    if (attachment.TryGetPropertyValue("constantSpeed", out var _speed) && (bool)_speed)
-                        flag |= 32;
-                    else flag |= 32;//默认为true
-                    vertices = attachment["vertices"].AsArray();
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount1) && vertices.Count != (int)_vertexCount1 << 1)
-                        flag |= 64;
-                    //if (vertices.Count > 0 && vertices[0] is JsonValue v2 && v2.TryGetValue(out int _))
-                    //    flag |= 64;
+                    if (attachment["closed"] is JsonValue closed && (bool)closed) flags |= 16;
+                    if (attachment["constantSpeed"] is not JsonValue constantSpeed || (bool)constantSpeed) flags |= 32;
+                    if (attachment["vertexCount"] is JsonValue _vc2 && attachment["vertices"].AsArray().Count != (int)_vc2 << 1) flags |= 64;
                     break;
-
                 case AttachmentType.Clipping:
-                    vertices = attachment["vertices"].AsArray();
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount2) && vertices.Count != (int)_vertexCount2 << 1)
-                        flag |= 16;
-                    //if (vertices.Count > 0 && vertices[0] is JsonValue v3 && v3.TryGetValue(out int _))
-                    //    flag |= 16;
+                    if (attachment["vertexCount"] is JsonValue _vc3 && attachment["vertices"].AsArray().Count != (int)_vc3 << 1) flags |= 16;
                     break;
 
             }
-            //--->计算flag结束
-            writer.WriteByte(flag);
-            if ((flag & 8) != 0)
-                writer.WriteStringRef(name);
 
-
+            writer.WriteUByte((byte)flags);
+            if ((flags & 8) != 0) writer.WriteStringRef((string)attachment["name"]);
             switch (type)
             {
                 case AttachmentType.Region:
-                    if ((flag & 16) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("path", out var path)) writer.WriteStringRef((string)path); else writer.WriteStringRef(null);
-                    }
-                    if ((flag & 32) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("color", out var color)) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(-1);
-                    }
-                    if ((flag & 64) != 0)
-                    {
-                        //emm,虽然如果没有sequence的话flag那里就不会|=64,都不会执行这里.
-                        if (attachment.TryGetPropertyValue("sequence", out var sequence)) WriteSequence(sequence.AsArray());
-                        else
-                        {
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(1);
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(0);
-                        }
-                    }
-                    if ((flag & 128) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("rotation", out var rotation1)) writer.WriteFloat((float)rotation1); else writer.WriteFloat(0);
-                    }
-                    if (attachment.TryGetPropertyValue("x", out var x1)) writer.WriteFloat((float)x1); else writer.WriteFloat(0);
-                    if (attachment.TryGetPropertyValue("y", out var y1)) writer.WriteFloat((float)y1); else writer.WriteFloat(0);
-                    if (attachment.TryGetPropertyValue("scaleX", out var scaleX)) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
-                    if (attachment.TryGetPropertyValue("scaleY", out var scaleY)) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
-                    if (attachment.TryGetPropertyValue("width", out var width)) writer.WriteFloat((float)width); else writer.WriteFloat(32);
-                    if (attachment.TryGetPropertyValue("height", out var height)) writer.WriteFloat((float)height); else writer.WriteFloat(32);
+                    if ((flags & 16) != 0) writer.WriteStringRef((string)attachment["path"]);
+                    if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
+                    if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
+                    if ((flags & 128) != 0) writer.WriteFloat((float)attachment["rotation"]);
+                    if (attachment["x"] is JsonValue x1) writer.WriteFloat((float)x1); else writer.WriteFloat(0);
+                    if (attachment["y"] is JsonValue y1) writer.WriteFloat((float)y1); else writer.WriteFloat(0);
+                    if (attachment["scaleX"] is JsonValue scaleX) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
+                    if (attachment["scaleY"] is JsonValue scaleY) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
+                    if (attachment["width"] is JsonValue width) writer.WriteFloat((float)width); else writer.WriteFloat(32);
+                    if (attachment["height"] is JsonValue height) writer.WriteFloat((float)height); else writer.WriteFloat(32);
                     break;
                 case AttachmentType.Boundingbox:
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount1)) vertexCount = (int)_vertexCount1; else vertexCount = 0;
+                    if (attachment["vertexCount"] is JsonValue _vc1) vertexCount = (int)_vc1; else vertexCount = 0;
                     writer.WriteVarInt(vertexCount);
-                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flag & 16) != 0);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 16) != 0);
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Mesh:
-                    if ((flag & 16) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("path", out var path)) writer.WriteStringRef((string)path); else writer.WriteStringRef(null);
-                    }
-                    if ((flag & 32) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("color", out var color1)) writer.WriteInt(int.Parse((string)color1, NumberStyles.HexNumber)); else writer.WriteInt(-1);
-                    }
-                    //if ((flag & 16) != 0 && attachment.TryGetPropertyValue("path", out var path2)) writer.WriteStringRef((string)path2); else writer.WriteStringRef(null);
-                    //if ((flag & 32) != 0 && attachment.TryGetPropertyValue("color", out var color2)) writer.WriteInt(int.Parse((string)color2, NumberStyles.HexNumber));
-                    if ((flag & 64) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("sequence", out var sequence)) WriteSequence(sequence.AsArray());
-                        else
-                        {
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(1);
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(0);
-                        }
-                    }
-                    if (attachment.TryGetPropertyValue("hull", out var hull)) writer.WriteVarInt((int)hull); else writer.WriteVarInt(0);
+                    if ((flags & 16) != 0) writer.WriteStringRef((string)attachment["path"]);
+                    if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
+                    if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
+                    if (attachment["hull"] is JsonValue hull) writer.WriteVarInt((int)hull); else writer.WriteVarInt(0);
                     vertexCount = attachment["uvs"].AsArray().Count >> 1;
-                    if (attachment.TryGetPropertyValue("vertices", out var vertices1))
-                    {
-                        writer.WriteVarInt(vertexCount);
-                        WriteVertices(vertices1.AsArray(), vertexCount, (flag & 128) != 0);
-                    }
-                    else
-                        writer.WriteVarInt(0);
-                    //WriteFloatArray(attachment["uvs"].AsArray(), vertexCount << 1);
-                    WriteFloatArray(attachment["uvs"].AsArray());
-                    WriteShortArray(attachment["triangles"].AsArray());
+                    writer.WriteVarInt(vertexCount);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 128) != 0);
+                    WriteFloatArray(attachment["uvs"].AsArray(), vertexCount << 1);
+                    WriteShortArray(attachment["triangles"].AsArray(), ((vertexCount << 1) - (int)(attachment["hull"] ?? 0) - 2) * 3);
                     if (nonessential)
                     {
-                        if (attachment.TryGetPropertyValue("edges", out var edges))
+                        if (attachment["edges"] is JsonArray edges)
                         {
-                            writer.WriteVarInt(edges.AsArray().Count);
-                            WriteShortArray(edges.AsArray());
+                            writer.WriteVarInt(edges.Count);
+                            WriteShortArray(edges, edges.Count);
                         }
-                        if (attachment.TryGetPropertyValue("width", out var _width)) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
-                        if (attachment.TryGetPropertyValue("height", out var _height)) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
+                        if (attachment["width"] is JsonArray _width) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
+                        if (attachment["height"] is JsonArray _height) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
                     }
                     break;
                 case AttachmentType.Linkedmesh:
-                    if ((flag & 16) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("path", out var path)) writer.WriteStringRef((string)path); else writer.WriteStringRef(null);
-                    }
-                    if ((flag & 32) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("color", out var color2)) writer.WriteInt(int.Parse((string)color2, NumberStyles.HexNumber)); else writer.WriteInt(-1);
-                    }
-                    if ((flag & 64) != 0)
-                    {
-                        if (attachment.TryGetPropertyValue("sequence", out var sequence)) WriteSequence(sequence.AsArray());
-                        else
-                        {
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(1);
-                            writer.WriteVarInt(0);
-                            writer.WriteVarInt(0);
-                        }
-                    }
-                    if (attachment.TryGetPropertyValue("skin", out var skin)) writer.WriteVarInt(skin2idx[(string)skin]); else writer.WriteVarInt(0);
-                    if (attachment.TryGetPropertyValue("parent", out var parent)) writer.WriteStringRef((string)parent); else writer.WriteStringRef(null);
+                    if ((flags & 16) != 0) writer.WriteStringRef((string)attachment["path"]);
+                    if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
+                    if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
+                    if (attachment["skin"] is JsonArray skin) writer.WriteVarInt(skin2idx[(string)skin]); else writer.WriteVarInt(0);
+                    if (attachment["parent"] is JsonValue parent) writer.WriteStringRef((string)parent); else writer.WriteStringRef(null);
                     if (nonessential)
                     {
-                        if (attachment.TryGetPropertyValue("width", out var width1)) writer.WriteFloat((float)width1); else writer.WriteFloat(0);
-                        if (attachment.TryGetPropertyValue("height", out var height1)) writer.WriteFloat((float)height1); else writer.WriteFloat(0);
-
+                        if (attachment["width"] is JsonArray _width) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
+                        if (attachment["height"] is JsonArray _height) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
                     }
                     break;
                 case AttachmentType.Path:
-                    var vertexCount1 = -1;
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _tmp)) vertexCount1 = (int)_tmp;
-                    else vertexCount1 = 0;
-                    writer.WriteVarInt(vertexCount1);
-                    if (attachment.TryGetPropertyValue("vertices", out var vertices2))
-                    {
-                        WriteVertices(vertices2.AsArray(), vertexCount1, (flag & 64) != 0);
-                    }
-                    WriteFloatArray(attachment["lengths"].AsArray());
-                    if (nonessential) writer.WriteInt(-1);
+                    if (attachment["vertexCount"] is JsonValue _vc2) vertexCount = (int)_vc2; else vertexCount = 0;
+                    writer.WriteVarInt(vertexCount);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 64) != 0);
+                    WriteFloatArray(attachment["lengths"].AsArray(), vertexCount * 2 / 6);
+                    if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Point:
-                    if (attachment.TryGetPropertyValue("rotation", out var rotation3)) writer.WriteFloat((float)rotation3); else writer.WriteFloat(0);
-                    if (attachment.TryGetPropertyValue("x", out var x2)) writer.WriteFloat((float)x2); else writer.WriteFloat(0);
-                    if (attachment.TryGetPropertyValue("y", out var y2)) writer.WriteFloat((float)y2); else writer.WriteFloat(0);
+                    if (attachment["rotation"] is JsonArray rotation) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
+                    if (attachment["x"] is JsonArray x2) writer.WriteFloat((float)x2); else writer.WriteFloat(0);
+                    if (attachment["y"] is JsonArray y2) writer.WriteFloat((float)y2); else writer.WriteFloat(0);
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Clipping:
                     writer.WriteVarInt(slot2idx[(string)attachment["end"]]);
-                    if (attachment.TryGetPropertyValue("vertexCount", out var _vertexCount4)) vertexCount = (int)_vertexCount4; else vertexCount = 0;
+                    if (attachment["vertexCount"] is JsonValue _vc3) vertexCount = (int)_vc3; else vertexCount = 0;
                     writer.WriteVarInt(vertexCount);
-                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flag & 16) != 0);
+                    WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 16) != 0);
                     if (nonessential) writer.WriteInt(0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Invalid attachment type: {type}");
             }
+        }
+
+        private void WriteSequence(JsonObject sequence)
+        {
+            writer.WriteVarInt((int)sequence["count"]);
+            if (sequence["start"] is JsonValue start) writer.WriteVarInt((int)start); else writer.WriteVarInt(1);
+            if (sequence["digits"] is JsonValue digits) writer.WriteVarInt((int)digits); else writer.WriteVarInt(0);
+            if (sequence["setup"] is JsonValue setup) writer.WriteVarInt((int)setup); else writer.WriteVarInt(0);
         }
 
         private void WriteEvents()
@@ -2019,17 +1748,17 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = _data.AsObject();
                 writer.WriteString(name);
-                if (data.TryGetPropertyValue("int", out var @int)) writer.WriteVarInt((int)@int); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("float", out var @float)) writer.WriteFloat((float)@float); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("string", out var @string)) writer.WriteString((string)@string); else writer.WriteString("");
-                if (data.TryGetPropertyValue("audio", out var _audio))
+                writer.WriteVarInt((int)(data["int"] ?? 0));
+                writer.WriteFloat((float)(data["float"] ?? 0f));
+                writer.WriteString((string)(data["string"] ?? ""));
+                if (data["audio"] is JsonValue _audio)
                 {
                     var audio = (string)_audio;
                     writer.WriteString(audio);
                     if (audio is not null)
                     {
-                        if (data.TryGetPropertyValue("volume", out var volume)) writer.WriteFloat((float)volume); else writer.WriteFloat(1);
-                        if (data.TryGetPropertyValue("balance", out var balance)) writer.WriteFloat((float)balance); else writer.WriteFloat(0);
+                        writer.WriteFloat((float)(data["volume"] ?? 1f));
+                        writer.WriteFloat((float)(data["balance"] ?? 0f));
                     }
                 }
                 else
@@ -2054,28 +1783,21 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             {
                 JsonObject data = _data.AsObject();
                 writer.WriteString(name);
-                writer.WriteVarInt(data.Count);
-                if (data.TryGetPropertyValue("slots", out var slots)) WriteSlotTimelines(slots.AsObject()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("bones", out var bones)) WriteBoneTimelines(bones.AsObject()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("ik", out var ik)) WriteIKTimelines(ik.AsObject()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("transform", out var transform)) WriteTransformTimelines(transform.AsObject()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("path", out var path)) WritePathTimelines(path.AsObject()); else writer.WriteVarInt(0);
-
-
-                if (data.TryGetPropertyValue("physics", out var physics)) WritePhysicsTimelines(physics.AsObject()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("attachment", out var attachment)) WriteAttachmentTimelines(attachment.AsObject()); else writer.WriteVarInt(0);
-                //if (data.TryGetPropertyValue("deform", out var deform)) WriteDeformTimelines(deform.AsObject()); else writer.WriteVarInt(0);
-                //?
-                if (data.TryGetPropertyValue("drawOrder", out var drawOrder)) WriteDrawOrderTimelines(drawOrder.AsArray()); else writer.WriteVarInt(0);
-                //else
-                //    if (data.TryGetPropertyValue("draworder", out var draworder)) WriteDrawOrderTimelines(draworder.AsArray()); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("events", out var events)) WriteEventTimelines(events.AsArray()); else writer.WriteVarInt(0);
+                writer.WriteVarInt(1); // timelines 数组预分配大小
+                if (data["slots"] is JsonObject slots) WriteSlotTimelines(slots); else writer.WriteVarInt(0);
+                if (data["bones"] is JsonObject bones) WriteBoneTimelines(bones); else writer.WriteVarInt(0);
+                if (data["ik"] is JsonObject ik) WriteIKTimelines(ik); else writer.WriteVarInt(0);
+                if (data["transform"] is JsonObject transform) WriteTransformTimelines(transform); else writer.WriteVarInt(0);
+                if (data["path"] is JsonObject path) WritePathTimelines(path); else writer.WriteVarInt(0);
+                if (data["physics"] is JsonObject physics) WritePhysicsTimelines(physics); else writer.WriteVarInt(0);
+                if (data["attachment"] is JsonObject attachment) WriteAttachmentTimelines(attachment); else writer.WriteVarInt(0);
+                if (data["drawOrder"] is JsonArray drawOrder) WriteDrawOrderTimelines(drawOrder); else writer.WriteVarInt(0);
+                if (data["events"] is JsonArray events) WriteEventTimelines(events); else writer.WriteVarInt(0);
             }
         }
 
         private void WriteSlotTimelines(JsonObject slotTimelines)
         {
-            JsonObject tmp;
             writer.WriteVarInt(slotTimelines.Count);
             foreach (var (name, _timeline) in slotTimelines)
             {
@@ -2085,167 +1807,135 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 foreach (var (type, _frames) in timeline)
                 {
                     JsonArray frames = _frames.AsArray();
+                    JsonObject frame;
                     if (type == "attachment")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_ATTACHMENT);
+                        writer.WriteUByte(SkeletonBinary.SLOT_ATTACHMENT);
                         writer.WriteVarInt(frames.Count);
                         foreach (JsonObject o in frames)
                         {
-                            if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                            //writer.WriteStringRef((string)o["name"]);
-                            if (o.TryGetPropertyValue("name", out var name1)) writer.WriteStringRef((string)name1); else writer.WriteStringRef(null);
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteStringRef((string)o["name"]);
                         }
                     }
                     else if (type == "rgba")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_RGBA);
+                        writer.WriteUByte(SkeletonBinary.SLOT_RGBA);
                         writer.WriteVarInt(frames.Count);
-                        //writer.WriteVarInt(4);
-                        writer.WriteVarInt(GetBezierCount(frames) * 4);
-                        tmp = frames[0].AsObject();
-                        if (tmp.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                        if (tmp.TryGetPropertyValue("color", out var color))
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 4);
+
+                        frame = frames[0].AsObject();
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.WriteInt(int.Parse((string)frame["color"], NumberStyles.HexNumber));
+                        for (int i = 1, n = frames.Count; i < n; i++)
                         {
-                            writer.WriteByte(byte.Parse(((string)color).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)color).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)color).Substring(4, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)color).Substring(6, 2), NumberStyles.HexNumber));
-                        }
-                        for (int i = 1; i < frames.Count; i++)
-                        {
-                            JsonObject o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("color", out var color1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(4, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(6, 2), NumberStyles.HexNumber));
-                            }
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.WriteInt(int.Parse((string)frame["color"], NumberStyles.HexNumber));
+                            WriteCurve(frames[i - 1].AsObject(), 4);
                         }
                     }
                     else if (type == "rgb")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_RGB);
+                        writer.WriteUByte(SkeletonBinary.SLOT_RGB);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 3);
-                        tmp = frames[0].AsObject();
-                        if (tmp.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                        if (tmp.TryGetPropertyValue("color", out var color))
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 3);
+
+                        frame = frames[0].AsObject();
+                        var color = Convert.FromHexString((string)frame["color"]);
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.Write(color[0]); writer.Write(color[1]); writer.Write(color[2]);
+                        for (int i = 1, n = frames.Count; i < n; i++)
                         {
-                            writer.WriteByte(byte.Parse(((string)color).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)color).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)color).Substring(4, 2), NumberStyles.HexNumber));
-                        }
-                        for (int i = 1; i < frames.Count; i++)
-                        {
-                            JsonObject o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("color", out var color1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)color1).Substring(4, 2), NumberStyles.HexNumber));
-                            }
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            color = Convert.FromHexString((string)frame["color"]);
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.Write(color[0]); writer.Write(color[1]); writer.Write(color[2]);
+                            WriteCurve(frames[i - 1].AsObject(), 3);
                         }
                     }
                     else if (type == "rgba2")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_RGBA2);
+                        writer.WriteUByte(SkeletonBinary.SLOT_RGBA2);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 7);
-                        tmp = frames[0].AsObject();
-                        if (tmp.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                        if (tmp.TryGetPropertyValue("light", out var light))
-                        {
-                            writer.WriteByte(byte.Parse(((string)light).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)light).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)light).Substring(4, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)light).Substring(6, 2), NumberStyles.HexNumber));
-                        }
-                        if (tmp.TryGetPropertyValue("dark", out var dark))
-                        {
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(4, 2), NumberStyles.HexNumber));
-                        }
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 7);
+
+                        frame = frames[0].AsObject();
+                        var dark = Convert.FromHexString((string)frame["dark"]);
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.WriteInt(int.Parse((string)frame["light"], NumberStyles.HexNumber));
+                        writer.Write(dark[0]); writer.Write(dark[1]); writer.Write(dark[2]);
                         for (int i = 1; i < frames.Count; i++)
                         {
-                            JsonObject o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                            if (tmp.TryGetPropertyValue("light", out var light1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(4, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(6, 2), NumberStyles.HexNumber));
-                            }
-                            if (tmp.TryGetPropertyValue("dark", out var dark1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(4, 2), NumberStyles.HexNumber));
-                            }
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            dark = Convert.FromHexString((string)frame["dark"]);
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.WriteInt(int.Parse((string)frame["light"], NumberStyles.HexNumber));
+                            writer.Write(dark[0]); writer.Write(dark[1]); writer.Write(dark[2]);
+                            WriteCurve(frames[i - 1].AsObject(), 7);
                         }
                     }
                     else if (type == "rgb2")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_RGB2);
+                        writer.WriteUByte(SkeletonBinary.SLOT_RGB2);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 6);
-                        tmp = frames[0].AsObject();
-                        if (tmp.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                        if (tmp.TryGetPropertyValue("light", out var light))
-                        {
-                            writer.WriteByte(byte.Parse(((string)light).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)light).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)light).Substring(4, 2), NumberStyles.HexNumber));
-                        }
-                        if (tmp.TryGetPropertyValue("dark", out var dark))
-                        {
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(0, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(2, 2), NumberStyles.HexNumber));
-                            writer.WriteByte(byte.Parse(((string)dark).Substring(4, 2), NumberStyles.HexNumber));
-                        }
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 6);
+
+                        frame = frames[0].AsObject();
+                        var light = Convert.FromHexString((string)frame["light"]);
+                        var dark = Convert.FromHexString((string)frame["dark"]);
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.Write(light[0]); writer.Write(light[1]); writer.Write(light[2]);
+                        writer.Write(dark[0]); writer.Write(dark[1]); writer.Write(dark[2]);
                         for (int i = 1; i < frames.Count; i++)
                         {
-                            JsonObject o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                            if (tmp.TryGetPropertyValue("light", out var light1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)light1).Substring(4, 2), NumberStyles.HexNumber));
-                            }
-                            if (tmp.TryGetPropertyValue("dark", out var dark1))
-                            {
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(0, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(2, 2), NumberStyles.HexNumber));
-                                writer.WriteByte(byte.Parse(((string)dark1).Substring(4, 2), NumberStyles.HexNumber));
-                            }
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            light = Convert.FromHexString((string)frame["light"]);
+                            dark = Convert.FromHexString((string)frame["dark"]);
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.Write(light[0]); writer.Write(light[1]); writer.Write(light[2]);
+                            writer.Write(dark[0]); writer.Write(dark[1]); writer.Write(dark[2]);
+                            WriteCurve(frames[i - 1].AsObject(), 6);
                         }
                     }
                     else if (type == "alpha")
                     {
-                        writer.WriteByte(SkeletonBinary.SLOT_ALPHA);
+                        writer.WriteUByte(SkeletonBinary.SLOT_ALPHA);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        tmp = frames[0].AsObject();
-                        if (tmp.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                        if (tmp.TryGetPropertyValue("value", out var value)) writer.WriteFloat((float)value); else writer.WriteFloat(1);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        frame = frames[0].AsObject();
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.Write((byte)((float)(frame["value"] ?? 1f) * 255));
+                        if (frame.TryGetPropertyValue("value", out var value)) writer.WriteFloat((float)value); else writer.WriteFloat(1);
                         for (int i = 1; i < frames.Count; i++)
                         {
-                            JsonObject o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("value", out var value1)) writer.WriteFloat((float)value1); else writer.WriteFloat(1);
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.Write((byte)((float)(frame["value"] ?? 1f) * 255));
+                            WriteCurve(frames[i - 1].AsObject(), 1);
                         }
                     }
                 }
+            }
+        }
+
+        private void WriteCurve(JsonObject frame, int n)
+        {
+            if (frame["curve"] is JsonNode curve)
+            {
+                if (curve.GetValueKind() == JsonValueKind.String)
+                {
+                    writer.WriteByte(SkeletonBinary.CURVE_STEPPED);
+                }
+                else
+                {
+                    writer.WriteByte(SkeletonBinary.CURVE_BEZIER);
+                    WriteFloatArray(curve.AsArray(), n * 4);
+                }
+            }
+            else
+            {
+                writer.WriteByte(SkeletonBinary.CURVE_LINEAR);
             }
         }
 
@@ -2264,210 +1954,163 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     {
                         writer.WriteByte(SkeletonBinary.BONE_INHERIT);
                         writer.WriteVarInt(frames.Count);
-                        foreach (JsonObject frame in frames)
+                        foreach (JsonObject o in frames)
                         {
-                            if (frame.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0f);
-                            if (frame.TryGetPropertyValue("inherit", out var inherit)) writer.WriteByte((byte)Enum.Parse<Inherit>((string)inherit, true)); else writer.WriteByte((byte)Inherit.Normal);
+                            writer.WriteFloat((float)(o["time"] ?? 0f));
+                            writer.WriteByte((byte)Enum.Parse<Inherit>((string)(o["inherit"] ?? "normal"), true));
                         }
                         continue;
                     }
-                    //writer.WriteVarInt(2);//bezierCount
-                    //if (type == "translate" || type == "scale" || type == "shear") writer.WriteVarInt(3); else writer.WriteVarInt(2);
+                    
                     if (type == "rotate")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_ROTATE);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                     else if (type == "translate")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_TRANSLATE);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 2);
-                        JsonObject o = frames[0].AsObject();
-                        if (o.TryGetPropertyValue("time", out var _time)) writer.WriteFloat((float)_time); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("x", out var _x)) writer.WriteFloat((float)_x); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("y", out var _y)) writer.WriteFloat((float)_y); else writer.WriteFloat(0);
-                        for (int i = 1; i < frames.Count; i++)
-                        {
-                            o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var _time1)) writer.WriteFloat((float)_time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("x", out var _x1)) writer.WriteFloat((float)_x1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("y", out var _y1)) writer.WriteFloat((float)_y1); else writer.WriteFloat(0);
-                            WriteCurve(frames[i - 1].AsObject());
-                        }
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 2);
+                        WriteCurveFrames(frames, frames.Count, "x", 0, "y", 0);
                     }
                     else if (type == "translatex")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_TRANSLATEX);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                     else if (type == "translatey")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_TRANSLATEY);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
 
                     else if (type == "scale")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SCALE);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 2);
-                        JsonObject o = frames[0].AsObject();
-                        if (o.TryGetPropertyValue("time", out var _time)) writer.WriteFloat((float)_time); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("x", out var _x)) writer.WriteFloat((float)_x); else writer.WriteFloat(1);
-                        if (o.TryGetPropertyValue("y", out var _y)) writer.WriteFloat((float)_y); else writer.WriteFloat(1);
-                        for (int i = 1; i < frames.Count; i++)
-                        {
-                            o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var _time1)) writer.WriteFloat((float)_time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("x", out var _x1)) writer.WriteFloat((float)_x1); else writer.WriteFloat(1);
-                            if (o.TryGetPropertyValue("y", out var _y1)) writer.WriteFloat((float)_y1); else writer.WriteFloat(1);
-                            WriteCurve(frames[i - 1].AsObject());
-                        }
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 2);
+                        WriteCurveFrames(frames, frames.Count, "x", 1, "y", 1);
                     }
                     else if (type == "scalex")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SCALEX);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 1);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 1);
                     }
                     else if (type == "scaley")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SCALEY);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 1);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 1);
                     }
                     else if (type == "shear")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SHEAR);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 2);
-                        JsonObject o = frames[0].AsObject();
-                        if (o.TryGetPropertyValue("time", out var _time)) writer.WriteFloat((float)_time); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("x", out var _x)) writer.WriteFloat((float)_x); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("y", out var _y)) writer.WriteFloat((float)_y); else writer.WriteFloat(0);
-                        for (int i = 1; i < frames.Count; i++)
-                        {
-                            o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var _time1)) writer.WriteFloat((float)_time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("x", out var _x1)) writer.WriteFloat((float)_x1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("y", out var _y1)) writer.WriteFloat((float)_y1); else writer.WriteFloat(0);
-                            WriteCurve(frames[i - 1].AsObject());
-                        }
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 2);
+                        WriteCurveFrames(frames, frames.Count, "x", 0, "y", 0);
                     }
                     else if (type == "shearx")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SHEARX);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                     else if (type == "sheary")
                     {
                         writer.WriteByte(SkeletonBinary.BONE_SHEARY);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                 }
             }
         }
 
+        private void WriteCurveFrames(JsonArray frames, int frameCount, string name1, float def1)
+        {
+            JsonObject frame = frames[0].AsObject();
+            writer.WriteFloat((float)(frame["time"] ?? 0f));
+            writer.WriteFloat((float)(frame[name1] ?? def1));
+            for (int frameIdx = 1; frameIdx < frameCount; frameIdx++)
+            {
+                frame = frames[frameIdx].AsObject();
+                writer.WriteFloat((float)(frame["time"] ?? 0f));
+                writer.WriteFloat((float)(frame[name1] ?? def1));
+                WriteCurve(frames[frameIdx - 1].AsObject(), 1);
+            }
+        }
+
+        private void WriteCurveFrames(JsonArray frames, int frameCount, string name1, float def1, string name2, float def2)
+        {
+            JsonObject frame = frames[0].AsObject();
+            writer.WriteFloat((float)(frame["time"] ?? 0f));
+            writer.WriteFloat((float)(frame[name1] ?? def1));
+            writer.WriteFloat((float)(frame[name2] ?? def2));
+            for (int frameIdx = 1; frameIdx < frameCount; frameIdx++)
+            {
+                frame = frames[frameIdx].AsObject();
+                writer.WriteFloat((float)(frame["time"] ?? 0f));
+                writer.WriteFloat((float)(frame[name1] ?? def1));
+                writer.WriteFloat((float)(frame[name2] ?? def2));
+                WriteCurve(frames[frameIdx - 1].AsObject(), 2);
+            }
+        }
+
         private void WriteIKTimelines(JsonObject ikTimelines)
         {
-
             writer.WriteVarInt(ikTimelines.Count);
             foreach (var (name, _frames) in ikTimelines)
             {
                 JsonArray frames = _frames.AsArray();
                 writer.WriteVarInt(ik2idx[name]);
                 writer.WriteVarInt(frames.Count);
-                writer.WriteVarInt(GetBezierCount(frames) * 2);
+                writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 2);
 
-                JsonObject o = frames[0].AsObject();
+                int flags = 0;
+                JsonObject frame = frames[0].AsObject();
+                if (frame["mix"] is JsonValue) flags |= 1 + 2;
+                if (frame["softness"] is JsonValue) flags |= 4;
+                if ((bool)(frame["bendPositive"] ?? true)) flags |= 8;
+                if ((bool)(frame["compress"] ?? true)) flags |= 16;
+                if ((bool)(frame["stretch"] ?? false)) flags |= 32;
 
-                int flag = 0;
-                if (o.TryGetPropertyValue("mix", out var mix))
-                {
-                    if (Math.Abs((float)mix) > 1e-5)//mix != 0
-                    {
-                        flag |= 1;
-                        if (Math.Abs((float)mix - 1f) > 1e-5)//mix != 1
-                            flag |= 2;
-                    }
-                }
-                else flag |= 1;//默认是1
-                if (o.TryGetPropertyValue("softness", out var softness))
-                {
-                    if (Math.Abs((float)softness) > 1e-5)
-                        flag |= 4;
-                }
-                if (o.TryGetPropertyValue("bendPositive", out var bendPositive) && (bool)bendPositive) flag |= 8;
-                else flag |= 8;//默认是True
-                if (o.TryGetPropertyValue("compress", out var compress) && (bool)compress) flag |= 16;
-                if (o.TryGetPropertyValue("stretch", out var stretch) && (bool)stretch) flag |= 32;
-
-                writer.Write(flag);
-                if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                if ((flag & 1) != 0 && (flag & 2) != 0)
-                {
-                    if (o.TryGetPropertyValue("mix", out var mix1)) writer.WriteFloat((float)mix1); else writer.WriteFloat(1);
-                }
-                if ((flag & 4) != 0)
-                {
-                    if (o.TryGetPropertyValue("softness", out var softness1)) writer.WriteFloat((float)softness1); else writer.WriteFloat(0);
-                }
-
+                writer.Write((byte)flags);
+                writer.WriteFloat((float)(frame["time"] ?? 0f));
+                if ((flags & (1 + 2)) != 0) writer.WriteFloat((float)frame["mix"]);
+                if ((flags & 4) != 0) writer.WriteFloat((float)frame["softness"]);
 
                 for (int i = 1; i < frames.Count; i++)
                 {
-                    o = frames[i].AsObject();
-                    flag = 0;
-                    if (o.TryGetPropertyValue("mix", out var mix1))
+                    flags = 0;
+                    frame = frames[i].AsObject();
+                    if (frame["mix"] is JsonValue) flags |= 1 + 2;
+                    if (frame["softness"] is JsonValue) flags |= 4;
+                    if ((bool)(frame["bendPositive"] ?? true)) flags |= 8;
+                    if ((bool)(frame["compress"] ?? true)) flags |= 16;
+                    if ((bool)(frame["stretch"] ?? false)) flags |= 32;
+
+                    if (frames[i - 1]["curve"] is JsonNode curve)
                     {
-                        if (Math.Abs((float)mix1) > 1e-5)
-                        {
-                            flag |= 1;
-                            if (Math.Abs((float)mix1 - 1f) > 1e-5)
-                                flag |= 2;
-                        }
+                        if (curve.GetValueKind() == JsonValueKind.String) flags |= 64;
+                        else if (curve.GetValueKind() == JsonValueKind.Array) flags |= 128;
                     }
-                    else flag |= 1;
-                    if (o.TryGetPropertyValue("softness", out var softness1))
-                    {
-                        if (Math.Abs((float)softness1) > 1e-5)
-                            flag |= 4;
-                    }
-                    if (o.TryGetPropertyValue("bendPositive", out var bendPositive1) && (bool)bendPositive1) flag |= 8;
-                    else flag |= 8;//默认是True
-                    if (o.TryGetPropertyValue("compress", out var compress1) && (bool)compress1) flag |= 16;
-                    if (o.TryGetPropertyValue("stretch", out var stretch1) && (bool)stretch1) flag |= 32;
-                    //当前元素的curve由后一个元素的flag控制
-                    JsonObject o2 = frames[i - 1].AsObject();
-                    if (o2.TryGetPropertyValue("curve", out var curve))
-                    {
-                        if (curve.GetValueKind() == JsonValueKind.String) flag |= 64;
-                        else if (curve.GetValueKind() == JsonValueKind.Array) flag |= 128;
-                    }
-                    writer.Write(flag);
-                    if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                    if ((flag & 1) != 0 && (flag & 2) != 0)
-                    {
-                        if (o.TryGetPropertyValue("mix", out var mix2)) writer.WriteFloat((float)mix2); else writer.WriteFloat(1);
-                    }
-                    if ((flag & 4) != 0)
-                    {
-                        if (o.TryGetPropertyValue("softness", out var softness2)) writer.WriteFloat((float)softness2); else writer.WriteFloat(0);
-                    }
-                    WriteCurveWithoutType(frames[i - 1].AsObject());
+
+                    writer.Write((byte)flags);
+                    writer.WriteFloat((float)(frame["time"] ?? 0f));
+                    if ((flags & (1 + 2)) != 0) writer.WriteFloat((float)frame["mix"]);
+                    if ((flags & 4) != 0) writer.WriteFloat((float)frame["softness"]);
+                    if ((flags & 128) != 0) WriteFloatArray(frames[i - 1]["curve"].AsArray(), 8);
                 }
             }
         }
@@ -2480,43 +2123,27 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonArray frames = _frames.AsArray();
                 writer.WriteVarInt(transform2idx[name]);
                 writer.WriteVarInt(frames.Count);
-                writer.WriteVarInt(GetBezierCount(frames) * 6);
+                writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 6);
 
-                JsonObject o = frames[0].AsObject();
-                if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                if (o.TryGetPropertyValue("mixRotate", out var mixRotate)) writer.WriteFloat((float)mixRotate); else writer.WriteFloat(1);
-                if (o.TryGetPropertyValue("mixX", out var mixX)) writer.WriteFloat((float)mixX); else writer.WriteFloat(1);
-                if (o.TryGetPropertyValue("mixY", out var mixY)) writer.WriteFloat((float)mixY);
-                else
-                {
-                    if (o.TryGetPropertyValue("mixX", out var mixX1)) writer.WriteFloat((float)mixX1); else writer.WriteFloat(1);
-                }
-                if (o.TryGetPropertyValue("mixScaleX", out var mixScaleX)) writer.WriteFloat((float)mixScaleX); else writer.WriteFloat(1);
-                if (o.TryGetPropertyValue("mixScaleY", out var mixScaleY)) writer.WriteFloat((float)mixScaleY);
-                else
-                {
-                    if (o.TryGetPropertyValue("mixScaleX", out var mixScaleX1)) writer.WriteFloat((float)mixScaleX1); else writer.WriteFloat(1);
-                }
-                if (o.TryGetPropertyValue("mixShearY", out var mixShearY)) writer.WriteFloat((float)mixShearY); else writer.WriteFloat(1);
+                JsonObject frame = frames[0].AsObject();
+                writer.WriteFloat((float)(frame["time"] ?? 0f));
+                writer.WriteFloat((float)(frame["mixRotate"] ?? 1f));
+                writer.WriteFloat((float)(frame["mixX"] ?? 1f));
+                writer.WriteFloat((float)(frame["mixY"] ?? frame["mixX"] ?? 1f));
+                writer.WriteFloat((float)(frame["mixScaleX"] ?? 1f));
+                writer.WriteFloat((float)(frame["mixScaleY"] ?? frame["mixScaleX"] ?? 1f));
+                writer.WriteFloat((float)(frame["mixShearY"] ?? 1f));
                 for (int i = 1; i < frames.Count; i++)
                 {
-                    o = frames[i].AsObject();
-                    if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                    if (o.TryGetPropertyValue("mixRotate", out var mixRotate1)) writer.WriteFloat((float)mixRotate1); else writer.WriteFloat(1);
-                    if (o.TryGetPropertyValue("mixX", out var mixX1)) writer.WriteFloat((float)mixX1); else writer.WriteFloat(1);
-                    if (o.TryGetPropertyValue("mixY", out var mixY2)) writer.WriteFloat((float)mixY2);
-                    else
-                    {
-                        if (o.TryGetPropertyValue("mixX", out var mixX3)) writer.WriteFloat((float)mixX3); else writer.WriteFloat(1);
-                    }
-                    if (o.TryGetPropertyValue("mixScaleX", out var mixScaleX1)) writer.WriteFloat((float)mixScaleX1); else writer.WriteFloat(1);
-                    if (o.TryGetPropertyValue("mixScaleY", out var mixScaleY1)) writer.WriteFloat((float)mixScaleY1);
-                    else
-                    {
-                        if (o.TryGetPropertyValue("mixScaleX", out var mixScaleX2)) writer.WriteFloat((float)mixScaleX2); else writer.WriteFloat(1);
-                    }
-                    if (o.TryGetPropertyValue("mixShearY", out var mixShearY1)) writer.WriteFloat((float)mixShearY1); else writer.WriteFloat(1);
-                    WriteCurve(frames[i - 1].AsObject());
+                    frame = frames[i].AsObject();
+                    writer.WriteFloat((float)(frame["time"] ?? 0f));
+                    writer.WriteFloat((float)(frame["mixRotate"] ?? 1f));
+                    writer.WriteFloat((float)(frame["mixX"] ?? 1f));
+                    writer.WriteFloat((float)(frame["mixY"] ?? frame["mixX"] ?? 1f));
+                    writer.WriteFloat((float)(frame["mixScaleX"] ?? 1f));
+                    writer.WriteFloat((float)(frame["mixScaleY"] ?? frame["mixScaleX"] ?? 1f));
+                    writer.WriteFloat((float)(frame["mixShearY"] ?? 1f));
+                    WriteCurve(frames[i - 1].AsObject(), 6);
                 }
             }
         }
@@ -2536,43 +2163,35 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     {
                         writer.WriteByte(SkeletonBinary.PATH_POSITION);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                     else if (type == "spacing")
                     {
                         writer.WriteByte(SkeletonBinary.PATH_SPACING);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames));
-                        WriteTimeline2(frames, 0);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                        WriteCurveFrames(frames, frames.Count, "value", 0);
                     }
                     else if (type == "mix")
                     {
                         writer.WriteByte(SkeletonBinary.PATH_MIX);
                         writer.WriteVarInt(frames.Count);
-                        writer.WriteVarInt(GetBezierCount(frames) * 3);
+                        writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count() * 3);
 
-                        JsonObject o = frames[0].AsObject();
-                        if (o.TryGetPropertyValue("time", out var _time)) writer.WriteFloat((float)_time); else writer.WriteFloat(0);
-                        if (o.TryGetPropertyValue("mixRotate", out var _mixRotate)) writer.WriteFloat((float)_mixRotate); else writer.WriteFloat(1);
-                        if (o.TryGetPropertyValue("mixX", out var _mixX)) writer.WriteFloat((float)_mixX); else writer.WriteFloat(1);
-                        if (o.TryGetPropertyValue("mixY", out var _mixY)) writer.WriteFloat((float)_mixY);
-                        else
-                        {
-                            if (o.TryGetPropertyValue("mixX", out var mixX1)) writer.WriteFloat((float)mixX1); else writer.WriteFloat(1);
-                        }
+                        JsonObject frame = frames[0].AsObject();
+                        writer.WriteFloat((float)(frame["time"] ?? 0f));
+                        writer.WriteFloat((float)(frame["mixRotate"] ?? 1f));
+                        writer.WriteFloat((float)(frame["mixX"] ?? 1f));
+                        writer.WriteFloat((float)(frame["mixY"] ?? frame["mixX"] ?? 1f));
                         for (int i = 1; i < frames.Count; i++)
                         {
-                            o = frames[i].AsObject();
-                            if (o.TryGetPropertyValue("time", out var _time1)) writer.WriteFloat((float)_time1); else writer.WriteFloat(0);
-                            if (o.TryGetPropertyValue("mixRotate", out var _mixRotate1)) writer.WriteFloat((float)_mixRotate1); else writer.WriteFloat(1);
-                            if (o.TryGetPropertyValue("mixX", out var _mixX1)) writer.WriteFloat((float)_mixX1); else writer.WriteFloat(1);
-                            if (o.TryGetPropertyValue("mixY", out var _mixY1)) writer.WriteFloat((float)_mixY1);
-                            else
-                            {
-                                if (o.TryGetPropertyValue("mixX", out var mixX1)) writer.WriteFloat((float)mixX1); else writer.WriteFloat(1);
-                            }
-                            WriteCurve(frames[i - 1].AsObject());
+                            frame = frames[i].AsObject();
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
+                            writer.WriteFloat((float)(frame["mixRotate"] ?? 1f));
+                            writer.WriteFloat((float)(frame["mixX"] ?? 1f));
+                            writer.WriteFloat((float)(frame["mixY"] ?? frame["mixX"] ?? 1f));
+                            WriteCurve(frames[i - 1].AsObject(), 3);
                         }
                     }
                 }
@@ -2585,8 +2204,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             foreach (var (name, _timeline) in physicsTimelines)
             {
                 JsonObject timeline = _timeline.AsObject();
-                if (!string.IsNullOrEmpty(name)) writer.WriteVarInt(physics2idx[name] + 1);
-                else writer.WriteVarInt(-1);//此处官方给的example中有一个样例的name是空的，在celestial-circus-pro.json的第3266行.
+                if (!string.IsNullOrEmpty(name)) writer.WriteVarInt(physics2idx[name] + 1); else writer.WriteVarInt(0); // -1 表示应用到全部
 
                 writer.WriteVarInt(timeline.Count);
                 foreach (var (type, _frames) in timeline)
@@ -2594,141 +2212,116 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     JsonArray frames = _frames.AsArray();
                     if (type == "reset")
                     {
-                        writer.WriteByte(SkeletonBinary.PHYSICS_RESET);
+                        writer.WriteUByte(SkeletonBinary.PHYSICS_RESET);
                         writer.WriteVarInt(frames.Count);
                         foreach (JsonObject frame in frames)
                         {
-                            if (frame.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
+                            writer.WriteFloat((float)(frame["time"] ?? 0f));
                         }
                         continue;
                     }
                     switch (type)
                     {
                         case "inertia":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_INERTIA);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_INERTIA);
                             break;
                         case "strength":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_STRENGTH);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_STRENGTH);
                             break;
                         case "damping":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_DAMPING);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_DAMPING);
                             break;
                         case "mass":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_MASS);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_MASS);
                             break;
                         case "wind":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_WIND);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_WIND);
                             break;
                         case "gravity":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_GRAVITY);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_GRAVITY);
                             break;
                         case "mix":
-                            writer.WriteByte(SkeletonBinary.PHYSICS_MIX);
+                            writer.WriteUByte(SkeletonBinary.PHYSICS_MIX);
                             break;
                     }
                     writer.WriteVarInt(frames.Count);
-                    writer.WriteVarInt(GetBezierCount(frames));
-                    WriteTimeline2(frames, 0);
+                    writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
+                    WriteCurveFrames(frames, frames.Count, "value", 0);
                 }
             }
         }
 
         private void WriteAttachmentTimelines(JsonObject attachmentTimelines)
         {
-            writer.WriteVarInt(attachmentTimelines.Count);//skinCount
-            foreach (var (skinName, _skin) in attachmentTimelines)
+            writer.WriteVarInt(attachmentTimelines.Count); // skinCount
+            foreach (var (skinName, _skinValue) in attachmentTimelines)
             {
-                JsonObject skin = _skin.AsObject();
+                JsonObject skinValue = _skinValue.AsObject();
                 writer.WriteVarInt(skin2idx[skinName]);
-                writer.WriteVarInt(skin.Count);//slotCount
-                foreach (var (slotName, _slot) in skin)
+                writer.WriteVarInt(skinValue.Count); // slotCount
+                foreach (var (slotName, _slotValue) in skinValue)
                 {
-                    JsonObject slot = _slot.AsObject();
+                    JsonObject slotValue = _slotValue.AsObject();
                     writer.WriteVarInt(slot2idx[slotName]);
-                    writer.WriteVarInt(slot.Count);//attachmentCount
-                    foreach (var (attachmentName, _attachment) in slot)
+                    writer.WriteVarInt(slotValue.Count); // attachmentCount
+                    foreach (var (attachmentName, timeline) in slotValue)
                     {
-                        //JsonArray frames = _attachment.AsArray();
                         writer.WriteStringRef(attachmentName);
-                        JsonObject o = [];
-                        JsonArray frames = [];
-                        foreach (var (key, value) in _attachment.AsObject())
+                        foreach (var (type, _frames) in timeline.AsObject())
                         {
-                            switch ((string)(key))
+                            JsonArray frames = _frames.AsArray();
+                            if (type == "deform")
                             {
-                                case "deform":
-                                    frames = value.AsArray();
-                                    writer.WriteByte(SkeletonBinary.ATTACHMENT_DEFORM);
-                                    writer.WriteVarInt(frames.Count);
-                                    writer.WriteVarInt(GetBezierCount(frames));
-                                    o = frames[0].AsObject();
-                                    if (o.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                                    if (o.TryGetPropertyValue("vertices", out var _vertices))
-                                    {
-                                        JsonArray vertices = _vertices.AsArray();
-                                        if (vertices.Count > 0)
-                                        {
-                                            int offset = 0;
-                                            if (o.TryGetPropertyValue("offset", out var offset1)) offset = (int)offset1;
-                                            writer.WriteVarInt(vertices.Count);
-                                            writer.WriteVarInt(offset);
-                                            foreach (var vertex in vertices)
-                                            {
-                                                writer.WriteFloat((float)vertex);
-                                            }
-                                        }
-                                        else writer.WriteVarInt(0);
-                                    }
-                                    else writer.WriteVarInt(0);
-                                    for (int i = 1; i < frames.Count; i++)
-                                    {
-                                        o = frames[i].AsObject();
-                                        if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                                        WriteCurve(frames[i - 1].AsObject());
-                                        if (o.TryGetPropertyValue("vertices", out var _vertices1))
-                                        {
-                                            JsonArray vertices = _vertices1.AsArray();
-                                            if (vertices.Count > 0)
-                                            {
-                                                int offset = 0;
-                                                if (o.TryGetPropertyValue("offset", out var offset1)) offset = (int)offset1;
-                                                writer.WriteVarInt(vertices.Count);
-                                                writer.WriteVarInt(offset);
-                                                foreach (var vertex in vertices)
-                                                {
-                                                    writer.WriteFloat((float)vertex);
-                                                }
-                                            }
-                                            else writer.WriteVarInt(0);
-                                        }
-                                        else writer.WriteVarInt(0);
-                                        //WriteCurve(frames[i - 1].AsObject());
-                                    }
-                                    break;
+                                JsonObject frame;
+                                writer.WriteUByte(SkeletonBinary.ATTACHMENT_DEFORM);
+                                writer.WriteVarInt(frames.Count);
+                                writer.WriteVarInt(frames.Where(it => it["curve"] is JsonArray).Count());
 
-                                case "sequence":
-                                    frames = value.AsArray();
-                                    writer.WriteByte(SkeletonBinary.ATTACHMENT_SEQUENCE);
-                                    writer.WriteVarInt(frames.Count);
-                                    float lastDelay = 0;
-                                    foreach (var frame in frames)
+                                frame = frames[0].AsObject();
+                                writer.WriteFloat((float)(frame["time"] ?? 0f));
+                                if (frame["vertices"] is JsonArray v0)
+                                {
+                                    var end = v0.Count;
+                                    writer.WriteVarInt(end);
+                                    if (end > 0)
                                     {
-                                        int mode = (int)SequenceMode.Hold;
-                                        int index = 0;
-                                        o = frame.AsObject();
-                                        if (o.TryGetPropertyValue("time", out var time1)) writer.WriteFloat((float)time1); else writer.WriteFloat(0);
-                                        if (o.TryGetPropertyValue("mode", out var mode1)) mode = (int)Enum.Parse<SequenceMode>((string)mode1, true);
-                                        if (o.TryGetPropertyValue("index", out var index1)) index = (int)index1;
-                                        writer.WriteInt(((index << 4) | (mode & 0xF)));
-                                        if (o.TryGetPropertyValue("delay", out var delay))
-                                        {
-                                            lastDelay = (float)delay;
-                                            writer.WriteFloat((float)delay);
-                                        }
-                                        else writer.WriteFloat(lastDelay);
+                                        writer.WriteVarInt((int)(frame["offset"] ?? 0));
+                                        WriteFloatArray(v0, end);
                                     }
+                                }
+                                for (int i = 1; i < frames.Count; i++)
+                                {
+                                    frame = frames[i].AsObject();
+                                    writer.WriteFloat((float)(frame["time"] ?? 0f));
+                                    if (frame["vertices"] is JsonArray vertices)
+                                    {
+                                        var end = vertices.Count;
+                                        writer.WriteVarInt(end);
+                                        if (end > 0)
+                                        {
+                                            writer.WriteVarInt((int)(frame["offset"] ?? 0));
+                                            WriteFloatArray(vertices, end);
+                                        }
+                                    }
+                                    WriteCurve(frames[i - 1].AsObject(), 1);
+                                }
+                            }
+                            else if (type == "sequence")
+                            {
+                                writer.WriteByte(SkeletonBinary.ATTACHMENT_SEQUENCE);
+                                writer.WriteVarInt(frames.Count);
 
-                                    break;
+                                float lastDelay = 0;
+                                int modeAndIndex = 0;
+                                foreach (JsonObject frame in frames)
+                                {
+                                    modeAndIndex = (int)Enum.Parse<SequenceMode>((string)(frame["mode"] ?? "hold"), true) & 0xf;
+                                    modeAndIndex |= (int)(frame["index"] ?? 0) << 4;
+                                    if (frame["delay"] is JsonValue delay) lastDelay = (float)delay;
+                                    writer.WriteFloat((float)(frame["time"] ?? 0f));
+                                    writer.WriteInt(modeAndIndex);
+                                    writer.WriteFloat(lastDelay);
+                                }
                             }
                         }
                     }
@@ -2741,10 +2334,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             writer.WriteVarInt(drawOrderTimelines.Count);
             foreach (JsonObject data in drawOrderTimelines)
             {
-                if (data.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("offsets", out var _offsets))
+                writer.WriteFloat((float)(data["time"] ?? 0f));
+                if (data["offsets"] is JsonArray offsets)
                 {
-                    JsonArray offsets = _offsets.AsArray();
                     writer.WriteVarInt(offsets.Count);
                     foreach (JsonObject o in offsets)
                     {
@@ -2764,31 +2356,15 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             foreach (JsonObject data in eventTimelines)
             {
                 JsonObject eventData = events[(string)data["name"]].AsObject();
-                if (data.TryGetPropertyValue("time", out var time)) writer.WriteFloat((float)time); else writer.WriteFloat(0);
+                writer.WriteFloat((float)(data["time"] ?? 0f));
                 writer.WriteVarInt(event2idx[(string)data["name"]]);
-                if (data.TryGetPropertyValue("int", out var @int)) writer.WriteVarInt((int)@int);
-                else
-                    if (eventData.TryGetPropertyValue("int", out var @int2)) writer.WriteVarInt((int)@int2); else writer.WriteVarInt(0);
-                if (data.TryGetPropertyValue("float", out var @float)) writer.WriteFloat((float)@float);
-                else
-                    if (eventData.TryGetPropertyValue("float", out var @float2)) writer.WriteFloat((float)@float2); else writer.WriteFloat(0);
-                if (data.TryGetPropertyValue("string", out var @string))
-                {
-                    writer.WriteString((string)@string);
-                }
-                else
-                {
-                    writer.WriteString((string)eventData["string"]);
-                }
-
+                writer.WriteVarInt((int)(data["int"] ?? eventData["int"] ?? 0));
+                writer.WriteFloat((float)(data["float"] ?? eventData["float"] ?? 0f));
+                writer.WriteString((string)(data["string"] ?? eventData["string"]));
                 if (eventData.ContainsKey("audio"))
                 {
-                    if (data.TryGetPropertyValue("volume", out var volume)) writer.WriteFloat((float)volume);
-                    else
-                        if (eventData.TryGetPropertyValue("volume", out var volume2)) writer.WriteFloat((float)volume2); else writer.WriteFloat(1);
-                    if (data.TryGetPropertyValue("balance", out var balance)) writer.WriteFloat((float)balance);
-                    else
-                        if (eventData.TryGetPropertyValue("balance", out var balance2)) writer.WriteFloat((float)balance2); else writer.WriteFloat(0);
+                    writer.WriteFloat((float)(data["volume"] ?? eventData["volume"] ?? 1f));
+                    writer.WriteFloat((float)(data["balance"] ?? eventData["balance"] ?? 0f));
                 }
             }
         }
@@ -2805,28 +2381,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             for (int i = 0; i < n; i++)
                 writer.WriteFloat((float)array[i]);
         }
-        public void WriteFloatArray(JsonArray array)
+
+        public void WriteShortArray(JsonArray array, int n)
         {
-            foreach (var i in array)
-            {
-                writer.WriteFloat((float)i);
-            }
+            for (int i = 0; i < n; i++)
+                writer.WriteVarInt((int)array[i]);
         }
 
-        public void WriteShortArray(JsonArray array)
+        private void WriteVertices(JsonArray vertices, int vertexCount, bool weighted)
         {
-            foreach (var i in array)
-            {
-                writer.WriteVarInt((int)i);
-            }
-        }
-
-        private void WriteVertices(JsonArray vertices, int vertexCount, bool flag)
-        {
-
-            bool hasWeight = vertices.Count != (vertexCount << 1);
-            //writer.WriteBoolean(hasWeight);
-            if (!flag)
+            if (!weighted)
             {
                 WriteFloatArray(vertices, vertexCount << 1);
             }
@@ -2848,88 +2412,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
         }
 
-        private void WriteTimeline2(JsonArray frames, float defaultValue)
-        {
-            JsonObject o = frames[0].AsObject();
-            if (o.TryGetPropertyValue("time", out var _time)) writer.WriteFloat((float)_time); else writer.WriteFloat(0);
-            if (o.TryGetPropertyValue("value", out var _value)) writer.WriteFloat((float)_value); else writer.WriteFloat(defaultValue);
-            for (int i = 1; i < frames.Count; i++)
-            {
-                o = frames[i].AsObject();
-                if (o.TryGetPropertyValue("time", out var _time1)) writer.WriteFloat((float)_time1); else writer.WriteFloat(0);
-                if (o.TryGetPropertyValue("value", out var _value1)) writer.WriteFloat((float)_value1); else writer.WriteFloat(defaultValue);
-                WriteCurve(frames[i - 1].AsObject());
-            }
-        }
-        private void WriteCurve(JsonObject obj)
-        {
-            if (obj.TryGetPropertyValue("curve", out var curve))
-            {
-                if (curve.GetValueKind() == JsonValueKind.String)
-                {
-                    writer.WriteByte(SkeletonBinary.CURVE_STEPPED);
-                }
-                else
-                {
-                    writer.WriteByte(SkeletonBinary.CURVE_BEZIER);
-                    foreach (var c in curve.AsArray())
-                    {
-                        writer.WriteFloat((float)c);
-                    }
-                }
-            }
-            else
-            {
-                writer.WriteByte(SkeletonBinary.CURVE_LINEAR);
-            }
-        }
-        private void WriteCurveWithoutType(JsonObject obj)
-        {
-            if (obj.TryGetPropertyValue("curve", out var curve) && curve.GetValueKind() == JsonValueKind.Array)
-            {
-                foreach (var c in curve.AsArray())
-                {
-                    writer.WriteFloat((float)c);
-                }
-            }
-        }
-
-        private int GetBezierCount(JsonArray frames)
-        {
-            int bezierCount = 0;
-            foreach (JsonObject frame in frames)
-            {
-                if (frame.TryGetPropertyValue("curve", out var curveValue) && curveValue is JsonArray)
-                    bezierCount++;
-            }
-            return bezierCount;
-        }
-        private void WriteSequence(JsonArray sequence)
-        {
-            if (sequence.Contains("count")) writer.WriteVarInt((int)sequence["count"]); else writer.WriteVarInt(0);
-            if (sequence.Contains("start")) writer.WriteVarInt((int)sequence["start"]); else writer.WriteVarInt(0);
-            if (sequence.Contains("digits")) writer.WriteVarInt((int)sequence["digits"]); else writer.WriteVarInt(0);
-            if (sequence.Contains("setup")) writer.WriteVarInt((int)sequence["setup"]); else writer.WriteVarInt(0);
-        }
-        public override JsonObject ReadJson(string jsonPath)
-        {
-            // replace 3.8.75 to another version to avoid detection in official runtime
-            var root = base.ReadJson(jsonPath);
-            var skeleton = root["skeleton"].AsObject();
-            var version = (string)skeleton["spine"];
-            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
-            return root;
-        }
-
-        public override void WriteJson(JsonObject root, string jsonPath)
-        {
-            // replace 3.8.75 to another version to avoid detection in official runtime
-            var skeleton = root["skeleton"].AsObject();
-            var version = (string)skeleton["spine"];
-            if (version == "3.8.75") skeleton["spine"] = "3.8.76";
-            base.WriteJson(root, jsonPath);
-        }
-
         public override JsonObject ToVersion(JsonObject root, SpineVersion version)
         {
             root = version switch
@@ -2939,8 +2421,5 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             };
             return root;
         }
-
-
-
     }
 }
