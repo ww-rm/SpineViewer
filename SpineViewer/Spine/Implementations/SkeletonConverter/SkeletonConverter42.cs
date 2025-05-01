@@ -1257,17 +1257,17 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             JsonObject skeleton = root["skeleton"].AsObject();
             writer.WriteLong(long.Parse(Convert.ToHexString(Convert.FromBase64String(skeleton["hash"] + "=")), NumberStyles.HexNumber));
             writer.WriteString((string)skeleton["spine"]);
-            if (skeleton["x"] is JsonValue x) writer.WriteFloat((float)x); else writer.WriteFloat(0);
-            if (skeleton["y"] is JsonValue y) writer.WriteFloat((float)y); else writer.WriteFloat(0);
-            if (skeleton["width"] is JsonValue width) writer.WriteFloat((float)width); else writer.WriteFloat(0);
-            if (skeleton["height"] is JsonValue height) writer.WriteFloat((float)height); else writer.WriteFloat(0);
-            if (skeleton["referenceScale"] is JsonValue referenceScale) writer.WriteFloat((float)referenceScale); else writer.WriteFloat(100);
+            writer.WriteFloat((float)(skeleton["x"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["y"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["width"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["height"] ?? 0f));
+            writer.WriteFloat((float)(skeleton["referenceScale"] ?? 100f));
             writer.WriteBoolean(nonessential);
             if (nonessential)
             {
-                if (skeleton["fps"] is JsonValue fps) writer.WriteFloat((float)fps); else writer.WriteFloat(30);
-                if (skeleton["images"] is JsonValue images) writer.WriteString((string)images); else writer.WriteString(null);
-                if (skeleton["audio"] is JsonValue audio) writer.WriteString((string)audio); else writer.WriteString(null);
+                writer.WriteFloat((float)(skeleton["fps"] ?? 30f));
+                writer.WriteString((string)skeleton["images"]);
+                writer.WriteString((string)skeleton["audio"]);
             }
         }
 
@@ -1293,16 +1293,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)data["name"];
                 writer.WriteString(name);
                 if (i > 0) writer.WriteVarInt(bone2idx[(string)data["parent"]]);
-                if (data["rotation"] is JsonValue rotation) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
-                if (data["x"] is JsonValue x) writer.WriteFloat((float)x); else writer.WriteFloat(0);
-                if (data["y"] is JsonValue y) writer.WriteFloat((float)y); else writer.WriteFloat(0);
-                if (data["scaleX"] is JsonValue scaleX) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
-                if (data["scaleY"] is JsonValue scaleY) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
-                if (data["shearX"] is JsonValue shearX) writer.WriteFloat((float)shearX); else writer.WriteFloat(0);
-                if (data["shearY"] is JsonValue shearY) writer.WriteFloat((float)shearY); else writer.WriteFloat(0);
-                if (data["length"] is JsonValue length) writer.WriteFloat((float)length); else writer.WriteFloat(0);
-                if (data["inherit"] is JsonValue inherit) writer.WriteVarInt((int)Enum.Parse<Inherit>((string)inherit, true)); else writer.WriteVarInt((int)Inherit.Normal);
-                if (data["skin"] is JsonValue skin) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                writer.WriteFloat((float)(data["rotation"] ?? 0f));
+                writer.WriteFloat((float)(data["x"] ?? 0f));
+                writer.WriteFloat((float)(data["y"] ?? 0f));
+                writer.WriteFloat((float)(data["scaleX"] ?? 1f));
+                writer.WriteFloat((float)(data["scaleY"] ?? 1f));
+                writer.WriteFloat((float)(data["shearX"] ?? 0f));
+                writer.WriteFloat((float)(data["shearY"] ?? 0f));
+                writer.WriteFloat((float)(data["length"] ?? 0f));
+                writer.WriteVarInt((int)Enum.Parse<Inherit>((string)(data["inherit"] ?? "normal"), true));
+                writer.WriteBoolean((bool)(data["skin"] ?? false));
                 if (nonessential)
                 {
                     writer.WriteInt(0);
@@ -1328,10 +1328,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 var name = (string)data["name"];
                 writer.WriteString(name);
                 writer.WriteVarInt(bone2idx[(string)data["bone"]]);
-                if (data["color"] is JsonValue color) writer.WriteInt(int.Parse((string)color, NumberStyles.HexNumber)); else writer.WriteInt(-1); // 默认值是全 255
-                if (data["dark"] is JsonValue dark) writer.WriteInt(int.Parse((string)dark, NumberStyles.HexNumber)); else writer.WriteInt(-1);
-                if (data["attachment"] is JsonValue attachment) writer.WriteStringRef((string)attachment); else writer.WriteStringRef(null);
-                if (data["blend"] is JsonValue blend) writer.WriteVarInt((int)Enum.Parse<BlendMode>((string)blend, true)); else writer.WriteVarInt((int)BlendMode.Normal);
+                writer.WriteInt(int.Parse((string)(data["color"] ?? "ffffffff"), NumberStyles.HexNumber));
+                writer.WriteInt(int.Parse((string)(data["dark"] ?? "ffffff"), NumberStyles.HexNumber));
+                writer.WriteStringRef((string)data["attachment"]);
+                writer.WriteVarInt((int)Enum.Parse<BlendMode>((string)(data["blend"] ?? "normal"), true));
                 if (nonessential) writer.WriteBoolean(false);
                 slot2idx[name] = i;
             }
@@ -1351,7 +1351,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = ik[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                writer.WriteVarInt((int)(data["order"] ?? 0));
                 if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
 
@@ -1384,7 +1384,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = transform[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
+                writer.WriteVarInt((int)(data["order"] ?? 0));
                 if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(bone2idx[(string)data["target"]]);
 
@@ -1438,8 +1438,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = path[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                if (data["skin"] is JsonValue skin) writer.WriteBoolean((bool)skin); else writer.WriteBoolean(false);
+                writer.WriteVarInt((int)(data["order"] ?? 0));
+                writer.WriteBoolean((bool)(data["skin"] ?? false));
                 if (data["bones"] is JsonArray bones) WriteNames(bone2idx, bones); else writer.WriteVarInt(0);
                 writer.WriteVarInt(slot2idx[(string)data["target"]]);
 
@@ -1454,11 +1454,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 writer.WriteByte((byte)flags);
                 if ((flags & 128) != 0) writer.WriteFloat((float)data["rotation"]);
 
-                if (data["position"] is JsonValue position) writer.WriteFloat((float)position); else writer.WriteFloat(0);
-                if (data["spacing"] is JsonValue spacing) writer.WriteFloat((float)spacing); else writer.WriteFloat(0);
-                if (data["mixRotate"] is JsonValue mixRotate) writer.WriteFloat((float)mixRotate); else writer.WriteFloat(1);
-                if (data["mixX"] is JsonValue mixX) writer.WriteFloat((float)mixX); else writer.WriteFloat(1);
-                if (data["mixY"] is JsonValue mixY) writer.WriteFloat((float)mixY); else if (data["mixX"] is JsonValue mixX2) writer.WriteFloat((float)mixX2); else writer.WriteFloat(1);
+                writer.WriteFloat((float)(data["position"] ?? 0f));
+                writer.WriteFloat((float)(data["spacing"] ?? 0f));
+                writer.WriteFloat((float)(data["mixRotate"] ?? 1f));
+                writer.WriteFloat((float)(data["mixX"] ?? 1f));
+                writer.WriteFloat((float)(data["mixY"] ?? data["mixX"] ?? 1f));
                 path2idx[name] = i;
             }
         }
@@ -1477,8 +1477,8 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 JsonObject data = physics[i].AsObject();
                 var name = (string)data["name"];
                 writer.WriteString(name);
-                if (data["order"] is JsonValue order) writer.WriteVarInt((int)order); else writer.WriteVarInt(0);
-                if (data["bone"] is JsonValue bone) writer.WriteVarInt(bone2idx[(string)bone]); else writer.WriteVarInt(0);
+                writer.WriteVarInt((int)(data["order"] ?? 0));
+                writer.WriteVarInt(bone2idx[(string)data["bone"]]);
 
                 int flags = 0;
                 if (data["skin"] is JsonValue skin && (bool)skin) flags |= 1;
@@ -1496,13 +1496,13 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 if ((flags & 16) != 0) writer.WriteFloat((float)data["scaleX"]);
                 if ((flags & 32) != 0) writer.WriteFloat((float)data["shearX"]);
                 if ((flags & 64) != 0) writer.WriteFloat((float)data["limit"]);
-                if (data["fps"] is JsonValue fps) writer.WriteByte((byte)(int)fps); else writer.WriteByte(60);
-                if (data["inertia"] is JsonValue inertia) writer.WriteFloat((float)inertia); else writer.WriteFloat(1);
-                if (data["strength"] is JsonValue strength) writer.WriteFloat((float)strength); else writer.WriteFloat(100);
-                if (data["damping"] is JsonValue damping) writer.WriteFloat((float)damping); else writer.WriteFloat(1);
+                writer.WriteByte((byte)(int)(data["fps"] ?? 60));
+                writer.WriteFloat((float)(data["inertia"] ?? 1f));
+                writer.WriteFloat((float)(data["strength"] ?? 100f));
+                writer.WriteFloat((float)(data["damping"] ?? 1f));
                 if ((flags & 128) != 0)  writer.WriteFloat(1f / (float)data["mass"]);
-                if (data["wind"] is JsonValue wind) writer.WriteFloat((float)wind); else writer.WriteFloat(0);
-                if (data["gravity"] is JsonValue gravity) writer.WriteFloat((float)gravity); else writer.WriteFloat(0);
+                writer.WriteFloat((float)(data["wind"] ?? 0f));
+                writer.WriteFloat((float)(data["gravity"] ?? 0f));
 
                 flags = 0;
                 if (data["inertiaGlobal"] is JsonValue inertiaGlobal && (bool)inertiaGlobal) flags |= 1;
@@ -1655,15 +1655,15 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
                     if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
                     if ((flags & 128) != 0) writer.WriteFloat((float)attachment["rotation"]);
-                    if (attachment["x"] is JsonValue x1) writer.WriteFloat((float)x1); else writer.WriteFloat(0);
-                    if (attachment["y"] is JsonValue y1) writer.WriteFloat((float)y1); else writer.WriteFloat(0);
-                    if (attachment["scaleX"] is JsonValue scaleX) writer.WriteFloat((float)scaleX); else writer.WriteFloat(1);
-                    if (attachment["scaleY"] is JsonValue scaleY) writer.WriteFloat((float)scaleY); else writer.WriteFloat(1);
-                    if (attachment["width"] is JsonValue width) writer.WriteFloat((float)width); else writer.WriteFloat(32);
-                    if (attachment["height"] is JsonValue height) writer.WriteFloat((float)height); else writer.WriteFloat(32);
+                    writer.WriteFloat((float)(attachment["x"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["y"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["scaleX"] ?? 1f));
+                    writer.WriteFloat((float)(attachment["scaleY"] ?? 1f));
+                    writer.WriteFloat((float)(attachment["width"] ?? 32f));
+                    writer.WriteFloat((float)(attachment["height"] ?? 32f));
                     break;
                 case AttachmentType.Boundingbox:
-                    if (attachment["vertexCount"] is JsonValue _vc1) vertexCount = (int)_vc1; else vertexCount = 0;
+                    vertexCount = (int)(attachment["vertexCount"] ?? 0);
                     writer.WriteVarInt(vertexCount);
                     WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 16) != 0);
                     if (nonessential) writer.WriteInt(0);
@@ -1672,7 +1672,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                     if ((flags & 16) != 0) writer.WriteStringRef((string)attachment["path"]);
                     if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
                     if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
-                    if (attachment["hull"] is JsonValue hull) writer.WriteVarInt((int)hull); else writer.WriteVarInt(0);
+                    writer.WriteVarInt((int)(attachment["hull"] ?? 0));
                     vertexCount = attachment["uvs"].AsArray().Count >> 1;
                     writer.WriteVarInt(vertexCount);
                     WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 128) != 0);
@@ -1685,38 +1685,38 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                             writer.WriteVarInt(edges.Count);
                             WriteShortArray(edges, edges.Count);
                         }
-                        if (attachment["width"] is JsonArray _width) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
-                        if (attachment["height"] is JsonArray _height) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
+                        writer.WriteFloat((float)(attachment["width"] ?? 0f));
+                        writer.WriteFloat((float)(attachment["height"] ?? 0f));
                     }
                     break;
                 case AttachmentType.Linkedmesh:
                     if ((flags & 16) != 0) writer.WriteStringRef((string)attachment["path"]);
                     if ((flags & 32) != 0) writer.WriteInt(int.Parse((string)attachment["color"], NumberStyles.HexNumber));
                     if ((flags & 64) != 0) WriteSequence(attachment["sequence"].AsObject());
-                    if (attachment["skin"] is JsonArray skin) writer.WriteVarInt(skin2idx[(string)skin]); else writer.WriteVarInt(0);
+                    if (attachment["skin"] is JsonValue skin) writer.WriteVarInt(skin2idx[(string)attachment["skin"]]); else writer.WriteVarInt(0); // XXX: 此处很抽象, json 里允许 skin 为 null, 但是二进制里一定是读取一个有效索引
                     if (attachment["parent"] is JsonValue parent) writer.WriteStringRef((string)parent); else writer.WriteStringRef(null);
                     if (nonessential)
                     {
-                        if (attachment["width"] is JsonArray _width) writer.WriteFloat((float)_width); else writer.WriteFloat(0);
-                        if (attachment["height"] is JsonArray _height) writer.WriteFloat((float)_height); else writer.WriteFloat(0);
+                        writer.WriteFloat((float)(attachment["width"] ?? 0f));
+                        writer.WriteFloat((float)(attachment["height"] ?? 0f));
                     }
                     break;
                 case AttachmentType.Path:
-                    if (attachment["vertexCount"] is JsonValue _vc2) vertexCount = (int)_vc2; else vertexCount = 0;
+                    vertexCount = (int)(attachment["vertexCount"] ?? 0);
                     writer.WriteVarInt(vertexCount);
                     WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 64) != 0);
                     WriteFloatArray(attachment["lengths"].AsArray(), vertexCount * 2 / 6);
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Point:
-                    if (attachment["rotation"] is JsonArray rotation) writer.WriteFloat((float)rotation); else writer.WriteFloat(0);
-                    if (attachment["x"] is JsonArray x2) writer.WriteFloat((float)x2); else writer.WriteFloat(0);
-                    if (attachment["y"] is JsonArray y2) writer.WriteFloat((float)y2); else writer.WriteFloat(0);
+                    writer.WriteFloat((float)(attachment["rotation"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["x"] ?? 0f));
+                    writer.WriteFloat((float)(attachment["y"] ?? 0f));
                     if (nonessential) writer.WriteInt(0);
                     break;
                 case AttachmentType.Clipping:
                     writer.WriteVarInt(slot2idx[(string)attachment["end"]]);
-                    if (attachment["vertexCount"] is JsonValue _vc3) vertexCount = (int)_vc3; else vertexCount = 0;
+                    vertexCount = (int)(attachment["vertexCount"] ?? 0);
                     writer.WriteVarInt(vertexCount);
                     WriteVertices(attachment["vertices"].AsArray(), vertexCount, (flags & 16) != 0);
                     if (nonessential) writer.WriteInt(0);
@@ -1729,9 +1729,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private void WriteSequence(JsonObject sequence)
         {
             writer.WriteVarInt((int)sequence["count"]);
-            if (sequence["start"] is JsonValue start) writer.WriteVarInt((int)start); else writer.WriteVarInt(1);
-            if (sequence["digits"] is JsonValue digits) writer.WriteVarInt((int)digits); else writer.WriteVarInt(0);
-            if (sequence["setup"] is JsonValue setup) writer.WriteVarInt((int)setup); else writer.WriteVarInt(0);
+            writer.WriteVarInt((int)(sequence["start"] ?? 1));
+            writer.WriteVarInt((int)(sequence["digits"] ?? 0));
+            writer.WriteVarInt((int)(sequence["setup"] ?? 0));
         }
 
         private void WriteEvents()
@@ -1906,7 +1906,6 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         frame = frames[0].AsObject();
                         writer.WriteFloat((float)(frame["time"] ?? 0f));
                         writer.Write((byte)((float)(frame["value"] ?? 1f) * 255));
-                        if (frame.TryGetPropertyValue("value", out var value)) writer.WriteFloat((float)value); else writer.WriteFloat(1);
                         for (int i = 1; i < frames.Count; i++)
                         {
                             frame = frames[i].AsObject();
