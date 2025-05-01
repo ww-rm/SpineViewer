@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.12.9
+
+- 修复由于未调用 UpdateCache 导致的约束 bug
+
 ## v0.12.8
 
 - 增加英语界面文本
