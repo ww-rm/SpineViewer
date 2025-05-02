@@ -74,6 +74,11 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         public SpineObject38(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
             atlas = new Atlas(AtlasPath, textureLoader);
+
+            // 再尝试 Json 文件
+            skeletonBinary = null;
+            skeletonJson = new SkeletonJson(atlas);
+            skeletonData = skeletonJson.ReadSkeletonData(SkelPath);
             try
             {
                 // 先尝试二进制文件

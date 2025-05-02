@@ -1,4 +1,7 @@
 ﻿using NLog;
+using SpineViewer.Spine;
+using SpineViewer.Spine.Implementations.AltasConvertor;
+using SpineViewer.Spine.Implementations.AtlasConvertor;
 using SpineViewer.Spine.Implementations.SkeletonConverter;
 using SpineViewer.Utils;
 using SpineViewer.Utils.Localize;
@@ -44,24 +47,39 @@ namespace SpineViewer
         [STAThread]
         static void Main()
         {
+            //string loadPath = "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\CH0267_home.json";
+            //SkeletonConverter38 tmp = new SkeletonConverter38();
+            //SkeletonConverter42 tm = new SkeletonConverter42();
+            //var a = tm.ReadJson(loadPath);
+            //tm.WriteJson(SkeletonConverter.V4XToV38(a, true, "4.2.23"), "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\1.json");
+            //var a = tmp.ReadJson(loadPath);
+            //tmp.WriteBinary(a, "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.skel");
+            //tmp.ReadBinary("E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.skel");
+            string loadP = "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\CH0267_home.atlas";
+            AtlasConverter38 tmp = new AtlasConverter38();
+            AtlasConverter41 tm = new AtlasConverter41();
+            ////tm.ToFile("E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_02.atlas", tmp.ReadAltas(loadP));
+            tmp.ToFile("C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\1.atlas", tm.ReadAltas(loadP));
+
+
             // 此处先初始化全局配置再触发静态字段 Logger 引用构造, 才能将配置应用到新的日志器上
-            InitializeLogConfiguration();
-            logger.Info("Program Started");
+            //InitializeLogConfiguration();
+            //logger.Info("Program Started");
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            LocalizeConfiguration.SetCulture();
+            //// To customize application configuration such as set high DPI settings or default font,
+            //// see https://aka.ms/applicationconfiguration.
+            //ApplicationConfiguration.Initialize();
+            //LocalizeConfiguration.SetCulture();
 
-            try
-            {
-                Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}" });
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex.ToString());
-                MessagePopup.Error(ex.ToString(), Properties.Resources.programCrashed);
-            }
+            //try
+            //{
+            //    Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}" });
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.Fatal(ex.ToString());
+            //    MessagePopup.Error(ex.ToString(), Properties.Resources.programCrashed);
+            //}
         }
 
         /// <summary>
