@@ -1,4 +1,5 @@
 ﻿using NLog;
+using SpineViewer.Spine.Implementations.SkeletonConverter;
 using SpineViewer.Utils;
 using SpineViewer.Utils.Localize;
 using System.Configuration;
@@ -45,16 +46,16 @@ namespace SpineViewer
         {
             // 此处先初始化全局配置再触发静态字段 Logger 引用构造, 才能将配置应用到新的日志器上
             InitializeLogConfiguration();
-            logger.Info("Program Started");            
+            logger.Info("Program Started");
 
-			// To customize application configuration such as set high DPI settings or default font,
-			// see https://aka.ms/applicationconfiguration.
-			ApplicationConfiguration.Initialize();
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+            ApplicationConfiguration.Initialize();
             LocalizeConfiguration.SetCulture();
 
-			try
+            try
             {
-                Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}"});
+                Application.Run(new SpineViewerForm() { Text = $"SpineViewer - v{Version}" });
             }
             catch (Exception ex)
             {
