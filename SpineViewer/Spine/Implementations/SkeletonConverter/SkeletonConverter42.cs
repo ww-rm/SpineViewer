@@ -1548,9 +1548,17 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             //此处还是得先把数据全读了，反面例子还是那个mix-and-match，4.2版本的mix-and-match中，default用到了后面的skin,转换失败
             //mix-and-match的full-skins/boy这个skin，他的linkedmesh调用了后面的full-skins/boy
             JsonArray skins = root["skins"].AsArray();
-            foreach (var sk in skins)
+
+            for (int i = 0; i < skins.Count; i++)
             {
-                skin2idx[(string)sk["name"]] = skin2idx.Count;
+                var name = (string)skins[i]["name"];
+                if (name == "default" && i != 0)
+                {
+                    skin2idx[(string)skins[0]["name"]] = skin2idx.Count;
+                    skin2idx["default"] = 0;
+                    continue;
+                }
+                skin2idx[name] = skin2idx.Count;
             }
 
             bool hasDefault = false;

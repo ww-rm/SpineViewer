@@ -1432,9 +1432,16 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
 
             JsonArray skins = root["skins"].AsArray();
-            foreach (var sk in skins)
+            for (int i = 0; i < skins.Count; i++)
             {
-                skin2idx[(string)sk["name"]] = skin2idx.Count;
+                var name = (string)skins[i]["name"];
+                if (name == "default" && i != 0)
+                {
+                    skin2idx[(string)skins[0]["name"]] = skin2idx.Count;
+                    skin2idx["default"] = 0;
+                    continue;
+                }
+                skin2idx[name] = skin2idx.Count;
             }
 
             bool hasDefault = false;
@@ -2317,6 +2324,183 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             var version = (string)skeleton["spine"];
             if (version == "3.8.75") skeleton["spine"] = "3.8.76";
             base.WriteJson(root, jsonPath);
+        }
+
+        private JsonObject ToV38(JsonObject root, bool keep)
+        {
+            JsonObject data = root.DeepClone().AsObject();
+
+            //skeleton
+            data["skeleton"]["spine"] = "3.8.75";
+            data["reserved"] = new JsonObject()
+            {
+                ["spine"] = "4.1.23",
+            };
+
+            //transform
+            if (data.TryGetPropertyValue("transform", out var transform))
+            {
+                foreach (var (name, _data) in transform.AsObject())
+                {
+                    JsonObject data1 = _data.AsObject();
+                    JsonObject reservedItem = new JsonObject();
+                    if (data1.TryGetPropertyValue("mixRotate", out var mixRotate))
+                    {
+                        data["rotateMix"] = (float)mixRotate;
+                        data.Remove("mixRotate");
+                        if (keep) reservedItem["mixRotate"] = (float)mixRotate;
+                    }
+                    if (data1.TryGetPropertyValue("mixX", out var mixX))
+                    {
+                        data["translateMix"] = (float)mixX;
+                        data.Remove("mixX");
+                        if (keep) reservedItem["mixX"] = (float)mixX;
+                    }
+                    if (data1.TryGetPropertyValue("mixY", out var mixY))
+                    {
+                        data.Remove("mixY");
+                        if (keep) reservedItem["mixY"] = (float)mixY;
+                    }
+                    if (data1.TryGetPropertyValue("mixScaleX", out var mixScaleX))
+                    {
+                        data["scaleMix"] = (float)mixScaleX;
+                        data.Remove("mixScaleX");
+                        if (keep) reservedItem["mixScaleX"] = (float)mixScaleX;
+                    }
+                    if (data1.TryGetPropertyValue("mixScaleY", out var mixScaleY))
+                    {
+                        data.Remove("mixScaleY");
+                        if (keep) reservedItem["mixScaleY"] = (float)mixScaleY;
+                    }
+                    if (data1.TryGetPropertyValue("mixShearY", out var mixShearY))
+                    {
+                        data["shearMix"] = (float)mixShearY;
+                        data.Remove("mixShearY");
+                        if (keep) reservedItem["mixShearY"] = (float)mixShearY;
+                    }
+                    if (reservedItem.Count > 0) data1["reserved"] = reservedItem;
+                }
+            }
+
+            //path
+            if (data.TryGetPropertyValue("path", out var path))
+            {
+                JsonObject reservedPath = [];
+                data["path_reserved"] = reservedPath;
+                foreach (var (name, _data) in path.AsObject())
+                {
+                    JsonObject data1 = _data.AsObject();
+                    if (data1.TryGetPropertyValue("spacingMode", out var spacing) && ((string)spacing).ToLower() == "proportional")
+                    {
+                        path.AsObject().Remove(name);
+                        reservedPath[name] = data1;//先加入，到时候再决定是否保留
+                    }
+                }
+
+            }
+
+            //skin
+            if (data.TryGetPropertyValue("skins", out var skins))
+            {
+                JsonObject reservedSkin = [];
+                data["skins41"] = reservedSkin;
+                foreach (var (name, _data) in skins.AsObject())
+                {
+                    JsonObject reservedSkinItem = [];
+                    reservedSkin[name] = reservedSkinItem;
+                    JsonObject data1 = _data.AsObject();
+                    if (data1.TryGetPropertyValue("path", out var path1))
+                    {
+                        if (data["path_reserved"].AsObject().ContainsKey((string)(path1.AsObject()["path"])))
+                        {
+                            data1.Remove("path");
+                            if (keep) data1["reserved"] = new JsonObject()
+                            {
+                                ["path"] = (string)path1,
+                            };
+                        }
+                    }
+
+                }
+            }
+
+            //animation
+
+            if (data.TryGetPropertyValue("animations", out var animations))
+            {
+                foreach (var (name, _animation) in animations.AsObject())
+                {
+                    JsonObject animation = _animation.AsObject();
+                    if (animation.TryGetPropertyValue("slots", out var slots))
+                    {
+                        foreach (var (slotName, _slot) in slots.AsObject())
+                        {
+                            JsonObject slotData = _slot.AsObject();
+                            JsonObject reserved = [];
+                            foreach (var (timelineName, _timelines) in slotData.AsObject())
+                            {
+                                var timelines = _timelines.AsArray();
+                                if (timelineName == "attachment") continue;
+                                else if (timelineName == "aplha")
+                                {
+                                    slotData.Remove(timelineName);
+                                    if (keep) reserved[timelineName] = timelines;
+                                }
+                                //一般来说，颜色的timeline是互斥的。
+                                else if (timelineName == "rgba")
+                                {
+                                    slotData.Remove(timelineName);
+                                    slotData["color"] = timelines;
+                                    reserved["colorType"] = timelineName;
+                                    
+                                }
+                                else if (timelineName == "rgb")
+                                {
+                                    slotData.Remove(timelineName);
+                                    reserved["colorType"] = timelineName;
+                                    slotData["color"] = timelines;
+                                    foreach ( JsonObject timeline in timelines)
+                                    {
+                                        if (timeline.TryGetPropertyValue("color", out var color))
+                                        {
+                                            timeline["color"] = (string)color + "ff";
+                                        }
+                                        //emm,3.8版本的曲线只有一条,故在还原的时候应该指定是使用原来的还是全部采用新的。
+                                        if (timeline.TryGetPropertyValue("curve", out var curve) && curve.GetValueKind() == JsonValueKind.Array)
+                                        {
+                                            curve = curve.AsArray();
+                                            timeline["reserved"] = new JsonObject()
+                                            {
+                                                ["curve"] = curve
+                                            };                                            
+                                            timeline["curve"] = curve[0];
+                                            timeline["c2"] = curve[1];
+                                            timeline["c3"] = curve[2];
+                                            timeline["c4"] = curve[3];
+                                        }
+                                    }
+                                }
+                                else if (timelineName == "rgba2")
+                                {
+                                    slotData.Remove(timelineName);
+                                    slotData["twoColor"] = timelines;
+                                    reserved["colorType"] = timelineName;
+                                }
+                                
+                                
+                            }
+                            if (reserved.Count > 0) slotData["reserved"] = reserved;
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+            return data;
         }
 
         public override JsonObject ToVersion(JsonObject root, SpineVersion version)
