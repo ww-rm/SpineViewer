@@ -355,10 +355,10 @@ namespace SpineViewer.Spine
 
 
             //transform
-            if (data.TryGetPropertyValue("transform", out var transforms))
+            if (data["transform"] is JsonArray transforms)
             {
                 JsonObject reservedTransform = [];
-                foreach (JsonObject transform in transforms.AsArray())
+                foreach (JsonObject transform in transforms)
                 {
                     JsonObject reservedProperty = [];
                     if (transform.TryGetPropertyValue("mixRotate", out var mixRotate))
@@ -401,11 +401,11 @@ namespace SpineViewer.Spine
             }
 
             //path
-            if (data.TryGetPropertyValue("path", out var _path))
+            if (data["path"] is JsonArray _path)
             {
                 JsonObject reservedPath = [];
                 JsonArray newPathArray = [];
-                foreach(JsonObject path in _path.AsArray())
+                foreach(JsonObject path in _path)
                 {
                     if (path.TryGetPropertyValue("spacingMode", out var spacingMode) && ((string)spacingMode).ToLower() == "proportional")
                     {
@@ -418,21 +418,21 @@ namespace SpineViewer.Spine
                 }
                 if (reservedPath.Count > 0)
                 {
-                    data.Remove("path");
+                    //data.Remove("path");
                     data["path"] = newPathArray;
                     reserved["path"] = reservedPath;
                 }
             }
 
             //physics
-            if (data.TryGetPropertyValue("physics", out var physics))
+            if (data["physics"] is JsonArray physics)
             {
                 data.Remove("physics");
                 if (keep) reserved["physics"] = physics.DeepClone().AsArray();
             }
 
             //skin
-            if (data.TryGetPropertyValue("skins", out var skins))
+            if (data["skins"] is JsonArray skins)
             {
                 JsonObject reservedSkins = new JsonObject();
                 foreach (JsonObject data1 in skins.AsArray())
@@ -469,7 +469,7 @@ namespace SpineViewer.Spine
 
             //animation
 
-            if (data.TryGetPropertyValue("animations", out var animations))
+            if (data["animations"] is JsonObject animations)
             {
                 JsonObject reservedAnimation = [];
                 foreach (var (name, _animation) in animations.AsObject())
@@ -602,7 +602,6 @@ namespace SpineViewer.Spine
                                     }
                                     newBoneData[timelineName] = timelines.DeepClone().AsArray();
                                 }
-                                ////我曾尝试用translate来模拟translatex与y，但效果不理想。干脆仿照官方的直接删了
                                 //else if (keep)
                                 //{
                                 //    reserved[boneName][timelineName] = timelines.DeepClone().AsArray();
@@ -654,7 +653,8 @@ namespace SpineViewer.Spine
                         JsonObject reservedTransformAnimation = [];
                         foreach (var (transformName, _transformTimelines) in transforms1.AsObject())
                         {
-                            JsonArray reservedTransformData = _transformTimelines.DeepClone().AsArray();
+                            JsonArray reservedTransformData = null;
+                            if (keep) reservedTransformData = _transformTimelines.DeepClone().AsArray();
 
                             foreach (JsonObject timeline in _transformTimelines.AsArray())
                             {
@@ -724,7 +724,7 @@ namespace SpineViewer.Spine
                                     var timelines = _timelines.AsArray();
                                     if (timelineName == "mix")
                                     {
-                                        if (keep) reservedPathData[timelineName] = _timelines.DeepClone().AsArray();                                        
+                                        if (keep) reservedPathData[timelineName] = _timelines.DeepClone().AsArray(); 
                                         foreach (JsonObject timeline in timelines)
                                         {
                                             if (timeline.TryGetPropertyValue("mixRotate", out var mixRotate))
@@ -740,13 +740,6 @@ namespace SpineViewer.Spine
                                             if (timeline.TryGetPropertyValue("mixY", out var mixY))
                                             {
                                                 timeline.Remove("mixY");
-                                                if (keep)
-                                                {
-                                                    timeline["reserved"] = new JsonObject()
-                                                    {
-                                                        ["mixY"] = (float)mixY,
-                                                    };
-                                                }
                                             }
                                             processCurve(timeline, keep);
                                         }
@@ -790,13 +783,16 @@ namespace SpineViewer.Spine
                     if (animation.TryGetPropertyValue("attachment", out var attachments))
                     {
                         JsonObject reservedAttachment = [];
+                        JsonObject newDeformAnimation = [];
                         foreach (var (skinName, _skins) in attachments.AsObject())
                         {
                             JsonObject reservedAttachmentData = [];
+                            JsonObject newSkinData = [];
                             foreach (var (slotName, _slot) in _skins.AsObject())
                             {
                                 JsonObject reservedItem = [];
                                 JsonObject slotData = _slot.AsObject();
+                                JsonObject newSlotData = [];
                                 foreach (var (attachmentName, _attachment) in slotData)
                                 {
                                     JsonObject attachmentData = _attachment.AsObject();
@@ -804,9 +800,8 @@ namespace SpineViewer.Spine
                                     foreach (var (timelineName, _timelines) in attachmentData)
                                     {
                                         if (timelineName == "deform")
-                                        {
-                                            slotData[attachmentName] = _timelines.DeepClone().AsArray();
-                                            //deformList.Add(_timelines.DeepClone().AsArray());
+                                        {                                            
+                                            newSlotData[attachmentName] = _timelines.DeepClone().AsArray();
                                         }
                                         else if (timelineName == "sequence" && keep)
                                         {
@@ -817,10 +812,18 @@ namespace SpineViewer.Spine
                                         }
                                     }
                                 }
+                                if (newSlotData.Count > 0)
+                                {
+                                    newSkinData[slotName] = newSlotData;
+                                }
                                 if (reservedItem.Count > 0)
                                 {
                                     reservedAttachmentData[slotName] = reservedItem;
                                 }
+                            }
+                            if (newSkinData.Count > 0)
+                            {
+                                newDeformAnimation[skinName] = newSkinData;
                             }
                             if (reservedAttachmentData.Count > 0)
                             {
@@ -832,7 +835,7 @@ namespace SpineViewer.Spine
                             reservedAnimationData["attachment"] = reservedAttachment;
                         }
                         animation.Remove("attachment");
-                        animation["deform"] = attachments;
+                        animation["deform"] = newDeformAnimation;
                     }
                     //--->attachments
                     if (reservedAnimationData.Count > 0)
@@ -849,7 +852,7 @@ namespace SpineViewer.Spine
 
             return data;
         }
-
+        //考虑使用插值法来还原贝塞尔曲线。
         private static void processCurve(JsonObject timeline, bool keep)
         {
             
