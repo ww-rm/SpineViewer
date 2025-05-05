@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Spine.Implementations.AltasConvertor
 {
-    [SpineImplementation(SpineVersion.V41)]
-    public class AtlasConverter41 : SpineViewer.Spine.AtlasConverter
+    public class AtlasConverter4X : SpineViewer.Spine.AtlasConverter
     {
         public override void ToFile(string path, List<Dictionary<string, Object>> images)
         {
@@ -35,11 +34,5 @@ namespace SpineViewer.Spine.Implementations.AltasConvertor
             }
             writer.Close();
         }
-        //protected override void WriteElement(TextWriter writer, KeyValuePair<string, string> element)
-        //{
-        //    if (writer == null) throw new ArgumentNullException(nameof(writer));
-        //    if (element.Key == "offset") writer.WriteLine($"offsets: {element.Value}");
-        //    else writer.WriteLine($"{element.Key}: {element.Value}");
-        //}
     }
 }

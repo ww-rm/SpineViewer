@@ -2446,39 +2446,11 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             }
         }
 
-        private JsonObject ToV4X(JsonObject root, SpineVersion version, bool keep)
-        {
-            //说实话只要把spine版本改一下就行了。
-            JsonObject data = root.DeepClone().AsObject();
-            data["skeleton"]["spine"] = version.ToString();
-            if (keep) data["skeleton"]["reserved"] = new JsonObject()
-            {
-                ["spine"] = SpineVersion.V42.ToString()
-            };
-            //if (data["skeleton"].AsObject().TryGetPropertyValue("referenceScale", out var referenceScale))
-            //{
-            //    data["skeleton"].AsObject().Remove("referenceScale");
-            //    if (keep) data["skeleton"]["reserved"]["referenceScale"] = referenceScale;
-            //}
-
-            //if ( data.TryGetPropertyValue("physics",out var physics))
-            //{
-            //    data.Remove("physics");
-            //    if (keep) data["reserved"]["physics"] = physics.DeepClone().AsObject();
-            //}
-            
-            return root;
-        }
-
-
         public override JsonObject ToVersion(JsonObject root, SpineVersion version)
         {
             root = version switch
             {
                 SpineVersion.V42 => root.DeepClone().AsObject(),
-                SpineVersion.V41 => ToV4X(root, version, true),
-                SpineVersion.V40 => ToV4X(root, version, true),
-                SpineVersion.V38 => ToV4X(root, version, true),
                 _ => throw new NotImplementedException(),
             };
             return root;

@@ -47,19 +47,19 @@ namespace SpineViewer
         [STAThread]
         static void Main()
         {
-            //string loadPath = "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\CH0267_home.json";
-            //SkeletonConverter38 tmp = new SkeletonConverter38();
-            //SkeletonConverter42 tm = new SkeletonConverter42();
-            //var a = tm.ReadJson(loadPath);
-            //tm.WriteJson(SkeletonConverter.V4XToV38(a, true, "4.2.23"), "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\1.json");
+            string loadPath = "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_00.json";
+            SkeletonConverter38 tmp = new SkeletonConverter38();
+            SkeletonConverter42 tm = new SkeletonConverter42();
+            var a = tm.ReadJson(loadPath);
+            tm.WriteJson(SkeletonConverter.V4XToV38(a, true), "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.json");
             //var a = tmp.ReadJson(loadPath);
             //tmp.WriteBinary(a, "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.skel");
             //tmp.ReadBinary("E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.skel");
-            string loadP = "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\CH0267_home.atlas";
-            AtlasConverter38 tmp = new AtlasConverter38();
-            AtlasConverter41 tm = new AtlasConverter41();
-            ////tm.ToFile("E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_02.atlas", tmp.ReadAltas(loadP));
-            tmp.ToFile("C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\1.atlas", tm.ReadAltas(loadP));
+            //string loadP = "C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\CH0267_home.atlas";
+            //AtlasConverter38 tmp = new AtlasConverter38();
+            //AtlasConverter4X tm = new AtlasConverter4X();
+            //////tm.ToFile("E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_02.atlas", tmp.ReadAltas(loadP));
+            //tmp.ToFile("C:\\Users\\plmnb\\Desktop\\Atsuko_swimsuit\\test\\1.atlas", tm.ReadAltas(loadP));
 
 
             // 此处先初始化全局配置再触发静态字段 Logger 引用构造, 才能将配置应用到新的日志器上

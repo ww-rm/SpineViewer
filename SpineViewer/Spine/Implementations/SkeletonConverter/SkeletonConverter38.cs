@@ -1686,6 +1686,396 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             base.WriteJson(root, jsonPath);
         }
 
+
+        public JsonObject ToV4X(JsonObject root,bool keep ,SpineVersion version)
+        {
+            JsonObject data = root.DeepClone().AsObject();
+            bool hasReserved = data["skeleton"].AsObject().ContainsKey("reserved");
+            
+            //skeleton
+            string originVersion = (string)data["skeleton"]["spine"];
+            //curComponent["spine"] = "3.8.76";
+            switch (version)
+            {
+                case SpineVersion.V40:
+                    data["skeleton"]["spine"] = "4.0.13";
+                    break;
+                case SpineVersion.V41:
+                    data["skeleton"]["spine"] = "4.1.23";
+                    break;
+                case SpineVersion.V42:
+                    data["skeleton"]["spine"] = "4.2.33";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            if (version == SpineVersion.V42 && hasReserved)
+            {
+                if (data["skeleton"].AsObject().TryGetPropertyValue("referenceScale", out var referenceScle)) data["skeleton"]["referenceScale"] = (string)referenceScle;
+            }
+            //丢弃原先的
+            if (keep) data["skeleton"]["reserved"] = new JsonObject()
+            {
+                ["spine"] = "3.8.76"
+            };
+
+            //bones
+            if (version == SpineVersion.V42)
+            {
+                if (data.TryGetPropertyValue("bones", out var bones))
+                {
+                    foreach (JsonObject bone in bones.AsArray())
+                    {
+                        if (bone.TryGetPropertyValue("transform", out var transform))
+                        {
+                            bone.Remove("transform");
+                            bone["inherit"] = (string)transform;
+                        }
+                    }
+                }
+            }
+
+            //transform
+            if (data.TryGetPropertyValue("transform", out var transforms))
+            {
+                foreach (JsonObject transform in transforms.AsArray())
+                {
+                    if (transform.TryGetPropertyValue("rotateMix", out var rotateMix))
+                    {
+                        transform["mixRotate"] = (float)rotateMix;
+                        transform.Remove("rotateMix");
+                        //if (keep) reservedItem["mixRotate"] = (float)mixRotate;
+                    }
+                    if (transform.TryGetPropertyValue("translateMix", out var translateMix))
+                    {
+                        transform["mixX"] = (float)translateMix;
+                        transform.Remove("translateMix");
+                    }
+                    if (hasReserved && (transform["reserved"]["mixY"] is JsonObject mixY))
+                    {
+                        transform["mixY"] = (float)mixY;
+                    }
+
+                    if (transform.TryGetPropertyValue("scaleMix", out var scaleMix))
+                    {
+                        transform["mixScaleX"] = (float)scaleMix;
+                        transform.Remove("scaleMix");
+                    }
+                    if (hasReserved && (transform["reserved"]["mixScaleY"] is JsonObject mixScaleY))
+                    {
+                        transform["mixScaleY"] = (float)mixScaleY;
+                    }
+
+                    if (transform.TryGetPropertyValue("shearMix", out var shearMix))
+                    {
+                        transform["mixShearY"] = (float)shearMix;
+                        transform.Remove("shearMix");
+                        //if (keep) reservedItem["mixShearY"] = (float)mixShearY;
+                    }
+                }
+            }
+
+            //path
+            if (hasReserved)
+            {
+                JsonObject reservedPath = data["reserved"]["path"].AsObject();
+                if (reservedPath.Count > 0)
+                {
+                    if (!data.ContainsKey("path"))
+                    {
+                        data["path"] = new JsonArray();
+                    }
+                    JsonArray pathArray = data["path"].AsArray();
+                    foreach (var (_, path) in data["reserved"]["path"].AsObject())
+                    {
+                        pathArray.Add(path);
+                    }
+                }                
+            }
+
+            //physics
+            if (hasReserved && version == SpineVersion.V42 && (data["reserved"]["physics"] is JsonArray physics))
+            {
+                data["physics"] = physics.DeepClone().AsArray();
+            }
+
+            //skin
+            if (data.TryGetPropertyValue("skins", out var skins))
+            {
+                foreach (JsonObject data1 in skins.AsArray())
+                {
+                    JsonArray reservedPath = [];
+                    if (hasReserved) reservedPath = data1["reserved"]["path"].AsArray();
+                    if (reservedPath.Count > 0)
+                    {
+                        if (data1["path"] is not JsonArray)
+                        {
+                            data1["path"] = new JsonArray();
+                        }
+                        JsonArray pathArray = data1["path"].AsArray();
+                        foreach (string path in reservedPath)
+                        {
+                            pathArray.Add(path);
+                        }
+                    }
+                    if (version == SpineVersion.V42)
+                    {
+                        if (data1["reserved"]["physics"] is JsonArray physics1)
+                        {
+                            data1["physics"] = physics1.DeepClone().AsArray();
+                        }
+                    }
+                    data1.Remove("reserved");
+                }
+            }
+
+            //animation
+            if (data.TryGetPropertyValue("animations", out var animations))
+            {
+                foreach (var (name, _animation) in animations.AsObject())
+                {
+                    JsonObject animation = _animation.AsObject();
+
+                    //<---slot
+                    if (animation.TryGetPropertyValue("slots", out var slots))
+                    {
+                        foreach( var (slotName, _slot) in slots.AsObject())
+                        {
+                            if (hasReserved)
+                            {
+                                if (_slot["reserved"]["alpha"] is JsonObject reservedSlotAlpha)
+                                {
+                                    _slot["alpha"] = reservedSlotAlpha.DeepClone().AsArray();
+                                }
+                                if (_slot["reserved"]["colorType"] is JsonObject reservedOneColor)
+                                {
+                                    int tmp = 3;
+                                    if ((string)reservedOneColor == "rgba") tmp = 4;
+                                    JsonArray timelines = _slot["color"].AsArray();
+                                    foreach (JsonObject timeline in timelines)
+                                    {
+                                        processCurve(timeline, tmp);
+                                    }
+                                    _slot.AsObject().Remove("color");
+                                    _slot[(string)reservedOneColor] = timelines.DeepClone().AsArray();
+                                }
+                                if (_slot["reserved"]["twocolorType"] is JsonObject reservedTwoColor)
+                                {
+                                    int tmp = 6;
+                                    if ((string)reservedTwoColor == "rgba2") tmp = 7;
+                                    JsonArray timelines = _slot["color"].AsArray();
+                                    foreach (JsonObject timeline in timelines)
+                                    {
+                                        processCurve(timeline, tmp);
+                                    }
+                                    _slot.AsObject().Remove("color");
+                                    _slot[(string)reservedTwoColor] = timelines.DeepClone().AsArray();
+                                }
+                                _slot.AsObject().Remove("reserved");
+                            }
+                            else
+                            {
+                                if (_slot["color"] is JsonArray oneColorTimelines)
+                                {
+                                    foreach (JsonObject timeline in  oneColorTimelines)
+                                    {
+                                        processCurve(timeline, 4);
+                                    }
+                                    _slot.AsObject().Remove("color");
+                                    _slot["rgba"] = oneColorTimelines.DeepClone().AsArray();
+                                }
+                                if (_slot["twoColor"] is JsonArray twoColorTimelines)
+                                {
+                                    foreach (JsonObject timeline in twoColorTimelines)
+                                    {
+                                        processCurve(timeline, 7);
+                                    }
+                                    _slot.AsObject().Remove("twoColor");
+                                    _slot["rgba2"] = twoColorTimelines.DeepClone().AsArray();
+                                }
+                            }
+                        }
+                    }
+                    //--->slot
+
+                    //<---bone
+                    if (animation.TryGetPropertyValue("bones", out var _bones))
+                    {
+                        foreach( var (boneName, _boneData) in _bones.AsObject())
+                        {
+                            
+                            JsonObject boneData = _boneData.AsObject();
+                            foreach (var (timelineName, _timelines) in boneData)
+                            {
+                                JsonArray timelines = _timelines.AsArray();
+                                if (timelineName == "rotate")
+                                {
+                                    foreach (JsonObject timeline in timelines)
+                                    {
+                                        if (timeline.TryGetPropertyValue("angle", out var angle))
+                                        {
+                                            timeline.Remove("angle");
+                                            timeline["value"] = (float)angle;
+                                        }
+                                        processCurve(timeline, 1);
+                                    }
+                                }
+                                else if (timelineName == "translate" || timelineName == "scale" || timelineName == "shear")
+                                {
+                                    foreach (JsonObject timeline in timelines)
+                                    {
+                                        processCurve(timeline, 2);
+                                    }
+                                }
+                            }
+                            if (hasReserved)
+                            {
+                                JsonObject reservedBoneData = animation["reserved"]["bones"][boneName].AsObject();
+                                foreach ( var (timelineName, timelines) in reservedBoneData.AsObject())
+                                {
+                                    boneData[timelineName] = timelines.DeepClone().AsArray();
+                                }
+
+                            }
+                        }
+                    }
+                    //--->bone
+
+                    //<---ik
+                    if (animation.TryGetPropertyValue("ik", out var iks))
+                    {
+                        foreach (var (ikName, _ikTimelines) in iks.AsObject())
+                        {
+                            foreach (JsonObject timeline in _ikTimelines.AsArray())
+                            {
+                                processCurve(timeline, 2);
+                            }
+                        }
+                    }
+                    //--->ik
+
+                    //<---transform
+
+                    if (animation.TryGetPropertyValue("transform", out var transform1))
+                    {
+                        foreach (var (transformName, _transformTimelines) in transform1.AsObject())
+                        {
+                            foreach (JsonObject timeline in _transformTimelines.AsArray())
+                            {
+                                if (timeline.TryGetPropertyValue("rotateMix", out var rotateMix))
+                                {
+                                    timeline.Remove("rotateMix");
+                                    timeline["mixRotate"] = (float)rotateMix;
+                                }
+                                if (timeline.TryGetPropertyValue("translateMix", out var translateMix))
+                                {
+                                    timeline.Remove("translateMix");
+                                    timeline["mixX"] = (float)translateMix;
+                                }
+                                if (timeline.TryGetPropertyValue("scaleMix", out var scaleMix))
+                                {
+                                    timeline.Remove("scaleMix");
+                                    timeline["mixScaleX"] = (float)scaleMix;
+                                }
+                                if (timeline.TryGetPropertyValue("shearMix", out var shearMix))
+                                {
+                                    timeline.Remove("shearMix");
+                                    timeline["mixShearY"] = (float)shearMix;
+                                }
+                                processCurve(timeline, 6);
+                                if (timeline.TryGetPropertyValue("reserved", out var reservedItem))
+                                {
+                                    foreach( var(propertyName, propertyData) in reservedItem.AsObject())
+                                    {
+                                        timeline[propertyName] = (float)propertyData;
+                                    }
+                                    timeline.Remove("reserved");
+                                }
+                            }
+                        }
+                    }
+
+                    //--->transform
+
+                    //<---path
+                    if (animation.TryGetPropertyValue("path", out var path))
+                    {
+                        foreach (var (pathName, _path) in path.AsObject())
+                        {
+                            foreach(var (timelineName, _timelines) in _path.AsObject())
+                            {
+                                if (timelineName == "mix")
+                                {
+                                    foreach(JsonObject timeline in _timelines.AsArray())
+                                    {
+                                        if (timeline.TryGetPropertyValue("rotateMix", out var rotateMix))
+                                        {
+                                            timeline.Remove("rotateMix");
+                                            timeline["mixRotate"] = (float)rotateMix;
+                                        }
+                                        if (timeline.TryGetPropertyValue("translateMix", out var translateMix))
+                                        {
+                                            timeline.Remove("translateMix");
+                                            timeline["mixX"] = (float)translateMix;
+                                        }
+                                        if (timeline.TryGetPropertyValue("reserved", out var reserved))
+                                        {
+                                            timeline["mixY"] = (string)reserved["mixY"];
+                                            timeline.Remove("reserved");
+                                        }
+                                        processCurve(timeline, 3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //--->path
+
+                    //<---physics
+                    if (version == SpineVersion.V42 && hasReserved && animation["reserved"].AsObject().TryGetPropertyValue("physics", out var physics1))
+                    {
+                        animation["physics"] = physics1.DeepClone().AsObject();
+                    }
+                    //--->physics
+
+                    //<---attachments
+
+                    //--->attachments
+
+
+                    animation.Remove("reserved");
+                }
+            }
+
+
+
+            data.Remove("reversed");
+            return data;
+        }
+
+        private void processCurve(JsonObject timeline, int num)
+        {
+            if (timeline["reserved"] is JsonObject reserved)
+            {
+                timeline["curve"] = timeline["reserved"]["curve"].DeepClone().AsArray();
+                timeline.Remove("reserved");
+            }
+            else if (timeline["curve"].GetValueKind() == JsonValueKind.Number)
+            {
+                JsonArray curveArray = new JsonArray();
+                for (int i = 0; i < num; i++)
+                {
+                    curveArray.Add((float)timeline["curve"]);
+                    curveArray.Add((float)timeline["c2"]);
+                    curveArray.Add((float)timeline["c3"]);
+                    curveArray.Add((float)timeline["c4"]);
+                }
+            }
+            timeline.Remove("c2");
+            timeline.Remove("c3");
+            timeline.Remove("c4");
+        }
+
         public override JsonObject ToVersion(JsonObject root, SpineVersion version)
         {
             root = version switch
