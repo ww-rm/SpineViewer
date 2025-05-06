@@ -2231,6 +2231,10 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 timeline["curve"] = timeline["reserved"]["curve"].DeepClone().AsArray();
                 timeline.Remove("reserved");
             }
+            else if (!timeline.ContainsKey("curve"))
+            {
+                return;
+            }
             else if (timeline["curve"].GetValueKind() == JsonValueKind.Number)
             {
                 JsonArray curveArray = new JsonArray();
