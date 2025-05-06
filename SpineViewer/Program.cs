@@ -49,7 +49,7 @@ namespace SpineViewer
         {
             string loadPath = "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_00.json";
             SkeletonConverter38 tmp = new SkeletonConverter38();
-            SkeletonConverter42 tm = new SkeletonConverter42();
+            SkeletonConverter41 tm = new SkeletonConverter41();
             var a = tm.ReadJson(loadPath);
             tm.WriteJson(SkeletonConverter.V4XToV38(a, true), "E:\\desktop1\\work\\NIkkeAssetsUnpack\\failed\\c500_cover_01.json");
             //var a = tmp.ReadJson(loadPath);

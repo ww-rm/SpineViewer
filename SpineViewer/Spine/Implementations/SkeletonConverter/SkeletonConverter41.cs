@@ -82,6 +82,15 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             TransformMode.NoScale,
             TransformMode.NoScaleOrReflection
         };
+
+        private static readonly Dictionary<TransformMode, string> TransformModeJsonValue = new()
+        {
+            [TransformMode.Normal] = "normal",
+            [TransformMode.OnlyTranslation] = "onlyTranslation",
+            [TransformMode.NoRotationOrReflection] = "noRotationOrReflection",
+            [TransformMode.NoScale] = "noScale",
+            [TransformMode.NoScaleOrReflection] = "noScaleOrReflection"
+        };
         private static readonly Dictionary<string, int> TransformModeToInt = new()
         {
             ["normal"] = 0,
@@ -174,7 +183,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                 data["shearY"] = reader.ReadFloat();
                 data["length"] = reader.ReadFloat();
 
-                data["transform"] = TransformModeToValue[reader.ReadVarInt()].ToString();
+                data["transform"] = TransformModeJsonValue[TransformModeToValue[reader.ReadVarInt()]];
                 data["skin"] = reader.ReadBoolean();
                 if (nonessential) reader.ReadInt();
                 bones.Add(data);
