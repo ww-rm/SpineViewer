@@ -1969,6 +1969,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                                         processCurve(timeline, 2);
                                     }
                                 }
+                                if (version != SpineVersion.V42) newBoneData.Remove("inherit");
                                 if (!reservedAnimation.ContainsKey(boneName)) reservedBoneAnimation[boneName] = newBoneData;
                             }
                             animation["bones"] = reservedBoneAnimation.DeepClone().AsObject();
