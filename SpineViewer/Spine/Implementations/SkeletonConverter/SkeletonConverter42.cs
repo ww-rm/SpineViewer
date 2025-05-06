@@ -1549,16 +1549,20 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             //mix-and-match的full-skins/boy这个skin，他的linkedmesh调用了后面的full-skins/boy
             JsonArray skins = root["skins"].AsArray();
 
-            for (int i = 0; i < skins.Count; i++)
+            foreach (JsonObject sk in skins)
             {
-                var name = (string)skins[i]["name"];
-                if (name == "default" && i != 0)
+                if ((string)sk["name"] == "default")
                 {
-                    skin2idx[(string)skins[0]["name"]] = skin2idx.Count;
                     skin2idx["default"] = 0;
-                    continue;
+                    break;
                 }
-                skin2idx[name] = skin2idx.Count;
+            }
+            foreach (JsonObject sk in skins)
+            {
+                if ((string)sk["name"] != "default")
+                {
+                    skin2idx["default"] = skin2idx.Count;
+                }
             }
 
             bool hasDefault = false;
