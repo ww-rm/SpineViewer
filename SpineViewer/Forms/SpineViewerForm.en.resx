@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="groupBox_SkelList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 808</value>
+    <value>350, 804</value>
   </data>
   <data name="groupBox_SkelList.Text" xml:space="preserve">
     <value>Model List</value>
@@ -131,7 +131,7 @@
     <value />
   </data>
   <data name="groupBox_PreviewConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>430, 267</value>
+    <value>430, 265</value>
   </data>
   <data name="groupBox_PreviewConfig.Text" xml:space="preserve">
     <value>Image Parameters</value>
@@ -143,7 +143,7 @@
     <value />
   </data>
   <data name="groupBox_SkelConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>430, 533</value>
+    <value>430, 531</value>
   </data>
   <data name="groupBox_SkelConfig.Text" xml:space="preserve">
     <value>Model Parameters</value>
@@ -155,11 +155,11 @@
     <value />
   </data>
   <data name="splitContainer_Config.Size" type="System.Drawing.Size, System.Drawing">
-    <value>430, 808</value>
+    <value>430, 804</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="splitContainer_Config.SplitterDistance" type="System.Int32, mscorlib">
-    <value>267</value>
+    <value>265</value>
   </data>
   <data name="splitContainer_Config.ToolTip" xml:space="preserve">
     <value />
@@ -168,7 +168,7 @@
     <value />
   </data>
   <data name="splitContainer_Information.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 808</value>
+    <value>788, 804</value>
   </data>
   <data name="splitContainer_Information.ToolTip" xml:space="preserve">
     <value />
@@ -177,7 +177,7 @@
     <value />
   </data>
   <data name="groupBox_Preview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>962, 808</value>
+    <value>962, 804</value>
   </data>
   <data name="groupBox_Preview.Text" xml:space="preserve">
     <value>Preview Screen</value>
@@ -189,7 +189,7 @@
     <value />
   </data>
   <data name="splitContainer_Functional.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1758, 808</value>
+    <value>1758, 804</value>
   </data>
   <data name="splitContainer_Functional.ToolTip" xml:space="preserve">
     <value />
@@ -198,7 +198,7 @@
     <value />
   </data>
   <data name="rtbLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1758, 188</value>
+    <value>1758, 192</value>
   </data>
   <data name="rtbLog.ToolTip" xml:space="preserve">
     <value />
@@ -207,16 +207,16 @@
     <value />
   </data>
   <data name="splitContainer_MainForm.SplitterDistance" type="System.Int32, mscorlib">
-    <value>808</value>
+    <value>804</value>
   </data>
   <data name="splitContainer_MainForm.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="spineListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 781</value>
+    <value>346, 777</value>
   </data>
   <data name="spineViewPropertyGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 506</value>
+    <value>426, 504</value>
   </data>
   <data name="spineViewPropertyGrid.ToolTip" xml:space="preserve">
     <value />
@@ -225,13 +225,13 @@
     <value />
   </data>
   <data name="propertyGrid_Previewer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 240</value>
+    <value>426, 238</value>
   </data>
   <data name="propertyGrid_Previewer.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="spinePreviewPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>958, 781</value>
+    <value>958, 777</value>
   </data>
   <data name="spinePreviewPanel.ToolTip" xml:space="preserve">
     <value />
@@ -246,22 +246,22 @@
     <value>File(&amp;F)</value>
   </data>
   <data name="toolStripMenuItem_Open.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
+    <value>266, 34</value>
   </data>
   <data name="toolStripMenuItem_Open.Text" xml:space="preserve">
     <value>Open(&amp;O)...</value>
   </data>
   <data name="toolStripMenuItem_BatchOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
+    <value>266, 34</value>
   </data>
   <data name="toolStripMenuItem_BatchOpen.Text" xml:space="preserve">
     <value>Batch Open(&amp;B)...</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 6</value>
+    <value>263, 6</value>
   </data>
   <data name="toolStripMenuItem_Export.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
+    <value>266, 34</value>
   </data>
   <data name="toolStripMenuItem_Export.Text" xml:space="preserve">
     <value>Export(&amp;E)</value>
@@ -315,13 +315,28 @@
     <value>FFmpeg Custom Export...</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 6</value>
+    <value>263, 6</value>
   </data>
   <data name="toolStripMenuItem_Exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
+    <value>266, 34</value>
   </data>
   <data name="toolStripMenuItem_Exit.Text" xml:space="preserve">
     <value>Exit(&amp;X)</value>
+  </data>
+  <data name="toolStripMenuItem_Texture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 32</value>
+  </data>
+  <data name="toolStripMenuItem_Texture.Text" xml:space="preserve">
+    <value>Texture(&amp;E)</value>
+  </data>
+  <data name="toolStripMenuItem_ForceSmooth.Text" xml:space="preserve">
+    <value>Force Smooth</value>
+  </data>
+  <data name="toolStripMenuItem_ForceRepeated.Text" xml:space="preserve">
+    <value>Force Repeated</value>
+  </data>
+  <data name="toolStripMenuItem_ForceMipmap.Text" xml:space="preserve">
+    <value>Force Mipmap</value>
   </data>
   <data name="toolStripMenuItem_Tool.Size" type="System.Drawing.Size, System.Drawing">
     <value>93, 32</value>
@@ -391,12 +406,6 @@
   </data>
   <data name="ToolStripMenuItem_Language.Text" xml:space="preserve">
     <value>Language(&amp;L)</value>
-  </data>
-  <data name="ToolStripMenuItem_English.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
-  </data>
-  <data name="ToolStripMenuItem_Chinese.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
   </data>
   <data name="panel_MainForm.ToolTip" xml:space="preserve">
     <value />
