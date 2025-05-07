@@ -26,26 +26,6 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             };
         }
 
-        private class TextureLoader : SpineRuntime37.TextureLoader
-        {
-            public void Load(AtlasPage page, string path)
-            {
-                var texture = new SFML.Graphics.Texture(path);
-                if (page.magFilter == TextureFilter.Linear)
-                    texture.Smooth = true;
-                if (page.uWrap == TextureWrap.Repeat && page.vWrap == TextureWrap.Repeat)
-                    texture.Repeated = true;
-
-                page.rendererObject = texture;
-            }
-
-            public void Unload(object texture)
-            {
-                ((SFML.Graphics.Texture)texture).Dispose();
-            }
-        }
-
-        private static readonly TextureLoader textureLoader = new();
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
         private readonly Atlas atlas;

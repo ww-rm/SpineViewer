@@ -30,29 +30,6 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             };
         }
 
-        private class TextureLoader : SpineRuntime38.TextureLoader
-        {
-            public void Load(AtlasPage page, string path)
-            {
-                var texture = new SFML.Graphics.Texture(path);
-                if (page.magFilter == TextureFilter.Linear)
-                    texture.Smooth = true;
-                if (page.uWrap == TextureWrap.Repeat && page.vWrap == TextureWrap.Repeat)
-                    texture.Repeated = true;
-
-                page.rendererObject = texture;
-                // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
-                // page.width = (int)texture.Size.X;
-                // page.height = (int)texture.Size.Y;
-            }
-
-            public void Unload(object texture)
-            {
-                ((SFML.Graphics.Texture)texture).Dispose();
-            }
-        }
-
-        private static readonly TextureLoader textureLoader = new();
         private static readonly Animation EmptyAnimation = new(EMPTY_ANIMATION, [], 0);
 
         private readonly Atlas atlas;

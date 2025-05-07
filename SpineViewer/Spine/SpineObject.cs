@@ -33,6 +33,12 @@ namespace SpineViewer.Spine
         protected static readonly Size PreviewResolution = new(256, 256);
 
         /// <summary>
+        /// 纹理加载器
+        /// </summary>
+        public static TextureLoader TextureLoader => textureLoader;
+        protected readonly static TextureLoader textureLoader = new();
+
+        /// <summary>
         /// 创建特定版本的 Spine
         /// </summary>
         public static SpineObject New(SpineVersion version, string skelPath, string? atlasPath = null)
