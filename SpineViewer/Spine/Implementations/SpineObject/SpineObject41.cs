@@ -48,7 +48,8 @@ namespace SpineViewer.Spine.Implementations.SpineObject
 
         public SpineObject41(string skelPath, string atlasPath) : base(skelPath, atlasPath)
         {
-            atlas = new Atlas(AtlasPath, textureLoader);
+            try { atlas = new Atlas(AtlasPath, textureLoader); }
+            catch (Exception ex) { throw new InvalidDataException($"Failed to load atlas '{atlasPath}'", ex); }
             try
             {
                 // 先尝试二进制文件
@@ -68,6 +69,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 catch
                 {
                     // 都不行就报错
+                    atlas.Dispose();
                     throw new InvalidDataException($"Unknown skeleton file format {SkelPath}");
                 }
             }
@@ -95,7 +97,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            atlas.Dispose();
+            atlas?.Dispose();
         }
 
         public override string FileVersion { get => skeletonData.Version; }
