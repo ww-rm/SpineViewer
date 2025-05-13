@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.12.12
+
+- 修复 2.1 版本遗漏的 SkinnedMeshAttachment 附件渲染
 
 ## v0.12.11
 
