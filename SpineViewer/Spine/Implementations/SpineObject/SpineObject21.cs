@@ -260,7 +260,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                 SFML.Graphics.Texture texture;
 
                 float[] worldVertices = worldVerticesBuffer;    // 顶点世界坐标, 连续的 [x0, y0, x1, y1, ...] 坐标值
-                int worldVerticesCount;                         // 等于顶点数组的长度除以 2
+                //int worldVerticesCount;                         // 等于顶点数组的长度除以 2
                 int[] worldTriangleIndices;                     // 三角形索引, 从顶点坐标数组取的时候要乘以 2, 最大值是 worldVerticesCount - 1
                 int worldTriangleIndicesLength;                 // 三角形索引数组长度
                 float[] uvs;                                    // 纹理坐标
@@ -274,7 +274,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     texture = (SFML.Graphics.Texture)((AtlasRegion)regionAttachment.RendererObject).page.rendererObject;
 
                     regionAttachment.ComputeWorldVertices(slot.Bone, worldVertices);
-                    worldVerticesCount = 4;
+                    //worldVerticesCount = 4;
                     worldTriangleIndices = [0, 1, 2, 2, 3, 0];
                     worldTriangleIndicesLength = 6;
                     uvs = regionAttachment.UVs;
@@ -290,7 +290,7 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     if (meshAttachment.Vertices.Length > worldVertices.Length)
                         worldVertices = worldVerticesBuffer = new float[meshAttachment.Vertices.Length * 2];
                     meshAttachment.ComputeWorldVertices(slot, worldVertices);
-                    worldVerticesCount = meshAttachment.Vertices.Length / 2;
+                    //worldVerticesCount = meshAttachment.Vertices.Length / 2;
                     worldTriangleIndices = meshAttachment.Triangles;
                     worldTriangleIndicesLength = meshAttachment.Triangles.Length;
                     uvs = meshAttachment.UVs;
@@ -298,6 +298,22 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                     tintG *= meshAttachment.G;
                     tintB *= meshAttachment.B;
                     tintA *= meshAttachment.A;
+                }
+                else if (attachment is SkinnedMeshAttachment skinnedMeshAttachment)
+                {
+                    texture = (SFML.Graphics.Texture)((AtlasRegion)skinnedMeshAttachment.RendererObject).page.rendererObject;
+
+                    if (skinnedMeshAttachment.UVs.Length > worldVertices.Length)
+                        worldVertices = worldVerticesBuffer = new float[skinnedMeshAttachment.UVs.Length * 2];
+                    skinnedMeshAttachment.ComputeWorldVertices(slot, worldVertices);
+                    //worldVerticesCount = skinnedMeshAttachment.Vertices.Length / 2;
+                    worldTriangleIndices = skinnedMeshAttachment.Triangles;
+                    worldTriangleIndicesLength = skinnedMeshAttachment.Triangles.Length;
+                    uvs = skinnedMeshAttachment.UVs;
+                    tintR *= skinnedMeshAttachment.R;
+                    tintG *= skinnedMeshAttachment.G;
+                    tintB *= skinnedMeshAttachment.B;
+                    tintA *= skinnedMeshAttachment.A;
                 }
                 // 2.1.x 不支持剪裁
                 //else if (attachment is ClippingAttachment clippingAttachment)
@@ -437,6 +453,37 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                             lineVertices.Append(vt);
                         }
                     }
+                    else if (slot.Attachment is SkinnedMeshAttachment skinnedMeshAttachment)
+                    {
+                        if (skinnedMeshAttachment.UVs.Length > worldVerticesBuffer.Length)
+                            worldVerticesBuffer = new float[skinnedMeshAttachment.UVs.Length * 2];
+
+                        skinnedMeshAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
+
+                        var triangleIndices = skinnedMeshAttachment.Triangles;
+                        for (int i = 0; i < triangleIndices.Length; i += 3)
+                        {
+                            var idx0 = triangleIndices[i] * 2;
+                            var idx1 = triangleIndices[i + 1] * 2;
+                            var idx2 = triangleIndices[i + 2] * 2;
+
+                            vt.Position.X = worldVerticesBuffer[idx0];
+                            vt.Position.Y = worldVerticesBuffer[idx0 + 1];
+                            lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx1];
+                            vt.Position.Y = worldVerticesBuffer[idx1 + 1];
+                            lineVertices.Append(vt); lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx2];
+                            vt.Position.Y = worldVerticesBuffer[idx2 + 1];
+                            lineVertices.Append(vt); lineVertices.Append(vt);
+
+                            vt.Position.X = worldVerticesBuffer[idx0];
+                            vt.Position.Y = worldVerticesBuffer[idx0 + 1];
+                            lineVertices.Append(vt);
+                        }
+                    }
                 }
             }
 
@@ -453,6 +500,34 @@ namespace SpineViewer.Spine.Implementations.SpineObject
                         meshAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
 
                         var hullLength = (meshAttachment.HullLength >> 1) << 1;
+
+                        if (debugMeshHulls && hullLength > 2)
+                        {
+                            vt.Position.X = worldVerticesBuffer[0];
+                            vt.Position.Y = worldVerticesBuffer[1];
+                            lineVertices.Append(vt);
+
+                            for (int i = 2; i < hullLength; i += 2)
+                            {
+                                vt.Position.X = worldVerticesBuffer[i];
+                                vt.Position.Y = worldVerticesBuffer[i + 1];
+                                lineVertices.Append(vt);
+                                lineVertices.Append(vt);
+                            }
+
+                            vt.Position.X = worldVerticesBuffer[0];
+                            vt.Position.Y = worldVerticesBuffer[1];
+                            lineVertices.Append(vt);
+                        }
+                    }
+                    else if (slot.Attachment is SkinnedMeshAttachment skinnedMeshAttachment)
+                    {
+                        if (skinnedMeshAttachment.UVs.Length > worldVerticesBuffer.Length)
+                            worldVerticesBuffer = new float[skinnedMeshAttachment.UVs.Length * 2];
+
+                        skinnedMeshAttachment.ComputeWorldVertices(slot, worldVerticesBuffer);
+
+                        var hullLength = (skinnedMeshAttachment.HullLength >> 1) << 1;
 
                         if (debugMeshHulls && hullLength > 2)
                         {
