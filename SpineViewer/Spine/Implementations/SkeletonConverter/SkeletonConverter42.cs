@@ -1069,14 +1069,14 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                                     {
                                         ["time"] = reader.ReadFloat(),
                                     };
+                                    ReadCurve(frame, 1);
+                                    frame = o;
                                     end = reader.ReadVarInt();
                                     if (end > 0)
                                     {
                                         frame["offset"] = reader.ReadVarInt();
                                         frame["vertices"] = ReadFloatArray(end);
                                     }
-                                    ReadCurve(frame, 1);
-                                    frame = o;
                                     frames.Add(frame);
                                 }
                                 break;
