@@ -47,7 +47,7 @@ namespace SpineViewer.Spine.SpineExporter
         protected override void ExportSingle(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
             // 导出单个时必定提供输出文件夹
-            var filename = $"frame_{timestamp}{ImageFormat.GetSuffix()}";
+            var filename = $"frame_{timestamp}_{Guid.NewGuid().ToString()[..6]}{ImageFormat.GetSuffix()}";
             var savePath = Path.Combine(OutputDir, filename);
 
             worker?.ReportProgress(0, $"{Properties.Resources.process} 0/1");
@@ -78,7 +78,7 @@ namespace SpineViewer.Spine.SpineExporter
                 var spine = spinesToRender[i];
 
                 // 逐个导出时如果提供了输出文件夹, 则全部导出到输出文件夹, 否则输出到各自的文件夹
-                var filename = $"{spine.Name}_{timestamp}{ImageFormat.GetSuffix()}";
+                var filename = $"{spine.Name}_{timestamp}_{spine.ID[..6]}{ImageFormat.GetSuffix()}";
                 var savePath = Path.Combine(OutputDir ?? spine.AssetsDir, filename);
 
                 try

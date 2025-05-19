@@ -57,7 +57,7 @@ namespace SpineViewer.Spine.SpineExporter
             var noteSuffix = FileNameNoteSuffix;
             if (!string.IsNullOrWhiteSpace(noteSuffix)) noteSuffix = $"_{noteSuffix}";
 
-            var filename = $"ffmpeg_{timestamp}_{FPS:f0}{noteSuffix}{Suffix}";
+            var filename = $"ffmpeg_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{FPS:f0}{noteSuffix}{Suffix}";
 
             // 导出单个时必定提供输出文件夹
             var savePath = Path.Combine(OutputDir, filename);
@@ -86,7 +86,7 @@ namespace SpineViewer.Spine.SpineExporter
             {
                 if (worker?.CancellationPending == true) break; // 取消的日志在 GetFrames 里输出
 
-                var filename = $"{spine.Name}_{timestamp}_{FPS:f0}{noteSuffix}{Suffix}";
+                var filename = $"{spine.Name}_{timestamp}_{spine.ID[..6]}_{FPS:f0}{noteSuffix}{Suffix}";
 
                 // 如果提供了输出文件夹, 则全部导出到输出文件夹, 否则导出到各自的文件夹下
                 var savePath = Path.Combine(OutputDir ?? spine.AssetsDir, filename);

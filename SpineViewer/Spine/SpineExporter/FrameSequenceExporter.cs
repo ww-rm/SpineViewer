@@ -22,14 +22,16 @@ namespace SpineViewer.Spine.SpineExporter
 
         protected override void ExportSingle(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
+            var uniqueSuffix = Guid.NewGuid().ToString()[..6];
+
             // 导出单个时必定提供输出文件夹, 
-            var saveDir = Path.Combine(OutputDir, $"frames_{timestamp}_{FPS:f0}");
+            var saveDir = Path.Combine(OutputDir, $"frames_{timestamp}_{uniqueSuffix}_{FPS:f0}");
             Directory.CreateDirectory(saveDir);
 
             int frameIdx = 0;
             foreach (var frame in GetFrames(spinesToRender, worker))
             {
-                var filename = $"frames_{timestamp}_{FPS:f0}_{frameIdx:d6}{Suffix}";
+                var filename = $"frames_{timestamp}_{uniqueSuffix}_{FPS:f0}_{frameIdx:d6}{Suffix}";
                 var savePath = Path.Combine(saveDir, filename);
 
                 try
@@ -56,14 +58,14 @@ namespace SpineViewer.Spine.SpineExporter
                 if (worker?.CancellationPending == true) break; // 取消的日志在 GetFrames 里输出
 
                 // 如果提供了输出文件夹, 则全部导出到输出文件夹, 否则导出到各自的文件夹下
-                var subDir = $"{spine.Name}_{timestamp}_{FPS:f0}";
+                var subDir = $"{spine.Name}_{timestamp}_{spine.ID[..6]}_{FPS:f0}";
                 var saveDir = Path.Combine(OutputDir ?? spine.AssetsDir, subDir);
                 Directory.CreateDirectory(saveDir);
 
                 int frameIdx = 0;
                 foreach (var frame in GetFrames(spine, worker))
                 {
-                    var filename = $"{spine.Name}_{timestamp}_{FPS:f0}_{frameIdx:d6}{Suffix}";
+                    var filename = $"{spine.Name}_{timestamp}_{spine.ID[..6]}_{FPS:f0}_{frameIdx:d6}{Suffix}";
                     var savePath = Path.Combine(saveDir, filename);
 
                     try
