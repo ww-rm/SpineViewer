@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.12.13
+
+- 导出文件名增加额外的随机字符串
+
 ## v0.12.12
 
 - 修复 2.1 版本遗漏的 SkinnedMeshAttachment 附件渲染
