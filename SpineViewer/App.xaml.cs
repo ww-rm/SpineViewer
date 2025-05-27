@@ -70,9 +70,13 @@ public partial class App : Application
         {
             ; // 默认就是中文, 无需操作
         }
+        else if (uiCulture.StartsWith("ja"))
+        {
+            dict.Source = new("Resources/Strings/ja-jp.xaml", UriKind.Relative);
+        }
         else
         {
-            dict.Source = new Uri("Resources/Strings/en-us.xaml", UriKind.Relative);
+            dict.Source = new("Resources/Strings/en-us.xaml", UriKind.Relative);
         }
 
         Resources.MergedDictionaries.Add(dict);

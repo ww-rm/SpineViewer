@@ -1,0 +1,198 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <!-- 菜单 -->
+    <s:String x:Key="Str_File">ファイル</s:String>
+    <s:String x:Key="Str_Tool">ツール</s:String>
+    <s:String x:Key="Str_Download">ダウンロード</s:String>
+    <s:String x:Key="Str_Help">ヘルプ</s:String>
+    <s:String x:Key="Str_Diagnostics">診断情報</s:String>
+    <s:String x:Key="Str_Abount">バージョン情報</s:String>
+    <s:String x:Key="Str_Experiment">実験機能</s:String>
+
+    <s:String x:Key="Str_Open">開く...</s:String>
+    <s:String x:Key="Str_Preference">設定...</s:String>
+    <s:String x:Key="Str_Exit">終了</s:String>
+
+    <!-- 标签页 -->
+    <s:String x:Key="Str_Explorer">エクスプローラー</s:String>
+    <s:String x:Key="Str_SpineObject">モデル</s:String>
+    <s:String x:Key="Str_Canvas">キャンバス</s:String>
+
+    <!-- 浏览标签页 -->
+    <s:String x:Key="Str_Filter">フィルター</s:String>
+    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">フォルダーを開く</s:String>
+    <s:String x:Key="Str_RefreshItemsTooltip">リストを更新</s:String>
+    <s:String x:Key="Str_FileDirectory">ファイルディレクトリ</s:String>
+    <s:String x:Key="Str_FileName">ファイル名</s:String>
+    <s:String x:Key="Str_AddSelectedItems">選択項目をインポート</s:String>
+    <s:String x:Key="Str_GeneratePreviewForSelected">選択項目のプレビューを生成</s:String>
+    <s:String x:Key="Str_DeletePreviewsForSelected">選択項目のプレビューを削除</s:String>
+
+    <!-- 模型列表 -->
+    <s:String x:Key="Str_Name">名前</s:String>
+    <s:String x:Key="Str_Show">表示</s:String>
+    <s:String x:Key="Str_ListViewStatusBar">全{0}件、選択中{1}件</s:String>
+    <s:String x:Key="Str_AddSpineObject">追加...</s:String>
+    <s:String x:Key="Str_RemoveSpineObject">削除</s:String>
+    <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
+    <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">クリップボードから追加</s:String>
+    <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfig">パラメーターを適用</s:String>
+    <s:String x:Key="Str_SaveSpineObjectConfigToFile">パラメータファイルを保存...</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfigFromFile">パラメータファイルを適用...</s:String>
+    <s:String x:Key="Str_Export">エクスポート</s:String>
+    <s:String x:Key="Str_ExportFrame">単一フレーム...</s:String>
+    <s:String x:Key="Str_ExportFrameSequence">フレームシーケンス...</s:String>
+    <s:String x:Key="Str_ExportVideo">アニメーション/ビデオ...</s:String>
+    <s:String x:Key="Str_ExportCustom">カスタムエクスポート...</s:String>
+
+    <!-- 模型参数面板 -->
+    <s:String x:Key="Str_BaseInfo">基本</s:String>
+    <s:String x:Key="Str_Version">バージョン</s:String>
+    <s:String x:Key="Str_FileVersion">ファイルバージョン</s:String>
+    <s:String x:Key="Str_AssetsDir">リソースディレクトリ</s:String>
+    <s:String x:Key="Str_SkelPath">skelパス</s:String>
+    <s:String x:Key="Str_AtlasPath">atlasパス</s:String>
+
+    <s:String x:Key="Str_Render">レンダリング</s:String>
+    <s:String x:Key="Str_IsShown">表示</s:String>
+    <s:String x:Key="Str_UsePma">プレマルチプライドアルファ</s:String>
+    <s:String x:Key="Str_Physics">物理</s:String>
+
+    <s:String x:Key="Str_Transform">変換</s:String>
+    <s:String x:Key="Str_Scale">スケール</s:String>
+    <s:String x:Key="Str_FlipX">水平方向反転</s:String>
+    <s:String x:Key="Str_FlipY">垂直方向反転</s:String>
+    <s:String x:Key="Str_X">X座標</s:String>
+    <s:String x:Key="Str_Y">Y座標</s:String>
+
+    <s:String x:Key="Str_Skin">スキン</s:String>
+    <s:String x:Key="Str_EnableSkins">有効</s:String>
+    <s:String x:Key="Str_DisableSkins">無効</s:String>
+
+    <s:String x:Key="Str_Slot">スロット</s:String>
+    <s:String x:Key="Str_ClearSlotsAttachment">アタッチメントをクリア</s:String>
+
+    <s:String x:Key="Str_Animation">アニメーション</s:String>
+    <s:String x:Key="Str_AppendTrack">追加</s:String>
+    <s:String x:Key="Str_InsertTrack">挿入</s:String>
+
+    <s:String x:Key="Str_Debug">デバッグ</s:String>
+    <s:String x:Key="Str_DebugTexture">テクスチャ</s:String>
+    <s:String x:Key="Str_DebugBounds">バウンダリ</s:String>
+    <s:String x:Key="Str_DebugBones">ボーン</s:String>
+    <s:String x:Key="Str_DebugRegions">リージョン</s:String>
+    <s:String x:Key="Str_DebugMeshHulls">メッシュハル</s:String>
+    <s:String x:Key="Str_DebugMeshes">メッシュ</s:String>
+    <s:String x:Key="Str_DebugBoundingBoxes">境界ボックス</s:String>
+    <s:String x:Key="Str_DebugPaths">パス</s:String>
+    <s:String x:Key="Str_DebugPoints">ポイント</s:String>
+    <s:String x:Key="Str_DebugClippings">クリッピング</s:String>
+
+    <!-- 渲染画面参数面板 -->
+    <s:String x:Key="Str_RenderStopped">レンダリング停止中</s:String>
+    <s:String x:Key="Str_ResolutionX">幅（ピクセル）</s:String>
+    <s:String x:Key="Str_ResolutionY">高さ（ピクセル）</s:String>
+    <s:String x:Key="Str_CenterX">中心X座標</s:String>
+    <s:String x:Key="Str_CenterY">中心Y座標</s:String>
+    <s:String x:Key="Str_Zoom">ズーム</s:String>
+    <s:String x:Key="Str_Rotation">回転（度）</s:String>
+    <s:String x:Key="Str_MaxFps">最大FPS</s:String>
+    <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
+    <s:String x:Key="Str_ShowAxis">座標軸を表示</s:String>
+    <s:String x:Key="Str_BackgroundColor">背景色</s:String>
+    <s:String x:Key="Str_BackgroundImage">背景画像</s:String>
+
+    <!-- 渲染画面按钮组 -->
+    <s:String x:Key="Str_StopTooltip">停止</s:String>
+    <s:String x:Key="Str_RestartTooltip">最初から再生</s:String>
+    <s:String x:Key="Str_PlayPauseTooltip">再生/一時停止</s:String>
+    <s:String x:Key="Str_ForwardStepTooltip">1フレーム進める</s:String>
+    <s:String x:Key="Str_ForwardFastTooltip">10フレーム進める</s:String>
+    <s:String x:Key="Str_FullScreenTooltip">ウィンドウ/フルスクリーン; F11</s:String>
+
+    <!-- 弹窗文本 -->
+    <s:String x:Key="Str_OK">OK</s:String>
+    <s:String x:Key="Str_Cancel">キャンセル</s:String>
+    <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>
+    <s:String x:Key="Str_DeletePreviewsTitle">プレビューを削除</s:String>
+    <s:String x:Key="Str_AddSpineObjectsTitle">一括でスケルトンファイルを追加</s:String>
+
+    <s:String x:Key="Str_InfoPopup">情報</s:String>
+    <s:String x:Key="Str_WarnPopup">警告</s:String>
+    <s:String x:Key="Str_ErrorPopup">エラー</s:String>
+    <s:String x:Key="Str_QuestPopup">確認</s:String>
+    <s:String x:Key="Str_CancelQuest">キャンセルを確認しますか？</s:String>
+    <s:String x:Key="Str_TooManyItemsToAddQuest">全{0}件、一度に追加しますか？</s:String>
+    <s:String x:Key="Str_RemoveItemsQuest">{0}件を削除してもよろしいですか？</s:String>
+    <s:String x:Key="Str_DeleteItemsQuest">{0}件を削除してもよろしいですか？</s:String>
+
+    <!-- 导出对话框弹窗文本 -->
+    <s:String x:Key="Str_FrameExporterTitle">単一フレームをエクスポート</s:String>
+    <s:String x:Key="Str_FrameSequenceExporterTitle">フレームシーケンスをエクスポート</s:String>
+    <s:String x:Key="Str_FFmpegVideoExporterTitle">アニメーション/ビデオをエクスポート</s:String>
+    <s:String x:Key="Str_CustomFFmpegExporterTitle">カスタムFFmpegエクスポート</s:String>
+
+    <s:String x:Key="Str_InvalidOutputDir">出力フォルダーが無効です</s:String>
+    <s:String x:Key="Str_OutputDirNotFound">出力フォルダーが存在しません</s:String>
+    <s:String x:Key="Str_OutputDirRequired">単一エクスポート時は出力フォルダーを指定する必要があります</s:String>
+    <s:String x:Key="Str_InvalidMaxResolution">自動解像度使用時は有効な最大解像度を指定する必要があります</s:String>
+    <s:String x:Key="Str_InvalidDuration">単一エクスポート時、持続時間は0以上である必要があります</s:String>
+    <s:String x:Key="Str_FFmpegFormatRequired">FFmpegエクスポートフォーマットを指定する必要があります</s:String>
+
+    <s:String x:Key="Str_ResolutionTooltip">画面解像度。関連パラメーターは画面パネルで調整してください</s:String>
+    <s:String x:Key="Str_ExportSingle">単一エクスポート</s:String>
+    <s:String x:Key="Str_ExportSingleTooltip">チェックすると、選択モデルを同一画面でエクスポートし、出力フォルダーの指定が必要になります</s:String>
+    <s:String x:Key="Str_OutputDir">出力フォルダー</s:String>
+    <s:String x:Key="Str_OutputDirTooltip">オプションの出力フォルダー。入力すると、すべての成果物が指定フォルダーに出力されます。指定しない場合、各ディレクトリに出力されます。単一エクスポート時は指定が必要です</s:String>
+    <s:String x:Key="Str_Margin">マージン</s:String>
+    <s:String x:Key="Str_MarginTooltip">解像度に追加する四辺の余白。もしはみ出したコンテンツがある場合、この領域に表示されます</s:String>
+    <s:String x:Key="Str_AutoResolution">自動解像度</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip">チェックすると、エクスポートモデルのバウンディングボックスに基づいて解像度が計算され、プレビュー画面のスケールなどのパラメーターは無視されます</s:String>
+    <s:String x:Key="Str_MaxResolution">最大解像度</s:String>
+    <s:String x:Key="Str_MaxResolutionTooltip">自動解像度使用時のみ有効で、二方向の最大解像度を制限します</s:String>
+
+    <s:String x:Key="Str_ImageFormat">画像フォーマット</s:String>
+    <s:String x:Key="Str_ImageQuality">画像品質</s:String>
+    <s:String x:Key="Str_ImageQualityTooltip">値の範囲は0-100。一部の画像フォーマットでのみ有効です</s:String>
+
+    <s:String x:Key="Str_Duration">時間</s:String>
+    <s:String x:Key="Str_ExportDurationTooltip">エクスポート時間。0未満の場合、個別エクスポート時には各モデルのすべてのトラックアニメーションの最大時間が使用されます</s:String>
+
+    <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_KeepLastFrame">最後のフレームを保持</s:String>
+    <s:String x:Key="Str_KeepLastFrameTooltip">最後のフレームを保持すると、アニメーションはより連続して見えますが、フレーム数が予想より1フレーム多くなる可能性があります</s:String>
+
+    <s:String x:Key="Str_VideoFormat">ビデオフォーマット</s:String>
+    <s:String x:Key="Str_LoopPlay">ループ再生</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip">アニメーションをループ再生するか。Gif/Webp形式のみ有効です</s:String>
+    <s:String x:Key="Str_QualityParameter">品質パラメーター</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip">品質パラメーター。値の範囲は0-100。数値が大きいほど品質が高くなります。Webp形式のみ有効です</s:String>
+    <s:String x:Key="Str_CrfParameter">CRFパラメーター</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip">CRFパラメーター。値の範囲は0-63。数値が小さいほど品質が高くなります。Mp4/Webm/Mkv形式のみ有効です</s:String>
+
+    <s:String x:Key="Str_FFmpegFormat">エクスポートフォーマット</s:String>
+    <s:String x:Key="Str_FFmpegFormatTooltip">FFmpegエクスポートフォーマット。パラメーター“-f”に相当します。例: “mp4”、“webm”</s:String>
+    <s:String x:Key="Str_FFmpegCodec">コーデック</s:String>
+    <s:String x:Key="Str_FFmpegCodecTooltip">FFmpegコーデック。パラメーター“-c:v”に相当します。例: “libx264”、“libx265”</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormat">ピクセルフォーマット</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpegピクセルフォーマット。パラメーター“-pix_fmt”に相当します。例: “yuv420”、“yuv444”</s:String>
+    <s:String x:Key="Str_FFmpegBitrate">ビットレート</s:String>
+    <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpegビットレート。パラメーター“-b:v”に相当します。例: “6K”、“2M”</s:String>
+    <s:String x:Key="Str_FFmpegFilter">フィルター</s:String>
+    <s:String x:Key="Str_FFmpegFilterTooltip">FFmpegフィルター。パラメーター“-vf”に相当します</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgs">カスタムパラメーター</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgsTooltip">FFmpegカスタムパラメーター。コマンドラインと同じ形式、例: “-crf 23”</s:String>
+
+    <!-- 诊断信息对话框 -->
+    <s:String x:Key="Str_CopyDiagnosticsInfo">クリップボードにコピー</s:String>
+    <s:String x:Key="Str_Copied">コピーしました</s:String>
+
+    <!-- 关于对话框 -->
+    <s:String x:Key="Str_ProgremVersion">プログラムバージョン</s:String>
+    <s:String x:Key="Str_ProjectUrl">プロジェクトURL</s:String>
+
+</ResourceDictionary>
+
