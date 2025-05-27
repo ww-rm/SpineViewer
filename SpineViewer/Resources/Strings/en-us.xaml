@@ -21,6 +21,8 @@
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">Filter</s:String>
+    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">Open Directory</s:String>
+    <s:String x:Key="Str_RefreshItemsTooltip">Refresh Items</s:String>
     <s:String x:Key="Str_FileDirectory">File Directory</s:String>
     <s:String x:Key="Str_FileName">File Name</s:String>
     <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>

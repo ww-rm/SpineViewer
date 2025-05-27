@@ -21,6 +21,8 @@
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">筛选</s:String>
+    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">打开目录</s:String>
+    <s:String x:Key="Str_RefreshItemsTooltip">刷新列表项</s:String>
     <s:String x:Key="Str_FileDirectory">文件目录</s:String>
     <s:String x:Key="Str_FileName">文件名</s:String>
     <s:String x:Key="Str_AddSelectedItems">导入选中项</s:String>

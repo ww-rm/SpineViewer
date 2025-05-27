@@ -106,8 +106,14 @@
                                             </Grid.ColumnDefinitions>
                                             <hc:TextBox hc:InfoElement.Placeholder="{StaticResource Str_Filter}"
                                                         Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Button Grid.Column="1" hc:IconElement.Geometry="{StaticResource Geo_Folder}" Command="{Binding Cmd_ChangeCurrentDirectory}"/>
-                                            <Button Grid.Column="2" hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" Command="{Binding Cmd_RefreshItems}"/>
+                                            <Button Grid.Column="1" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
+                                                    Command="{Binding Cmd_ChangeCurrentDirectory}"
+                                                    ToolTip="{DynamicResource Str_ChangeCurrentDirectoryTooltip}"/>
+                                            <Button Grid.Column="2" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" 
+                                                    Command="{Binding Cmd_RefreshItems}"
+                                                    ToolTip="{DynamicResource Str_RefreshItemsTooltip}"/>
                                         </Grid>
 
                                         <StatusBar DockPanel.Dock="Bottom">
