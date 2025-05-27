@@ -735,8 +735,8 @@
                                     <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
 
                                     <!-- 背景颜色 -->
-                                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}"/>
-                                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding BackgroundColor}"/>
+                                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                     
                                     <!-- 背景图案 -->
                                     <!-- 背景图案模式 -->
