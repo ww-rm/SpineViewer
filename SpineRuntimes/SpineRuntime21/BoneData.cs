@@ -32,14 +32,18 @@ using System;
 
 namespace SpineRuntime21 {
 	public class BoneData {
-		internal BoneData parent;
+        internal int index;
+        internal BoneData parent;
 		internal String name;
 		internal float length, x, y, rotation, scaleX = 1, scaleY = 1;
 		internal bool flipX, flipY;
 		internal bool inheritScale = true, inheritRotation = true;
 
-		/// <summary>May be null.</summary>
-		public BoneData Parent { get { return parent; } }
+        /// <summary>The index of the bone in Skeleton.Bones</summary>
+        public int Index { get { return index; } }
+
+        /// <summary>May be null.</summary>
+        public BoneData Parent { get { return parent; } }
 		public String Name { get { return name; } }
 		public float Length { get { return length; } set { length = value; } }
 		public float X { get { return x; } set { x = value; } }
@@ -53,9 +57,10 @@ namespace SpineRuntime21 {
 		public bool InheritRotation { get { return inheritRotation; } set { inheritRotation = value; } }
 
 		/// <param name="parent">May be null.</param>
-		public BoneData (String name, BoneData parent) {
+		public BoneData (int index, String name, BoneData parent) {
 			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			this.name = name;
+            this.index = index;
+            this.name = name;
 			this.parent = parent;
 		}
 

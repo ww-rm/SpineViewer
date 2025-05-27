@@ -119,7 +119,7 @@ namespace SpineRuntime21 {
 				BoneData parent = null;
 				int parentIndex = ReadInt(input, true) - 1;
 				if (parentIndex != -1) parent = skeletonData.bones[parentIndex];
-				BoneData boneData = new BoneData(name, parent);
+				BoneData boneData = new BoneData(i, name, parent);
 				boneData.x = ReadFloat(input) * scale;
 				boneData.y = ReadFloat(input) * scale;
 				boneData.scaleX = ReadFloat(input);
@@ -149,7 +149,7 @@ namespace SpineRuntime21 {
 			for (int i = 0, n = ReadInt(input, true); i < n; i++) {
 				String slotName = ReadString(input);
 				BoneData boneData = skeletonData.bones[ReadInt(input, true)];
-				SlotData slotData = new SlotData(slotName, boneData);
+				SlotData slotData = new SlotData(i, slotName, boneData);
 				int color = ReadInt(input);
 				slotData.r = ((color & 0xff000000) >> 24) / 255f;
 				slotData.g = ((color & 0x00ff0000) >> 16) / 255f;

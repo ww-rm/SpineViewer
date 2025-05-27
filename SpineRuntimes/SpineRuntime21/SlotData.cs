@@ -32,13 +32,15 @@ using System;
 
 namespace SpineRuntime21 {
 	public class SlotData {
+		internal int index;
 		internal String name;
 		internal BoneData boneData;
 		internal float r = 1, g = 1, b = 1, a = 1;
 		internal String attachmentName;
 		internal bool additiveBlending;
 
-		public String Name { get { return name; } }
+        public int Index { get { return index; } }
+        public String Name { get { return name; } }
 		public BoneData BoneData { get { return boneData; } }
 		public float R { get { return r; } set { r = value; } }
 		public float G { get { return g; } set { g = value; } }
@@ -48,9 +50,10 @@ namespace SpineRuntime21 {
 		public String AttachmentName { get { return attachmentName; } set { attachmentName = value; } }
 		public bool AdditiveBlending { get { return additiveBlending; } set { additiveBlending = value; } }
 
-		public SlotData (String name, BoneData boneData) {
+		public SlotData (int index, String name, BoneData boneData) {
 			if (name == null) throw new ArgumentNullException("name cannot be null.");
 			if (boneData == null) throw new ArgumentNullException("boneData cannot be null.");
+			this.index = index;
 			this.name = name;
 			this.boneData = boneData;
 		}

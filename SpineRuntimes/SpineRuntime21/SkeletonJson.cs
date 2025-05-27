@@ -106,7 +106,7 @@ namespace SpineRuntime21 {
 					if (parent == null)
 						throw new Exception("Parent bone not found: " + boneMap["parent"]);
 				}
-				var boneData = new BoneData((String)boneMap["name"], parent);
+				var boneData = new BoneData(skeletonData.Bones.Count, (String)boneMap["name"], parent);
 				boneData.length = GetFloat(boneMap, "length", 0) * Scale;
 				boneData.x = GetFloat(boneMap, "x", 0) * Scale;
 				boneData.y = GetFloat(boneMap, "y", 0) * Scale;
@@ -150,7 +150,7 @@ namespace SpineRuntime21 {
 					BoneData boneData = skeletonData.FindBone(boneName);
 					if (boneData == null)
 						throw new Exception("Slot bone not found: " + boneName);
-					var slotData = new SlotData(slotName, boneData);
+					var slotData = new SlotData(skeletonData.Slots.Count, slotName, boneData);
 
 					if (slotMap.ContainsKey("color")) {
 						var color = (String)slotMap["color"];
