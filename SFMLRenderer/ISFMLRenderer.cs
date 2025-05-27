@@ -9,15 +9,19 @@ using System.Threading.Tasks;
 
 namespace SFMLRenderer
 {
+    /// <summary>
+    /// 定义了 SFML 渲染器的基本功能和事件, 基本上是对 <see cref="RenderWindow"/> 的抽象
+    /// <para>实现示例可以见 <see cref="SFMLRenderPanel"/></para>
+    /// </summary>
     public interface ISFMLRenderer
     {
         /// <summary>
-        /// 发生在资源首次创建完成后
+        /// 发生在资源首次创建完成后, 该事件发生之后渲染器才是可用的, 操作才会生效
         /// </summary>
         public event EventHandler? RendererCreated;
 
         /// <summary>
-        /// 发生在资源即将不可用之前
+        /// 发生在资源即将不可用之前, 该事件发生之后对渲染器的操作将被忽略
         /// </summary>
         public event EventHandler? RendererDisposing;
 
@@ -62,72 +66,72 @@ namespace SFMLRenderer
         public uint MaxFps { get; set; }
 
         /// <summary>
-        /// 垂直同步
+        /// 垂直同步, <see cref="RenderWindow.SetVerticalSyncEnabled(bool)"/>
         /// </summary>
         public bool VerticalSync { get; set; }
 
         /// <summary>
-        /// <see cref="RenderWindow.SetActive(bool)"/>
+        /// <inheritdoc cref="RenderWindow.SetActive(bool)"/>
         /// </summary>
-        public void SetActive(bool active);
+        public bool SetActive(bool active);
 
         /// <summary>
-        /// <see cref="RenderWindow.GetView"/>
+        /// <inheritdoc cref="RenderWindow.GetView"/>
         /// </summary>
         public View GetView();
 
         /// <summary>
-        /// <see cref="RenderWindow.SetView(View)"/>
+        /// <inheritdoc cref="RenderWindow.SetView(View)"/>
         /// </summary>
         public void SetView(View view);
 
         /// <summary>
-        /// <see cref="RenderWindow.MapPixelToCoords(Vector2i)"/>
+        /// <inheritdoc cref="RenderWindow.MapPixelToCoords(Vector2i)"/>
         /// </summary>
         public Vector2f MapPixelToCoords(Vector2i point);
 
         /// <summary>
-        /// <see cref="RenderWindow.MapCoordsToPixel(Vector2f)"/>
+        /// <inheritdoc cref="RenderWindow.MapCoordsToPixel(Vector2f)"/>
         /// </summary>
         public Vector2i MapCoordsToPixel(Vector2f point);
 
         /// <summary>
-        /// <see cref="RenderWindow.Clear()"/>
+        /// <inheritdoc cref="RenderWindow.Clear()"/>
         /// </summary>
         public void Clear();
 
         /// <summary>
-        /// <see cref="RenderWindow.Clear(Color)"/>
+        /// <inheritdoc cref="RenderWindow.Clear(Color)"/>
         /// </summary>
         public void Clear(Color color);
 
         /// <summary>
-        /// <see cref="RenderWindow.Draw(Drawable)"/>
+        /// <inheritdoc cref="RenderWindow.Draw(Drawable)"/>
         /// </summary>
         public void Draw(Drawable drawable);
 
         /// <summary>
-        /// <see cref="RenderWindow.Draw(Drawable, RenderStates)"/>
+        /// <inheritdoc cref="RenderWindow.Draw(Drawable, RenderStates)"/>
         /// </summary>
         public void Draw(Drawable drawable, RenderStates states);
 
         /// <summary>
-        /// <see cref="RenderWindow.Draw(Vertex[], PrimitiveType)"/>
+        /// <inheritdoc cref="RenderWindow.Draw(Vertex[], PrimitiveType)"/>
         /// </summary>
         public void Draw(Vertex[] vertices, PrimitiveType type);
 
         /// <summary>
-        /// <see cref="RenderWindow.Draw(Vertex[], PrimitiveType, RenderStates)"/>
+        /// <inheritdoc cref="RenderWindow.Draw(Vertex[], PrimitiveType, RenderStates)"/>
         /// </summary>
         public void Draw(Vertex[] vertices, PrimitiveType type, RenderStates states);
 
         /// <summary>
-        /// <see cref="RenderWindow.Draw(Vertex[], uint, uint, PrimitiveType)"/>
+        /// <inheritdoc cref="RenderWindow.Draw(Vertex[], uint, uint, PrimitiveType)"/>
         /// </summary>
         public void Draw(Vertex[] vertices, uint start, uint count, PrimitiveType type);
 
         /// <summary>
-        /// <see cref="RenderWindow.Display"/>
+        /// <inheritdoc cref="RenderWindow.Display"/>
         /// </summary>
         public void Display();
     }

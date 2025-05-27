@@ -229,7 +229,7 @@ namespace SFMLRenderer
 
         public Vector2f MapPixelToCoords(Vector2i point) => RenderWindow?.MapPixelToCoords(point) ?? default;
 
-        public void SetActive(bool active) => RenderWindow?.SetActive(active);
+        public bool SetActive(bool active) => RenderWindow?.SetActive(active) ?? false;
 
         public void SetView(View view) => RenderWindow?.SetView(view);
 

@@ -12,14 +12,27 @@ using System.Windows.Media;
 
 namespace SFMLRenderer
 {
+    /// <summary>
+    /// 原生窗口控件, 不应直接使用该类, 而是使用 <see cref="SFMLRenderPanel"/> 或者二次封装
+    /// </summary>
     public class SFMLHwndHost : HwndHost
     {
         private HwndSource? _hwndSource;
         private SFML.Graphics.RenderWindow? _renderWindow;
 
+        /// <summary>
+        /// 内部的 SFML 窗口对象
+        /// </summary>
         public SFML.Graphics.RenderWindow? RenderWindow => _renderWindow;
 
+        /// <summary>
+        /// 窗口建立事件
+        /// </summary>
         public event EventHandler? RenderWindowBuilded;
+
+        /// <summary>
+        /// 窗口销毁事件
+        /// </summary>
         public event EventHandler? RenderWindowDestroying;
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
