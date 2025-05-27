@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="SFMLRenderer.SFMLRenderPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SFMLRenderer"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <local:SFMLHwndHost x:Name="_hwndHost" 
+                        Width="100" 
+                        Height="100" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+</UserControl>

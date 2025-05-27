@@ -1,0 +1,122 @@
+﻿<Window x:Class="SpineViewer.Views.ExporterDialogs.FrameExporterDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:SpineViewer.Views"
+        xmlns:vmexp="clr-namespace:SpineViewer.ViewModels.Exporters"
+        d:DataContext="{d:DesignInstance Type=vmexp:FrameExporterViewModel}"
+        mc:Ignorable="d"
+        Title="{DynamicResource Str_FrameExporterTitle}" 
+        Width="450"
+        Height="400"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom">
+            <WrapPanel HorizontalAlignment="Center">
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Width" Value="100"/>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button Content="{DynamicResource Str_OK}" Click="ButtonOK_Click"/>
+                <Button Content="{DynamicResource Str_Cancel}" Click="ButtonCancel_Click"/>
+            </WrapPanel>
+        </Border>
+
+        <Border>
+            <ScrollViewer  VerticalScrollBarVisibility="Auto">
+
+                <Grid Margin="30 10">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
+                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
+                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButton}">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 水平分辨率 -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_ResolutionX}" ToolTip="{DynamicResource Str_ResolutionTooltip}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding ResolutionX, Mode=OneWay}" ToolTip="{DynamicResource Str_ResolutionTooltip}"/>
+
+                    <!-- 垂直分辨率 -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_ResolutionY}" ToolTip="{DynamicResource Str_ResolutionTooltip}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding ResolutionY, Mode=OneWay}" ToolTip="{DynamicResource Str_ResolutionTooltip}"/>
+
+                    <!-- 是否导出单个 -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_ExportSingle}" ToolTip="{DynamicResource Str_ExportSingleTooltip}"/>
+                    <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding ExportSingle}" ToolTip="{DynamicResource Str_ExportSingleTooltip}"/>
+
+                    <!-- 输出文件夹 -->
+                    <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_OutputDir}" ToolTip="{DynamicResource Str_OutputDirTooltip}"/>
+                    <DockPanel Grid.Row="3" Grid.Column="1">
+                        <Button DockPanel.Dock="Right" Content="..." Click="ButtonSelectOutputDir_Click"/>
+                        <TextBox Text="{Binding OutputDir}" ToolTip="{DynamicResource Str_OutputDirTooltip}"/>
+                    </DockPanel>
+
+                    <!-- 背景颜色 -->
+                    <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
+                    <DockPanel Grid.Row="4" Grid.Column="1">
+                        <Button DockPanel.Dock="Right" Content="..." Click="ButtonPickColor_Click">
+                            <Button.Background>
+                                <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBox x:Name="_colorTextBox" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+                    </DockPanel>
+
+                    <!-- 四周边距 -->
+                    <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Str_Margin}" ToolTip="{DynamicResource Str_MarginTooltip}"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Margin}" ToolTip="{DynamicResource Str_MarginTooltip}"/>
+
+                    <!-- 自动分辨率 -->
+                    <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Str_AutoResolution}" ToolTip="{DynamicResource Str_AutoResolutionTooltip}"/>
+                    <ToggleButton Grid.Row="6" Grid.Column="1" IsChecked="{Binding AutoResolution}" ToolTip="{DynamicResource Str_AutoResolutionTooltip}"/>
+
+                    <!-- 最大分辨率 -->
+                    <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource Str_MaxResolution}" ToolTip="{DynamicResource Str_MaxResolutionTooltip}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding MaxResolution}" ToolTip="{DynamicResource Str_MaxResolutionTooltip}"/>
+
+                    <Separator Grid.Row="8" Grid.ColumnSpan="2" Height="10"/>
+
+                    <!-- 图像格式 -->
+                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_ImageFormat}"/>
+                    <ComboBox Grid.Row="9" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding FrameFormats}"/>
+
+                    <!-- 图像质量 -->
+                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_ImageQuality}" ToolTip="{DynamicResource Str_ImageQualityTooltip}"/>
+                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Quality}" ToolTip="{DynamicResource Str_ImageQualityTooltip}"/>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
+</Window>

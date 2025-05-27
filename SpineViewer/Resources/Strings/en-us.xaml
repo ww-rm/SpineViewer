@@ -1,0 +1,195 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <!-- 菜单 -->
+    <s:String x:Key="Str_File">File</s:String>
+    <s:String x:Key="Str_Tool">Tools</s:String>
+    <s:String x:Key="Str_Download">Download</s:String>
+    <s:String x:Key="Str_Help">Help</s:String>
+    <s:String x:Key="Str_Diagnostics">Diagnostics Info</s:String>
+    <s:String x:Key="Str_Abount">About</s:String>
+    <s:String x:Key="Str_Experiment">Experimental Features</s:String>
+
+    <s:String x:Key="Str_Open">Open...</s:String>
+    <s:String x:Key="Str_Preference">Preferences...</s:String>
+    <s:String x:Key="Str_Exit">Exit</s:String>
+
+    <!-- 标签页 -->
+    <s:String x:Key="Str_Explorer">Explorer</s:String>
+    <s:String x:Key="Str_SpineObject">Model</s:String>
+    <s:String x:Key="Str_Canvas">Canvas</s:String>
+
+    <!-- 浏览标签页 -->
+    <s:String x:Key="Str_Filter">Filter</s:String>
+    <s:String x:Key="Str_FileDirectory">File Directory</s:String>
+    <s:String x:Key="Str_FileName">File Name</s:String>
+    <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>
+    <s:String x:Key="Str_GeneratePreviewForSelected">Generate Preview for Selected</s:String>
+    <s:String x:Key="Str_DeletePreviewsForSelected">Delete Previews for Selected</s:String>
+
+    <!-- 模型列表 -->
+    <s:String x:Key="Str_Name">Name</s:String>
+    <s:String x:Key="Str_Show">Show</s:String>
+    <s:String x:Key="Str_ListViewStatusBar">{0} items, {1} selected</s:String>
+    <s:String x:Key="Str_AddSpineObject">Add...</s:String>
+    <s:String x:Key="Str_RemoveSpineObject">Remove</s:String>
+    <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
+    <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">Add from Clipboard</s:String>
+    <s:String x:Key="Str_CopySpineObjectConfig">Copy Config</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfig">Apply Config</s:String>
+    <s:String x:Key="Str_SaveSpineObjectConfigToFile">Save Config to File...</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfigFromFile">Apply Config from File...</s:String>
+    <s:String x:Key="Str_Export">Export</s:String>
+    <s:String x:Key="Str_ExportFrame">Export Frame...</s:String>
+    <s:String x:Key="Str_ExportFrameSequence">Export Frame Sequence...</s:String>
+    <s:String x:Key="Str_ExportVideo">Export Animation/Video...</s:String>
+    <s:String x:Key="Str_ExportCustom">Custom Export...</s:String>
+
+    <!-- 模型参数面板 -->
+    <s:String x:Key="Str_BaseInfo">Basic</s:String>
+    <s:String x:Key="Str_Version">Version</s:String>
+    <s:String x:Key="Str_FileVersion">File Version</s:String>
+    <s:String x:Key="Str_AssetsDir">Assets Directory</s:String>
+    <s:String x:Key="Str_SkelPath">Skel Path</s:String>
+    <s:String x:Key="Str_AtlasPath">Atlas Path</s:String>
+
+    <s:String x:Key="Str_Render">Render</s:String>
+    <s:String x:Key="Str_IsShown">Show</s:String>
+    <s:String x:Key="Str_UsePma">Premultiply Alpha</s:String>
+    <s:String x:Key="Str_Physics">Physics</s:String>
+
+    <s:String x:Key="Str_Transform">Transform</s:String>
+    <s:String x:Key="Str_Scale">Scale</s:String>
+    <s:String x:Key="Str_FlipX">Flip X</s:String>
+    <s:String x:Key="Str_FlipY">Flip Y</s:String>
+    <s:String x:Key="Str_X">X</s:String>
+    <s:String x:Key="Str_Y">Y</s:String>
+
+    <s:String x:Key="Str_Skin">Skin</s:String>
+    <s:String x:Key="Str_EnableSkins">Enable Skins</s:String>
+    <s:String x:Key="Str_DisableSkins">Disable Skins</s:String>
+
+    <s:String x:Key="Str_Slot">Slot</s:String>
+    <s:String x:Key="Str_ClearSlotsAttachment">Clear Slots Attachment</s:String>
+
+    <s:String x:Key="Str_Animation">Animation</s:String>
+    <s:String x:Key="Str_AppendTrack">Add</s:String>
+    <s:String x:Key="Str_InsertTrack">Insert</s:String>
+
+    <s:String x:Key="Str_Debug">Debug</s:String>
+    <s:String x:Key="Str_DebugTexture">Texture</s:String>
+    <s:String x:Key="Str_DebugBounds">Bounds</s:String>
+    <s:String x:Key="Str_DebugBones">Bones</s:String>
+    <s:String x:Key="Str_DebugRegions">Regions</s:String>
+    <s:String x:Key="Str_DebugMeshHulls">MeshHulls</s:String>
+    <s:String x:Key="Str_DebugMeshes">Meshes</s:String>
+    <s:String x:Key="Str_DebugBoundingBoxes">BoundingBoxes</s:String>
+    <s:String x:Key="Str_DebugPaths">Paths</s:String>
+    <s:String x:Key="Str_DebugPoints">Points</s:String>
+    <s:String x:Key="Str_DebugClippings">Clippings</s:String>
+
+    <!-- 渲染画面参数面板 -->
+    <s:String x:Key="Str_RenderStopped">Render Stopped</s:String>
+    <s:String x:Key="Str_ResolutionX">Width (px)</s:String>
+    <s:String x:Key="Str_ResolutionY">Height (px)</s:String>
+    <s:String x:Key="Str_CenterX">Center X</s:String>
+    <s:String x:Key="Str_CenterY">Center Y</s:String>
+    <s:String x:Key="Str_Zoom">Zoom</s:String>
+    <s:String x:Key="Str_Rotation">Rotation (Degrees)</s:String>
+    <s:String x:Key="Str_MaxFps">Max FPS</s:String>
+    <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
+    <s:String x:Key="Str_ShowAxis">Show Axis</s:String>
+    <s:String x:Key="Str_BackgroundColor">Background Color</s:String>
+    <s:String x:Key="Str_BackgroundImage">Background Image</s:String>
+
+    <!-- 渲染画面按钮组 -->
+    <s:String x:Key="Str_StopTooltip">Stop</s:String>
+    <s:String x:Key="Str_RestartTooltip">Restart Playback</s:String>
+    <s:String x:Key="Str_PlayPauseTooltip">Play/Pause</s:String>
+    <s:String x:Key="Str_ForwardStepTooltip">Forward 1 Frame</s:String>
+    <s:String x:Key="Str_ForwardFastTooltip">Forward 10 Frames</s:String>
+    <s:String x:Key="Str_FullScreenTooltip">Window/Fullscreen; F11</s:String>
+
+    <!-- 弹窗文本 -->
+    <s:String x:Key="Str_OK">OK</s:String>
+    <s:String x:Key="Str_Cancel">Cancel</s:String>
+    <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
+    <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
+    <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
+
+    <s:String x:Key="Str_InfoPopup">Information</s:String>
+    <s:String x:Key="Str_WarnPopup">Warning</s:String>
+    <s:String x:Key="Str_ErrorPopup">Error</s:String>
+    <s:String x:Key="Str_QuestPopup">Operation Confirmation</s:String>
+    <s:String x:Key="Str_CancelQuest">Confirm Cancel?</s:String>
+    <s:String x:Key="Str_TooManyItemsToAddQuest">{0} items total, add all at once?</s:String>
+    <s:String x:Key="Str_RemoveItemsQuest">Remove {0} items?</s:String>
+    <s:String x:Key="Str_DeleteItemsQuest">Delete {0} items?</s:String>
+
+    <!-- 导出对话框弹窗文本 -->
+    <s:String x:Key="Str_FrameExporterTitle">Export Single Frame</s:String>
+    <s:String x:Key="Str_FrameSequenceExporterTitle">Export Frame Sequence</s:String>
+    <s:String x:Key="Str_FFmpegVideoExporterTitle">Export GIF/Video</s:String>
+    <s:String x:Key="Str_CustomFFmpegExporterTitle">Custom FFmpeg Export</s:String>
+
+    <s:String x:Key="Str_InvalidOutputDir">Invalid Output Directory</s:String>
+    <s:String x:Key="Str_OutputDirNotFound">Output Directory Not Found</s:String>
+    <s:String x:Key="Str_OutputDirRequired">Output folder required for single export</s:String>
+    <s:String x:Key="Str_InvalidMaxResolution">Valid max resolution required when using auto resolution</s:String>
+    <s:String x:Key="Str_InvalidDuration">Export duration cannot be negative for single export</s:String>
+    <s:String x:Key="Str_FFmpegFormatRequired">FFmpeg export format is required</s:String>
+
+    <s:String x:Key="Str_ResolutionTooltip">Screen resolution; adjust related parameters in the render settings panel</s:String>
+    <s:String x:Key="Str_ExportSingle">Export Single</s:String>
+    <s:String x:Key="Str_ExportSingleTooltip">When checked, export selected models in a single frame; output folder is required</s:String>
+    <s:String x:Key="Str_OutputDir">Output Folder</s:String>
+    <s:String x:Key="Str_OutputDirTooltip">Optional output folder; if specified, all outputs go there; otherwise to individual directories; required for single export</s:String>
+    <s:String x:Key="Str_Margin">Margin</s:String>
+    <s:String x:Key="Str_MarginTooltip">Extra margin around the frame; overflow content appears in this area</s:String>
+    <s:String x:Key="Str_AutoResolution">Auto Resolution</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip">When checked, resolution is based on models' bounding boxes, ignoring preview zoom and other settings</s:String>
+    <s:String x:Key="Str_MaxResolution">Max Resolution</s:String>
+    <s:String x:Key="Str_MaxResolutionTooltip">Only effective with auto resolution; limits maximum resolution in both directions</s:String>
+
+    <s:String x:Key="Str_ImageFormat">Image Format</s:String>
+    <s:String x:Key="Str_ImageQuality">Image Quality</s:String>
+    <s:String x:Key="Str_ImageQualityTooltip">Range 0–100; only effective for certain formats</s:String>
+
+    <s:String x:Key="Str_Duration">Duration</s:String>
+    <s:String x:Key="Str_ExportDurationTooltip">Export duration; if smaller than 0, each model uses its maximum animation length when exporting individually</s:String>
+
+    <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_KeepLastFrame">Keep Last Frame</s:String>
+    <s:String x:Key="Str_KeepLastFrameTooltip">When keeping the last frame, animation is smoother but frame count may be one higher</s:String>
+
+    <s:String x:Key="Str_VideoFormat">Video Format</s:String>
+    <s:String x:Key="Str_LoopPlay">Loop Play</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip">Loop animation; only effective for GIF/WebP formats</s:String>
+    <s:String x:Key="Str_QualityParameter">Quality Parameter</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip">Range 0–100; higher is better; only for WebP format</s:String>
+    <s:String x:Key="Str_CrfParameter">CRF Parameter</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip">Range 0–63; lower is higher quality; only for MP4/WebM/MKV formats</s:String>
+
+    <s:String x:Key="Str_FFmpegFormat">Export Format</s:String>
+    <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg export format (equivalent to "-f"), e.g. "mp4", "webm"</s:String>
+    <s:String x:Key="Str_FFmpegCodec">Codec</s:String>
+    <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg codec (equivalent to "-c:v"), e.g. "libx264", "libx265"</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormat">Pixel Format</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg pixel format (equivalent to "-pix_fmt"), e.g. "yuv420", "yuv444"</s:String>
+    <s:String x:Key="Str_FFmpegBitrate">Bitrate</s:String>
+    <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg bitrate (equivalent to "-b:v"), e.g. "6K", "2M"</s:String>
+    <s:String x:Key="Str_FFmpegFilter">Filter</s:String>
+    <s:String x:Key="Str_FFmpegFilterTooltip">FFmpeg filter (equivalent to "-vf")</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgs">Custom Args</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgsTooltip">FFmpeg custom args, same as command line, e.g. "-crf 23"</s:String>
+
+    <!-- 诊断信息对话框 -->
+    <s:String x:Key="Str_CopyDiagnosticsInfo">Copy to Clipboard</s:String>
+    <s:String x:Key="Str_Copied">Copied</s:String>
+
+    <!-- 关于对话框 -->
+    <s:String x:Key="Str_ProgremVersion">Program Version</s:String>
+    <s:String x:Key="Str_ProjectUrl">Project URL</s:String>
+
+</ResourceDictionary>

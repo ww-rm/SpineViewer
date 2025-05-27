@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SpineViewer.Natives
 {
@@ -72,6 +72,8 @@ namespace SpineViewer.Natives
         public const int SW_RESTORE = 9;
         public const int SW_SHOWDEFAULT = 10;
 
+        public const uint MONITOR_DEFAULTTONEAREST = 2;
+
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {
@@ -109,6 +111,17 @@ namespace SpineViewer.Natives
             public int Top;
             public int Right;
             public int Bottom;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MONITORINFOEX
+        {
+            public uint cbSize;
+            public RECT rcMonitor;
+            public RECT rcWork;
+            public uint dwFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string szDevice;
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -177,6 +190,12 @@ namespace SpineViewer.Natives
         [DllImport("gdi32.dll", SetLastError = true)]
         public static extern bool DeleteObject(nint hObject);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+
         public static TimeSpan GetLastInputElapsedTime()
         {
             LASTINPUTINFO lastInputInfo = new();
@@ -200,6 +219,23 @@ namespace SpineViewer.Natives
             nint hWnd = FindWindowEx(progman, 0, "WorkerW", null);
             Debug.WriteLine($"HWND(Progman.WorkerW): {hWnd:x8}");
             return hWnd;
+        }
+
+        public static bool GetScreenResolution(IntPtr hwnd, out uint width, out uint height)
+        {
+            IntPtr hMon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+
+            var mi = new MONITORINFOEX { cbSize = (uint)Marshal.SizeOf<MONITORINFOEX>() };
+            if (GetMonitorInfo(hMon, ref mi))
+            {
+                int widthPx = mi.rcMonitor.Right - mi.rcMonitor.Left;
+                int heightPx = mi.rcMonitor.Bottom - mi.rcMonitor.Top;
+                width = (uint)widthPx;
+                height = (uint)heightPx;
+                return true;
+            }
+            width = height = 0;
+            return false;
         }
     }
 }

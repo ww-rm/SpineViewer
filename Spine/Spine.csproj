@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>x64</Platforms>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <Version>0.15.0</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FFMpegCore" Version="5.2.0" />
+        <PackageReference Include="NLog" Version="5.4.0" />
+        <PackageReference Include="SFML.Net" Version="2.6.1" />
+        <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime21\SpineRuntime21.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime36\SpineRuntime36.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime37\SpineRuntime37.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime38\SpineRuntime38.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime40\SpineRuntime40.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime41\SpineRuntime41.csproj" />
+      <ProjectReference Include="..\SpineRuntimes\SpineRuntime42\SpineRuntime42.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Implementations\SpineWrappers\V36\" />
+      <Folder Include="Implementations\SpineWrappers\V37\" />
+    </ItemGroup>
+
+</Project>

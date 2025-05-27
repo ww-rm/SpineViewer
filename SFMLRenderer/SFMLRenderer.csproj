@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>x64</Platforms>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <Version>0.15.0</Version>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SFML.Net" Version="2.6.1" />
+    </ItemGroup>
+
+</Project>

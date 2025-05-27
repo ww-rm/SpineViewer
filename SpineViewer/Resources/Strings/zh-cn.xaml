@@ -1,0 +1,195 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <!-- 菜单 -->
+    <s:String x:Key="Str_File">文件</s:String>
+    <s:String x:Key="Str_Tool">工具</s:String>
+    <s:String x:Key="Str_Download">下载</s:String>
+    <s:String x:Key="Str_Help">帮助</s:String>
+    <s:String x:Key="Str_Diagnostics">诊断信息</s:String>
+    <s:String x:Key="Str_Abount">关于</s:String>
+    <s:String x:Key="Str_Experiment">实验性功能</s:String>
+
+    <s:String x:Key="Str_Open">打开...</s:String>
+    <s:String x:Key="Str_Preference">首选项...</s:String>
+    <s:String x:Key="Str_Exit">退出</s:String>
+
+    <!-- 标签页 -->
+    <s:String x:Key="Str_Explorer">浏览</s:String>
+    <s:String x:Key="Str_SpineObject">模型</s:String>
+    <s:String x:Key="Str_Canvas">画面</s:String>
+
+    <!-- 浏览标签页 -->
+    <s:String x:Key="Str_Filter">筛选</s:String>
+    <s:String x:Key="Str_FileDirectory">文件目录</s:String>
+    <s:String x:Key="Str_FileName">文件名</s:String>
+    <s:String x:Key="Str_AddSelectedItems">导入选中项</s:String>
+    <s:String x:Key="Str_GeneratePreviewForSelected">为选中项生成预览图</s:String>
+    <s:String x:Key="Str_DeletePreviewsForSelected">删除选中项的预览图</s:String>
+
+    <!-- 模型列表 -->
+    <s:String x:Key="Str_Name">名称</s:String>
+    <s:String x:Key="Str_Show">显示</s:String>
+    <s:String x:Key="Str_ListViewStatusBar">共 {0} 项，已选择 {1} 项</s:String>
+    <s:String x:Key="Str_AddSpineObject">添加...</s:String>
+    <s:String x:Key="Str_RemoveSpineObject">移除</s:String>
+    <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
+    <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">从剪贴板添加</s:String>
+    <s:String x:Key="Str_CopySpineObjectConfig">复制参数</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfig">应用参数</s:String>
+    <s:String x:Key="Str_SaveSpineObjectConfigToFile">保存参数文件...</s:String>
+    <s:String x:Key="Str_ApplySpineObjectConfigFromFile">应用参数文件...</s:String>
+    <s:String x:Key="Str_Export">导出</s:String>
+    <s:String x:Key="Str_ExportFrame">单帧画面...</s:String>
+    <s:String x:Key="Str_ExportFrameSequence">帧序列...</s:String>
+    <s:String x:Key="Str_ExportVideo">动图/视频...</s:String>
+    <s:String x:Key="Str_ExportCustom">自定义导出...</s:String>
+
+    <!-- 模型参数面板 -->
+    <s:String x:Key="Str_BaseInfo">基本</s:String>
+    <s:String x:Key="Str_Version">版本</s:String>
+    <s:String x:Key="Str_FileVersion">文件版本</s:String>
+    <s:String x:Key="Str_AssetsDir">资源目录</s:String>
+    <s:String x:Key="Str_SkelPath">skel 路径</s:String>
+    <s:String x:Key="Str_AtlasPath">atlas 路径</s:String>
+
+    <s:String x:Key="Str_Render">渲染</s:String>
+    <s:String x:Key="Str_IsShown">显示</s:String>
+    <s:String x:Key="Str_UsePma">预乘Alpha通道</s:String>
+    <s:String x:Key="Str_Physics">物理</s:String>
+
+    <s:String x:Key="Str_Transform">变换</s:String>
+    <s:String x:Key="Str_Scale">缩放</s:String>
+    <s:String x:Key="Str_FlipX">水平翻转</s:String>
+    <s:String x:Key="Str_FlipY">垂直翻转</s:String>
+    <s:String x:Key="Str_X">横坐标</s:String>
+    <s:String x:Key="Str_Y">纵坐标</s:String>
+
+    <s:String x:Key="Str_Skin">皮肤</s:String>
+    <s:String x:Key="Str_EnableSkins">启用</s:String>
+    <s:String x:Key="Str_DisableSkins">禁用</s:String>
+
+    <s:String x:Key="Str_Slot">插槽</s:String>
+    <s:String x:Key="Str_ClearSlotsAttachment">清除附件</s:String>
+    
+    <s:String x:Key="Str_Animation">动画</s:String>
+    <s:String x:Key="Str_AppendTrack">添加</s:String>
+    <s:String x:Key="Str_InsertTrack">插入</s:String>
+
+    <s:String x:Key="Str_Debug">调试</s:String>
+    <s:String x:Key="Str_DebugTexture">Texture</s:String>
+    <s:String x:Key="Str_DebugBounds">Bounds</s:String>
+    <s:String x:Key="Str_DebugBones">Bones</s:String>
+    <s:String x:Key="Str_DebugRegions">Regions</s:String>
+    <s:String x:Key="Str_DebugMeshHulls">MeshHulls</s:String>
+    <s:String x:Key="Str_DebugMeshes">Meshes</s:String>
+    <s:String x:Key="Str_DebugBoundingBoxes">BoundingBoxes</s:String>
+    <s:String x:Key="Str_DebugPaths">Paths</s:String>
+    <s:String x:Key="Str_DebugPoints">Points</s:String>
+    <s:String x:Key="Str_DebugClippings">Clippings</s:String>
+
+    <!-- 渲染画面参数面板 -->
+    <s:String x:Key="Str_RenderStopped">渲染已停止</s:String>
+    <s:String x:Key="Str_ResolutionX">宽（像素）</s:String>
+    <s:String x:Key="Str_ResolutionY">高（像素）</s:String>
+    <s:String x:Key="Str_CenterX">中心点横坐标</s:String>
+    <s:String x:Key="Str_CenterY">中心点纵坐标</s:String>
+    <s:String x:Key="Str_Zoom">缩放</s:String>
+    <s:String x:Key="Str_Rotation">旋转（角度）</s:String>
+    <s:String x:Key="Str_MaxFps">最大帧率</s:String>
+    <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
+    <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>
+    <s:String x:Key="Str_BackgroundColor">背景颜色</s:String>
+    <s:String x:Key="Str_BackgroundImage">背景图片</s:String>
+
+    <!-- 渲染画面按钮组 -->
+    <s:String x:Key="Str_StopTooltip">停止</s:String>
+    <s:String x:Key="Str_RestartTooltip">重头开始播放</s:String>
+    <s:String x:Key="Str_PlayPauseTooltip">播放/暂停</s:String>
+    <s:String x:Key="Str_ForwardStepTooltip">快进 1 帧</s:String>
+    <s:String x:Key="Str_ForwardFastTooltip">快进 10 帧</s:String>
+    <s:String x:Key="Str_FullScreenTooltip">窗口/全屏; F11</s:String>
+
+    <!-- 弹窗文本 -->
+    <s:String x:Key="Str_OK">确认</s:String>
+    <s:String x:Key="Str_Cancel">取消</s:String>
+    <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
+    <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
+    <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
+
+    <s:String x:Key="Str_InfoPopup">提示信息</s:String>
+    <s:String x:Key="Str_WarnPopup">警告信息</s:String>
+    <s:String x:Key="Str_ErrorPopup">错误信息</s:String>
+    <s:String x:Key="Str_QuestPopup">操作确认</s:String>
+    <s:String x:Key="Str_CancelQuest">确认取消？</s:String>
+    <s:String x:Key="Str_TooManyItemsToAddQuest">共 {0} 项，是否一次性添加？</s:String>
+    <s:String x:Key="Str_RemoveItemsQuest">确定移除 {0} 项？</s:String>
+    <s:String x:Key="Str_DeleteItemsQuest">确定删除 {0} 项？</s:String>
+
+    <!-- 导出对话框弹窗文本 -->
+    <s:String x:Key="Str_FrameExporterTitle">导出单帧</s:String>
+    <s:String x:Key="Str_FrameSequenceExporterTitle">导出帧序列</s:String>
+    <s:String x:Key="Str_FFmpegVideoExporterTitle">导出动图/视频</s:String>
+    <s:String x:Key="Str_CustomFFmpegExporterTitle">自定义 FFmpeg 导出</s:String>
+
+    <s:String x:Key="Str_InvalidOutputDir">输出文件夹无效</s:String>
+    <s:String x:Key="Str_OutputDirNotFound">输出文件夹不存在</s:String>
+    <s:String x:Key="Str_OutputDirRequired">导出单个时必须提供输出文件夹</s:String>
+    <s:String x:Key="Str_InvalidMaxResolution">使用自动分辨率时需要提供有效的最大分辨率</s:String>
+    <s:String x:Key="Str_InvalidDuration">导出单个时导出时长不能为负数</s:String>
+    <s:String x:Key="Str_FFmpegFormatRequired">必须指定 FFmpeg 导出格式</s:String>
+    
+    <s:String x:Key="Str_ResolutionTooltip">画面分辨率，相关参数请在画面参数面板进行调整</s:String>
+    <s:String x:Key="Str_ExportSingle">导出单个</s:String>
+    <s:String x:Key="Str_ExportSingleTooltip">勾选后将所选模型在同一个画面上进行导出，且必须提供输出文件夹</s:String>
+    <s:String x:Key="Str_OutputDir">输出文件夹</s:String>
+    <s:String x:Key="Str_OutputDirTooltip">可选参数输出文件夹，如填写则将所有产物导出到输出文件夹，否则导出到各自的目录下，导出单个时必须提供输出文件夹</s:String>
+    <s:String x:Key="Str_Margin">四周边距</s:String>
+    <s:String x:Key="Str_MarginTooltip">在分辨率的基础上，增加四周距离，如果有溢出的内容会显示在这部分区域</s:String>
+    <s:String x:Key="Str_AutoResolution">自动分辨率</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip">勾选后将会基于导出模型的包围盒计算应该使用的分辨率，忽略预览画面中的缩放等参数项</s:String>
+    <s:String x:Key="Str_MaxResolution">最大分辨率</s:String>
+    <s:String x:Key="Str_MaxResolutionTooltip">仅在使用自动分辨率时有效，限制两个方向上的分辨率最大值</s:String>
+
+    <s:String x:Key="Str_ImageFormat">图像格式</s:String>
+    <s:String x:Key="Str_ImageQuality">图像质量</s:String>
+    <s:String x:Key="Str_ImageQualityTooltip">取值范围 0-100，仅对部分图像格式生效</s:String>
+
+    <s:String x:Key="Str_Duration">时长</s:String>
+    <s:String x:Key="Str_ExportDurationTooltip">导出时长，如果小于 0，则在逐个导出时每个模型使用各自的所有轨道动画时长最大值</s:String>
+
+    <s:String x:Key="Str_Fps">帧率</s:String>
+    <s:String x:Key="Str_KeepLastFrame">保留最后一帧</s:String>
+    <s:String x:Key="Str_KeepLastFrameTooltip">当设置保留最后一帧时，动图会更为连贯，但是帧数可能比预期帧数多 1</s:String>
+
+    <s:String x:Key="Str_VideoFormat">视频格式</s:String>
+    <s:String x:Key="Str_LoopPlay">循环播放</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip">动图是否循环播放，仅对 Gif/Webp 格式生效</s:String>
+    <s:String x:Key="Str_QualityParameter">质量参数</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip">质量参数，取值范围 0-100，越高质量越好 仅对 Webp 格式生效</s:String>
+    <s:String x:Key="Str_CrfParameter">CRF 参数</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip">CRF 参数，取值范围 0-63，越小质量越高，仅对 Mp4/Webm/Mkv 格式生效</s:String>
+
+    <s:String x:Key="Str_FFmpegFormat">导出格式</s:String>
+    <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg 导出格式，等价于参数 “-f”，例如 “mp4”、“webm”</s:String>
+    <s:String x:Key="Str_FFmpegCodec">编码器</s:String>
+    <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg 编码器，等价于参数 “-c:v”，例如 “libx264”、“libx265”</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormat">像素格式</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg 像素格式，等价于参数 “-pix_fmt”，例如 “yuv420”、“yuv444”</s:String>
+    <s:String x:Key="Str_FFmpegBitrate">比特率</s:String>
+    <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg 比特率，等价于参数 “-b:v”，例如 “6K”、“2M”</s:String>
+    <s:String x:Key="Str_FFmpegFilter">滤镜</s:String>
+    <s:String x:Key="Str_FFmpegFilterTooltip">FFmpeg 滤镜，等价于参数 “-vf”</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgs">自定义参数</s:String>
+    <s:String x:Key="Str_FFmpegCustomArgsTooltip">FFmpeg 自定义参数，与命令行提供方式相同，例如 “-crf 23”</s:String>
+    
+    <!-- 诊断信息对话框 -->
+    <s:String x:Key="Str_CopyDiagnosticsInfo">复制到剪贴板</s:String>
+    <s:String x:Key="Str_Copied">已复制</s:String>
+
+    <!-- 关于对话框 -->
+    <s:String x:Key="Str_ProgremVersion">程序版本</s:String>
+    <s:String x:Key="Str_ProjectUrl">项目地址</s:String>
+    
+</ResourceDictionary>
