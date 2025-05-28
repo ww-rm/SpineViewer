@@ -26,7 +26,6 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Extract version from csproj
-
         shell: pwsh
         id: extract_version
         run: |
@@ -36,10 +35,11 @@ jobs:
           echo "VERSION=$VERSION_TAG" >> ${ env:GITHUB_ENV }
 
       - name: Tag merge commit
+        shell: pwsh
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "${VERSION}"
+          git tag "${ env:VERSION }"
           git push --tags
 
       - name: Publish FrameworkDependent version
