@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          tags: true
       
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
@@ -31,18 +33,14 @@ jobs:
           [xml]$proj = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
           $VERSION_NUM=$proj.Project.PropertyGroup.Version
           $VERSION_TAG="v$VERSION_NUM"
-          echo "VERSION_NUM=$VERSION_NUM" >> $GITHUB_OUTPUT
-          echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_OUTPUT
-
-      - name: Export VERSION env (with v prefix)
-        run: echo "VERSION=${{ steps.extract_version.outputs.VERSION_TAG }}" >> $GITHUB_ENV
+          echo "VERSION=$VERSION_TAG" >> $GITHUB_ENV
 
       - name: Tag merge commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "${VERSION}" -m "Release ${VERSION}"
-          git push origin "${VERSION}"
+          git tag "${VERSION}"
+          git push --tags
 
       - name: Publish FrameworkDependent version
         run: |
