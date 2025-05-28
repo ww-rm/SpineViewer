@@ -42,7 +42,7 @@ namespace SpineViewer.Models
         /// </summary>
         public SpineObjectModel(string skelPath, string? atlasPath = null, SpineVersion? version = null)
         {
-            _spineObject = new(skelPath, atlasPath, version) { DebugNonTexture = false };
+            _spineObject = new(skelPath, atlasPath, version);
             _skins = _spineObject.Data.Skins.Select(v => v.Name).ToImmutableArray();
             _slotAttachments = _spineObject.Data.SlotAttachments.ToFrozenDictionary(it => it.Key, it => it.Value.Keys);
             _animations = _spineObject.Data.Animations.Select(v => v.Name).ToImmutableArray();
@@ -73,7 +73,7 @@ namespace SpineViewer.Models
         public bool IsSelected
         {
             get { lock (_lock) return _isSelected; }
-            set { lock (_lock) if (SetProperty(ref _isSelected, value)) _spineObject.DebugNonTexture = _isSelected; }
+            set { lock (_lock) SetProperty(ref _isSelected, value); }
         }
         private bool _isSelected = false;
 

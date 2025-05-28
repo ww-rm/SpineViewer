@@ -32,6 +32,16 @@ namespace SpineViewer.ViewModels
         private readonly ISFMLRenderer _renderer;
 
         /// <summary>
+        /// 被选中对象的背景颜色
+        /// </summary>
+        private static readonly SFML.Graphics.Color _selectedBackgroundColor = new(255, 255, 255, 50);
+
+        /// <summary>
+        /// 被选中对象背景顶点缓冲区
+        /// </summary>
+        private readonly SFML.Graphics.VertexArray _selectedBackgroundVertices = new(SFML.Graphics.PrimitiveType.Quads, 4); // XXX: 暂时未使用 Dispose 释放
+
+        /// <summary>
         /// 预览画面坐标轴颜色
         /// </summary>
         private static readonly SFML.Graphics.Color _axisColor = new(220, 220, 220);
@@ -381,6 +391,18 @@ namespace SpineViewer.ViewModels
                             sp.Update(0); // 避免物理效果出现问题
                             sp.Update(delta);
 
+                            // 为选中对象绘制一个半透明背景
+                            if (sp.IsSelected)
+                            {
+                                var rc = sp.GetCurrentBounds().ToFloatRect();
+                                _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
+                                _renderer.Draw(_selectedBackgroundVertices);
+                            }
+
+                            // 仅在预览画面临时启用调试模式
                             sp.EnableDebug = true;
                             _renderer.Draw(sp);
                             sp.EnableDebug = false;

@@ -177,7 +177,6 @@ namespace Spine
                 // 拷贝调试属性
                 EnableDebug = other.EnableDebug;
                 DebugTexture = other.DebugTexture;
-                DebugNonTexture = other.DebugNonTexture;
                 DebugBounds = other.DebugBounds;
                 DebugBones = other.DebugBones;
                 DebugRegions = other.DebugRegions;
@@ -254,14 +253,9 @@ namespace Spine
         public bool DebugTexture { get; set; } = true;
 
         /// <summary>
-        /// 是否显示非纹理内容, 一个总开关
-        /// </summary>
-        public bool DebugNonTexture { get; set; } = true;
-
-        /// <summary>
         /// 显示包围盒
         /// </summary>
-        public bool DebugBounds { get; set; } = true;
+        public bool DebugBounds { get; set; } = false;
 
         /// <summary>
         /// 显示骨骼
@@ -864,7 +858,7 @@ namespace Spine
             else
             {
                 if (DebugTexture) DrawTexture(target, states);
-                if (DebugNonTexture) DrawNonTexture(target);
+                DrawNonTexture(target);
             }
         }
 
