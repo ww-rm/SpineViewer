@@ -36,7 +36,7 @@ namespace SpineViewer.ViewModels
             _sfmlRendererViewModel = new(this);
         }
 
-        public string Title => $"SpineViewer - {App.Version}";
+        public string Title => $"SpineViewer - v{App.Version}";
 
         /// <summary>
         /// SFML 渲染对象
