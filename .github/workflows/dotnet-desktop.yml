@@ -24,14 +24,14 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Extract version from csproj
+        shell: pwsh
         id: extract_version
         run: |
-          # 从 csproj 读取 x.y.z
-          VERSION_NUM=$(grep -oP '(?<=<Version>)[^<]+' "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj")
-          # 带上 v 前缀
-          VERSION_TAG="v${VERSION_NUM}"
-          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_OUTPUT
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_OUTPUT
+          [xml]$proj = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+          $VERSION_NUM=$proj.Project.PropertyGroup.Version
+          $VERSION_TAG="v$VERSION_NUM"
+          echo "VERSION_NUM=$VERSION_NUM" >> $GITHUB_OUTPUT
+          echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_OUTPUT
 
       - name: Export VERSION env (with v prefix)
         run: echo "VERSION=${{ steps.extract_version.outputs.VERSION_TAG }}" >> $GITHUB_ENV
