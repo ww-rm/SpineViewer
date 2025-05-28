@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          tags: true
+          fetch-tags: true
       
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
@@ -33,7 +33,7 @@ jobs:
           [xml]$proj = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
           $VERSION_NUM=$proj.Project.PropertyGroup.Version
           $VERSION_TAG="v$VERSION_NUM"
-          echo "VERSION=$VERSION_TAG" >> $GITHUB_ENV
+          echo "VERSION=$VERSION_TAG" >> ${ env:GITHUB_ENV }
 
       - name: Tag merge commit
         run: |
