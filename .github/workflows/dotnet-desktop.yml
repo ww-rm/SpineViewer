@@ -24,6 +24,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Extract version from csproj
+
         shell: pwsh
         id: extract_version
         run: |
