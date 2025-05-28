@@ -586,7 +586,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         ["compress"] = reader.ReadBoolean(),
                         ["stretch"] = reader.ReadBoolean(),
                     };
-                    if (frameCount > 1) ReadCurve(o);
+                    if (frameIdx < frameCount - 1) ReadCurve(o);
                     frames.Add(o);
                 }
             }
@@ -613,7 +613,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
                         ["scaleMix"] = reader.ReadFloat(),
                         ["shearMix"] = reader.ReadFloat(),
                     };
-                    if (frameCount > 1) ReadCurve(o);
+                    if (frameIdx < frameCount - 1) ReadCurve(o);
                     frames.Add(o);
                 }
             }
