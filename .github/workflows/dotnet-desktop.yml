@@ -1,16 +1,19 @@
 name: Build & Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  pull_request:
+    branches:
+      - release/wf
+    types:
+      - closed
 
 jobs:
   build-release:
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: windows-latest
     env:
       PROJECT_NAME: SpineViewer
-      VERSION: ${{ github.ref_name }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -20,13 +23,33 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Extract version from csproj
+        id: extract_version
+        run: |
+          # 从 csproj 读取 x.y.z
+          VERSION_NUM=$(grep -oP '(?<=<Version>)[^<]+' "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj")
+          # 带上 v 前缀
+          VERSION_TAG="v${VERSION_NUM}"
+          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_OUTPUT
+          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Export VERSION env (with v prefix)
+        run: echo "VERSION=${{ steps.extract_version.outputs.VERSION_TAG }}" >> $GITHUB_ENV
+
+      - name: Tag merge commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${VERSION}" -m "Release ${VERSION}"
+          git push origin "${VERSION}"
+
       - name: Publish FrameworkDependent version
         run: |
-          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc false -p:PublishSingleFile=true -o publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}
+          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc false -o publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}
       
       - name: Publish SelfContained version
         run: |
-          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc true -p:PublishSingleFile=true -o publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}-SelfContained
+          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc true -o publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}-SelfContained
       
       - name: Create release directory
         run: mkdir release
