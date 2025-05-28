@@ -51,6 +51,17 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             [RotateMode.ChainScale] = "chainScale",
         };
 
+        private static readonly Dictionary<AttachmentType, string> AttachmentTypeJsonValue = new()
+        {
+            [AttachmentType.Region] = "region",
+            [AttachmentType.Boundingbox] = "bounding",
+            [AttachmentType.Mesh] = "mesh",
+            [AttachmentType.Linkedmesh] = "linkedmesh",
+            [AttachmentType.Path] = "path",
+            [AttachmentType.Point] = "point",
+            [AttachmentType.Clipping] = "clipping",
+        };
+
         private BinaryReader reader = null;
         private JsonObject root = null;
         private bool nonessential = false;
@@ -298,7 +309,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             var name = reader.ReadStringRef() ?? keyName;
             var type = (AttachmentType)reader.ReadByte();
             attachment["name"] = name;
-            attachment["type"] = type.ToString();
+            attachment["type"] = AttachmentTypeJsonValue[type];
             switch (type)
             {
                 case AttachmentType.Region:

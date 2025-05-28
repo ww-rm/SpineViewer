@@ -52,9 +52,9 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
         private static readonly Dictionary<AttachmentType, string> AttachmentTypeJsonValue = new()
         {
             [AttachmentType.Region] = "region",
-            [AttachmentType.Boundingbox] = "boundingBox",
+            [AttachmentType.Boundingbox] = "boundingbox",
             [AttachmentType.Mesh] = "mesh",
-            [AttachmentType.Linkedmesh] = "linkedMesh",
+            [AttachmentType.Linkedmesh] = "linkedmesh",
             [AttachmentType.Path] = "path",
             [AttachmentType.Point] = "point",
             [AttachmentType.Clipping] = "clipping",

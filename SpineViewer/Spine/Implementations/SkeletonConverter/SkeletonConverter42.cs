@@ -52,7 +52,7 @@ namespace SpineViewer.Spine.Implementations.SkeletonConverter
             [AttachmentType.Region] = "region",
             [AttachmentType.Boundingbox] = "bounding",
             [AttachmentType.Mesh] = "mesh",
-            [AttachmentType.Linkedmesh] = "linkedMesh",
+            [AttachmentType.Linkedmesh] = "linkedmesh",
             [AttachmentType.Path] = "path",
             [AttachmentType.Point] = "point",
             [AttachmentType.Clipping] = "clipping",
