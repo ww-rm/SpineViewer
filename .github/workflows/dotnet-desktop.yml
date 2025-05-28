@@ -19,49 +19,62 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-tags: true
-      
+
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Extract version from csproj
         shell: pwsh
-        id: extract_version
         run: |
-          [xml]$proj = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
-          $VERSION_NUM=$proj.Project.PropertyGroup.Version
-          $VERSION_TAG="v$VERSION_NUM"
-          ${env:VERSION} = $VERSION_NUM
+          [xml]$proj = Get-Content "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj"
+          $VERSION_NUM = $proj.Project.PropertyGroup.Version
+          $VERSION_TAG = "v$VERSION_NUM"
+          "VERSION=$VERSION_TAG" >> $env:GITHUB_ENV
+
+      - name: Check Version Tag
+        shell: pwsh
+        run: |
+          if (-not $env:VERSION) {
+            Write-Error "Version tag not found in csproj file."
+            exit 1
+          }
+          Write-Host "Version tag found: $env:VERSION"
 
       - name: Tag merge commit
+        shell: pwsh
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "${{ env.VERSION }}"
+          git tag $env:VERSION
           git push --tags
 
       - name: Publish FrameworkDependent version
+        shell: pwsh
         run: |
-          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc false -o "publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}"
-      
+          dotnet publish "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj" -c Release -r win-x64 --sc false -o "publish\$env:PROJECT_NAME-$env:VERSION"
+
       - name: Publish SelfContained version
+        shell: pwsh
         run: |
-          dotnet publish ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -r win-x64 --sc true -o "publish/${{ env.PROJECT_NAME }}-${{ env.VERSION }}-SelfContained"
-      
+          dotnet publish "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj" -c Release -r win-x64 --sc true -o "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained"
+
       - name: Create release directory
-        run: mkdir release
-      
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path release -Force | Out-Null
+
       - name: Compress FrameworkDependent version
         shell: pwsh
         run: |
-          Compress-Archive -Path "publish/${env:PROJECT_NAME}-${env:VERSION}" -DestinationPath "release/${env:PROJECT_NAME}-${env:VERSION}.zip" -Force
-      
+          Compress-Archive -Path "publish\$env:PROJECT_NAME-$env:VERSION\*" -DestinationPath "release\$env:PROJECT_NAME-$env:VERSION.zip" -Force
+
       - name: Compress SelfContained version
         shell: pwsh
         run: |
-          Compress-Archive -Path "publish/${env:PROJECT_NAME}-${env:VERSION}-SelfContained" -DestinationPath "release/${env:PROJECT_NAME}-${env:VERSION}-SelfContained.zip" -Force
-      
+          Compress-Archive -Path "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained\*" -DestinationPath "release\$env:PROJECT_NAME-$env:VERSION-SelfContained.zip" -Force
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -72,7 +85,7 @@ jobs:
           release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
-      
+
       - name: Upload FrameworkDependent zip
         uses: actions/upload-release-asset@v1
         env:
@@ -82,7 +95,7 @@ jobs:
           asset_path: release/${{ env.PROJECT_NAME }}-${{ env.VERSION }}.zip
           asset_name: ${{ env.PROJECT_NAME }}-${{ env.VERSION }}.zip
           asset_content_type: application/zip
-      
+
       - name: Upload SelfContained zip
         uses: actions/upload-release-asset@v1
         env:
