@@ -19,7 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     /// <summary>
     /// MainWindow 上下文对象
@@ -101,31 +101,8 @@ namespace SpineViewer.ViewModels
         private void Debug_Execute()
         {
 #if DEBUG
-            var path = @"C:\Users\ljh\Desktop\a.mp4";
 
-            using var exporter = new FFmpegVideoExporter(_sfmlRenderer.Resolution);
-            using var view = _sfmlRenderer.GetView();
-            exporter.Center = view.Center;
-            exporter.Size = view.Size;
-            exporter.Rotation = view.Rotation;
-            exporter.Viewport = view.Viewport;
-
-            SpineObject[] spines;
-            lock (_spineObjectModels.Lock)
-            {
-                spines = _spineObjectModels.Select(it => it.GetSpineObject(true)).ToArray();
-            }
-
-            exporter.Fps = 60;
-            exporter.Format = FFmpegVideoExporter.VideoFormat.Webm;
-            exporter.Duration = 3;
-            exporter.BackgroundColor = new(0, 0, 0, 0);
-            ProgressService.RunAsync((pr, ct) =>
-            {
-                exporter.ProgressReporter = (total, done, text) =>
-                { pr.Total = total; pr.Done = done; pr.ProgressText = text; };
-                exporter.Export(path, ct, spines);
-            }, "测试一下");
+            MessagePopupService.Quest("测试一下");
 #endif
         }
     }

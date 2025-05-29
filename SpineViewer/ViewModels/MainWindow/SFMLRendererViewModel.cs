@@ -18,7 +18,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class SFMLRendererViewModel : ObservableObject
     {

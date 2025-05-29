@@ -5,7 +5,7 @@ using NLog.Targets;
 using Spine;
 using SpineViewer.Natives;
 using SpineViewer.Resources;
-using SpineViewer.ViewModels;
+using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;

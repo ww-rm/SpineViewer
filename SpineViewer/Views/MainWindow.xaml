@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels"
+        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
         xmlns:ext="clr-namespace:SpineViewer.Extensions"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class SpineObjectListViewModel : ObservableObject
     {

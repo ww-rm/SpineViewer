@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Immutable;
+using SpineViewer.ViewModels.MainWindow;
 
 namespace SpineViewer.ViewModels.Exporters
 {

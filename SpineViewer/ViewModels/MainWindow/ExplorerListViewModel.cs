@@ -8,7 +8,6 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
-using SpineViewer.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class ExplorerListViewModel : ObservableObject
     {

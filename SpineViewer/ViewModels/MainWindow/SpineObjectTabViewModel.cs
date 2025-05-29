@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class SpineObjectTabViewModel : ObservableObject
     {
@@ -611,7 +611,7 @@ namespace SpineViewer.ViewModels
             // 但是目前无法识别是否增加了轨道, 因此总是重建列表
 
             // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
-            App.Current.Dispatcher.BeginInvoke(
+            Application.Current.Dispatcher.BeginInvoke(
                 () =>
                 {
                     _animationTracks.Clear();
