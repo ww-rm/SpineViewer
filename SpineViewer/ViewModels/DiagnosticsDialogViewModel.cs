@@ -43,7 +43,7 @@ namespace SpineViewer.ViewModels
                     float gb = bytes / 1024f / 1024f / 1024f;
                     return $"{gb:F1} GB";
                 }
-                return "N/A";
+                return "Unknown";
             }
         }
 
