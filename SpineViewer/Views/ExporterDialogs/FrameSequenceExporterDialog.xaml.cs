@@ -44,7 +44,7 @@ namespace SpineViewer.Views.ExporterDialogs
 
         private void ButtonSelectOutputDir_Click(object sender, RoutedEventArgs e)
         {
-            if (OpenFolderService.OpenFolder(out var selectedPath))
+            if (DialogService.ShowOpenFolderDialog(out var selectedPath))
             {
                 var vm = (FrameSequenceExporterViewModel)DataContext;
                 vm.OutputDir = selectedPath;

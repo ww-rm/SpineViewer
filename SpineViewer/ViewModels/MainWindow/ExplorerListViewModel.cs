@@ -94,7 +94,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public RelayCommand Cmd_ChangeCurrentDirectory => _cmd_ChangeCurrentDirectory ??= new(() =>
         {
-            if (OpenFolderService.OpenFolder(out var selectedPath))
+            if (DialogService.ShowOpenFolderDialog(out var selectedPath))
             {
                 _currentDirectory = selectedPath;
                 RefreshItems();

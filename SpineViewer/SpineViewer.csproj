@@ -10,7 +10,6 @@
         <Version>0.15.0</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
-        <UseWindowsForms>true</UseWindowsForms>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -18,11 +17,6 @@
         <ApplicationIcon>appicon.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Using Remove="System.Windows.Forms" />
-        <Using Remove="System.Drawing" />
-    </ItemGroup>
     
     <ItemGroup>
       <Content Include="appicon.ico" />

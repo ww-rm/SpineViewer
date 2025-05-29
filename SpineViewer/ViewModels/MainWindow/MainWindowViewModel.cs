@@ -83,13 +83,13 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 显示诊断信息对话框
         /// </summary>
-        public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DiagnosticsDialogService.ShowDiagnosticsDialog(); });
+        public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DialogService.ShowDiagnosticsDialog(); });
         private RelayCommand? _cmd_ShowDiagnosticsDialog;
 
         /// <summary>
         /// 显示关于对话框
         /// </summary>
-        public RelayCommand Cmd_ShowAboutDialog => _cmd_ShowAboutDialog ??= new(() => { AboutDialogService.ShowAboutDialog(); });
+        public RelayCommand Cmd_ShowAboutDialog => _cmd_ShowAboutDialog ??= new(() => { DialogService.ShowAboutDialog(); });
         private RelayCommand? _cmd_ShowAboutDialog;
 
         /// <summary>

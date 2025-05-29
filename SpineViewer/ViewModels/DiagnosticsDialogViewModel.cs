@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace SpineViewer.ViewModels
 {
     public class DiagnosticsDialogViewModel : ObservableObject
@@ -31,7 +32,20 @@ namespace SpineViewer.ViewModels
             }
         }
 
-        public string Memory => $"{new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / 1024f / 1024f / 1024f:F1} GB";
+        public string Memory
+        {
+            get
+            {
+                var searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    ulong bytes = (ulong)obj["TotalPhysicalMemory"];
+                    float gb = bytes / 1024f / 1024f / 1024f;
+                    return $"{gb:F1} GB";
+                }
+                return "N/A";
+            }
+        }
 
         public string WindowsVersion
         {

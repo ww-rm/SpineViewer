@@ -41,7 +41,7 @@ namespace SpineViewer.ViewModels.Exporters
         protected override void Export_Execute(IList? args)
         {
             if (args is null || args.Count <= 0) return;
-            if (!ExporterDialogService.ShowFrameExporterDialog(this)) return;
+            if (!DialogService.ShowFrameExporterDialog(this)) return;
             SpineObject[] spines = args.Cast<SpineObjectModel>().Select(m => m.GetSpineObject(true)).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameExporterTitle);
             foreach (var sp in spines) sp.Dispose();
