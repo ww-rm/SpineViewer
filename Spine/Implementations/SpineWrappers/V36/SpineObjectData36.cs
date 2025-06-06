@@ -35,9 +35,27 @@ namespace Spine.Implementations.SpineWrappers.V36
             try
             {
                 if (Utf8Validator.IsUtf8(skelPath))
-                    _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                {
+                    try
+                    {
+                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                    }
+                    catch
+                    {
+                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                    }
+                }
                 else
-                    _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                {
+                    try
+                    {
+                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                    }
+                    catch
+                    {
+                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                    }
+                }
             }
             catch (Exception ex)
             {
