@@ -30,15 +30,6 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         public bool KeepLast { get; set; } = true;
 
-        public override string? Validate()
-        {
-            if (base.Validate() is string error)
-                return error;
-            if (IsExportSingle && Duration < 0)
-                return Properties.Resources.negativeDuration;
-            return null;
-        }
-
         /// <summary>
         /// 生成单个模型的帧序列
         /// </summary>
@@ -93,8 +84,16 @@ namespace SpineViewer.Spine.SpineExporter
         /// </summary>
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spinesToRender, BackgroundWorker? worker = null)
         {
-            // 导出单个时必须根据 Duration 决定导出时长
+            // 导出单个时取所有模型的所有轨道时长最大值
             var duration = Duration;
+            if (duration < 0)
+            {
+                duration = spinesToRender.Select(
+                    sp => sp.GetTrackIndices().Select(
+                        i => sp.GetAnimationDuration(sp.GetAnimation(i))
+                    ).DefaultIfEmpty(0).Max()
+                ).Max();
+            }
 
             float delta = 1f / FPS;
             int total = (int)(duration * FPS); // 完整帧的数量
