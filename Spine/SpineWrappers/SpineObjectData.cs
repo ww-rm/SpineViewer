@@ -20,18 +20,13 @@ namespace Spine.SpineWrappers
         /// <summary>
         /// 构建版本对象
         /// </summary>
-        public static SpineObjectData New(SpineVersion version, string skelPath, string atlasPath) => CreateInstance(version.Tag, skelPath, atlasPath);
-
-        /// <summary>
-        /// 纹理加载器, 可以设置一些预置参数
-        /// </summary>
-        public static TextureLoader TextureLoader => _textureLoader;
-        protected static readonly TextureLoader _textureLoader = new();
+        public static SpineObjectData New(SpineVersion version, string skelPath, string atlasPath, TextureLoader textureLoader) 
+            => CreateInstance(version.Tag, skelPath, atlasPath, textureLoader);
 
         /// <summary>
         /// 构造函数, 继承的子类应当实现一个相同签名的构造函数
         /// </summary>
-        public SpineObjectData(string skelPath, string atlasPath) { }
+        public SpineObjectData(string skelPath, string atlasPath, TextureLoader textureLoader) { }
 
         public abstract string SkeletonVersion { get; }
 

@@ -45,10 +45,12 @@ namespace Spine
         /// <param name="skelPath">skel 文件路径</param>
         /// <param name="atlasPath">atlas 文件路径, 为空时会根据 <paramref name="skelPath"/> 进行自动检测</param>
         /// <param name="version">要使用的运行时版本, 为空时会自动检测</param>
-        public SpineObject(string skelPath, string? atlasPath = null, SpineVersion? version = null)
+        public SpineObject(string skelPath, string? atlasPath = null, SpineVersion? version = null, TextureLoader? textureLoader = null)
         {
             if (string.IsNullOrWhiteSpace(skelPath)) throw new ArgumentException(skelPath, nameof(skelPath));
             if (!File.Exists(skelPath)) throw new FileNotFoundException($"{nameof(skelPath)} not found", skelPath);
+            textureLoader ??= TextureLoader.DefaultLoader;
+
             SkelPath = Path.GetFullPath(skelPath);
             AssetsDir = Directory.GetParent(skelPath).FullName;
             Name = Path.GetFileNameWithoutExtension(skelPath);
@@ -91,7 +93,7 @@ namespace Spine
                 {
                     try
                     {
-                        _data = SpineObjectData.New(v, skelPath, atlasPath);
+                        _data = SpineObjectData.New(v, skelPath, atlasPath, textureLoader);
                         Version = v;
                         break;
                     }
@@ -109,7 +111,7 @@ namespace Spine
             {
                 // 根据版本实例化对象
                 Version = version;
-                _data = SpineObjectData.New(Version, skelPath, atlasPath);
+                _data = SpineObjectData.New(Version, skelPath, atlasPath, textureLoader);
             }
 
             // 创建状态实例
