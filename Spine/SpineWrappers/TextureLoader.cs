@@ -26,17 +26,17 @@ namespace Spine.SpineWrappers
         /// <summary>
         /// 在读取纹理时强制进行通道预乘操作
         /// </summary>
-        public bool ForcePremul { get; set; } = false;
+        public bool ForcePremul { get; set; }
 
         /// <summary>
         /// 强制使用 Nearest
         /// </summary>
-        public bool ForceNearest { get; set; } = false;
+        public bool ForceNearest { get; set; }
 
         /// <summary>
         /// 强制启用 Mipmap
         /// </summary>
-        public bool ForceMipmap { get; set; } = false;
+        public bool ForceMipmap { get; set; }
 
         private SFML.Graphics.Texture ReadTexture(string path)
         {

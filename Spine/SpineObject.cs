@@ -237,7 +237,7 @@ namespace Spine
         /// <summary>
         /// 是否使用预乘 Alpha
         /// </summary>
-        public bool UsePma { get; set; } = false;
+        public bool UsePma { get; set; }
 
         /// <summary>
         /// 物理约束更新方式
@@ -247,7 +247,7 @@ namespace Spine
         /// <summary>
         /// 启用渲染调试, 将会使所有 <c>DebugXXX</c> 属性生效
         /// </summary>
-        public bool EnableDebug { get; set; } = false;
+        public bool EnableDebug { get; set; }
 
         /// <summary>
         /// 显示纹理
@@ -257,47 +257,47 @@ namespace Spine
         /// <summary>
         /// 显示包围盒
         /// </summary>
-        public bool DebugBounds { get; set; } = false;
+        public bool DebugBounds { get; set; }
 
         /// <summary>
         /// 显示骨骼
         /// </summary>
-        public bool DebugBones { get; set; } = false;
+        public bool DebugBones { get; set; }
 
         /// <summary>
         /// 显示区域附件边框
         /// </summary>
-        public bool DebugRegions { get; set; } = false;
+        public bool DebugRegions { get; set; }
 
         /// <summary>
         /// 显示网格附件边框线
         /// </summary>
-        public bool DebugMeshHulls { get; set; } = false;
+        public bool DebugMeshHulls { get; set; }
 
         /// <summary>
         /// 显示网格附件网格线
         /// </summary>
-        public bool DebugMeshes { get; set; } = false;
+        public bool DebugMeshes { get; set; }
 
         /// <summary>
         /// 显示碰撞盒附件边框线
         /// </summary>
-        public bool DebugBoundingBoxes { get; set; } = false;
+        public bool DebugBoundingBoxes { get; set; }
 
         /// <summary>
         /// 显示路径附件网格线
         /// </summary>
-        public bool DebugPaths { get; set; } = false;
+        public bool DebugPaths { get; set; }
 
         /// <summary>
         /// 显示点附件
         /// </summary>
-        public bool DebugPoints { get; set; } = false;
+        public bool DebugPoints { get; set; }
 
         /// <summary>
         /// 显示剪裁附件网格线
         /// </summary>
-        public bool DebugClippings { get; set; } = false;
+        public bool DebugClippings { get; set; }
 
         /// <summary>
         /// 获取某个插槽上的附件名, 插槽不存在或者无附件均返回 null

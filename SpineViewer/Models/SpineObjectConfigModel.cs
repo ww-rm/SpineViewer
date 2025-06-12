@@ -13,6 +13,48 @@ namespace SpineViewer.Models
 {
     public class SpineObjectConfigModel
     {
+        public bool UsePma { get; set; }
+
+        public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();
+
+        public float Scale { get; set; } = 1f;
+
+        public bool FlipX { get; set; }
+
+        public bool FlipY { get; set; }
+
+        public float X { get; set; }
+
+        public float Y { get; set; }
+
+        public List<string> LoadedSkins { get; set; } = [];
+
+        public Dictionary<string, string?> SlotAttachment { get; set; } = [];
+
+        public List<string?> Animations { get; set; } = [];
+
+        public bool DebugTexture { get; set; } = true;
+
+        public bool DebugBounds { get; set; }
+
+        public bool DebugBones { get; set; }
+
+        public bool DebugRegions { get; set; }
+
+        public bool DebugMeshHulls { get; set; }
+
+        public bool DebugMeshes { get; set; }
+
+        public bool DebugBoundingBoxes { get; set; }
+
+        public bool DebugPaths { get; set; }
+
+        public bool DebugPoints { get; set; }
+
+        public bool DebugClippings { get; set; }
+
+        #region 序列化与反序列
+
         /// <summary>
         /// 保存 Json 文件的格式参数
         /// </summary>
@@ -36,7 +78,7 @@ namespace SpineViewer.Models
         }
 
         /// <summary>
-        /// 保存预设至文件, 概率抛出异常
+        /// 保存至文件, 可能抛出异常
         /// </summary>
         public void Serialize(string path)
         {
@@ -45,44 +87,6 @@ namespace SpineViewer.Models
             File.WriteAllText(path, json, Encoding.UTF8);
         }
 
-        public bool UsePma { get; set; }
-
-        public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();
-
-        public float Scale { get; set; } = 1f;
-
-        public bool FlipX { get; set; }
-
-        public bool FlipY { get; set; }
-
-        public float X { get; set; }
-
-        public float Y { get; set; }
-
-        public List<string> LoadedSkins { get; set; } = [];
-
-        public Dictionary<string, string?> SlotAttachment { get; set; } = [];
-
-        public List<string?> Animations { get; set; } = [];
-
-        public bool DebugTexture { get; set; } = true;
-
-        public bool DebugBounds { get; set; } = true;
-
-        public bool DebugBones { get; set; }
-
-        public bool DebugRegions { get; set; }
-
-        public bool DebugMeshHulls { get; set; }
-
-        public bool DebugMeshes { get; set; }
-
-        public bool DebugBoundingBoxes { get; set; }
-
-        public bool DebugPaths { get; set; }
-
-        public bool DebugPoints { get; set; }
-
-        public bool DebugClippings { get; set; }
+        #endregion
     }
 }
