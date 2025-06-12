@@ -87,13 +87,13 @@ namespace SpineViewer.Models
         public bool UsePma
         {
             get { lock (_lock) return _spineObject.UsePma; }
-            set { lock (_lock) SetProperty(_spineObject.UsePma, value, _spineObject, (m, v) => m.UsePma = v); }
+            set { lock (_lock) SetProperty(_spineObject.UsePma, value, v => _spineObject.UsePma = v); }
         }
 
         public ISkeleton.Physics Physics
         {
             get { lock (_lock) return _spineObject.Physics; }
-            set { lock (_lock) SetProperty(_spineObject.Physics, value, _spineObject, (m, v) => m.Physics = v); }
+            set { lock (_lock) SetProperty(_spineObject.Physics, value, v => _spineObject.Physics = v); }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace SpineViewer.Models
         public bool FlipX
         {
             get { lock (_lock) return _spineObject.Skeleton.ScaleX < 0; }
-            set { lock (_lock) SetProperty(_spineObject.Skeleton.ScaleX < 0, value, _spineObject, (m, v) => m.Skeleton.ScaleX *= -1); }
+            set { lock (_lock) SetProperty(_spineObject.Skeleton.ScaleX < 0, value, v => _spineObject.Skeleton.ScaleX *= -1); }
         }
 
         /// <summary>
@@ -137,19 +137,19 @@ namespace SpineViewer.Models
         public bool FlipY
         {
             get { lock (_lock) return _spineObject.Skeleton.ScaleY < 0; }
-            set { lock (_lock) SetProperty(_spineObject.Skeleton.ScaleY < 0, value, _spineObject, (m, v) => m.Skeleton.ScaleY *= -1); }
+            set { lock (_lock) SetProperty(_spineObject.Skeleton.ScaleY < 0, value, v => _spineObject.Skeleton.ScaleY *= -1); }
         }
 
         public float X
         {
             get { lock (_lock) return _spineObject.Skeleton.X; }
-            set { lock (_lock) SetProperty(_spineObject.Skeleton.X, value, _spineObject, (m, v) => m.Skeleton.X = v); }
+            set { lock (_lock) SetProperty(_spineObject.Skeleton.X, value, v => _spineObject.Skeleton.X = v); }
         }
 
         public float Y
         {
             get { lock (_lock) return _spineObject.Skeleton.Y; }
-            set { lock (_lock) SetProperty(_spineObject.Skeleton.Y, value, _spineObject, (m, v) => m.Skeleton.Y = v); }
+            set { lock (_lock) SetProperty(_spineObject.Skeleton.Y, value, v => _spineObject.Skeleton.Y = v); }
         }
 
         public ImmutableArray<string> Skins => _skins;
@@ -242,67 +242,67 @@ namespace SpineViewer.Models
         public bool EnableDebug
         {
             get { lock (_lock) return _spineObject.EnableDebug; }
-            set { lock (_lock) SetProperty(_spineObject.EnableDebug, value, _spineObject, (m, v) => m.EnableDebug = v); }
+            set { lock (_lock) SetProperty(_spineObject.EnableDebug, value, v => _spineObject.EnableDebug = v); }
         }
 
         public bool DebugTexture
         {
             get { lock (_lock) return _spineObject.DebugTexture; }
-            set { lock (_lock) SetProperty(_spineObject.DebugTexture, value, _spineObject, (m, v) => m.DebugTexture = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugTexture, value, v => _spineObject.DebugTexture = v); }
         }
 
         public bool DebugBounds
         {
             get { lock (_lock) return _spineObject.DebugBounds; }
-            set { lock (_lock) SetProperty(_spineObject.DebugBounds, value, _spineObject, (m, v) => m.DebugBounds = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugBounds, value, v => _spineObject.DebugBounds = v); }
         }
 
         public bool DebugBones
         {
             get { lock (_lock) return _spineObject.DebugBones; }
-            set { lock (_lock) SetProperty(_spineObject.DebugBones, value, _spineObject, (m, v) => m.DebugBones = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugBones, value, v => _spineObject.DebugBones = v); }
         }
 
         public bool DebugRegions
         {
             get { lock (_lock) return _spineObject.DebugRegions; }
-            set { lock (_lock) SetProperty(_spineObject.DebugRegions, value, _spineObject, (m, v) => m.DebugRegions = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugRegions, value, v => _spineObject.DebugRegions = v); }
         }
 
         public bool DebugMeshHulls
         {
             get { lock (_lock) return _spineObject.DebugMeshHulls; }
-            set { lock (_lock) SetProperty(_spineObject.DebugMeshHulls, value, _spineObject, (m, v) => m.DebugMeshHulls = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugMeshHulls, value, v => _spineObject.DebugMeshHulls = v); }
         }
 
         public bool DebugMeshes
         {
             get { lock (_lock) return _spineObject.DebugMeshes; }
-            set { lock (_lock) SetProperty(_spineObject.DebugMeshes, value, _spineObject, (m, v) => m.DebugMeshes = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugMeshes, value, v => _spineObject.DebugMeshes = v); }
         }
 
         public bool DebugBoundingBoxes
         {
             get { lock (_lock) return _spineObject.DebugBoundingBoxes; }
-            set { lock (_lock) SetProperty(_spineObject.DebugBoundingBoxes, value, _spineObject, (m, v) => m.DebugBoundingBoxes = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugBoundingBoxes, value, v => _spineObject.DebugBoundingBoxes = v); }
         }
 
         public bool DebugPaths
         {
             get { lock (_lock) return _spineObject.DebugPaths; }
-            set { lock (_lock) SetProperty(_spineObject.DebugPaths, value, _spineObject, (m, v) => m.DebugPaths = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugPaths, value, v => _spineObject.DebugPaths = v); }
         }
 
         public bool DebugPoints
         {
             get { lock (_lock) return _spineObject.DebugPoints; }
-            set { lock (_lock) SetProperty(_spineObject.DebugPoints, value, _spineObject, (m, v) => m.DebugPoints = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugPoints, value, v => _spineObject.DebugPoints = v); }
         }
 
         public bool DebugClippings
         {
             get { lock (_lock) return _spineObject.DebugClippings; }
-            set { lock (_lock) SetProperty(_spineObject.DebugClippings, value, _spineObject, (m, v) => m.DebugClippings = v); }
+            set { lock (_lock) SetProperty(_spineObject.DebugClippings, value, v => _spineObject.DebugClippings = v); }
         }
 
         public void Update(float delta)
@@ -376,12 +376,12 @@ namespace SpineViewer.Models
                 _spineObject.Skeleton.ScaleX = config.Scale;
                 _spineObject.Skeleton.ScaleY = config.Scale;
                 OnPropertyChanged(nameof(Scale));
-                SetProperty(_spineObject.Skeleton.ScaleX < 0, config.FlipX, _spineObject, (m, v) => m.Skeleton.ScaleX *= -1, nameof(FlipX));
-                SetProperty(_spineObject.Skeleton.ScaleY < 0, config.FlipY, _spineObject, (m, v) => m.Skeleton.ScaleY *= -1, nameof(FlipY));
-                SetProperty(_spineObject.Skeleton.X, config.X, _spineObject, (m, v) => m.Skeleton.X = v, nameof(X));
-                SetProperty(_spineObject.Skeleton.Y, config.Y, _spineObject, (m, v) => m.Skeleton.Y = v, nameof(Y));
-                SetProperty(_spineObject.UsePma, config.UsePma, _spineObject, (m, v) => m.UsePma = v, nameof(UsePma));
-                SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(config.Physics ?? "Update", true), _spineObject, (m, v) => m.Physics = v, nameof(Physics));
+                SetProperty(_spineObject.Skeleton.ScaleX < 0, config.FlipX, v => _spineObject.Skeleton.ScaleX *= -1, nameof(FlipX));
+                SetProperty(_spineObject.Skeleton.ScaleY < 0, config.FlipY, v => _spineObject.Skeleton.ScaleY *= -1, nameof(FlipY));
+                SetProperty(_spineObject.Skeleton.X, config.X, v => _spineObject.Skeleton.X = v, nameof(X));
+                SetProperty(_spineObject.Skeleton.Y, config.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
+                SetProperty(_spineObject.UsePma, config.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
+                SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(config.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
 
                 foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(config.LoadedSkins))
                     if (_spineObject.SetSkinStatus(name, false))
@@ -405,16 +405,16 @@ namespace SpineViewer.Models
                     trackIndex++;
                 }
 
-                SetProperty(_spineObject.DebugTexture, config.DebugTexture, _spineObject, (m, v) => m.DebugTexture = v, nameof(DebugTexture));
-                SetProperty(_spineObject.DebugBounds, config.DebugBounds, _spineObject, (m, v) => m.DebugBounds = v, nameof(DebugBounds));
-                SetProperty(_spineObject.DebugBones, config.DebugBones, _spineObject, (m, v) => m.DebugBones = v, nameof(DebugBones));
-                SetProperty(_spineObject.DebugRegions, config.DebugRegions, _spineObject, (m, v) => m.DebugRegions = v, nameof(DebugRegions));
-                SetProperty(_spineObject.DebugMeshHulls, config.DebugMeshHulls, _spineObject, (m, v) => m.DebugMeshHulls = v, nameof(DebugMeshHulls));
-                SetProperty(_spineObject.DebugMeshes, config.DebugMeshes, _spineObject, (m, v) => m.DebugMeshes = v, nameof(DebugMeshes));
-                SetProperty(_spineObject.DebugBoundingBoxes, config.DebugBoundingBoxes, _spineObject, (m, v) => m.DebugBoundingBoxes = v, nameof(DebugBoundingBoxes));
-                SetProperty(_spineObject.DebugPaths, config.DebugPaths, _spineObject, (m, v) => m.DebugPaths = v, nameof(DebugPaths));
-                SetProperty(_spineObject.DebugPoints, config.DebugPoints, _spineObject, (m, v) => m.DebugPoints = v, nameof(DebugPoints));
-                SetProperty(_spineObject.DebugClippings, config.DebugClippings, _spineObject, (m, v) => m.DebugClippings = v, nameof(DebugClippings));
+                SetProperty(_spineObject.DebugTexture, config.DebugTexture, v => _spineObject.DebugTexture = v, nameof(DebugTexture));
+                SetProperty(_spineObject.DebugBounds, config.DebugBounds, v => _spineObject.DebugBounds = v, nameof(DebugBounds));
+                SetProperty(_spineObject.DebugBones, config.DebugBones, v => _spineObject.DebugBones = v, nameof(DebugBones));
+                SetProperty(_spineObject.DebugRegions, config.DebugRegions, v => _spineObject.DebugRegions = v, nameof(DebugRegions));
+                SetProperty(_spineObject.DebugMeshHulls, config.DebugMeshHulls, v => _spineObject.DebugMeshHulls = v, nameof(DebugMeshHulls));
+                SetProperty(_spineObject.DebugMeshes, config.DebugMeshes, v => _spineObject.DebugMeshes = v, nameof(DebugMeshes));
+                SetProperty(_spineObject.DebugBoundingBoxes, config.DebugBoundingBoxes, v => _spineObject.DebugBoundingBoxes = v, nameof(DebugBoundingBoxes));
+                SetProperty(_spineObject.DebugPaths, config.DebugPaths, v => _spineObject.DebugPaths = v, nameof(DebugPaths));
+                SetProperty(_spineObject.DebugPoints, config.DebugPoints, v => _spineObject.DebugPoints = v, nameof(DebugPoints));
+                SetProperty(_spineObject.DebugClippings, config.DebugClippings, v => _spineObject.DebugClippings = v, nameof(DebugClippings));
             }
         }
 

@@ -88,55 +88,55 @@ namespace SpineViewer.ViewModels.MainWindow
         public uint ResolutionX
         {
             get => _renderer.Resolution.X;
-            set => SetProperty(_renderer.Resolution.X, value, _renderer, (r, v) => r.Resolution = new(v, r.Resolution.Y));
+            set => SetProperty(_renderer.Resolution.X, value, v => _renderer.Resolution = new(v, _renderer.Resolution.Y));
         }
 
         public uint ResolutionY
         {
             get => _renderer.Resolution.Y;
-            set => SetProperty(_renderer.Resolution.Y, value, _renderer, (r, v) => r.Resolution = new(r.Resolution.X, v));
+            set => SetProperty(_renderer.Resolution.Y, value, v => _renderer.Resolution = new(_renderer.Resolution.X, v));
         }
 
         public float CenterX
         {
             get => _renderer.Center.X;
-            set => SetProperty(_renderer.Center.X, value, _renderer, (r, v) => r.Center = new(v, r.Center.Y));
+            set => SetProperty(_renderer.Center.X, value, v => _renderer.Center = new(v, _renderer.Center.Y));
         }
 
         public float CenterY
         {
             get => _renderer.Center.Y;
-            set => SetProperty(_renderer.Center.Y, value, _renderer, (r, v) => r.Center = new(r.Center.X, v));
+            set => SetProperty(_renderer.Center.Y, value, v => _renderer.Center = new(_renderer.Center.X, v));
         }
 
         public float Zoom
         {
             get => _renderer.Zoom;
-            set => SetProperty(_renderer.Zoom, value, _renderer, (r, v) => r.Zoom = value);
+            set => SetProperty(_renderer.Zoom, value, v => _renderer.Zoom = value);
         }
 
         public float Rotation
         {
             get => _renderer.Rotation;
-            set => SetProperty(_renderer.Rotation, value, _renderer, (r, v) => r.Rotation = value);
+            set => SetProperty(_renderer.Rotation, value, v => _renderer.Rotation = value);
         }
 
         public bool FlipX
         {
             get => _renderer.FlipX;
-            set => SetProperty(_renderer.FlipX, value, _renderer, (r, v) => r.FlipX = value);
+            set => SetProperty(_renderer.FlipX, value, v => _renderer.FlipX = value);
         }
 
         public bool FlipY
         {
             get => _renderer.FlipY;
-            set => SetProperty(_renderer.FlipY, value, _renderer, (r, v) => r.FlipY = value);
+            set => SetProperty(_renderer.FlipY, value, v => _renderer.FlipY = value);
         }
 
         public uint MaxFps
         {
             get => _renderer.MaxFps;
-            set => SetProperty(_renderer.MaxFps, value, _renderer, (r, v) => r.MaxFps = value);
+            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = value);
         }
 
         public bool ShowAxis
@@ -149,7 +149,7 @@ namespace SpineViewer.ViewModels.MainWindow
         public Color BackgroundColor
         {
             get => Color.FromRgb(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B);
-            set => SetProperty(BackgroundColor, value, this, (m, v) => m._backgroundColor = new(value.R, value.G, value.B));
+            set => SetProperty(BackgroundColor, value, v => _backgroundColor = new(value.R, value.G, value.B));
         }
         private SFML.Graphics.Color _backgroundColor = new(105, 105, 105);
 
