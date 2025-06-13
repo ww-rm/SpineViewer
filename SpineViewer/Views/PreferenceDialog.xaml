@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=models:PreferenceModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Preference}"
-        Height="650" 
+        Height="660" 
         Width="600"    
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
@@ -46,6 +46,7 @@
                 <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="0 5 0 10"/>
                 </Style>
             </Border.Resources>
             <ScrollViewer  VerticalScrollBarVisibility="Auto">
