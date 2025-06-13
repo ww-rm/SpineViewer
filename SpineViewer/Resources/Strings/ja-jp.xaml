@@ -11,7 +11,8 @@
     <s:String x:Key="Str_Experiment">実験機能</s:String>
 
     <s:String x:Key="Str_Open">開く...</s:String>
-    <s:String x:Key="Str_Preference">設定...</s:String>
+    <s:String x:Key="Str_Preference">設定</s:String>
+    <s:String x:Key="Str_PreferenceWithDots">設定...</s:String>
     <s:String x:Key="Str_Exit">終了</s:String>
 
     <!-- 标签页 -->
@@ -193,6 +194,16 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">プログラムバージョン</s:String>
     <s:String x:Key="Str_ProjectUrl">プロジェクトURL</s:String>
+
+    <!-- 首选项对话框 -->
+    <s:String x:Key="Str_TextureLoadPreference">テクスチャ読み込みオプション</s:String>
+    <s:String x:Key="Str_ForcePremul">強制プリマルチチャンネル</s:String>
+    <s:String x:Key="Str_ForcePremulTooltip">有効にすると、テクスチャ読み込み時にピクセルにプリマルチ処理を適用し、一部の接続部分で発生する黒い縁の問題を解決します。</s:String>
+    <s:String x:Key="Str_ForceNearest">Nearest補間を強制使用</s:String>
+    <s:String x:Key="Str_ForceMipmap">Mipmapを強制使用</s:String>
+    <s:String x:Key="Str_ForceMipmapTooltip">有効にすると、テクスチャ縮小時のジャギーを軽減しますが、ビデオメモリの使用量が若干増加します。</s:String>
+
+    <s:String x:Key="Str_SpineLoadPreference">モデル読み込みオプション</s:String>
 
 </ResourceDictionary>
 

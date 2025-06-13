@@ -34,6 +34,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
             _sfmlRendererViewModel = new(this);
+            _preferenceViewModel = new(this);
         }
 
         public string Title => $"SpineViewer - v{App.Version}";
@@ -55,6 +56,9 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _spineObjectModels = [];
+
+        public PreferenceViewModel PreferenceViewModel => _preferenceViewModel;
+        private readonly PreferenceViewModel _preferenceViewModel;
 
         /// <summary>
         /// 浏览页列表 ViewModel

@@ -58,7 +58,7 @@
                     <MenuItem Header="{DynamicResource Str_File}">
                         <MenuItem Header="{DynamicResource Str_Open}" InputGestureText="Ctrl+O"/>
                         <Separator/>
-                        <MenuItem Header="{DynamicResource Str_Preference}"/>
+                        <MenuItem Header="{DynamicResource Str_PreferenceWithDots}" Command="{Binding PreferenceViewModel.Cmd_ShowPreferenceDialog}"/>
                         <!--<MenuItem Header="{DynamicResource Str_Exit}" InputGestureText="Alt+F4"/>-->
                     </MenuItem>
                     <!--<MenuItem Header="{DynamicResource Str_Tool}"/>-->

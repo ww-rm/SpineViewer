@@ -11,7 +11,8 @@
     <s:String x:Key="Str_Experiment">Experimental Features</s:String>
 
     <s:String x:Key="Str_Open">Open...</s:String>
-    <s:String x:Key="Str_Preference">Preferences...</s:String>
+    <s:String x:Key="Str_Preference">Preferences</s:String>
+    <s:String x:Key="Str_PreferenceWithDots">Preferences...</s:String>
     <s:String x:Key="Str_Exit">Exit</s:String>
 
     <!-- 标签页 -->
@@ -193,5 +194,15 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">Program Version</s:String>
     <s:String x:Key="Str_ProjectUrl">Project URL</s:String>
+
+    <!-- 首选项对话框 -->
+    <s:String x:Key="Str_TextureLoadPreference">Texture Loading Options</s:String>
+    <s:String x:Key="Str_ForcePremul">Force Premultiplied Channels</s:String>
+    <s:String x:Key="Str_ForcePremulTooltip">When enabled, this applies premultiplied operations to pixels during texture loading, helping to resolve black edge issues at some connections.</s:String>
+    <s:String x:Key="Str_ForceNearest">Force Nearest Interpolation</s:String>
+    <s:String x:Key="Str_ForceMipmap">Force Mipmap</s:String>
+    <s:String x:Key="Str_ForceMipmapTooltip">When enabled, this helps reduce aliasing when textures are scaled down, at the cost of slightly higher video memory usage.</s:String>
+
+    <s:String x:Key="Str_SpineLoadPreference">Model Loading Options</s:String>
 
 </ResourceDictionary>

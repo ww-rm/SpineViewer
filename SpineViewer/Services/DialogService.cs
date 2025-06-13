@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SpineViewer.Models;
 using SpineViewer.ViewModels.Exporters;
 using SpineViewer.Views;
 using SpineViewer.Views.ExporterDialogs;
@@ -48,6 +49,15 @@ namespace SpineViewer.Services
         public static bool ShowCustomFFmpegExporterDialog(CustomFFmpegExporterViewModel vm)
         {
             var dialog = new CustomFFmpegExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
+            return dialog.ShowDialog() ?? false;
+        }
+
+        /// <summary>
+        /// 将给定的首选项参数在对话框上进行显示, 返回值表示是否确认修改
+        /// </summary>
+        public static bool ShowPreferenceDialog(PreferenceModel m)
+        {
+            var dialog = new PreferenceDialog() { DataContext = m, Owner = App.Current.MainWindow };
             return dialog.ShowDialog() ?? false;
         }
 

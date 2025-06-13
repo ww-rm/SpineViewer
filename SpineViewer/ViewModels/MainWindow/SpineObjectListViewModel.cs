@@ -121,7 +121,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
             lock (_spineObjectModels.Lock)
             {
-                // XXX: 这里必须要浅拷贝一次, 不能直接对会被修改的绑定数据 args 进行 foreach 遍历
+                // NOTE: 这里必须要浅拷贝一次, 不能直接对会被修改的绑定数据 args 进行 foreach 遍历
                 foreach (var sp in args.Cast<SpineObjectModel>().ToArray())
                 {
                     _spineObjectModels.Remove(sp);
@@ -250,6 +250,41 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 安全地在末尾添加一个模型, 发生错误会输出日志
+        /// </summary>
+        /// <returns>是否添加成功</returns>
+        public bool AddSpineObject(string skelPath, string? atlasPath = null)
+        {
+            try
+            {
+                // TODO: 判断是否记忆参数
+                var pre = _vmMain.PreferenceViewModel;
+                var sp = new SpineObjectModel(skelPath, atlasPath)
+                {
+                    UsePma = pre.UsePma,
+                    DebugTexture = pre.DebugTexture,
+                    DebugBounds = pre.DebugBounds,
+                    DebugRegions = pre.DebugRegions,
+                    DebugMeshHulls = pre.DebugMeshHulls,
+                    DebugMeshes = pre.DebugMeshes,
+                    DebugBoundingBoxes = pre.DebugBoundingBoxes,
+                    DebugPaths = pre.DebugPaths,
+                    DebugPoints = pre.DebugPoints,
+                    DebugClippings = pre.DebugClippings
+                };
+
+                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 从路径列表添加对象
         /// </summary>
         /// <param name="paths">可以是文件和文件夹</param>
@@ -289,17 +324,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (validPaths.Count > 0)
             {
-                var skelPath = validPaths[0];
-                try
-                {
-                    var sp = new SpineObjectModel(skelPath);
-                    lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Trace(ex.ToString());
-                    _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
-                }
+                AddSpineObject(validPaths[0]);
                 _logger.LogCurrentProcessMemoryUsage();
             }
         }
@@ -326,18 +351,10 @@ namespace SpineViewer.ViewModels.MainWindow
                 var skelPath = paths[i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
 
-                try
-                {
-                    var sp = new SpineObjectModel(skelPath);
-                    lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                if (AddSpineObject(skelPath))
                     success++;
-                }
-                catch (Exception ex)
-                {
-                    _logger.Trace(ex.ToString());
-                    _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
+                else
                     error++;
-                }
 
                 reporter.Done = i + 1;
                 reporter.ProgressText = $"[{i + 1}/{totalCount}] {skelPath}";

@@ -11,7 +11,8 @@
     <s:String x:Key="Str_Experiment">实验性功能</s:String>
 
     <s:String x:Key="Str_Open">打开...</s:String>
-    <s:String x:Key="Str_Preference">首选项...</s:String>
+    <s:String x:Key="Str_Preference">首选项</s:String>
+    <s:String x:Key="Str_PreferenceWithDots">首选项...</s:String>
     <s:String x:Key="Str_Exit">退出</s:String>
 
     <!-- 标签页 -->
@@ -74,7 +75,7 @@
 
     <s:String x:Key="Str_Slot">插槽</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">清除附件</s:String>
-    
+
     <s:String x:Key="Str_Animation">动画</s:String>
     <s:String x:Key="Str_AppendTrack">添加</s:String>
     <s:String x:Key="Str_InsertTrack">插入</s:String>
@@ -141,7 +142,7 @@
     <s:String x:Key="Str_InvalidMaxResolution">使用自动分辨率时需要提供有效的最大分辨率</s:String>
     <s:String x:Key="Str_InvalidDuration">导出单个时导出时长不能为负数</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">必须指定 FFmpeg 导出格式</s:String>
-    
+
     <s:String x:Key="Str_ResolutionTooltip">画面分辨率，相关参数请在画面参数面板进行调整</s:String>
     <s:String x:Key="Str_ExportSingle">导出单个</s:String>
     <s:String x:Key="Str_ExportSingleTooltip">勾选后将所选模型在同一个画面上进行导出，且必须提供输出文件夹</s:String>
@@ -185,7 +186,7 @@
     <s:String x:Key="Str_FFmpegFilterTooltip">FFmpeg 滤镜，等价于参数 “-vf”</s:String>
     <s:String x:Key="Str_FFmpegCustomArgs">自定义参数</s:String>
     <s:String x:Key="Str_FFmpegCustomArgsTooltip">FFmpeg 自定义参数，与命令行提供方式相同，例如 “-crf 23”</s:String>
-    
+
     <!-- 诊断信息对话框 -->
     <s:String x:Key="Str_CopyDiagnosticsInfo">复制到剪贴板</s:String>
     <s:String x:Key="Str_Copied">已复制</s:String>
@@ -193,5 +194,15 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">程序版本</s:String>
     <s:String x:Key="Str_ProjectUrl">项目地址</s:String>
-    
+
+    <!-- 首选项对话框 -->
+    <s:String x:Key="Str_TextureLoadPreference">纹理加载选项</s:String>
+    <s:String x:Key="Str_ForcePremul">强制预乘通道</s:String>
+    <s:String x:Key="Str_ForcePremulTooltip">开启后，会在加载纹理时对像素进行预乘操作，有助于解决某些情况下的连接处黑边问题</s:String>
+    <s:String x:Key="Str_ForceNearest">强制使用 Nearest 插值</s:String>
+    <s:String x:Key="Str_ForceMipmap">强制使用 Mipmap</s:String>
+    <s:String x:Key="Str_ForceMipmapTooltip">开启后有助于改善纹理缩小时的锯齿现象，但是会略微增加显存占用</s:String>
+
+    <s:String x:Key="Str_SpineLoadPreference">模型加载选项</s:String>
+
 </ResourceDictionary>

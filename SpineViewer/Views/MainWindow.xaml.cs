@@ -61,6 +61,9 @@ public partial class MainWindow : Window
         vm.FlipY = true;
         vm.MaxFps = 30;
         vm.StartRender();
+
+        // 加载首选项
+        _vm.PreferenceViewModel.LoadPreference();
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
