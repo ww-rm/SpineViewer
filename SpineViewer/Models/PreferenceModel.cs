@@ -17,6 +17,7 @@ namespace SpineViewer.Models
     /// </summary>
     public partial class PreferenceModel : ObservableObject
     {
+
         #region 纹理加载首选项
 
         [ObservableProperty]
@@ -64,6 +65,13 @@ namespace SpineViewer.Models
 
         [ObservableProperty]
         private bool _debugClippings;
+
+        #endregion
+
+        #region 程序选项
+
+        [ObservableProperty]
+        private AppLanguage _appLanguage;
 
         #endregion
 

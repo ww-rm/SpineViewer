@@ -205,5 +205,8 @@
 
     <s:String x:Key="Str_SpineLoadPreference">モデル読み込みオプション</s:String>
 
+    <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
+    <s:String x:Key="Str_Language">言語</s:String>
+
 </ResourceDictionary>
 

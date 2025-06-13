@@ -21,7 +21,6 @@ namespace Spine
         {
             [".skel"] = ".atlas",
             [".json"] = ".atlas",
-            [".skel.bytes"] = ".atlas.bytes",
         }.ToFrozenDictionary();
 
         /// <summary>

@@ -128,7 +128,7 @@
 
                     <!-- 视频格式 -->
                     <Label Grid.Row="13" Grid.Column="0" Content="{DynamicResource Str_VideoFormat}"/>
-                    <ComboBox Grid.Row="13" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding VideoFormats}"/>
+                    <ComboBox Grid.Row="13" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding VideoFormatOptions}"/>
 
                     <!-- 动图是否循环 -->
                     <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_LoopPlay}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>

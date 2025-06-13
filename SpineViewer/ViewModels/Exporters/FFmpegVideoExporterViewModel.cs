@@ -18,7 +18,7 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FFmpegVideoExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
-        public ImmutableArray<FFmpegVideoExporter.VideoFormat> VideoFormats { get; } = Enum.GetValues<FFmpegVideoExporter.VideoFormat>().ToImmutableArray();
+        public ImmutableArray<FFmpegVideoExporter.VideoFormat> VideoFormatOptions { get; } = Enum.GetValues<FFmpegVideoExporter.VideoFormat>().ToImmutableArray();
 
         public FFmpegVideoExporter.VideoFormat Format { get => _format; set => SetProperty(ref _format, value); }
         protected FFmpegVideoExporter.VideoFormat _format = FFmpegVideoExporter.VideoFormat.Mp4;

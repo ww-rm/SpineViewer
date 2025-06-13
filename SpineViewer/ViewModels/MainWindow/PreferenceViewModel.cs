@@ -6,6 +6,7 @@ using SpineViewer.Models;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -105,7 +106,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugBoundingBoxes = DebugBoundingBoxes,
                     DebugPaths = DebugPaths,
                     DebugPoints = DebugPoints,
-                    DebugClippings = DebugClippings
+                    DebugClippings = DebugClippings,
+                    AppLanguage = AppLanguage,
                 };
             }
             set
@@ -124,6 +126,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPaths = value.DebugPaths;
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
+                AppLanguage = value.AppLanguage;
             }
         }
 
@@ -149,42 +152,88 @@ namespace SpineViewer.ViewModels.MainWindow
 
         #endregion
         
-        // TODO: 是否自动记忆模型参数
 
         #region 模型加载首选项
 
-        public bool UsePma { get => _usePma; set => SetProperty(ref _usePma, value); }
-        private bool _usePma;
+        // TODO: 是否自动记忆模型参数
 
-        public bool DebugTexture { get => _debugTexture; set => SetProperty(ref _debugTexture, value); }
-        private bool _debugTexture = true;
+        public bool UsePma 
+        { 
+            get => SpineObjectListViewModel.LoadOptions.UsePma; 
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.UsePma, value, v => SpineObjectListViewModel.LoadOptions.UsePma = v); 
+        }
 
-        public bool DebugBounds { get => _debugBounds; set => SetProperty(ref _debugBounds, value); }
-        private bool _debugBounds;
+        public bool DebugTexture
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugTexture;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugTexture, value, v => SpineObjectListViewModel.LoadOptions.DebugTexture = v);
+        }
 
-        public bool DebugBones { get => _debugBones; set => SetProperty(ref _debugBones, value); }
-        private bool _debugBones;
+        public bool DebugBounds
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugBounds;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBounds, value, v => SpineObjectListViewModel.LoadOptions.DebugBounds = v);
+        }
 
-        public bool DebugRegions { get => _debugRegions; set => SetProperty(ref _debugRegions, value); }
-        private bool _debugRegions;
+        public bool DebugBones
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugBones;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBones, value, v => SpineObjectListViewModel.LoadOptions.DebugBones = v);
+        }
 
-        public bool DebugMeshHulls { get => _debugMeshHulls; set => SetProperty(ref _debugMeshHulls, value); }
-        private bool _debugMeshHulls;
+        public bool DebugRegions
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugRegions;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugRegions, value, v => SpineObjectListViewModel.LoadOptions.DebugRegions = v);
+        }
 
-        public bool DebugMeshes { get => _debugMeshes; set => SetProperty(ref _debugMeshes, value); }
-        private bool _debugMeshes;
+        public bool DebugMeshHulls
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugMeshHulls;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugMeshHulls, value, v => SpineObjectListViewModel.LoadOptions.DebugMeshHulls = v);
+        }
 
-        public bool DebugBoundingBoxes { get => _debugBoundingBoxes; set => SetProperty(ref _debugBoundingBoxes, value); }
-        private bool _debugBoundingBoxes;
+        public bool DebugMeshes
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugMeshes;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugMeshes, value, v => SpineObjectListViewModel.LoadOptions.DebugMeshes = v);
+        }
 
-        public bool DebugPaths { get => _debugPaths; set => SetProperty(ref _debugPaths, value); }
-        private bool _debugPaths;
+        public bool DebugBoundingBoxes
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes, value, v => SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes = v);
+        }
 
-        public bool DebugPoints { get => _debugPoints; set => SetProperty(ref _debugPoints, value); }
-        private bool _debugPoints;
+        public bool DebugPaths
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugPaths;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugPaths, value, v => SpineObjectListViewModel.LoadOptions.DebugPaths = v);
+        }
 
-        public bool DebugClippings { get => _debugClippings; set => SetProperty(ref _debugClippings, value); }
-        private bool _debugClippings;
+        public bool DebugPoints
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugPoints;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugPoints, value, v => SpineObjectListViewModel.LoadOptions.DebugPoints = v);
+        }
+
+        public bool DebugClippings
+        {
+            get => SpineObjectListViewModel.LoadOptions.DebugClippings;
+            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugClippings, value, v => SpineObjectListViewModel.LoadOptions.DebugClippings = v);
+        }
+
+        #endregion
+
+        #region 程序选项
+
+        public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
+
+        public AppLanguage AppLanguage
+        {
+            get => ((App)App.Current).Language;
+            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+        }
 
         #endregion
     }
