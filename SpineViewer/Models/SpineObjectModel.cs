@@ -40,9 +40,9 @@ namespace SpineViewer.Models
         /// <summary>
         /// 构造函数, 可能会抛出异常
         /// </summary>
-        public SpineObjectModel(string skelPath, string? atlasPath = null, SpineVersion? version = null)
+        public SpineObjectModel(string skelPath, string? atlasPath = null)
         {
-            _spineObject = new(skelPath, atlasPath, version);
+            _spineObject = new(skelPath, atlasPath);
             _skins = _spineObject.Data.Skins.Select(v => v.Name).ToImmutableArray();
             _slotAttachments = _spineObject.Data.SlotAttachments.ToFrozenDictionary(it => it.Key, it => it.Value.Keys);
             _animations = _spineObject.Data.Animations.Select(v => v.Name).ToImmutableArray();
