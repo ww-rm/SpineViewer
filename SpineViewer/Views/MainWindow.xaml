@@ -246,9 +246,10 @@
                                             <ListView.InputBindings>
                                                 <KeyBinding Gesture="Ctrl+O" Command="{Binding Cmd_AddSpineObject}"/>
                                                 <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+V" Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                <KeyBinding Gesture="Ctrl+R" Command="{Binding Cmd_ReloadSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+V" Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+C" Command="{Binding Cmd_CopySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+V" Command="{Binding Cmd_ApplySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                             </ListView.InputBindings>
@@ -262,6 +263,13 @@
                                                               InputGestureText="Delete"
                                                               Command="{Binding Cmd_RemoveSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
+                                                              InputGestureText="Ctrl+V"
+                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                    <MenuItem Header="{DynamicResource Str_Reload}"
+                                                              InputGestureText="Ctrl+R"
+                                                              Command="{Binding Cmd_ReloadSpineObject}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_MoveUpSpineObject}"
                                                               InputGestureText="Alt+W"
@@ -271,10 +279,6 @@
                                                               InputGestureText="Alt+S"
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
-                                                              InputGestureText="Ctrl+V"
-                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+C"

@@ -36,9 +36,10 @@
     <s:String x:Key="Str_ListViewStatusBar">共 {0} 项，已选择 {1} 项</s:String>
     <s:String x:Key="Str_AddSpineObject">添加...</s:String>
     <s:String x:Key="Str_RemoveSpineObject">移除</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">从剪贴板添加</s:String>
+    <s:String x:Key="Str_Reload">重新加载</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
-    <s:String x:Key="Str_AddSpineObjectFromClipboard">从剪贴板添加</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">复制参数</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">应用参数</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">保存参数文件...</s:String>
@@ -120,6 +121,7 @@
     <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
+    <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
 
     <s:String x:Key="Str_InfoPopup">提示信息</s:String>
     <s:String x:Key="Str_WarnPopup">警告信息</s:String>

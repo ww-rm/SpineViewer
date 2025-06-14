@@ -36,9 +36,10 @@
     <s:String x:Key="Str_ListViewStatusBar">全{0}件、選択中{1}件</s:String>
     <s:String x:Key="Str_AddSpineObject">追加...</s:String>
     <s:String x:Key="Str_RemoveSpineObject">削除</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">クリップボードから追加</s:String>
+    <s:String x:Key="Str_Reload">再読み込み</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
-    <s:String x:Key="Str_AddSpineObjectFromClipboard">クリップボードから追加</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">パラメーターを適用</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">パラメータファイルを保存...</s:String>
@@ -120,6 +121,7 @@
     <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">プレビューを削除</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">一括でスケルトンファイルを追加</s:String>
+    <s:String x:Key="Str_ReloadSpineObjectsTitle">スケルトンファイルの再読み込み</s:String>
 
     <s:String x:Key="Str_InfoPopup">情報</s:String>
     <s:String x:Key="Str_WarnPopup">警告</s:String>

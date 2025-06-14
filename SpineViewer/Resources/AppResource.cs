@@ -19,6 +19,7 @@ namespace SpineViewer.Resources
         public static string Str_GeneratePreviewsTitle => Get<string>("Str_GeneratePreviewsTitle");
         public static string Str_DeletePreviewsTitle => Get<string>("Str_DeletePreviewsTitle");
         public static string Str_AddSpineObjectsTitle => Get<string>("Str_AddSpineObjectsTitle");
+        public static string Str_ReloadSpineObjectsTitle => Get<string>("Str_ReloadSpineObjectsTitle");
         public static string Str_CustomFFmpegExporterTitle => Get<string>("Str_CustomFFmpegExporterTitle");
 
         public static string Str_InfoPopup => Get<string>("Str_InfoPopup");

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shapes;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -111,7 +112,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void RemoveSpineObject_Execute(IList? args)
         {
-            if (args is null) return;
+            if (!RemoveSpineObject_CanExecute(args)) return;
 
             if (args.Count > 1)
             {
@@ -138,6 +139,121 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 从剪贴板文件列表添加模型
+        /// </summary>
+        public RelayCommand Cmd_AddSpineObjectFromClipboard => _cmd_AddSpineObjectFromClipboard ??= new(AddSpineObjectFromClipboard_Execute);
+        private RelayCommand? _cmd_AddSpineObjectFromClipboard;
+
+        private void AddSpineObjectFromClipboard_Execute()
+        {
+            if (!Clipboard.ContainsFileDropList()) return;
+            AddSpineObjectFromFileList(Clipboard.GetFileDropList().Cast<string>().ToArray());
+        }
+
+        /// <summary>
+        /// 重新加载模型
+        /// </summary>
+        public RelayCommand<IList?> Cmd_ReloadSpineObject => _cmd_ReloadSpineObject ??= new(ReloadSpineObject_Execute, ReloadSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_ReloadSpineObject;
+
+        private void ReloadSpineObject_Execute(IList? args)
+        {
+            if (!ReloadSpineObject_CanExecute(args)) return;
+
+            if (args.Count <= 1)
+            {
+                lock (_spineObjectModels.Lock)
+                {
+                    var sp = (SpineObjectModel)args[0];
+                    var idx = _spineObjectModels.IndexOf(sp);
+                    if (idx < 0) return;
+
+                    try
+                    {
+                        var spNew = new SpineObjectModel(sp.SkelPath, sp.AtlasPath);
+                        spNew.Load(sp.Dump());
+                        _spineObjectModels[idx] = spNew;
+                        sp.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
+                        _logger.Trace(ex.ToString());
+                    }
+                }
+            }
+            else
+            {
+                ProgressService.RunAsync((pr, ct) => ReloadSpineObjectsTask(
+                    args.Cast<SpineObjectModel>().ToArray(), pr, ct),
+                    AppResource.Str_ReloadSpineObjectsTitle
+                );
+            }
+        }
+
+        private bool ReloadSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        private void ReloadSpineObjectsTask(SpineObjectModel[] spines, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = spines.Length;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var sp = spines[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {sp.Name}";
+
+                lock (_spineObjectModels.Lock)
+                {
+                    var idx = _spineObjectModels.IndexOf(sp);
+                    if (idx >= 0)
+                    {
+                        try
+                        {
+                            var spNew = new SpineObjectModel(sp.SkelPath, sp.AtlasPath);
+                            spNew.Load(sp.Dump());
+                            _spineObjectModels[idx] = spNew;
+                            sp.Dispose();
+                            success++;
+                        }
+                        catch (Exception ex)
+                        {
+                            error++;
+                            _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
+                            _logger.Trace(ex.ToString());
+                        }
+                    }
+                }
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {sp.Name}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Batch reload {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} skel reloaded successfully", success);
+
+            _logger.LogCurrentProcessMemoryUsage();
+        }
+
+        /// <summary>
         /// 模型上移一位
         /// </summary>
         public RelayCommand<IList?> Cmd_MoveUpSpineObject => _cmd_MoveUpSpineObject ??= new(MoveUpSpineObject_Execute, MoveUpSpineObject_CanExecute);
@@ -145,8 +261,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void MoveUpSpineObject_Execute(IList? args)
         {
-            if (args is null) return;
-            if (args.Count != 1) return;
+            if (!MoveUpSpineObject_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
             lock (_spineObjectModels.Lock)
             {
@@ -171,8 +286,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void MoveDownSpineObject_Execute(IList? args)
         {
-            if (args is null) return;
-            if (args.Count != 1) return;
+            if (!MoveDownSpineObject_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
             lock (_spineObjectModels.Lock)
             {
@@ -190,18 +304,6 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// 从剪贴板文件列表添加模型
-        /// </summary>
-        public RelayCommand Cmd_AddSpineObjectFromClipboard => _cmd_AddSpineObjectFromClipboard ??= new(AddSpineObjectFromClipboard_Execute);
-        private RelayCommand? _cmd_AddSpineObjectFromClipboard;
-
-        private void AddSpineObjectFromClipboard_Execute()
-        {
-            if (!Clipboard.ContainsFileDropList()) return;
-            AddSpineObjectFromFileList(Clipboard.GetFileDropList().Cast<string>().ToArray());
-        }
-
-        /// <summary>
         /// 复制模型参数
         /// </summary>
         public RelayCommand<IList?> Cmd_CopySpineObjectConfig => _cmd_CopySpineObjectConfig ??= new(CopySpineObjectConfig_Execute, CopySpineObjectConfig_CanExecute);
@@ -209,8 +311,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void CopySpineObjectConfig_Execute(IList? args)
         {
-            if (args is null) return;
-            if (args.Count != 1) return;
+            if (!CopySpineObjectConfig_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
             _copiedSpineObjectConfigModel = sp.Dump();
             _logger.Info("Copy config from model: {0}", sp.Name);
@@ -231,9 +332,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void ApplySpineObjectConfig_Execute(IList? args)
         {
-            if (_copiedSpineObjectConfigModel is null) return;
-            if (args is null) return;
-            if (args.Count <= 0) return;
+            if (!ApplySpineObjectConfig_CanExecute(args)) return;
             foreach (SpineObjectModel sp in args)
             {
                 sp.Load(_copiedSpineObjectConfigModel);

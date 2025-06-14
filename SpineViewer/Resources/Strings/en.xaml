@@ -36,9 +36,10 @@
     <s:String x:Key="Str_ListViewStatusBar">{0} items, {1} selected</s:String>
     <s:String x:Key="Str_AddSpineObject">Add...</s:String>
     <s:String x:Key="Str_RemoveSpineObject">Remove</s:String>
+    <s:String x:Key="Str_AddSpineObjectFromClipboard">Add from Clipboard</s:String>
+    <s:String x:Key="Str_Reload">Reload</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
-    <s:String x:Key="Str_AddSpineObjectFromClipboard">Add from Clipboard</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">Copy Config</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">Apply Config</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">Save Config to File...</s:String>
@@ -120,6 +121,7 @@
     <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
+    <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
 
     <s:String x:Key="Str_InfoPopup">Information</s:String>
     <s:String x:Key="Str_WarnPopup">Warning</s:String>
