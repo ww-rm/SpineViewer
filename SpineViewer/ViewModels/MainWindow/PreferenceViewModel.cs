@@ -155,8 +155,6 @@ namespace SpineViewer.ViewModels.MainWindow
 
         #region 模型加载首选项
 
-        // TODO: 是否自动记忆模型参数
-
         public bool UsePma 
         { 
             get => SpineObjectModel.LoadOptions.UsePma; 
