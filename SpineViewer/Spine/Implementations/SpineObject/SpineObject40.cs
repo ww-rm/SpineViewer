@@ -216,10 +216,10 @@ namespace SpineViewer.Spine.Implementations.SpineObject
             tmpSkeleton.Update(0);
             tmpSkeleton.UpdateWorldTransform();
 
-            // 按 10 帧每秒计算边框
+            // 按 100 帧每秒计算边框
             var bounds = getCurrentBounds();
             float[] _ = [];
-            for (float tick = 0, delta = 0.1f; tick < maxDuration; tick += delta)
+            for (float tick = 0, delta = 0.01f; tick < maxDuration; tick += delta)
             {
                 tmpSkeleton.GetBounds(out var x, out var y, out var w, out var h, ref _);
                 bounds = bounds.Union(new(x, y, w, h));
