@@ -26,6 +26,12 @@ namespace SpineViewer.Models
     public class SpineObjectModel : ObservableObject, SFML.Graphics.Drawable, IDisposable
     {
         /// <summary>
+        /// 一些加载默认选项
+        /// </summary>
+        public static SpineObjectLoadOptions LoadOptions => _loadOptions;
+        private static readonly SpineObjectLoadOptions _loadOptions = new();
+
+        /// <summary>
         /// 日志器
         /// </summary>
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -42,7 +48,20 @@ namespace SpineViewer.Models
         /// </summary>
         public SpineObjectModel(string skelPath, string? atlasPath = null)
         {
-            _spineObject = new(skelPath, atlasPath);
+            _spineObject = new(skelPath, atlasPath)
+            {
+                UsePma = _loadOptions.UsePma,
+                DebugTexture = _loadOptions.DebugTexture,
+                DebugBounds = _loadOptions.DebugBounds,
+                DebugRegions = _loadOptions.DebugRegions,
+                DebugMeshHulls = _loadOptions.DebugMeshHulls,
+                DebugMeshes = _loadOptions.DebugMeshes,
+                DebugBoundingBoxes = _loadOptions.DebugBoundingBoxes,
+                DebugPaths = _loadOptions.DebugPaths,
+                DebugPoints = _loadOptions.DebugPoints,
+                DebugClippings = _loadOptions.DebugClippings
+            };
+
             _skins = _spineObject.Data.Skins.Select(v => v.Name).ToImmutableArray();
             _slotAttachments = _spineObject.Data.SlotAttachments.ToFrozenDictionary(it => it.Key, it => it.Value.Keys);
             _animations = _spineObject.Data.Animations.Select(v => v.Name).ToImmutableArray();
@@ -474,5 +493,21 @@ namespace SpineViewer.Models
     {
         public int TrackIndex { get; } = trackIndex;
         public string? AnimationName { get; } = animationName;
+    }
+
+    public class SpineObjectLoadOptions
+    {
+        public bool AutoSave { get; set; }
+        public bool UsePma { get; set; }
+        public bool DebugTexture { get; set; } = true;
+        public bool DebugBounds { get; set; }
+        public bool DebugBones { get; set; }
+        public bool DebugRegions { get; set; }
+        public bool DebugMeshHulls { get; set; }
+        public bool DebugMeshes { get; set; }
+        public bool DebugBoundingBoxes { get; set; }
+        public bool DebugPaths { get; set; }
+        public bool DebugPoints { get; set; }
+        public bool DebugClippings { get; set; }
     }
 }

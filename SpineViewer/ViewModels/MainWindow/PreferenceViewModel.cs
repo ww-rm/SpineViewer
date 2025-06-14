@@ -159,68 +159,68 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public bool UsePma 
         { 
-            get => SpineObjectListViewModel.LoadOptions.UsePma; 
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.UsePma, value, v => SpineObjectListViewModel.LoadOptions.UsePma = v); 
+            get => SpineObjectModel.LoadOptions.UsePma; 
+            set => SetProperty(SpineObjectModel.LoadOptions.UsePma, value, v => SpineObjectModel.LoadOptions.UsePma = v); 
         }
 
         public bool DebugTexture
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugTexture;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugTexture, value, v => SpineObjectListViewModel.LoadOptions.DebugTexture = v);
+            get => SpineObjectModel.LoadOptions.DebugTexture;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugTexture, value, v => SpineObjectModel.LoadOptions.DebugTexture = v);
         }
 
         public bool DebugBounds
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugBounds;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBounds, value, v => SpineObjectListViewModel.LoadOptions.DebugBounds = v);
+            get => SpineObjectModel.LoadOptions.DebugBounds;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugBounds, value, v => SpineObjectModel.LoadOptions.DebugBounds = v);
         }
 
         public bool DebugBones
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugBones;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBones, value, v => SpineObjectListViewModel.LoadOptions.DebugBones = v);
+            get => SpineObjectModel.LoadOptions.DebugBones;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugBones, value, v => SpineObjectModel.LoadOptions.DebugBones = v);
         }
 
         public bool DebugRegions
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugRegions;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugRegions, value, v => SpineObjectListViewModel.LoadOptions.DebugRegions = v);
+            get => SpineObjectModel.LoadOptions.DebugRegions;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugRegions, value, v => SpineObjectModel.LoadOptions.DebugRegions = v);
         }
 
         public bool DebugMeshHulls
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugMeshHulls;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugMeshHulls, value, v => SpineObjectListViewModel.LoadOptions.DebugMeshHulls = v);
+            get => SpineObjectModel.LoadOptions.DebugMeshHulls;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugMeshHulls, value, v => SpineObjectModel.LoadOptions.DebugMeshHulls = v);
         }
 
         public bool DebugMeshes
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugMeshes;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugMeshes, value, v => SpineObjectListViewModel.LoadOptions.DebugMeshes = v);
+            get => SpineObjectModel.LoadOptions.DebugMeshes;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugMeshes, value, v => SpineObjectModel.LoadOptions.DebugMeshes = v);
         }
 
         public bool DebugBoundingBoxes
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes, value, v => SpineObjectListViewModel.LoadOptions.DebugBoundingBoxes = v);
+            get => SpineObjectModel.LoadOptions.DebugBoundingBoxes;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugBoundingBoxes, value, v => SpineObjectModel.LoadOptions.DebugBoundingBoxes = v);
         }
 
         public bool DebugPaths
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugPaths;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugPaths, value, v => SpineObjectListViewModel.LoadOptions.DebugPaths = v);
+            get => SpineObjectModel.LoadOptions.DebugPaths;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugPaths, value, v => SpineObjectModel.LoadOptions.DebugPaths = v);
         }
 
         public bool DebugPoints
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugPoints;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugPoints, value, v => SpineObjectListViewModel.LoadOptions.DebugPoints = v);
+            get => SpineObjectModel.LoadOptions.DebugPoints;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugPoints, value, v => SpineObjectModel.LoadOptions.DebugPoints = v);
         }
 
         public bool DebugClippings
         {
-            get => SpineObjectListViewModel.LoadOptions.DebugClippings;
-            set => SetProperty(SpineObjectListViewModel.LoadOptions.DebugClippings, value, v => SpineObjectListViewModel.LoadOptions.DebugClippings = v);
+            get => SpineObjectModel.LoadOptions.DebugClippings;
+            set => SetProperty(SpineObjectModel.LoadOptions.DebugClippings, value, v => SpineObjectModel.LoadOptions.DebugClippings = v);
         }
 
         #endregion

@@ -21,12 +21,6 @@ namespace SpineViewer.ViewModels.MainWindow
 {
     public class SpineObjectListViewModel : ObservableObject
     {
-        /// <summary>
-        /// 加载选项
-        /// </summary>
-        public static SpineLoadOptions LoadOptions => _loadOptions;
-        private static readonly SpineLoadOptions _loadOptions = new();
-
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -349,20 +343,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             try
             {
-                var sp = new SpineObjectModel(skelPath, atlasPath)
-                {
-                    UsePma = _loadOptions.UsePma,
-                    DebugTexture = _loadOptions.DebugTexture,
-                    DebugBounds = _loadOptions.DebugBounds,
-                    DebugRegions = _loadOptions.DebugRegions,
-                    DebugMeshHulls = _loadOptions.DebugMeshHulls,
-                    DebugMeshes = _loadOptions.DebugMeshes,
-                    DebugBoundingBoxes = _loadOptions.DebugBoundingBoxes,
-                    DebugPaths = _loadOptions.DebugPaths,
-                    DebugPoints = _loadOptions.DebugPoints,
-                    DebugClippings = _loadOptions.DebugClippings
-                };
-
+                var sp = new SpineObjectModel(skelPath, atlasPath);
                 lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
                 return true;
             }
@@ -372,22 +353,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
             }
             return false;
-        }
-
-        public class SpineLoadOptions
-        {
-            // TODO: 判断是否记忆参数
-            public bool UsePma { get; set; }
-            public bool DebugTexture { get; set; } = true;
-            public bool DebugBounds { get; set; }
-            public bool DebugBones { get; set; }
-            public bool DebugRegions { get; set; }
-            public bool DebugMeshHulls { get; set; }
-            public bool DebugMeshes { get; set; }
-            public bool DebugBoundingBoxes { get; set; }
-            public bool DebugPaths { get; set; }
-            public bool DebugPoints { get; set; }
-            public bool DebugClippings { get; set; }
         }
     }
 }
