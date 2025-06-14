@@ -101,18 +101,19 @@ namespace SpineViewer.ViewModels.Exporters
         /// </summary>
         protected void SetAutoResolutionStatic(BaseExporter exporter, params SpineObject[] spines)
         {
-            var bounds = spines[0].GetAnimationBounds();
-            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds());
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetCurrentBounds());
             SetAutoResolution(exporter, bounds);
         }
 
         /// <summary>
         /// 使用提供的模型设置导出器的自动分辨率和视区参数, 动画画面
         /// </summary>
-        protected void SetAutoResolutionAnimated(BaseExporter exporter, params SpineObject[] spines)
+        protected void SetAutoResolutionAnimated(VideoExporter exporter, params SpineObject[] spines)
         {
-            var bounds = spines[0].GetAnimationBounds();
-            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds());
+            var fps = exporter.Fps;
+            var bounds = spines[0].GetAnimationBounds(fps);
+            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds(fps));
             SetAutoResolution(exporter, bounds);
         }
 
