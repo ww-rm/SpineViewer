@@ -140,7 +140,6 @@
     <s:String x:Key="Str_OutputDirNotFound">出力フォルダーが存在しません</s:String>
     <s:String x:Key="Str_OutputDirRequired">単一エクスポート時は出力フォルダーを指定する必要があります</s:String>
     <s:String x:Key="Str_InvalidMaxResolution">自動解像度使用時は有効な最大解像度を指定する必要があります</s:String>
-    <s:String x:Key="Str_InvalidDuration">単一エクスポート時、持続時間は0以上である必要があります</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">FFmpegエクスポートフォーマットを指定する必要があります</s:String>
 
     <s:String x:Key="Str_ResolutionTooltip">画面解像度。関連パラメーターは画面パネルで調整してください</s:String>
@@ -160,7 +159,7 @@
     <s:String x:Key="Str_ImageQualityTooltip">値の範囲は0-100。一部の画像フォーマットでのみ有効です</s:String>
 
     <s:String x:Key="Str_Duration">時間</s:String>
-    <s:String x:Key="Str_ExportDurationTooltip">エクスポート時間。0未満の場合、個別エクスポート時には各モデルのすべてのトラックアニメーションの最大時間が使用されます</s:String>
+    <s:String x:Key="Str_ExportDurationTooltip">エクスポート時間。0 未満の場合、エクスポート時にすべてのモデルのすべてのアニメーションの最大時間が使用されます。</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
     <s:String x:Key="Str_KeepLastFrame">最後のフレームを保持</s:String>

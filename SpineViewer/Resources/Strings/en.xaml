@@ -140,7 +140,6 @@
     <s:String x:Key="Str_OutputDirNotFound">Output Directory Not Found</s:String>
     <s:String x:Key="Str_OutputDirRequired">Output folder required for single export</s:String>
     <s:String x:Key="Str_InvalidMaxResolution">Valid max resolution required when using auto resolution</s:String>
-    <s:String x:Key="Str_InvalidDuration">Export duration cannot be negative for single export</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">FFmpeg export format is required</s:String>
 
     <s:String x:Key="Str_ResolutionTooltip">Screen resolution; adjust related parameters in the render settings panel</s:String>
@@ -160,7 +159,7 @@
     <s:String x:Key="Str_ImageQualityTooltip">Range 0–100; only effective for certain formats</s:String>
 
     <s:String x:Key="Str_Duration">Duration</s:String>
-    <s:String x:Key="Str_ExportDurationTooltip">Export duration; if smaller than 0, each model uses its maximum animation length when exporting individually</s:String>
+    <s:String x:Key="Str_ExportDurationTooltip">Export duration; if less than 0, the maximum duration of all animations in all models will be used during export.</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
     <s:String x:Key="Str_KeepLastFrame">Keep Last Frame</s:String>

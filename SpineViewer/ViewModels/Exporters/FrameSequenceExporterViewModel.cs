@@ -34,7 +34,6 @@ namespace SpineViewer.ViewModels.Exporters
             using var exporter = new FrameSequenceExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
-                Duration = _duration,
                 Fps = _fps,
                 KeepLast = _keepLast
             };
@@ -55,6 +54,7 @@ namespace SpineViewer.ViewModels.Exporters
                 var output = Path.Combine(_outputDir!, folderName);
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
+                if (_duration < 0) exporter.Duration = spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {

@@ -18,14 +18,5 @@ namespace SpineViewer.ViewModels.Exporters
 
         public bool KeepLast { get => _keepLast; set => SetProperty(ref _keepLast, value); }
         protected bool _keepLast = true;
-
-        public override string? Validate()
-        {
-            if (base.Validate() is string err) 
-                return err;
-            if (_exportSingle && _duration <= 0) 
-                return AppResource.Str_InvalidDuration;
-            return null;
-        }
     }
 }

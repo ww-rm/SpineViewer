@@ -39,7 +39,6 @@ namespace SpineViewer.Resources
         public static string Str_OutputDirNotFound => Get<string>("Str_OutputDirNotFound");
         public static string Str_OutputDirRequired => Get<string>("Str_OutputDirRequired");
         public static string Str_InvalidMaxResolution => Get<string>("Str_InvalidMaxResolution");
-        public static string Str_InvalidDuration => Get<string>("Str_InvalidDuration");
         public static string Str_FFmpegFormatRequired => Get<string>("Str_FFmpegFormatRequired");
 
         public static string Str_Copied => Get<string>("Str_Copied");
