@@ -49,15 +49,15 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
                     foreach (var obj in _selectedObjects.Skip(1)) commonSkinNames = commonSkinNames.Intersect(obj.Skins);
-                    foreach (var name in commonSkinNames) _skins.Add(new(name, _selectedObjects));
+                    foreach (var name in commonSkinNames.Order()) _skins.Add(new(name, _selectedObjects));
 
                     IEnumerable<string> commonSlotNames = _selectedObjects[0].SlotAttachments.Keys;
                     foreach (var obj in _selectedObjects.Skip(1)) commonSlotNames = commonSlotNames.Intersect(obj.SlotAttachments.Keys);
-                    foreach (var name in commonSlotNames) _slots.Add(new(name, _selectedObjects));
+                    foreach (var name in commonSlotNames.Order()) _slots.Add(new(name, _selectedObjects));
 
                     IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
                     foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
-                    foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
+                    foreach (var idx in commonTrackIndices.Order()) _animationTracks.Add(new(idx, _selectedObjects));
                 }
 
                 OnPropertyChanged();
