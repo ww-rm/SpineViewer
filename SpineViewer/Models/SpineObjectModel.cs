@@ -101,7 +101,7 @@ namespace SpineViewer.Models
             get { lock (_lock) return _isShown; }
             set { lock (_lock) SetProperty(ref _isShown, value); }
         }
-        private bool _isShown = true;
+        private bool _isShown = _loadOptions.IsShown;
 
         public bool UsePma
         {
@@ -497,7 +497,7 @@ namespace SpineViewer.Models
 
     public class SpineObjectLoadOptions
     {
-        public bool AutoSave { get; set; }
+        public bool IsShown { get; set; } = true;
         public bool UsePma { get; set; }
         public bool DebugTexture { get; set; } = true;
         public bool DebugBounds { get; set; }

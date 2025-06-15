@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=models:PreferenceModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Preference}"
-        Height="660" 
+        Height="650" 
         Width="600"    
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
@@ -44,6 +44,7 @@
                     <Setter Property="HorizontalAlignment" Value="Right"/>
                 </Style>
                 <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
+                    <Setter Property="BorderBrush" Value="LightGray"/>
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
                     <Setter Property="Margin" Value="0 5 0 10"/>
@@ -92,40 +93,44 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_UsePma}"/>
-                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding UsePma}"/>
+                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_IsShown}"/>
+                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding IsShown}"/>
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_DebugTexture}"/>
-                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
+                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_UsePma}"/>
+                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding UsePma}"/>
 
-                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_DebugBounds}"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
+                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_DebugTexture}"/>
+                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
 
-                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_DebugBones}"/>
-                            <ToggleButton Grid.Row="3" Grid.Column="1" IsChecked="{Binding DebugBones}"/>
+                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_DebugBounds}"/>
+                            <ToggleButton Grid.Row="3" Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
 
-                            <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource Str_DebugRegions}"/>
-                            <ToggleButton Grid.Row="4" Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
+                            <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource Str_DebugBones}"/>
+                            <ToggleButton Grid.Row="4" Grid.Column="1" IsChecked="{Binding DebugBones}"/>
 
-                            <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Str_DebugMeshHulls}"/>
-                            <ToggleButton Grid.Row="5" Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
+                            <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Str_DebugRegions}"/>
+                            <ToggleButton Grid.Row="5" Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
 
-                            <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Str_DebugMeshes}"/>
-                            <ToggleButton Grid.Row="6" Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
+                            <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Str_DebugMeshHulls}"/>
+                            <ToggleButton Grid.Row="6" Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
 
-                            <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource Str_DebugBoundingBoxes}"/>
-                            <ToggleButton Grid.Row="7" Grid.Column="1" IsChecked="{Binding DebugBoundingBoxes}"/>
+                            <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource Str_DebugMeshes}"/>
+                            <ToggleButton Grid.Row="7" Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
 
-                            <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource Str_DebugPaths}"/>
-                            <ToggleButton Grid.Row="8" Grid.Column="1" IsChecked="{Binding DebugPaths}"/>
+                            <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource Str_DebugClippings}"/>
+                            <ToggleButton Grid.Row="8" Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
 
-                            <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_DebugPoints}"/>
-                            <ToggleButton Grid.Row="9" Grid.Column="1" IsChecked="{Binding DebugPoints}"/>
+                            <!--<Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_DebugBoundingBoxes}"/>
+                            <ToggleButton Grid.Row="9" Grid.Column="1" IsChecked="{Binding DebugBoundingBoxes}"/>
 
-                            <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_DebugClippings}"/>
-                            <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
+                            <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_DebugPaths}"/>
+                            <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding DebugPaths}"/>
+
+                            <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_DebugPoints}"/>
+                            <ToggleButton Grid.Row="11" Grid.Column="1" IsChecked="{Binding DebugPoints}"/>-->
                         </Grid>
                     </GroupBox>
 
@@ -137,10 +142,14 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_Language}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1"
+                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_RenderSelectedOnly}"/>
+                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding RenderSelectedOnly}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_Language}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1"
                                       SelectedItem="{Binding AppLanguage}"
                                       ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
 

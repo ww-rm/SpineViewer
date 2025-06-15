@@ -96,6 +96,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     ForcePremul = ForcePremul,
                     ForceNearest = ForceNearest,
                     ForceMipmap = ForceMipmap,
+
+                    IsShown = IsShown,
                     UsePma = UsePma,
                     DebugTexture = DebugTexture,
                     DebugBounds = DebugBounds,
@@ -107,6 +109,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPaths = DebugPaths,
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
+
+                    RenderSelectedOnly = RenderSelectedOnly,
                     AppLanguage = AppLanguage,
                 };
             }
@@ -115,7 +119,10 @@ namespace SpineViewer.ViewModels.MainWindow
                 ForcePremul = value.ForcePremul;
                 ForceNearest = value.ForceNearest;
                 ForceMipmap = value.ForceMipmap;
+
+                IsShown = value.IsShown;
                 UsePma = value.UsePma;
+
                 DebugTexture = value.DebugTexture;
                 DebugBounds = value.DebugBounds;
                 DebugBones = value.DebugBones;
@@ -126,6 +133,8 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPaths = value.DebugPaths;
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
+
+                RenderSelectedOnly = value.RenderSelectedOnly;
                 AppLanguage = value.AppLanguage;
             }
         }
@@ -152,8 +161,13 @@ namespace SpineViewer.ViewModels.MainWindow
 
         #endregion
         
-
         #region 模型加载首选项
+
+        public bool IsShown
+        {
+            get => SpineObjectModel.LoadOptions.IsShown;
+            set => SetProperty(SpineObjectModel.LoadOptions.IsShown, value, v => SpineObjectModel.LoadOptions.IsShown = v);
+        }
 
         public bool UsePma 
         { 
@@ -226,6 +240,12 @@ namespace SpineViewer.ViewModels.MainWindow
         #region 程序选项
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
+
+        public bool RenderSelectedOnly
+        {
+            get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
+        }
 
         public AppLanguage AppLanguage
         {

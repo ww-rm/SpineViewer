@@ -34,6 +34,9 @@ namespace SpineViewer.Models
         #region 模型加载首选项
 
         [ObservableProperty]
+        private bool _isShown = true;
+
+        [ObservableProperty]
         private bool _usePma;
 
         [ObservableProperty]
@@ -69,6 +72,9 @@ namespace SpineViewer.Models
         #endregion
 
         #region 程序选项
+
+        [ObservableProperty]
+        private bool _renderSelectedOnly;
 
         [ObservableProperty]
         private AppLanguage _appLanguage;
