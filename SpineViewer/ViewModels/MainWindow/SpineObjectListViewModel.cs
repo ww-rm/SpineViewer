@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Shapes;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -345,6 +344,74 @@ namespace SpineViewer.ViewModels.MainWindow
             if (_copiedSpineObjectConfigModel is null) return false;
             if (args is null) return false;
             if (args.Count <= 0) return false;
+            return true;
+        }
+
+        public RelayCommand<IList?> Cmd_ApplySpineObjectConfigFromFile => _cmd_ApplySpineObjectConfigFromFile ??= new(ApplySpineObjectConfigFromFile_Execute, ApplySpineObjectConfigFromFile_CanExecute);
+        private RelayCommand<IList?>? _cmd_ApplySpineObjectConfigFromFile;
+
+        private void ApplySpineObjectConfigFromFile_Execute(IList? args)
+        {
+            if (!ApplySpineObjectConfigFromFile_CanExecute(args)) return;
+            if (!DialogService.ShowOpenFileDialog(out var fileName, filter: "Json Config|*.jcfg|All|*.*")) return;
+            try
+            {
+                var config = SpineObjectConfigModel.Deserialize(fileName);
+                foreach (SpineObjectModel sp in args)
+                {
+                    sp.Load(config);
+                    _logger.Info("Apply config to model: {0}", sp.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Failed to apply config file {0}, {1}", fileName, ex.Message);
+                _logger.Trace(ex.ToString());
+                return;
+            }
+        }
+
+        private bool ApplySpineObjectConfigFromFile_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        public RelayCommand<IList?> Cmd_SaveSpineObjectConfigToFile => _cmd_SaveSpineObjectConfigToFile ??= new(SaveSpineObjectConfigToFile_Execute, SaveSpineObjectConfigToFile_CanExecute);
+        private RelayCommand<IList?>? _cmd_SaveSpineObjectConfigToFile;
+
+        private void SaveSpineObjectConfigToFile_Execute(IList? args)
+        {
+            if (!SaveSpineObjectConfigToFile_CanExecute(args)) return;
+            var sp = (SpineObjectModel)args[0];
+            var config = sp.Dump();
+
+            string fileName = $"{Path.ChangeExtension(Path.GetFileName(sp.SkelPath), ".jcfg")}";
+            if (!DialogService.ShowSaveFileDialog(
+                ref fileName, 
+                initialDirectory: sp.AssetsDir, 
+                defaultExt: ".jcfg", 
+                filter:"Json Config|*.jcfg|All|*.*")
+            ) 
+                return;
+            try
+            {
+                sp.Dump().Serialize(fileName);
+                _logger.Info("{0} config save to {1}", sp.Name, fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Failed to save config file {0}, {1}", fileName, ex.Message);
+                _logger.Trace(ex.ToString());
+                return;
+            }
+        }
+
+        private bool SaveSpineObjectConfigToFile_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
             return true;
         }
 

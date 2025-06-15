@@ -13,6 +13,8 @@ namespace SpineViewer.Models
 {
     public class SpineObjectConfigModel
     {
+        public bool IsShown { get; set; } = true;
+
         public bool UsePma { get; set; }
 
         public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();

@@ -359,6 +359,8 @@ namespace SpineViewer.Models
                     FlipY = _spineObject.Skeleton.ScaleY < 0,
                     X = _spineObject.Skeleton.X,
                     Y = _spineObject.Skeleton.Y,
+
+                    IsShown = _isShown,
                     UsePma = _spineObject.UsePma,
                     Physics = _spineObject.Physics.ToString(),
 
@@ -399,6 +401,8 @@ namespace SpineViewer.Models
                 SetProperty(_spineObject.Skeleton.ScaleY < 0, config.FlipY, v => _spineObject.Skeleton.ScaleY *= -1, nameof(FlipY));
                 SetProperty(_spineObject.Skeleton.X, config.X, v => _spineObject.Skeleton.X = v, nameof(X));
                 SetProperty(_spineObject.Skeleton.Y, config.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
+
+                IsShown = config.IsShown;
                 SetProperty(_spineObject.UsePma, config.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
                 SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(config.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
 

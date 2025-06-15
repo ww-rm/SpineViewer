@@ -288,9 +288,12 @@
                                                               InputGestureText="Ctrl+Shift+V"
                                                               Command="{Binding Cmd_ApplySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"/>
-                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"/>
+                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
+                                                              Command="{Binding Cmd_ApplySpineObjectConfigFromFile}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
+                                                              Command="{Binding Cmd_SaveSpineObjectConfigToFile}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_Export}">
                                                         <MenuItem Header="{DynamicResource Str_ExportFrame}"
