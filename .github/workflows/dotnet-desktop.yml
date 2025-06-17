@@ -30,7 +30,7 @@ jobs:
         run: |
           [xml]$proj = Get-Content "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj"
           $VERSION_NUM = $proj.Project.PropertyGroup.Version
-          $VERSION_TAG = "v$VERSION_NUM"
+          $VERSION_TAG = "v$VERSION_NUM".Trim()
           "VERSION=$VERSION_TAG" >> $env:GITHUB_ENV
 
       - name: Check Version Tag
