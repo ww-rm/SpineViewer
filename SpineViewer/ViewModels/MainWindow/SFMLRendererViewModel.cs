@@ -7,6 +7,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -421,6 +422,42 @@ namespace SpineViewer.ViewModels.MainWindow
             finally
             {
                 _renderer.SetActive(false);
+            }
+        }
+
+        public RendererWorkspaceConfigModel WorkspaceConfig
+        { 
+            // TODO: 背景图片
+            get
+            {
+                return new()
+                {
+                    ResolutionX = ResolutionX,
+                    ResolutionY = ResolutionY,
+                    CenterX = CenterX,
+                    CenterY = CenterY,
+                    Zoom = Zoom,
+                    Rotation = Rotation,
+                    FlipX = FlipX,
+                    FlipY = FlipY,
+                    MaxFps = MaxFps,
+                    ShowAxis = ShowAxis,
+                    BackgroundColor = BackgroundColor,
+                };
+            }
+            set
+            {
+               ResolutionX = value.ResolutionX;
+               ResolutionY = value.ResolutionY;
+               CenterX = value.CenterX;
+               CenterY = value.CenterY;
+               Zoom = value.Zoom;
+               Rotation = value.Rotation;
+               FlipX = value.FlipX;
+               FlipY = value.FlipY;
+               MaxFps = value.MaxFps;
+               ShowAxis = value.ShowAxis;
+               BackgroundColor = value.BackgroundColor;
             }
         }
     }

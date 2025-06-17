@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace SpineViewer.Extensions
+namespace SpineViewer.Utils
 {
     public class ObservableCollectionWithLock<T> : ObservableCollection<T>
     {

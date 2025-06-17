@@ -13,8 +13,6 @@ namespace SpineViewer.Models
 {
     public class SpineObjectConfigModel
     {
-        public bool IsShown { get; set; } = true;
-
         public bool UsePma { get; set; }
 
         public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();
@@ -54,41 +52,5 @@ namespace SpineViewer.Models
         public bool DebugPoints { get; set; }
 
         public bool DebugClippings { get; set; }
-
-        #region 序列化与反序列
-
-        /// <summary>
-        /// 保存 Json 文件的格式参数
-        /// </summary>
-        private static readonly JsonSerializerOptions _jsonOptions = new()
-        {
-            WriteIndented = true,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            AllowTrailingCommas = true,
-            ReadCommentHandling = JsonCommentHandling.Skip
-        };
-
-        /// <summary>
-        /// 从文件反序列对象, 可能抛出异常
-        /// </summary>
-        public static SpineObjectConfigModel Deserialize(string path)
-        {
-            if (!File.Exists(path)) throw new FileNotFoundException("Config file not found", path);
-            var json = File.ReadAllText(path, Encoding.UTF8);
-            var model = JsonSerializer.Deserialize<SpineObjectConfigModel>(json, _jsonOptions);
-            return model ?? throw new JsonException($"null data in file '{path}'");
-        }
-
-        /// <summary>
-        /// 保存至文件, 可能抛出异常
-        /// </summary>
-        public void Serialize(string path)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            var json = JsonSerializer.Serialize(this, _jsonOptions);
-            File.WriteAllText(path, json, Encoding.UTF8);
-        }
-
-        #endregion
     }
 }

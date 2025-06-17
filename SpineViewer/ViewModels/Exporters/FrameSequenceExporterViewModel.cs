@@ -17,11 +17,10 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FrameSequenceExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
-        protected override void Export_Execute(IList? args)
+        protected override void Export(SpineObjectModel[] models)
         {
-            if (args is null || args.Count <= 0) return;
             if (!DialogService.ShowFrameSequenceExporterDialog(this)) return;
-            SpineObject[] spines = args.Cast<SpineObjectModel>().Select(m => m.GetSpineObject()).ToArray();
+            SpineObject[] spines = models.Select(m => m.GetSpineObject()).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameSequenceExporterTitle);
             foreach (var sp in spines) sp.Dispose();
         }

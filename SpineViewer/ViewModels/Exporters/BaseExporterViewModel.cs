@@ -5,6 +5,7 @@ using SFMLRenderer;
 using Spine;
 using Spine.Exporters;
 using SpineViewer.Extensions;
+using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.ViewModels.MainWindow;
 using System;
@@ -134,9 +135,21 @@ namespace SpineViewer.ViewModels.Exporters
             return null;
         }
 
-        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, args => args is not null && args.Count > 0);
+        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, Export_CanExecute);
         private RelayCommand<IList?>? _cmd_Export;
 
-        protected abstract void Export_Execute(IList? args);
+        private void Export_Execute(IList? args)
+        {
+            if (!Export_CanExecute(args)) return;
+            Export(args.Cast<SpineObjectModel>().ToArray());
+            // XXX: 导出途中应该停掉渲染好一些, 让性能专注在导出上
+        }
+
+        private bool Export_CanExecute(IList? args)
+        {
+            return args is not null && args.Count > 0;
+        }
+
+        protected abstract void Export(SpineObjectModel[] models);
     }
 }

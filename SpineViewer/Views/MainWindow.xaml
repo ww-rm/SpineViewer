@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
-        xmlns:ext="clr-namespace:SpineViewer.Extensions"
+        xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         Title="{Binding Title}"
@@ -35,7 +35,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ext:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
+        <utils:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
     </Window.Resources>
 
     <Window.TaskbarItemInfo>
@@ -56,7 +56,8 @@
                 <!-- 菜单 -->
                 <Menu x:Name="_mainMenu">
                     <MenuItem Header="{DynamicResource Str_File}">
-                        <MenuItem Header="{DynamicResource Str_Open}" InputGestureText="Ctrl+O"/>
+                        <MenuItem Header="{DynamicResource Str_OpenWorkspace}" Command="{Binding Cmd_OpenWorkspace}"/>
+                        <MenuItem Header="{DynamicResource Str_SaveWorkspace}" Command="{Binding Cmd_SaveWorkspace}"/>
                         <Separator/>
                         <MenuItem Header="{DynamicResource Str_PreferenceWithDots}" Command="{Binding PreferenceViewModel.Cmd_ShowPreferenceDialog}"/>
                         <!--<MenuItem Header="{DynamicResource Str_Exit}" InputGestureText="Alt+F4"/>-->
@@ -244,7 +245,6 @@
                                             </i:Interaction.Triggers>
 
                                             <ListView.InputBindings>
-                                                <KeyBinding Gesture="Ctrl+O" Command="{Binding Cmd_AddSpineObject}"/>
                                                 <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+V" Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
                                                 <KeyBinding Gesture="Ctrl+R" Command="{Binding Cmd_ReloadSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
@@ -257,7 +257,6 @@
                                             <ListView.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Header="{DynamicResource Str_AddSpineObject}"
-                                                              InputGestureText="Ctrl+O"
                                                               Command="{Binding Cmd_AddSpineObject}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveSpineObject}"
                                                               InputGestureText="Delete"

@@ -11,6 +11,8 @@
     <s:String x:Key="Str_Experiment">Experimental Features</s:String>
 
     <s:String x:Key="Str_Open">Open...</s:String>
+    <s:String x:Key="Str_OpenWorkspace">Open Workspace...</s:String>
+    <s:String x:Key="Str_SaveWorkspace">Save Workspace...</s:String>
     <s:String x:Key="Str_Preference">Preferences</s:String>
     <s:String x:Key="Str_PreferenceWithDots">Preferences...</s:String>
     <s:String x:Key="Str_Exit">Exit</s:String>

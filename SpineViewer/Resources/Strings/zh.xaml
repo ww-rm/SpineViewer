@@ -11,6 +11,8 @@
     <s:String x:Key="Str_Experiment">实验性功能</s:String>
 
     <s:String x:Key="Str_Open">打开...</s:String>
+    <s:String x:Key="Str_OpenWorkspace">打开工作区...</s:String>
+    <s:String x:Key="Str_SaveWorkspace">保存工作区...</s:String>
     <s:String x:Key="Str_Preference">首选项</s:String>
     <s:String x:Key="Str_PreferenceWithDots">首选项...</s:String>
     <s:String x:Key="Str_Exit">退出</s:String>

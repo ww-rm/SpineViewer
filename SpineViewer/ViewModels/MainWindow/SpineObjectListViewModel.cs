@@ -6,6 +6,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using SpineViewer.ViewModels.Exporters;
 using System;
 using System.Collections;
@@ -100,7 +101,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void AddSpineObject_Execute()
         {
-            throw new NotImplementedException();
+            MessagePopupService.Info("Not Implemented, try next version :)");
         }
 
         /// <summary>
@@ -170,7 +171,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     try
                     {
                         var spNew = new SpineObjectModel(sp.SkelPath, sp.AtlasPath);
-                        spNew.Load(sp.Dump());
+                        spNew.ObjectConfig = sp.ObjectConfig;
                         _spineObjectModels[idx] = spNew;
                         sp.Dispose();
                     }
@@ -224,7 +225,7 @@ namespace SpineViewer.ViewModels.MainWindow
                         try
                         {
                             var spNew = new SpineObjectModel(sp.SkelPath, sp.AtlasPath);
-                            spNew.Load(sp.Dump());
+                            spNew.ObjectConfig = sp.ObjectConfig;
                             _spineObjectModels[idx] = spNew;
                             sp.Dispose();
                             success++;
@@ -312,7 +313,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!CopySpineObjectConfig_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
-            _copiedSpineObjectConfigModel = sp.Dump();
+            _copiedSpineObjectConfigModel = sp.ObjectConfig;
             _logger.Info("Copy config from model: {0}", sp.Name);
         }
 
@@ -334,7 +335,7 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!ApplySpineObjectConfig_CanExecute(args)) return;
             foreach (SpineObjectModel sp in args)
             {
-                sp.Load(_copiedSpineObjectConfigModel);
+                sp.ObjectConfig = _copiedSpineObjectConfigModel;
                 _logger.Info("Apply config to model: {0}", sp.Name);
             }
         }
@@ -353,21 +354,14 @@ namespace SpineViewer.ViewModels.MainWindow
         private void ApplySpineObjectConfigFromFile_Execute(IList? args)
         {
             if (!ApplySpineObjectConfigFromFile_CanExecute(args)) return;
-            if (!DialogService.ShowOpenFileDialog(out var fileName, filter: "Json Config|*.jcfg|All|*.*")) return;
-            try
+            if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
+            if (JsonHelper.Deserialize<SpineObjectConfigModel>(fileName, out var config))
             {
-                var config = SpineObjectConfigModel.Deserialize(fileName);
                 foreach (SpineObjectModel sp in args)
                 {
-                    sp.Load(config);
+                    sp.ObjectConfig = config;
                     _logger.Info("Apply config to model: {0}", sp.Name);
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Failed to apply config file {0}, {1}", fileName, ex.Message);
-                _logger.Trace(ex.ToString());
-                return;
             }
         }
 
@@ -385,27 +379,11 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!SaveSpineObjectConfigToFile_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
-            var config = sp.Dump();
+            var config = sp.ObjectConfig;
 
             string fileName = $"{Path.ChangeExtension(Path.GetFileName(sp.SkelPath), ".jcfg")}";
-            if (!DialogService.ShowSaveFileDialog(
-                ref fileName, 
-                initialDirectory: sp.AssetsDir, 
-                defaultExt: ".jcfg", 
-                filter:"Json Config|*.jcfg|All|*.*")
-            ) 
-                return;
-            try
-            {
-                sp.Dump().Serialize(fileName);
-                _logger.Info("{0} config save to {1}", sp.Name, fileName);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Failed to save config file {0}, {1}", fileName, ex.Message);
-                _logger.Trace(ex.ToString());
-                return;
-            }
+            if (!DialogService.ShowSaveJsonDialog(ref fileName, sp.AssetsDir)) return;
+            JsonHelper.Serialize(sp.ObjectConfig, fileName);
         }
 
         private bool SaveSpineObjectConfigToFile_CanExecute(IList? args)
@@ -505,7 +483,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 安全地在末尾添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        public bool AddSpineObject(string skelPath, string? atlasPath = null)
+        private bool AddSpineObject(string skelPath, string? atlasPath = null)
         {
             try
             {
@@ -519,6 +497,113 @@ namespace SpineViewer.ViewModels.MainWindow
                 _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
             }
             return false;
+        }
+
+        private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
+        {
+            try
+            {
+                var sp = new SpineObjectModel(cfg);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Error("Failed to load: {0}, {1}", cfg.SkelPath, ex.Message);
+            }
+            return false;
+        }
+
+        public List<SpineObjectWorkspaceConfigModel> LoadedSpineObjects
+        {
+            get
+            {
+                List<SpineObjectWorkspaceConfigModel> loadedSpineObjects = [];
+                lock (_spineObjectModels.Lock)
+                {
+                    foreach (var sp in _spineObjectModels)
+                    {
+                        loadedSpineObjects.Add(sp.WorkspaceConfig);
+                    }
+                }
+                return loadedSpineObjects;
+            }
+            set
+            {
+                AddSpineObjectFromWorkspaceList(value);
+            }
+        }
+
+        private void AddSpineObjectFromWorkspaceList(List<SpineObjectWorkspaceConfigModel> models)
+        {
+            lock (_spineObjectModels.Lock)
+            {
+                var spines = _spineObjectModels.ToArray();
+                _spineObjectModels.Clear();
+                foreach (var sp in spines)
+                {
+                    sp.Dispose();
+                }
+            }
+
+            if (models.Count > 1)
+            {
+                ProgressService.RunAsync((pr, ct) => AddSpineObjectFromWorkspaceListTask(
+                    models, pr, ct),
+                    AppResource.Str_AddSpineObjectsTitle
+                );
+            }
+            else if (models.Count > 0)
+            {
+                AddSpineObject(models[0]);
+                _logger.LogCurrentProcessMemoryUsage();
+            }
+        }
+
+        private void AddSpineObjectFromWorkspaceListTask(List<SpineObjectWorkspaceConfigModel> models, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = models.Count;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var cfg = models[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {cfg}";
+
+                if (AddSpineObject(cfg))
+                    success++;
+                else
+                    error++;
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {cfg}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Batch load {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} skel loaded successfully", success);
+
+            _logger.LogCurrentProcessMemoryUsage();
+
+            // 从工作区加载需要同步一次时间轴
+            lock (_spineObjectModels.Lock)
+            {
+                foreach (var sp in _spineObjectModels) 
+                    sp.ResetAnimationsTime();
+            }
         }
     }
 }

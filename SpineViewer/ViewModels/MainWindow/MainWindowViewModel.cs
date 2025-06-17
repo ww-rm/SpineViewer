@@ -1,22 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HandyControl.Controls;
 using NLog;
 using SFMLRenderer;
-using Spine;
-using Spine.Exporters;
-using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.Exporters;
-using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+using SpineViewer.Utils;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -85,6 +73,34 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly SFMLRendererViewModel _sfmlRendererViewModel;
 
         /// <summary>
+        /// 打开工作区
+        /// </summary>
+        public RelayCommand Cmd_OpenWorkspace => _cmd_OpenWorkspace ??= new(OpenWorkspace_Execute);
+        private RelayCommand? _cmd_OpenWorkspace;
+
+        private void OpenWorkspace_Execute()
+        {
+            if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
+            if (JsonHelper.Deserialize<WorkspaceModel>(fileName, out var obj))
+            {
+                Workspace = obj;
+            }
+        }
+
+        /// <summary>
+        /// 保存工作区
+        /// </summary>
+        public RelayCommand Cmd_SaveWorkspace => _cmd_SaveWorkspace ??= new(SaveWorkspace_Execute);
+        private RelayCommand? _cmd_SaveWorkspace;
+
+        private void SaveWorkspace_Execute()
+        {
+            string fileName = "workspace.jcfg";
+            if (!DialogService.ShowSaveJsonDialog(ref fileName)) return;
+            JsonHelper.Serialize(Workspace, fileName);
+        }
+
+        /// <summary>
         /// 显示诊断信息对话框
         /// </summary>
         public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DialogService.ShowDiagnosticsDialog(); });
@@ -95,6 +111,23 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public RelayCommand Cmd_ShowAboutDialog => _cmd_ShowAboutDialog ??= new(() => { DialogService.ShowAboutDialog(); });
         private RelayCommand? _cmd_ShowAboutDialog;
+
+        public WorkspaceModel Workspace
+        {
+            get
+            {
+                return new()
+                {
+                    RendererConfig = _sfmlRendererViewModel.WorkspaceConfig,
+                    LoadedSpineObjects = _spineObjectListViewModel.LoadedSpineObjects
+                }; 
+            }
+            set
+            {
+                _sfmlRendererViewModel.WorkspaceConfig = value.RendererConfig;
+                _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
+            }
+        }
 
         /// <summary>
         /// 调试命令

@@ -4,6 +4,7 @@ using NLog;
 using Spine.SpineWrappers;
 using SpineViewer.Models;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -49,15 +50,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private static void SavePreference(PreferenceModel m)
         {
-            try
-            {
-                m.Serialize(PreferenceFilePath);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Failed to save preference to {0}, {1}", PreferenceFilePath, ex.Message);
-                _logger.Trace(ex.ToString());
-            }
+            JsonHelper.Serialize(m, PreferenceFilePath);
         }
 
         /// <summary>
@@ -70,18 +63,8 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public void LoadPreference()
         {
-            if (!File.Exists(PreferenceFilePath)) return;
-
-            try
-            {
-                var m = PreferenceModel.Deserialize(PreferenceFilePath);
-                Preference = m;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Failed to load preference from {0}, {1}", PreferenceFilePath, ex.Message);
-                _logger.Trace(ex.ToString());
-            }
+            if (JsonHelper.Deserialize<PreferenceModel>(PreferenceFilePath, out var obj)) 
+                Preference = obj;
         }
 
         /// <summary>

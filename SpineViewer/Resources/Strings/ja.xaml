@@ -11,6 +11,8 @@
     <s:String x:Key="Str_Experiment">実験機能</s:String>
 
     <s:String x:Key="Str_Open">開く...</s:String>
+    <s:String x:Key="Str_OpenWorkspace">ワークスペースを開く...</s:String>
+    <s:String x:Key="Str_SaveWorkspace">ワークスペースを保存...</s:String>
     <s:String x:Key="Str_Preference">設定</s:String>
     <s:String x:Key="Str_PreferenceWithDots">設定...</s:String>
     <s:String x:Key="Str_Exit">終了</s:String>

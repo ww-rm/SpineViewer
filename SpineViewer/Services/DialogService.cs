@@ -78,12 +78,12 @@ namespace SpineViewer.Services
             return false;
         }
 
-        public static bool ShowOpenFileDialog(out string? fileName, string initialDirectory = "", string filter = "All|*.*")
+        public static bool ShowOpenJsonDialog(out string? fileName, string initialDirectory = "")
         {
             var dialog = new OpenFileDialog()
             {
                 InitialDirectory = initialDirectory,
-                Filter = filter
+                Filter = "Json|*.jcfg;*.json|All|*.*"
             };
             if (dialog.ShowDialog() is true)
             {
@@ -94,14 +94,14 @@ namespace SpineViewer.Services
             return false;
         }
 
-        public static bool ShowSaveFileDialog(ref string? fileName, string initialDirectory = "", string defaultExt = "", string filter = "All|*.*")
+        public static bool ShowSaveJsonDialog(ref string? fileName, string initialDirectory = "")
         {
-            var dialog = new SaveFileDialog() 
-            { 
+            var dialog = new SaveFileDialog()
+            {
                 FileName = fileName,
                 InitialDirectory = initialDirectory,
-                DefaultExt = defaultExt,
-                Filter = filter,
+                DefaultExt = ".jcfg",
+                Filter = "Json|*.jcfg;*.json|All|*.*",
             };
             if (dialog.ShowDialog() is true)
             {

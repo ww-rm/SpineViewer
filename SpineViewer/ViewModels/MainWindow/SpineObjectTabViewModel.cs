@@ -786,7 +786,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 get
                 {
-                    /// XXX: 空轨道和多选不相同都会返回 null
+                    // XXX: 空轨道和多选不相同都会返回 null
                     if (_spines.Length <= 0) return null;
                     var val = _spines[0].GetAnimation(_trackIndex);
                     if (_spines.Skip(1).Any(it => it.GetAnimation(_trackIndex) != val)) return null;
