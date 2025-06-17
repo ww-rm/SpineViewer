@@ -7,21 +7,16 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.15.0</Version>
+        <Version>0.15.1</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
-        <UseWindowsForms>true</UseWindowsForms>
     </PropertyGroup>
 
     <PropertyGroup>
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
         <ApplicationIcon>appicon.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Using Remove="System.Windows.Forms" />
-        <Using Remove="System.Drawing" />
-    </ItemGroup>
     
     <ItemGroup>
       <Content Include="appicon.ico" />

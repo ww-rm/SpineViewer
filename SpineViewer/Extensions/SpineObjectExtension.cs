@@ -49,7 +49,7 @@ namespace SpineViewer.Extensions
         public static Rect GetCurrentBounds(this SpineObject self)
         {
             self.Skeleton.GetBounds(out var x, out var y, out var w, out var h);
-            return new(x, y, w, h);
+            return new(x, y, Math.Max(w, 1e-6f), Math.Max(h, 1e-6f));
         }
 
         /// <summary>

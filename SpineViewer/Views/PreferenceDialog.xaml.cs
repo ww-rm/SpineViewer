@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SpineViewer.Services;
+using SpineViewer.ViewModels.Exporters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +17,23 @@ using System.Windows.Shapes;
 namespace SpineViewer.Views
 {
     /// <summary>
-    /// MessageBoxWindow.xaml 的交互逻辑
+    /// PreferenceDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class MessageBoxWindow : Window
+    public partial class PreferenceDialog : Window
     {
-        public MessageBoxWindow()
+        public PreferenceDialog()
         {
             InitializeComponent();
+        }
+
+        private void ButtonOK_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

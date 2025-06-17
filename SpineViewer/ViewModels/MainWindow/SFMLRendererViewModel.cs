@@ -7,6 +7,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,7 +19,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class SFMLRendererViewModel : ObservableObject
     {
@@ -30,6 +31,16 @@ namespace SpineViewer.ViewModels
         private readonly MainWindowViewModel _vmMain;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _models;
         private readonly ISFMLRenderer _renderer;
+
+        /// <summary>
+        /// 被选中对象的背景颜色
+        /// </summary>
+        private static readonly SFML.Graphics.Color _selectedBackgroundColor = new(255, 255, 255, 50);
+
+        /// <summary>
+        /// 被选中对象背景顶点缓冲区
+        /// </summary>
+        private readonly SFML.Graphics.VertexArray _selectedBackgroundVertices = new(SFML.Graphics.PrimitiveType.Quads, 4); // XXX: 暂时未使用 Dispose 释放
 
         /// <summary>
         /// 预览画面坐标轴颜色
@@ -78,55 +89,55 @@ namespace SpineViewer.ViewModels
         public uint ResolutionX
         {
             get => _renderer.Resolution.X;
-            set => SetProperty(_renderer.Resolution.X, value, _renderer, (r, v) => r.Resolution = new(v, r.Resolution.Y));
+            set => SetProperty(_renderer.Resolution.X, value, v => _renderer.Resolution = new(v, _renderer.Resolution.Y));
         }
 
         public uint ResolutionY
         {
             get => _renderer.Resolution.Y;
-            set => SetProperty(_renderer.Resolution.Y, value, _renderer, (r, v) => r.Resolution = new(r.Resolution.X, v));
+            set => SetProperty(_renderer.Resolution.Y, value, v => _renderer.Resolution = new(_renderer.Resolution.X, v));
         }
 
         public float CenterX
         {
             get => _renderer.Center.X;
-            set => SetProperty(_renderer.Center.X, value, _renderer, (r, v) => r.Center = new(v, r.Center.Y));
+            set => SetProperty(_renderer.Center.X, value, v => _renderer.Center = new(v, _renderer.Center.Y));
         }
 
         public float CenterY
         {
             get => _renderer.Center.Y;
-            set => SetProperty(_renderer.Center.Y, value, _renderer, (r, v) => r.Center = new(r.Center.X, v));
+            set => SetProperty(_renderer.Center.Y, value, v => _renderer.Center = new(_renderer.Center.X, v));
         }
 
         public float Zoom
         {
             get => _renderer.Zoom;
-            set => SetProperty(_renderer.Zoom, value, _renderer, (r, v) => r.Zoom = value);
+            set => SetProperty(_renderer.Zoom, value, v => _renderer.Zoom = value);
         }
 
         public float Rotation
         {
             get => _renderer.Rotation;
-            set => SetProperty(_renderer.Rotation, value, _renderer, (r, v) => r.Rotation = value);
+            set => SetProperty(_renderer.Rotation, value, v => _renderer.Rotation = value);
         }
 
         public bool FlipX
         {
             get => _renderer.FlipX;
-            set => SetProperty(_renderer.FlipX, value, _renderer, (r, v) => r.FlipX = value);
+            set => SetProperty(_renderer.FlipX, value, v => _renderer.FlipX = value);
         }
 
         public bool FlipY
         {
             get => _renderer.FlipY;
-            set => SetProperty(_renderer.FlipY, value, _renderer, (r, v) => r.FlipY = value);
+            set => SetProperty(_renderer.FlipY, value, v => _renderer.FlipY = value);
         }
 
         public uint MaxFps
         {
             get => _renderer.MaxFps;
-            set => SetProperty(_renderer.MaxFps, value, _renderer, (r, v) => r.MaxFps = value);
+            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = value);
         }
 
         public bool ShowAxis
@@ -139,7 +150,7 @@ namespace SpineViewer.ViewModels
         public Color BackgroundColor
         {
             get => Color.FromRgb(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B);
-            set => SetProperty(BackgroundColor, value, this, (m, v) => m._backgroundColor = new(value.R, value.G, value.B));
+            set => SetProperty(BackgroundColor, value, v => _backgroundColor = new(value.R, value.G, value.B));
         }
         private SFML.Graphics.Color _backgroundColor = new(105, 105, 105);
 
@@ -381,6 +392,18 @@ namespace SpineViewer.ViewModels
                             sp.Update(0); // 避免物理效果出现问题
                             sp.Update(delta);
 
+                            // 为选中对象绘制一个半透明背景
+                            if (sp.IsSelected)
+                            {
+                                var rc = sp.GetCurrentBounds().ToFloatRect();
+                                _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
+                                _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
+                                _renderer.Draw(_selectedBackgroundVertices);
+                            }
+
+                            // 仅在预览画面临时启用调试模式
                             sp.EnableDebug = true;
                             _renderer.Draw(sp);
                             sp.EnableDebug = false;
@@ -399,6 +422,42 @@ namespace SpineViewer.ViewModels
             finally
             {
                 _renderer.SetActive(false);
+            }
+        }
+
+        public RendererWorkspaceConfigModel WorkspaceConfig
+        { 
+            // TODO: 背景图片
+            get
+            {
+                return new()
+                {
+                    ResolutionX = ResolutionX,
+                    ResolutionY = ResolutionY,
+                    CenterX = CenterX,
+                    CenterY = CenterY,
+                    Zoom = Zoom,
+                    Rotation = Rotation,
+                    FlipX = FlipX,
+                    FlipY = FlipY,
+                    MaxFps = MaxFps,
+                    ShowAxis = ShowAxis,
+                    BackgroundColor = BackgroundColor,
+                };
+            }
+            set
+            {
+               ResolutionX = value.ResolutionX;
+               ResolutionY = value.ResolutionY;
+               CenterX = value.CenterX;
+               CenterY = value.CenterY;
+               Zoom = value.Zoom;
+               Rotation = value.Rotation;
+               FlipX = value.FlipX;
+               FlipY = value.FlipY;
+               MaxFps = value.MaxFps;
+               ShowAxis = value.ShowAxis;
+               BackgroundColor = value.BackgroundColor;
             }
         }
     }

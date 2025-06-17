@@ -21,7 +21,6 @@ namespace Spine
         {
             [".skel"] = ".atlas",
             [".json"] = ".atlas",
-            [".skel.bytes"] = ".atlas.bytes",
         }.ToFrozenDictionary();
 
         /// <summary>
@@ -45,10 +44,12 @@ namespace Spine
         /// <param name="skelPath">skel 文件路径</param>
         /// <param name="atlasPath">atlas 文件路径, 为空时会根据 <paramref name="skelPath"/> 进行自动检测</param>
         /// <param name="version">要使用的运行时版本, 为空时会自动检测</param>
-        public SpineObject(string skelPath, string? atlasPath = null, SpineVersion? version = null)
+        public SpineObject(string skelPath, string? atlasPath = null, SpineVersion? version = null, TextureLoader? textureLoader = null)
         {
             if (string.IsNullOrWhiteSpace(skelPath)) throw new ArgumentException(skelPath, nameof(skelPath));
             if (!File.Exists(skelPath)) throw new FileNotFoundException($"{nameof(skelPath)} not found", skelPath);
+            textureLoader ??= TextureLoader.DefaultLoader;
+
             SkelPath = Path.GetFullPath(skelPath);
             AssetsDir = Directory.GetParent(skelPath).FullName;
             Name = Path.GetFileNameWithoutExtension(skelPath);
@@ -91,7 +92,7 @@ namespace Spine
                 {
                     try
                     {
-                        _data = SpineObjectData.New(v, skelPath, atlasPath);
+                        _data = SpineObjectData.New(v, skelPath, atlasPath, textureLoader);
                         Version = v;
                         break;
                     }
@@ -109,7 +110,7 @@ namespace Spine
             {
                 // 根据版本实例化对象
                 Version = version;
-                _data = SpineObjectData.New(Version, skelPath, atlasPath);
+                _data = SpineObjectData.New(Version, skelPath, atlasPath, textureLoader);
             }
 
             // 创建状态实例
@@ -177,7 +178,6 @@ namespace Spine
                 // 拷贝调试属性
                 EnableDebug = other.EnableDebug;
                 DebugTexture = other.DebugTexture;
-                DebugNonTexture = other.DebugNonTexture;
                 DebugBounds = other.DebugBounds;
                 DebugBones = other.DebugBones;
                 DebugRegions = other.DebugRegions;
@@ -236,7 +236,7 @@ namespace Spine
         /// <summary>
         /// 是否使用预乘 Alpha
         /// </summary>
-        public bool UsePma { get; set; } = false;
+        public bool UsePma { get; set; }
 
         /// <summary>
         /// 物理约束更新方式
@@ -246,7 +246,7 @@ namespace Spine
         /// <summary>
         /// 启用渲染调试, 将会使所有 <c>DebugXXX</c> 属性生效
         /// </summary>
-        public bool EnableDebug { get; set; } = false;
+        public bool EnableDebug { get; set; }
 
         /// <summary>
         /// 显示纹理
@@ -254,54 +254,49 @@ namespace Spine
         public bool DebugTexture { get; set; } = true;
 
         /// <summary>
-        /// 是否显示非纹理内容, 一个总开关
-        /// </summary>
-        public bool DebugNonTexture { get; set; } = true;
-
-        /// <summary>
         /// 显示包围盒
         /// </summary>
-        public bool DebugBounds { get; set; } = true;
+        public bool DebugBounds { get; set; }
 
         /// <summary>
         /// 显示骨骼
         /// </summary>
-        public bool DebugBones { get; set; } = false;
+        public bool DebugBones { get; set; }
 
         /// <summary>
         /// 显示区域附件边框
         /// </summary>
-        public bool DebugRegions { get; set; } = false;
+        public bool DebugRegions { get; set; }
 
         /// <summary>
         /// 显示网格附件边框线
         /// </summary>
-        public bool DebugMeshHulls { get; set; } = false;
+        public bool DebugMeshHulls { get; set; }
 
         /// <summary>
         /// 显示网格附件网格线
         /// </summary>
-        public bool DebugMeshes { get; set; } = false;
+        public bool DebugMeshes { get; set; }
 
         /// <summary>
         /// 显示碰撞盒附件边框线
         /// </summary>
-        public bool DebugBoundingBoxes { get; set; } = false;
+        public bool DebugBoundingBoxes { get; set; }
 
         /// <summary>
         /// 显示路径附件网格线
         /// </summary>
-        public bool DebugPaths { get; set; } = false;
+        public bool DebugPaths { get; set; }
 
         /// <summary>
         /// 显示点附件
         /// </summary>
-        public bool DebugPoints { get; set; } = false;
+        public bool DebugPoints { get; set; }
 
         /// <summary>
         /// 显示剪裁附件网格线
         /// </summary>
-        public bool DebugClippings { get; set; } = false;
+        public bool DebugClippings { get; set; }
 
         /// <summary>
         /// 获取某个插槽上的附件名, 插槽不存在或者无附件均返回 null
@@ -864,7 +859,7 @@ namespace Spine
             else
             {
                 if (DebugTexture) DrawTexture(target, states);
-                if (DebugNonTexture) DrawNonTexture(target);
+                DrawNonTexture(target);
             }
         }
 

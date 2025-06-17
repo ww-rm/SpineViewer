@@ -110,7 +110,7 @@
 
                     <!-- 图像格式 -->
                     <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_ImageFormat}"/>
-                    <ComboBox Grid.Row="9" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding FrameFormats}"/>
+                    <ComboBox Grid.Row="9" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding FrameFormatOptions}"/>
 
                     <!-- 图像质量 -->
                     <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_ImageQuality}" ToolTip="{DynamicResource Str_ImageQualityTooltip}"/>

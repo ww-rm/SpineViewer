@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels"
-        xmlns:ext="clr-namespace:SpineViewer.Extensions"
+        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
+        xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         Title="{Binding Title}"
@@ -35,7 +35,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ext:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
+        <utils:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
     </Window.Resources>
 
     <Window.TaskbarItemInfo>
@@ -56,9 +56,10 @@
                 <!-- 菜单 -->
                 <Menu x:Name="_mainMenu">
                     <MenuItem Header="{DynamicResource Str_File}">
-                        <MenuItem Header="{DynamicResource Str_Open}" InputGestureText="Ctrl+O"/>
+                        <MenuItem Header="{DynamicResource Str_OpenWorkspace}" Command="{Binding Cmd_OpenWorkspace}"/>
+                        <MenuItem Header="{DynamicResource Str_SaveWorkspace}" Command="{Binding Cmd_SaveWorkspace}"/>
                         <Separator/>
-                        <MenuItem Header="{DynamicResource Str_Preference}"/>
+                        <MenuItem Header="{DynamicResource Str_PreferenceWithDots}" Command="{Binding PreferenceViewModel.Cmd_ShowPreferenceDialog}"/>
                         <!--<MenuItem Header="{DynamicResource Str_Exit}" InputGestureText="Alt+F4"/>-->
                     </MenuItem>
                     <!--<MenuItem Header="{DynamicResource Str_Tool}"/>-->
@@ -244,11 +245,11 @@
                                             </i:Interaction.Triggers>
 
                                             <ListView.InputBindings>
-                                                <KeyBinding Gesture="Ctrl+O" Command="{Binding Cmd_AddSpineObject}"/>
                                                 <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+V" Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                <KeyBinding Gesture="Ctrl+R" Command="{Binding Cmd_ReloadSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+V" Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+C" Command="{Binding Cmd_CopySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+V" Command="{Binding Cmd_ApplySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                             </ListView.InputBindings>
@@ -256,11 +257,17 @@
                                             <ListView.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Header="{DynamicResource Str_AddSpineObject}"
-                                                              InputGestureText="Ctrl+O"
                                                               Command="{Binding Cmd_AddSpineObject}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveSpineObject}"
                                                               InputGestureText="Delete"
                                                               Command="{Binding Cmd_RemoveSpineObject}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
+                                                              InputGestureText="Ctrl+V"
+                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                    <MenuItem Header="{DynamicResource Str_Reload}"
+                                                              InputGestureText="Ctrl+R"
+                                                              Command="{Binding Cmd_ReloadSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_MoveUpSpineObject}"
@@ -272,10 +279,6 @@
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
-                                                              InputGestureText="Ctrl+V"
-                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
-                                                    <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+C"
                                                               Command="{Binding Cmd_CopySpineObjectConfig}"
@@ -284,9 +287,12 @@
                                                               InputGestureText="Ctrl+Shift+V"
                                                               Command="{Binding Cmd_ApplySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"/>
-                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"/>
+                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
+                                                              Command="{Binding Cmd_ApplySpineObjectConfigFromFile}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
+                                                              Command="{Binding Cmd_SaveSpineObjectConfigToFile}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_Export}">
                                                         <MenuItem Header="{DynamicResource Str_ExportFrame}"
@@ -687,7 +693,6 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
                                     <!-- 水平分辨率 -->
@@ -726,17 +731,13 @@
                                     <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource Str_MaxFps}"/>
                                     <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding MaxFps}"/>
 
-                                    <!-- 仅渲染选中 -->
-                                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_RenderSelectedOnly}"/>
-                                    <ToggleButton Grid.Row="9" Grid.Column="1" IsChecked="{Binding RenderSelectedOnly}"/>
-
                                     <!-- 显示坐标轴 -->
-                                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_ShowAxis}"/>
-                                    <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
+                                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_ShowAxis}"/>
+                                    <ToggleButton Grid.Row="9" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
 
                                     <!-- 背景颜色 -->
-                                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
-                                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                     
                                     <!-- 背景图案 -->
                                     <!-- 背景图案模式 -->

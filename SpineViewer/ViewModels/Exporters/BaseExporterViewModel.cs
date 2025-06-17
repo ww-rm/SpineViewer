@@ -5,7 +5,9 @@ using SFMLRenderer;
 using Spine;
 using Spine.Exporters;
 using SpineViewer.Extensions;
+using SpineViewer.Models;
 using SpineViewer.Resources;
+using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -100,18 +102,19 @@ namespace SpineViewer.ViewModels.Exporters
         /// </summary>
         protected void SetAutoResolutionStatic(BaseExporter exporter, params SpineObject[] spines)
         {
-            var bounds = spines[0].GetAnimationBounds();
-            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds());
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetCurrentBounds());
             SetAutoResolution(exporter, bounds);
         }
 
         /// <summary>
         /// 使用提供的模型设置导出器的自动分辨率和视区参数, 动画画面
         /// </summary>
-        protected void SetAutoResolutionAnimated(BaseExporter exporter, params SpineObject[] spines)
+        protected void SetAutoResolutionAnimated(VideoExporter exporter, params SpineObject[] spines)
         {
-            var bounds = spines[0].GetAnimationBounds();
-            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds());
+            var fps = exporter.Fps;
+            var bounds = spines[0].GetAnimationBounds(fps);
+            foreach (var sp in spines.Skip(1)) bounds.Union(sp.GetAnimationBounds(fps));
             SetAutoResolution(exporter, bounds);
         }
 
@@ -132,9 +135,21 @@ namespace SpineViewer.ViewModels.Exporters
             return null;
         }
 
-        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, args => args is not null && args.Count > 0);
+        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, Export_CanExecute);
         private RelayCommand<IList?>? _cmd_Export;
 
-        protected abstract void Export_Execute(IList? args);
+        private void Export_Execute(IList? args)
+        {
+            if (!Export_CanExecute(args)) return;
+            Export(args.Cast<SpineObjectModel>().ToArray());
+            // XXX: 导出途中应该停掉渲染好一些, 让性能专注在导出上
+        }
+
+        private bool Export_CanExecute(IList? args)
+        {
+            return args is not null && args.Count > 0;
+        }
+
+        protected abstract void Export(SpineObjectModel[] models);
     }
 }

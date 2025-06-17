@@ -19,6 +19,7 @@ namespace SpineViewer.Resources
         public static string Str_GeneratePreviewsTitle => Get<string>("Str_GeneratePreviewsTitle");
         public static string Str_DeletePreviewsTitle => Get<string>("Str_DeletePreviewsTitle");
         public static string Str_AddSpineObjectsTitle => Get<string>("Str_AddSpineObjectsTitle");
+        public static string Str_ReloadSpineObjectsTitle => Get<string>("Str_ReloadSpineObjectsTitle");
         public static string Str_CustomFFmpegExporterTitle => Get<string>("Str_CustomFFmpegExporterTitle");
 
         public static string Str_InfoPopup => Get<string>("Str_InfoPopup");
@@ -39,7 +40,6 @@ namespace SpineViewer.Resources
         public static string Str_OutputDirNotFound => Get<string>("Str_OutputDirNotFound");
         public static string Str_OutputDirRequired => Get<string>("Str_OutputDirRequired");
         public static string Str_InvalidMaxResolution => Get<string>("Str_InvalidMaxResolution");
-        public static string Str_InvalidDuration => Get<string>("Str_InvalidDuration");
         public static string Str_FFmpegFormatRequired => Get<string>("Str_FFmpegFormatRequired");
 
         public static string Str_Copied => Get<string>("Str_Copied");

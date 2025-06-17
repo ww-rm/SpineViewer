@@ -1,25 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HandyControl.Controls;
 using NLog;
 using SFMLRenderer;
-using Spine;
-using Spine.Exporters;
-using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.Exporters;
-using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+using SpineViewer.Utils;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     /// <summary>
     /// MainWindow 上下文对象
@@ -34,9 +22,10 @@ namespace SpineViewer.ViewModels
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
             _sfmlRendererViewModel = new(this);
+            _preferenceViewModel = new(this);
         }
 
-        public string Title => $"SpineViewer - {App.Version}";
+        public string Title => $"SpineViewer - v{App.Version}";
 
         /// <summary>
         /// SFML 渲染对象
@@ -55,6 +44,9 @@ namespace SpineViewer.ViewModels
         /// </summary>
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _spineObjectModels = [];
+
+        public PreferenceViewModel PreferenceViewModel => _preferenceViewModel;
+        private readonly PreferenceViewModel _preferenceViewModel;
 
         /// <summary>
         /// 浏览页列表 ViewModel
@@ -81,16 +73,61 @@ namespace SpineViewer.ViewModels
         private readonly SFMLRendererViewModel _sfmlRendererViewModel;
 
         /// <summary>
+        /// 打开工作区
+        /// </summary>
+        public RelayCommand Cmd_OpenWorkspace => _cmd_OpenWorkspace ??= new(OpenWorkspace_Execute);
+        private RelayCommand? _cmd_OpenWorkspace;
+
+        private void OpenWorkspace_Execute()
+        {
+            if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
+            if (JsonHelper.Deserialize<WorkspaceModel>(fileName, out var obj))
+            {
+                Workspace = obj;
+            }
+        }
+
+        /// <summary>
+        /// 保存工作区
+        /// </summary>
+        public RelayCommand Cmd_SaveWorkspace => _cmd_SaveWorkspace ??= new(SaveWorkspace_Execute);
+        private RelayCommand? _cmd_SaveWorkspace;
+
+        private void SaveWorkspace_Execute()
+        {
+            string fileName = "workspace.jcfg";
+            if (!DialogService.ShowSaveJsonDialog(ref fileName)) return;
+            JsonHelper.Serialize(Workspace, fileName);
+        }
+
+        /// <summary>
         /// 显示诊断信息对话框
         /// </summary>
-        public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DiagnosticsDialogService.ShowDiagnosticsDialog(); });
+        public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DialogService.ShowDiagnosticsDialog(); });
         private RelayCommand? _cmd_ShowDiagnosticsDialog;
 
         /// <summary>
         /// 显示关于对话框
         /// </summary>
-        public RelayCommand Cmd_ShowAboutDialog => _cmd_ShowAboutDialog ??= new(() => { AboutDialogService.ShowAboutDialog(); });
+        public RelayCommand Cmd_ShowAboutDialog => _cmd_ShowAboutDialog ??= new(() => { DialogService.ShowAboutDialog(); });
         private RelayCommand? _cmd_ShowAboutDialog;
+
+        public WorkspaceModel Workspace
+        {
+            get
+            {
+                return new()
+                {
+                    RendererConfig = _sfmlRendererViewModel.WorkspaceConfig,
+                    LoadedSpineObjects = _spineObjectListViewModel.LoadedSpineObjects
+                }; 
+            }
+            set
+            {
+                _sfmlRendererViewModel.WorkspaceConfig = value.RendererConfig;
+                _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
+            }
+        }
 
         /// <summary>
         /// 调试命令
@@ -101,31 +138,8 @@ namespace SpineViewer.ViewModels
         private void Debug_Execute()
         {
 #if DEBUG
-            var path = @"C:\Users\ljh\Desktop\a.mp4";
 
-            using var exporter = new FFmpegVideoExporter(_sfmlRenderer.Resolution);
-            using var view = _sfmlRenderer.GetView();
-            exporter.Center = view.Center;
-            exporter.Size = view.Size;
-            exporter.Rotation = view.Rotation;
-            exporter.Viewport = view.Viewport;
-
-            SpineObject[] spines;
-            lock (_spineObjectModels.Lock)
-            {
-                spines = _spineObjectModels.Select(it => it.GetSpineObject(true)).ToArray();
-            }
-
-            exporter.Fps = 60;
-            exporter.Format = FFmpegVideoExporter.VideoFormat.Webm;
-            exporter.Duration = 3;
-            exporter.BackgroundColor = new(0, 0, 0, 0);
-            ProgressService.RunAsync((pr, ct) =>
-            {
-                exporter.ProgressReporter = (total, done, text) =>
-                { pr.Total = total; pr.Done = done; pr.ProgressText = text; };
-                exporter.Export(path, ct, spines);
-            }, "测试一下");
+            MessagePopupService.Quest("测试一下");
 #endif
         }
     }

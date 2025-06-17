@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using SpineViewer.ViewModels.MainWindow;
 
 namespace SpineViewer.ViewModels.Exporters
 {
@@ -46,11 +47,10 @@ namespace SpineViewer.ViewModels.Exporters
             return null;
         }
 
-        protected override void Export_Execute(IList? args)
+        protected override void Export(SpineObjectModel[] models)
         {
-            if (args is null || args.Count <= 0) return;
-            if (!ExporterDialogService.ShowCustomFFmpegExporterDialog(this)) return;
-            SpineObject[] spines = args.Cast<SpineObjectModel>().Select(m => m.GetSpineObject()).ToArray();
+            if (!DialogService.ShowCustomFFmpegExporterDialog(this)) return;
+            SpineObject[] spines = models.Select(m => m.GetSpineObject()).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_CustomFFmpegExporterTitle);
             foreach (var sp in spines) sp.Dispose();
         }
@@ -63,7 +63,6 @@ namespace SpineViewer.ViewModels.Exporters
             using var exporter = new CustomFFmpegExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
-                Duration = _duration,
                 Fps = _fps,
                 KeepLast = _keepLast,
                 Format = _format,
@@ -90,6 +89,7 @@ namespace SpineViewer.ViewModels.Exporters
                 var output = Path.Combine(_outputDir!, filename);
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
+                if (_duration < 0) exporter.Duration = spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {

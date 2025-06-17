@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 <ResourceDictionary Source="/Resources/Geometries.xaml"/>
-                <ResourceDictionary Source="/Resources/Strings/zh-cn.xaml"/>
+                <ResourceDictionary Source="/Resources/Strings/zh.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="MyToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ToggleButtonSwitch}">

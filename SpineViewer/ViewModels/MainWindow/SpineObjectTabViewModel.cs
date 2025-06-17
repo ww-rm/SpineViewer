@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
-namespace SpineViewer.ViewModels
+namespace SpineViewer.ViewModels.MainWindow
 {
     public class SpineObjectTabViewModel : ObservableObject
     {
@@ -49,15 +49,15 @@ namespace SpineViewer.ViewModels
 
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
                     foreach (var obj in _selectedObjects.Skip(1)) commonSkinNames = commonSkinNames.Intersect(obj.Skins);
-                    foreach (var name in commonSkinNames) _skins.Add(new(name, _selectedObjects));
+                    foreach (var name in commonSkinNames.Order()) _skins.Add(new(name, _selectedObjects));
 
                     IEnumerable<string> commonSlotNames = _selectedObjects[0].SlotAttachments.Keys;
                     foreach (var obj in _selectedObjects.Skip(1)) commonSlotNames = commonSlotNames.Intersect(obj.SlotAttachments.Keys);
-                    foreach (var name in commonSlotNames) _slots.Add(new(name, _selectedObjects));
+                    foreach (var name in commonSlotNames.Order()) _slots.Add(new(name, _selectedObjects));
 
                     IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
                     foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
-                    foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
+                    foreach (var idx in commonTrackIndices.Order()) _animationTracks.Add(new(idx, _selectedObjects));
                 }
 
                 OnPropertyChanged();
@@ -611,7 +611,7 @@ namespace SpineViewer.ViewModels
             // 但是目前无法识别是否增加了轨道, 因此总是重建列表
 
             // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
-            App.Current.Dispatcher.BeginInvoke(
+            Application.Current.Dispatcher.BeginInvoke(
                 () =>
                 {
                     _animationTracks.Clear();
@@ -786,7 +786,7 @@ namespace SpineViewer.ViewModels
             {
                 get
                 {
-                    /// XXX: 空轨道和多选不相同都会返回 null
+                    // XXX: 空轨道和多选不相同都会返回 null
                     if (_spines.Length <= 0) return null;
                     var val = _spines[0].GetAnimation(_trackIndex);
                     if (_spines.Skip(1).Any(it => it.GetAnimation(_trackIndex) != val)) return null;

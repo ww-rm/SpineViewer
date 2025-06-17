@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SpineViewer.Extensions
+namespace SpineViewer.Utils
 {
     public class StringFormatMultiValueConverter : IMultiValueConverter
     {
@@ -16,7 +16,7 @@ namespace SpineViewer.Extensions
             if (values == null || values.Length <= 0)
                 return DependencyProperty.UnsetValue;
 
-            if (App.Current.TryFindResource(parameter) is string format)
+            if (Application.Current.TryFindResource(parameter) is string format)
             {
                 return string.Format(culture, format, values);
             }

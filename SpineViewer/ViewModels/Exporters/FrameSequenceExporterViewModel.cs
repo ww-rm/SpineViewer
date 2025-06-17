@@ -4,6 +4,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,11 +17,10 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FrameSequenceExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
-        protected override void Export_Execute(IList? args)
+        protected override void Export(SpineObjectModel[] models)
         {
-            if (args is null || args.Count <= 0) return;
-            if (!ExporterDialogService.ShowFrameSequenceExporterDialog(this)) return;
-            SpineObject[] spines = args.Cast<SpineObjectModel>().Select(m => m.GetSpineObject()).ToArray();
+            if (!DialogService.ShowFrameSequenceExporterDialog(this)) return;
+            SpineObject[] spines = models.Select(m => m.GetSpineObject()).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameSequenceExporterTitle);
             foreach (var sp in spines) sp.Dispose();
         }
@@ -33,7 +33,6 @@ namespace SpineViewer.ViewModels.Exporters
             using var exporter = new FrameSequenceExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
-                Duration = _duration,
                 Fps = _fps,
                 KeepLast = _keepLast
             };
@@ -54,6 +53,7 @@ namespace SpineViewer.ViewModels.Exporters
                 var output = Path.Combine(_outputDir!, folderName);
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
+                if (_duration < 0) exporter.Duration = spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {

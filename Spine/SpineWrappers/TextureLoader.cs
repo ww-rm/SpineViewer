@@ -19,23 +19,62 @@ namespace Spine.SpineWrappers
         SpineRuntime42.TextureLoader
     {
         /// <summary>
-        /// 强制启用 Smooth
+        /// 默认的全局纹理加载器
         /// </summary>
-        public bool ForceSmooth { get; set; } = false;
+        public static TextureLoader DefaultLoader { get; } = new();
 
         /// <summary>
-        /// 强制启用 Repeated
+        /// 在读取纹理时强制进行通道预乘操作
         /// </summary>
-        public bool ForceRepeated { get; set; } = false;
+        public bool ForcePremul { get; set; }
+
+        /// <summary>
+        /// 强制使用 Nearest
+        /// </summary>
+        public bool ForceNearest { get; set; }
 
         /// <summary>
         /// 强制启用 Mipmap
         /// </summary>
-        public bool ForceMipmap { get; set; } = false;
+        public bool ForceMipmap { get; set; }
 
-        public void Load(SpineRuntime21.AtlasPage page, string path)
+        private SFML.Graphics.Texture ReadTexture(string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            if (ForcePremul)
+            {
+                using var image = new SFML.Graphics.Image(path);
+                var width = image.Size.X;
+                var height = image.Size.Y;
+                var pixels = image.Pixels;
+                var size = width * height * 4;
+                for (int i = 0; i < size; i += 4)
+                {
+                    byte a = pixels[i + 3];
+                    if (a == 0)
+                    {
+                        pixels[i + 0] = 0;
+                        pixels[i + 1] = 0;
+                        pixels[i + 2] = 0;
+                    }
+                    else if (a != 255)
+                    {
+                        float f = a / 255f;
+                        pixels[i + 0] = (byte)(pixels[i + 0] * f);
+                        pixels[i + 1] = (byte)(pixels[i + 1] * f);
+                        pixels[i + 2] = (byte)(pixels[i + 2] * f);
+                    }
+                }
+                var tex = new SFML.Graphics.Texture(width, height);
+                tex.Update(pixels);
+                return tex;
+            }
+            return new(path);
+        }
+
+        public virtual void Load(SpineRuntime21.AtlasPage page, string path)
+        {
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime21.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -61,16 +100,16 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
         }
 
-        public void Load(SpineRuntime36.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime36.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime36.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -96,16 +135,16 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
         }
 
-        public void Load(SpineRuntime37.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime37.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime37.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -131,16 +170,16 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
         }
 
-        public void Load(SpineRuntime38.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime38.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime38.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -166,16 +205,20 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
+            // page.width = (int)texture.Size.X;
+            // page.height = (int)texture.Size.Y;
         }
 
-        public void Load(SpineRuntime40.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime40.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime40.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -201,16 +244,16 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
         }
 
-        public void Load(SpineRuntime41.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime41.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime41.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -236,16 +279,16 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
         }
 
-        public void Load(SpineRuntime42.AtlasPage page, string path)
+        public virtual void Load(SpineRuntime42.AtlasPage page, string path)
         {
-            var texture = new SFML.Graphics.Texture(path);
+            var texture = ReadTexture(path);
+
             if (page.magFilter == SpineRuntime42.TextureFilter.Linear)
             {
                 texture.Smooth = true;
@@ -271,18 +314,13 @@ namespace Spine.SpineWrappers
                     break;
             }
 
-            if (ForceSmooth) texture.Smooth = true;
-            if (ForceRepeated) texture.Repeated = true;
+            if (ForceNearest) texture.Smooth = false;
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
-
-            // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
-            // page.width = (int)texture.Size.X;
-            // page.height = (int)texture.Size.Y;
         }
 
-        public void Unload(object texture)
+        public virtual void Unload(object texture)
         {
             ((SFML.Graphics.Texture)texture).Dispose();
         }

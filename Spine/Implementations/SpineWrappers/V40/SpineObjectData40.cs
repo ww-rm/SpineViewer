@@ -26,19 +26,38 @@ namespace Spine.Implementations.SpineWrappers.V40
         private readonly ImmutableArray<IAnimation> _animations;
         private readonly FrozenDictionary<string, IAnimation> _animationsByName;
 
-        public SpineObjectData40(string skelPath, string atlasPath) : base(skelPath, atlasPath)
+        public SpineObjectData40(string skelPath, string atlasPath, Spine.SpineWrappers.TextureLoader textureLoader)
+            : base(skelPath, atlasPath, textureLoader)
         {
             // 加载 atlas
-            try { _atlas = new Atlas(atlasPath, _textureLoader); }
+            try { _atlas = new Atlas(atlasPath, textureLoader); }
             catch (Exception ex) { throw new InvalidDataException($"Failed to load atlas '{atlasPath}'", ex); }
 
             // 加载 skel
             try
             {
                 if (Utf8Validator.IsUtf8(skelPath))
-                    _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                {
+                    try
+                    {
+                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                    }
+                    catch
+                    {
+                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                    }
+                }
                 else
-                    _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                {
+                    try
+                    {
+                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                    }
+                    catch
+                    {
+                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                    }
+                }
             }
             catch (Exception ex)
             {

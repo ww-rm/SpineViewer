@@ -6,6 +6,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FrameExporterViewModel(MainWindowViewModel vmMain) : BaseExporterViewModel(vmMain)
     {
-        public ImmutableArray<SKEncodedImageFormat> FrameFormats { get; } = Enum.GetValues<SKEncodedImageFormat>().ToImmutableArray();
+        public ImmutableArray<SKEncodedImageFormat> FrameFormatOptions { get; } = Enum.GetValues<SKEncodedImageFormat>().ToImmutableArray();
 
         public SKEncodedImageFormat Format { get => _format; set => SetProperty(ref _format, value); }
         protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;
@@ -37,11 +38,10 @@ namespace SpineViewer.ViewModels.Exporters
             }
         }
 
-        protected override void Export_Execute(IList? args)
+        protected override void Export(SpineObjectModel[] models)
         {
-            if (args is null || args.Count <= 0) return;
-            if (!ExporterDialogService.ShowFrameExporterDialog(this)) return;
-            SpineObject[] spines = args.Cast<SpineObjectModel>().Select(m => m.GetSpineObject(true)).ToArray();
+            if (!DialogService.ShowFrameExporterDialog(this)) return;
+            SpineObject[] spines = models.Select(m => m.GetSpineObject(true)).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameExporterTitle);
             foreach (var sp in spines) sp.Dispose();
         }
