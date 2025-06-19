@@ -40,12 +40,15 @@ namespace SpineViewer.Utils
         /// <summary>
         /// 从文件反序列对象, 不会抛出异常
         /// </summary>
-        public static bool Deserialize<T>(string path, out T obj)
+        public static bool Deserialize<T>(string path, out T obj, bool quietForNotExist = false)
         {
             if (!File.Exists(path))
             {
-                _logger.Error("Json file {0} not found", path);
-                MessagePopupService.Error($"Json file {path} not found");
+                if (!quietForNotExist)
+                {
+                    _logger.Error("Json file {0} not found", path);
+                    MessagePopupService.Error($"Json file {path} not found");
+                }
             }
             else
             {

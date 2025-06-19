@@ -63,7 +63,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public void LoadPreference()
         {
-            if (JsonHelper.Deserialize<PreferenceModel>(PreferenceFilePath, out var obj)) 
+            if (JsonHelper.Deserialize<PreferenceModel>(PreferenceFilePath, out var obj, true)) 
                 Preference = obj;
         }
 
