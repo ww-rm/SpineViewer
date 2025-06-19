@@ -118,12 +118,14 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 return new()
                 {
+                    ExploringDirectory = _explorerListViewModel.CurrentDirectory,
                     RendererConfig = _sfmlRendererViewModel.WorkspaceConfig,
                     LoadedSpineObjects = _spineObjectListViewModel.LoadedSpineObjects
                 }; 
             }
             set
             {
+                _explorerListViewModel.CurrentDirectory = value.ExploringDirectory;
                 _sfmlRendererViewModel.WorkspaceConfig = value.RendererConfig;
                 _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
             }

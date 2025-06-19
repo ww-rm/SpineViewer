@@ -40,11 +40,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly MainWindowViewModel _vmMain;
 
         /// <summary>
-        /// 当前目录路径
-        /// </summary>
-        private string? _currentDirectory;
-
-        /// <summary>
         /// 当前目录下文件项缓存
         /// </summary>
         private readonly List<ExplorerItemViewModel> _items = [];
@@ -55,11 +50,25 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 当前目录路径
+        /// </summary>
+        public string? CurrentDirectory
+        {
+            get => string.IsNullOrWhiteSpace(_currentDirectory) ? null : _currentDirectory;
+            set
+            {
+                if (!SetProperty(ref _currentDirectory, value)) return;
+                RefreshItems();
+            }
+        }
+        private string? _currentDirectory;
+
+        /// <summary>
         /// 筛选字符串
         /// </summary>
         public string? FilterString
         {
-            get => _filterString;
+            get => string.IsNullOrWhiteSpace(_filterString) ? null : _filterString;
             set
             {
                 if (!SetProperty(ref _filterString, value)) return;
@@ -95,10 +104,7 @@ namespace SpineViewer.ViewModels.MainWindow
         public RelayCommand Cmd_ChangeCurrentDirectory => _cmd_ChangeCurrentDirectory ??= new(() =>
         {
             if (DialogService.ShowOpenFolderDialog(out var selectedPath))
-            {
-                _currentDirectory = selectedPath;
-                RefreshItems();
-            }
+                CurrentDirectory = selectedPath;
         });
         private RelayCommand? _cmd_ChangeCurrentDirectory;
 
