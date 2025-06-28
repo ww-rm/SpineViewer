@@ -20,6 +20,7 @@ namespace Spine
         public static readonly FrozenDictionary<string, string> PossibleSuffixMapping = new Dictionary<string, string>()
         {
             [".skel"] = ".atlas",
+            [".skel.bytes"] = ".atlas.txt",
             [".json"] = ".atlas",
         }.ToFrozenDictionary();
 
