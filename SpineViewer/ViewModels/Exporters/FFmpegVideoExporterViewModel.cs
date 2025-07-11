@@ -29,6 +29,9 @@ namespace SpineViewer.ViewModels.Exporters
         public int Quality { get => _quality; set => SetProperty(ref _quality, Math.Clamp(value, 0, 100)); }
         protected int _quality = 75;
 
+        public bool Lossless { get => _lossless; set => SetProperty(ref _lossless, value); }
+        protected bool _lossless = false;
+
         public int Crf { get => _crf; set => SetProperty(ref _crf, Math.Clamp(value, 0, 63)); }
         protected int _crf = 23;
 
@@ -55,6 +58,7 @@ namespace SpineViewer.ViewModels.Exporters
                 Format = _format,
                 Loop = _loop,
                 Quality = _quality,
+                Lossless = _lossless,
                 Crf = _crf
             };
 

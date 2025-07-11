@@ -52,6 +52,12 @@ namespace Spine.Exporters
         private int _quality = 75;
 
         /// <summary>
+        /// 无损压缩 (Webp)
+        /// </summary>
+        public bool Lossless { get => _lossless; set => _lossless = value; }
+        private bool _lossless = false;
+
+        /// <summary>
         /// CRF
         /// </summary>
         public int Crf { get => _crf; set => _crf = Math.Clamp(value, 0, 63); }
@@ -62,7 +68,8 @@ namespace Spine.Exporters
         /// </summary>
         protected override SFMLImageVideoFrame GetFrame(SpineObject[] spines)
         {
-            // BUG: 不知道为什么用 FFmpeg 必须临时创建 RenderTexture, 否则无法正常渲染
+            // BUG: 也许和 SFML 多线程或者 FFmpeg 调用有关, 当渲染线程也在运行的时候此处并行渲染会导致和 SFML 有关的内容都卡死
+            // 不知道为什么用 FFmpeg 必须临时创建 RenderTexture, 否则无法正常渲染, 会导致画面帧丢失
             using var tex = new RenderTexture(_renderTexture.Size.X, _renderTexture.Size.Y);
             using var view = _renderTexture.GetView();
             tex.SetView(view);
@@ -112,7 +119,7 @@ namespace Spine.Exporters
 
         private void SetWebpOptions(FFMpegArgumentOptions options)
         {
-            var customArgs = $"-vf unpremultiply=inplace=1 -quality {_quality} -loop {(_loop ? 0 : 1)}";
+            var customArgs = $"-vf unpremultiply=inplace=1 -quality {_quality} -loop {(_loop ? 0 : 1)} -lossless {(_lossless ? 1 : 0)}";
             options.ForceFormat("webp").WithVideoCodec("libwebp_anim").ForcePixelFormat("yuva420p")
                 .WithCustomArgument(customArgs);
         }
