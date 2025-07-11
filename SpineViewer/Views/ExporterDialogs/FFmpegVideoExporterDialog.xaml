@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="{DynamicResource Str_FFmpegVideoExporterTitle}"
         Width="450"
-        Height="550"
+        Height="580"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <DockPanel>
@@ -49,6 +49,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -138,9 +139,13 @@
                     <Label Grid.Row="15" Grid.Column="0" Content="{DynamicResource Str_QualityParameter}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
                     <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding Quality}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
 
+                    <!-- 无损压缩 -->
+                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_LosslessParam}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
+                    <ToggleButton Grid.Row="16" Grid.Column="1" IsChecked="{Binding Lossless}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
+
                     <!-- CRF 参数 -->
-                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_CrfParameter}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
-                    <TextBox Grid.Row="16" Grid.Column="1" Text="{Binding Crf}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
+                    <Label Grid.Row="17" Grid.Column="0" Content="{DynamicResource Str_CrfParameter}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
+                    <TextBox Grid.Row="17" Grid.Column="1" Text="{Binding Crf}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
                 </Grid>
             </ScrollViewer>
            

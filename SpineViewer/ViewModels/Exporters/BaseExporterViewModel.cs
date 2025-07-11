@@ -142,7 +142,6 @@ namespace SpineViewer.ViewModels.Exporters
         {
             if (!Export_CanExecute(args)) return;
             Export(args.Cast<SpineObjectModel>().ToArray());
-            // XXX: 导出途中应该停掉渲染好一些, 让性能专注在导出上
         }
 
         private bool Export_CanExecute(IList? args)

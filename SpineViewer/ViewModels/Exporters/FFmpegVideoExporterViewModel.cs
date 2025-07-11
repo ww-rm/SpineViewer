@@ -29,6 +29,9 @@ namespace SpineViewer.ViewModels.Exporters
         public int Quality { get => _quality; set => SetProperty(ref _quality, Math.Clamp(value, 0, 100)); }
         protected int _quality = 75;
 
+        public bool Lossless { get => _lossless; set => SetProperty(ref _lossless, value); }
+        protected bool _lossless = false;
+
         public int Crf { get => _crf; set => SetProperty(ref _crf, Math.Clamp(value, 0, 63)); }
         protected int _crf = 23;
 
@@ -55,6 +58,7 @@ namespace SpineViewer.ViewModels.Exporters
                 Format = _format,
                 Loop = _loop,
                 Quality = _quality,
+                Lossless = _lossless,
                 Crf = _crf
             };
 
@@ -67,6 +71,10 @@ namespace SpineViewer.ViewModels.Exporters
                 exporter.Center = bounds.Position + bounds.Size / 2;
                 exporter.Rotation = view.Rotation;
             }
+
+            // BUG: FFmpeg 导出时对 RenderTexture 的频繁资源申请释放似乎使 SFML 库内部出现问题, 会卡死所有使用 SFML 的地方, 包括渲染线程
+            // 所以临时把渲染线程停掉, 只让此处使用 SFML 资源, 这个问题或许和多个线程同时使用渲染资源有关
+            _vmMain.SFMLRendererViewModel.StopRender();
 
             if (_exportSingle)
             {
@@ -153,6 +161,8 @@ namespace SpineViewer.ViewModels.Exporters
                 }
                 _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
             }
+
+            _vmMain.SFMLRendererViewModel.StartRender();
         }
     }
 }

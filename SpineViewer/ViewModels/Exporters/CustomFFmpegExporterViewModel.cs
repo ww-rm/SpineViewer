@@ -83,6 +83,8 @@ namespace SpineViewer.ViewModels.Exporters
                 exporter.Rotation = view.Rotation;
             }
 
+            _vmMain.SFMLRendererViewModel.StopRender();
+
             if (_exportSingle)
             {
                 var filename = $"ffmpeg_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{_fps}{FormatSuffix}";
@@ -168,6 +170,8 @@ namespace SpineViewer.ViewModels.Exporters
                 }
                 _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
             }
+
+            _vmMain.SFMLRendererViewModel.StartRender();
         }
     }
 }

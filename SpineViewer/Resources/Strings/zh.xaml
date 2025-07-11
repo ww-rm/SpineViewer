@@ -173,7 +173,9 @@
     <s:String x:Key="Str_LoopPlay">循环播放</s:String>
     <s:String x:Key="Str_LoopPlayTooltip">动图是否循环播放，仅对 Gif/Webp 格式生效</s:String>
     <s:String x:Key="Str_QualityParameter">质量参数</s:String>
-    <s:String x:Key="Str_QualityParameterTooltip">质量参数，取值范围 0-100，越高质量越好 仅对 Webp 格式生效</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip">质量参数，取值范围 0-100，越高质量越好, 仅对 Webp 格式生效</s:String>
+    <s:String x:Key="Str_LosslessParam">无损压缩</s:String>
+    <s:String x:Key="Str_LosslessParamTooltip">无损压缩, 会忽略质量参数, 仅对 Webp 格式生效</s:String>
     <s:String x:Key="Str_CrfParameter">CRF 参数</s:String>
     <s:String x:Key="Str_CrfParameterTooltip">CRF 参数，取值范围 0-63，越小质量越高，仅对 Mp4/Webm/Mkv 格式生效</s:String>
 
