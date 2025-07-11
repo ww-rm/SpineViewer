@@ -68,6 +68,10 @@ namespace SpineViewer.ViewModels.Exporters
                 exporter.Rotation = view.Rotation;
             }
 
+            // BUG: FFmpeg 导出时对 RenderTexture 的频繁资源申请释放似乎使 SFML 库内部出现问题, 会卡死所有使用 SFML 的地方, 包括渲染线程
+            // 所以临时把渲染线程停掉, 只让此处使用 SFML 资源, 这个问题或许和多个线程同时使用渲染资源有关
+            _vmMain.SFMLRendererViewModel.StopRender();
+
             if (_exportSingle)
             {
                 var filename = $"video_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{_fps}{FormatSuffix}";
@@ -153,6 +157,8 @@ namespace SpineViewer.ViewModels.Exporters
                 }
                 _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
             }
+
+            _vmMain.SFMLRendererViewModel.StartRender();
         }
     }
 }

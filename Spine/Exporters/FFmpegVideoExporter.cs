@@ -62,7 +62,7 @@ namespace Spine.Exporters
         /// </summary>
         protected override SFMLImageVideoFrame GetFrame(SpineObject[] spines)
         {
-            // XXX: 不知道为什么用 FFmpeg 必须临时创建 RenderTexture, 否则无法正常渲染
+            // BUG: 不知道为什么用 FFmpeg 必须临时创建 RenderTexture, 否则无法正常渲染
             using var tex = new RenderTexture(_renderTexture.Size.X, _renderTexture.Size.Y);
             using var view = _renderTexture.GetView();
             tex.SetView(view);
