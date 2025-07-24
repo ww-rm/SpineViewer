@@ -104,6 +104,7 @@
     <s:String x:Key="Str_Zoom">Zoom</s:String>
     <s:String x:Key="Str_Rotation">Rotation (Degrees)</s:String>
     <s:String x:Key="Str_MaxFps">Max FPS</s:String>
+    <s:String x:Key="Str_PlaySpeed">Playback Speed</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
     <s:String x:Key="Str_ShowAxis">Show Axis</s:String>
     <s:String x:Key="Str_BackgroundColor">Background Color</s:String>

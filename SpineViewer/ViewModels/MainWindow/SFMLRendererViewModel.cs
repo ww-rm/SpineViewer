@@ -140,6 +140,13 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = value);
         }
 
+        public float Speed
+        {
+            get => _speed;
+            set => SetProperty(ref _speed, Math.Clamp(value, 0.01f, 100f));
+        }
+        private float _speed = 1f;
+
         public bool ShowAxis
         {
             get => _showAxis;
@@ -193,15 +200,15 @@ namespace SpineViewer.ViewModels.MainWindow
         });
         private RelayCommand? _cmd_Restart;
 
-        public RelayCommand Cmd_ForwardStep => _cmd_ForwardStep ??= new(() => 
-        { 
-            lock (_forwardDeltaLock) _forwardDelta += _renderer.MaxFps > 0 ? 1f / _renderer.MaxFps : 0.001f; 
+        public RelayCommand Cmd_ForwardStep => _cmd_ForwardStep ??= new(() =>
+        {
+            lock (_forwardDeltaLock) _forwardDelta += _renderer.MaxFps > 0 ? 1f / _renderer.MaxFps : 0.001f;
         });
         private RelayCommand? _cmd_ForwardStep;
 
         public RelayCommand Cmd_ForwardFast => _cmd_ForwardFast ??= new(() =>
-        { 
-            lock (_forwardDeltaLock) _forwardDelta += _renderer.MaxFps > 0 ? 10f / _renderer.MaxFps : 0.01f; 
+        {
+            lock (_forwardDeltaLock) _forwardDelta += _renderer.MaxFps > 0 ? 10f / _renderer.MaxFps : 0.01f;
         });
         private RelayCommand? _cmd_ForwardFast;
 
@@ -390,7 +397,7 @@ namespace SpineViewer.ViewModels.MainWindow
                             if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
 
                             sp.Update(0); // 避免物理效果出现问题
-                            sp.Update(delta);
+                            sp.Update(delta * _speed);
 
                             // 为选中对象绘制一个半透明背景
                             if (sp.IsSelected)
@@ -426,7 +433,7 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         public RendererWorkspaceConfigModel WorkspaceConfig
-        { 
+        {
             // TODO: 背景图片
             get
             {
@@ -441,23 +448,25 @@ namespace SpineViewer.ViewModels.MainWindow
                     FlipX = FlipX,
                     FlipY = FlipY,
                     MaxFps = MaxFps,
+                    Speed = Speed,
                     ShowAxis = ShowAxis,
                     BackgroundColor = BackgroundColor,
                 };
             }
             set
             {
-               ResolutionX = value.ResolutionX;
-               ResolutionY = value.ResolutionY;
-               CenterX = value.CenterX;
-               CenterY = value.CenterY;
-               Zoom = value.Zoom;
-               Rotation = value.Rotation;
-               FlipX = value.FlipX;
-               FlipY = value.FlipY;
-               MaxFps = value.MaxFps;
-               ShowAxis = value.ShowAxis;
-               BackgroundColor = value.BackgroundColor;
+                ResolutionX = value.ResolutionX;
+                ResolutionY = value.ResolutionY;
+                CenterX = value.CenterX;
+                CenterY = value.CenterY;
+                Zoom = value.Zoom;
+                Rotation = value.Rotation;
+                FlipX = value.FlipX;
+                FlipY = value.FlipY;
+                MaxFps = value.MaxFps;
+                Speed = value.Speed;
+                ShowAxis = value.ShowAxis;
+                BackgroundColor = value.BackgroundColor;
             }
         }
     }

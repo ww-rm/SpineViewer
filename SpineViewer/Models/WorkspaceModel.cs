@@ -37,6 +37,8 @@ namespace SpineViewer.Models
 
         public uint MaxFps { get; set; } = 30;
 
+        public float Speed { get; set; } = 1f;
+
         public bool ShowAxis { get; set; } = true;
 
         public Color BackgroundColor { get; set; }
