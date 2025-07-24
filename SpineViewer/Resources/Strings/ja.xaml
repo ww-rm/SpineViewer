@@ -167,6 +167,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">エクスポート時間。0 未満の場合、エクスポート時にすべてのモデルのすべてのアニメーションの最大時間が使用されます。</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_ExportSpeed">エクスポート速度</s:String>
+    <s:String x:Key="Str_ExportSpeedTooltip">エクスポート速度係数。モデルの動作速度のみに影響し、エクスポート時間やフレームレートなどには影響しません。</s:String>
     <s:String x:Key="Str_KeepLastFrame">最後のフレームを保持</s:String>
     <s:String x:Key="Str_KeepLastFrameTooltip">最後のフレームを保持すると、アニメーションはより連続して見えますが、フレーム数が予想より1フレーム多くなる可能性があります</s:String>
 

@@ -167,6 +167,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">导出时长，如果小于 0，则在导出时使用所有模型所有动画的最大时长</s:String>
 
     <s:String x:Key="Str_Fps">帧率</s:String>
+    <s:String x:Key="Str_ExportSpeed">导出速度</s:String>
+    <s:String x:Key="Str_ExportSpeedTooltip">导出速度因子, 仅影响模型的动作速度, 不影响导出时长和帧率等参数</s:String>
     <s:String x:Key="Str_KeepLastFrame">保留最后一帧</s:String>
     <s:String x:Key="Str_KeepLastFrameTooltip">当设置保留最后一帧时，动图会更为连贯，但是帧数可能比预期帧数多 1</s:String>
 
