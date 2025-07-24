@@ -31,6 +31,9 @@ namespace Spine.Exporters
         /// <param name="height">画布高像素值</param>
         public BaseExporter(uint width , uint height)
         {
+            // XXX: 强制变成 2 的倍数, 防止像是 yuv420p 这种像素格式报错
+            width = width >> 1 << 1;
+            height = height >> 1 << 1;
             if (width <= 0 || height <= 0)
                 throw new ArgumentException($"Invalid resolution: {width}, {height}");
             _renderTexture = new(width, height);
@@ -42,6 +45,9 @@ namespace Spine.Exporters
         /// </summary>
         public BaseExporter(Vector2u resolution)
         {
+            // XXX: 强制变成 2 的倍数, 防止像是 yuv420p 这种像素格式报错
+            resolution.X = resolution.X >> 1 << 1;
+            resolution.Y = resolution.Y >> 1 << 1;
             if (resolution.X <= 0 || resolution.Y <= 0)
                 throw new ArgumentException($"Invalid resolution: {resolution}");
             _renderTexture = new(resolution.X, resolution.Y);
@@ -92,6 +98,9 @@ namespace Spine.Exporters
             get => _renderTexture.Size;
             set
             {
+                // XXX: 强制变成 2 的倍数, 防止像是 yuv420p 这种像素格式报错
+                value.X = value.X >> 1 << 1;
+                value.Y = value.Y >> 1 << 1;
                 if (value.X <= 0 || value.Y <= 0)
                 {
                     _logger.Warn("Omit invalid exporter resolution: {0}", value);
