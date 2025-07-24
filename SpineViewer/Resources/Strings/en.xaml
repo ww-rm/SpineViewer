@@ -104,6 +104,7 @@
     <s:String x:Key="Str_Zoom">Zoom</s:String>
     <s:String x:Key="Str_Rotation">Rotation (Degrees)</s:String>
     <s:String x:Key="Str_MaxFps">Max FPS</s:String>
+    <s:String x:Key="Str_PlaySpeed">Playback Speed</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
     <s:String x:Key="Str_ShowAxis">Show Axis</s:String>
     <s:String x:Key="Str_BackgroundColor">Background Color</s:String>
@@ -166,6 +167,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">Export duration; if less than 0, the maximum duration of all animations in all models will be used during export.</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_ExportSpeed">Export Speed</s:String>
+    <s:String x:Key="Str_ExportSpeedTooltip">Export speed factor; only affects the animation speed of the model, not the export duration or frame rate.</s:String>
     <s:String x:Key="Str_KeepLastFrame">Keep Last Frame</s:String>
     <s:String x:Key="Str_KeepLastFrameTooltip">When keeping the last frame, animation is smoother but frame count may be one higher</s:String>
 
@@ -184,7 +187,7 @@
     <s:String x:Key="Str_FFmpegCodec">Codec</s:String>
     <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg codec (equivalent to "-c:v"), e.g. "libx264", "libx265"</s:String>
     <s:String x:Key="Str_FFmpegPixelFormat">Pixel Format</s:String>
-    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg pixel format (equivalent to "-pix_fmt"), e.g. "yuv420", "yuv444"</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg pixel format (equivalent to "-pix_fmt"), e.g. "yuv420p", "yuv444p"</s:String>
     <s:String x:Key="Str_FFmpegBitrate">Bitrate</s:String>
     <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg bitrate (equivalent to "-b:v"), e.g. "6K", "2M"</s:String>
     <s:String x:Key="Str_FFmpegFilter">Filter</s:String>

@@ -55,6 +55,21 @@ namespace Spine.Exporters
         }
         protected float _fps = 24;
 
+        public float Speed
+        {
+            get => _speed;
+            set
+            {
+                if (_speed <= 0)
+                {
+                    _logger.Warn("Omit invalid speed: {0}", value);
+                    return;
+                }
+                _speed = value;
+            }
+        }
+        protected float _speed = 1f;
+
         /// <summary>
         /// 是否保留最后一帧
         /// </summary>
@@ -92,7 +107,7 @@ namespace Spine.Exporters
             // 导出完整帧
             for (int i = 0; i < total; i++)
             {
-                foreach (var spine in spines) spine.Update(delta);
+                foreach (var spine in spines) spine.Update(delta * _speed);
                 yield return GetFrame(spines);
             }
 
@@ -100,7 +115,7 @@ namespace Spine.Exporters
             if (hasFinal)
             {
                 // XXX: 此处还是按照完整的一帧时长进行更新, 也许可以只更新准确的最后一帧时长
-                foreach (var spine in spines) spine.Update(delta); 
+                foreach (var spine in spines) spine.Update(delta * _speed); 
                 yield return GetFrame(spines);
             }
         }

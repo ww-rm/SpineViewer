@@ -104,6 +104,7 @@
     <s:String x:Key="Str_Zoom">缩放</s:String>
     <s:String x:Key="Str_Rotation">旋转（角度）</s:String>
     <s:String x:Key="Str_MaxFps">最大帧率</s:String>
+    <s:String x:Key="Str_PlaySpeed">播放速度</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
     <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>
     <s:String x:Key="Str_BackgroundColor">背景颜色</s:String>
@@ -166,6 +167,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">导出时长，如果小于 0，则在导出时使用所有模型所有动画的最大时长</s:String>
 
     <s:String x:Key="Str_Fps">帧率</s:String>
+    <s:String x:Key="Str_ExportSpeed">导出速度</s:String>
+    <s:String x:Key="Str_ExportSpeedTooltip">导出速度因子, 仅影响模型的动作速度, 不影响导出时长和帧率等参数</s:String>
     <s:String x:Key="Str_KeepLastFrame">保留最后一帧</s:String>
     <s:String x:Key="Str_KeepLastFrameTooltip">当设置保留最后一帧时，动图会更为连贯，但是帧数可能比预期帧数多 1</s:String>
 
@@ -184,7 +187,7 @@
     <s:String x:Key="Str_FFmpegCodec">编码器</s:String>
     <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg 编码器，等价于参数 “-c:v”，例如 “libx264”、“libx265”</s:String>
     <s:String x:Key="Str_FFmpegPixelFormat">像素格式</s:String>
-    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg 像素格式，等价于参数 “-pix_fmt”，例如 “yuv420”、“yuv444”</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg 像素格式，等价于参数 “-pix_fmt”，例如 “yuv420p”、“yuv444p”</s:String>
     <s:String x:Key="Str_FFmpegBitrate">比特率</s:String>
     <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg 比特率，等价于参数 “-b:v”，例如 “6K”、“2M”</s:String>
     <s:String x:Key="Str_FFmpegFilter">滤镜</s:String>

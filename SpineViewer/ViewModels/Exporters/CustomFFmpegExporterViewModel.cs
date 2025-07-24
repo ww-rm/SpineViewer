@@ -64,6 +64,7 @@ namespace SpineViewer.ViewModels.Exporters
             {
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
                 Fps = _fps,
+                Speed = _speed,
                 KeepLast = _keepLast,
                 Format = _format,
                 Codec = _codec,

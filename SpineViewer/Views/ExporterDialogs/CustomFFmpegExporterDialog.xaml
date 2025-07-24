@@ -67,6 +67,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
 
@@ -122,38 +123,42 @@
                     <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_Fps}"/>
                     <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Fps}"/>
 
-                    <!-- 是否保留最后一帧 -->
-                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_KeepLastFrame}" ToolTip="{DynamicResource Str_KeepLastFrameTooltip}"/>
-                    <ToggleButton Grid.Row="11" Grid.Column="1" IsChecked="{Binding KeepLast}" ToolTip="{DynamicResource Str_KeelLastFrameTooltip}"/>
+                    <!-- 导出速度 -->
+                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_ExportSpeed}" ToolTip="{DynamicResource Str_ExportSpeedTooltip}"/>
+                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Speed}" ToolTip="{DynamicResource Str_ExportSpeedTooltip}"/>
 
-                    <Separator Grid.Row="12" Grid.ColumnSpan="2" Height="10"/>
+                    <!-- 是否保留最后一帧 -->
+                    <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Str_KeepLastFrame}" ToolTip="{DynamicResource Str_KeepLastFrameTooltip}"/>
+                    <ToggleButton Grid.Row="12" Grid.Column="1" IsChecked="{Binding KeepLast}" ToolTip="{DynamicResource Str_KeelLastFrameTooltip}"/>
+
+                    <Separator Grid.Row="13" Grid.ColumnSpan="2" Height="10"/>
 
                     <!-- 导出格式 -->
-                    <Label Grid.Row="13" Grid.Column="0" Content="{DynamicResource Str_FFmpegFormat}" ToolTip="{DynamicResource Str_FFmpegFormatTooltip}"/>
-                    <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding Format}" ToolTip="{DynamicResource Str_FFmpegFormatTooltip}"/>
+                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_FFmpegFormat}" ToolTip="{DynamicResource Str_FFmpegFormatTooltip}"/>
+                    <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding Format}" ToolTip="{DynamicResource Str_FFmpegFormatTooltip}"/>
 
                     <!-- 编码器 -->
-                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_FFmpegCodec}" ToolTip="{DynamicResource Str_FFmpegCodecTooltip}"/>
-                    <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding Codec}" ToolTip="{DynamicResource Str_FFmpegCodecTooltip}"/>
+                    <Label Grid.Row="15" Grid.Column="0" Content="{DynamicResource Str_FFmpegCodec}" ToolTip="{DynamicResource Str_FFmpegCodecTooltip}"/>
+                    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding Codec}" ToolTip="{DynamicResource Str_FFmpegCodecTooltip}"/>
 
                     <!-- 像素格式 -->
-                    <Label Grid.Row="15" Grid.Column="0" Content="{DynamicResource Str_FFmpegPixelFormat}" ToolTip="{DynamicResource Str_FFmpegPixelFormatTooltip}"/>
-                    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding PixelFormat}" ToolTip="{DynamicResource Str_FFmpegPixelFormatTooltip}"/>
+                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_FFmpegPixelFormat}" ToolTip="{DynamicResource Str_FFmpegPixelFormatTooltip}"/>
+                    <TextBox Grid.Row="16" Grid.Column="1" Text="{Binding PixelFormat}" ToolTip="{DynamicResource Str_FFmpegPixelFormatTooltip}"/>
 
                     <!-- 比特率 -->
-                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_FFmpegBitrate}" ToolTip="{DynamicResource Str_FFmpegBitrateTooltip}"/>
-                    <TextBox Grid.Row="16" Grid.Column="1" Text="{Binding Bitrate}" ToolTip="{DynamicResource Str_FFmpegBitrateTooltip}"/>
+                    <Label Grid.Row="17" Grid.Column="0" Content="{DynamicResource Str_FFmpegBitrate}" ToolTip="{DynamicResource Str_FFmpegBitrateTooltip}"/>
+                    <TextBox Grid.Row="17" Grid.Column="1" Text="{Binding Bitrate}" ToolTip="{DynamicResource Str_FFmpegBitrateTooltip}"/>
 
                     <!-- 滤镜 -->
-                    <Label Grid.Row="17" Grid.Column="0" Content="{DynamicResource Str_FFmpegFilter}" ToolTip="{DynamicResource Str_FFmpegFilterTooltip}"/>
-                    <TextBox Grid.Row="17" Grid.Column="1" Text="{Binding Filter}" ToolTip="{DynamicResource Str_FFmpegFilterTooltip}"/>
+                    <Label Grid.Row="18" Grid.Column="0" Content="{DynamicResource Str_FFmpegFilter}" ToolTip="{DynamicResource Str_FFmpegFilterTooltip}"/>
+                    <TextBox Grid.Row="18" Grid.Column="1" Text="{Binding Filter}" ToolTip="{DynamicResource Str_FFmpegFilterTooltip}"/>
 
                     <!-- 自定义参数 -->
-                    <Label Grid.Row="18" Grid.Column="0"
+                    <Label Grid.Row="19" Grid.Column="0"
                            VerticalAlignment="Top"
                            Content="{DynamicResource Str_FFmpegCustomArgs}" 
                            ToolTip="{DynamicResource Str_FFmpegCustomArgsTooltip}"/>
-                    <TextBox Grid.Row="18" Grid.Column="1"
+                    <TextBox Grid.Row="19" Grid.Column="1"
                              HorizontalContentAlignment="Left"
                              VerticalContentAlignment="Top"
                              TextWrapping="Wrap"

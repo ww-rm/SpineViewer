@@ -16,6 +16,9 @@ namespace SpineViewer.ViewModels.Exporters
         public uint Fps { get => _fps; set => SetProperty(ref _fps, Math.Max(1, value)); }
         protected uint _fps = 30;
 
+        public float  Speed { get => _speed; set => SetProperty(ref _speed, Math.Clamp(value, 0.001f, 1000f)); }
+        protected float _speed = 1f;
+
         public bool KeepLast { get => _keepLast; set => SetProperty(ref _keepLast, value); }
         protected bool _keepLast = true;
     }

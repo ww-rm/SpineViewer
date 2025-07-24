@@ -67,6 +67,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <!-- 水平分辨率 -->
@@ -121,31 +122,35 @@
                     <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_Fps}"/>
                     <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Fps}"/>
 
-                    <!-- 是否保留最后一帧 -->
-                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_KeepLastFrame}" ToolTip="{DynamicResource Str_KeepLastFrameTooltip}"/>
-                    <ToggleButton Grid.Row="11" Grid.Column="1" IsChecked="{Binding KeepLast}" ToolTip="{DynamicResource Str_KeelLastFrameTooltip}"/>
+                    <!-- 导出速度 -->
+                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_ExportSpeed}" ToolTip="{DynamicResource Str_ExportSpeedTooltip}"/>
+                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Speed}" ToolTip="{DynamicResource Str_ExportSpeedTooltip}"/>
 
-                    <Separator Grid.Row="12" Grid.ColumnSpan="2" Height="10"/>
+                    <!-- 是否保留最后一帧 -->
+                    <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Str_KeepLastFrame}" ToolTip="{DynamicResource Str_KeepLastFrameTooltip}"/>
+                    <ToggleButton Grid.Row="12" Grid.Column="1" IsChecked="{Binding KeepLast}" ToolTip="{DynamicResource Str_KeelLastFrameTooltip}"/>
+
+                    <Separator Grid.Row="13" Grid.ColumnSpan="2" Height="10"/>
 
                     <!-- 视频格式 -->
-                    <Label Grid.Row="13" Grid.Column="0" Content="{DynamicResource Str_VideoFormat}"/>
-                    <ComboBox Grid.Row="13" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding VideoFormatOptions}"/>
+                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_VideoFormat}"/>
+                    <ComboBox Grid.Row="14" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding VideoFormatOptions}"/>
 
                     <!-- 动图是否循环 -->
-                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_LoopPlay}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>
-                    <ToggleButton Grid.Row="14" Grid.Column="1" IsChecked="{Binding Loop}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>
+                    <Label Grid.Row="15" Grid.Column="0" Content="{DynamicResource Str_LoopPlay}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>
+                    <ToggleButton Grid.Row="15" Grid.Column="1" IsChecked="{Binding Loop}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>
 
                     <!-- 质量参数 -->
-                    <Label Grid.Row="15" Grid.Column="0" Content="{DynamicResource Str_QualityParameter}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
-                    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding Quality}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
+                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_QualityParameter}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
+                    <TextBox Grid.Row="16" Grid.Column="1" Text="{Binding Quality}" ToolTip="{DynamicResource Str_QualityParameterTooltip}"/>
 
                     <!-- 无损压缩 -->
-                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource Str_LosslessParam}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
-                    <ToggleButton Grid.Row="16" Grid.Column="1" IsChecked="{Binding Lossless}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
+                    <Label Grid.Row="17" Grid.Column="0" Content="{DynamicResource Str_LosslessParam}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
+                    <ToggleButton Grid.Row="17" Grid.Column="1" IsChecked="{Binding Lossless}" ToolTip="{DynamicResource Str_LosslessParamTooltip}"/>
 
                     <!-- CRF 参数 -->
-                    <Label Grid.Row="17" Grid.Column="0" Content="{DynamicResource Str_CrfParameter}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
-                    <TextBox Grid.Row="17" Grid.Column="1" Text="{Binding Crf}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
+                    <Label Grid.Row="18" Grid.Column="0" Content="{DynamicResource Str_CrfParameter}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
+                    <TextBox Grid.Row="18" Grid.Column="1" Text="{Binding Crf}" ToolTip="{DynamicResource Str_CrfParameterTooltip}"/>
                 </Grid>
             </ScrollViewer>
            
