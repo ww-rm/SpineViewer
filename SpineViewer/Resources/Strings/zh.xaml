@@ -184,7 +184,7 @@
     <s:String x:Key="Str_FFmpegCodec">编码器</s:String>
     <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg 编码器，等价于参数 “-c:v”，例如 “libx264”、“libx265”</s:String>
     <s:String x:Key="Str_FFmpegPixelFormat">像素格式</s:String>
-    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg 像素格式，等价于参数 “-pix_fmt”，例如 “yuv420”、“yuv444”</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg 像素格式，等价于参数 “-pix_fmt”，例如 “yuv420p”、“yuv444p”</s:String>
     <s:String x:Key="Str_FFmpegBitrate">比特率</s:String>
     <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg 比特率，等价于参数 “-b:v”，例如 “6K”、“2M”</s:String>
     <s:String x:Key="Str_FFmpegFilter">滤镜</s:String>

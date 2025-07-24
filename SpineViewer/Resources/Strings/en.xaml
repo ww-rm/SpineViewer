@@ -184,7 +184,7 @@
     <s:String x:Key="Str_FFmpegCodec">Codec</s:String>
     <s:String x:Key="Str_FFmpegCodecTooltip">FFmpeg codec (equivalent to "-c:v"), e.g. "libx264", "libx265"</s:String>
     <s:String x:Key="Str_FFmpegPixelFormat">Pixel Format</s:String>
-    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg pixel format (equivalent to "-pix_fmt"), e.g. "yuv420", "yuv444"</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpeg pixel format (equivalent to "-pix_fmt"), e.g. "yuv420p", "yuv444p"</s:String>
     <s:String x:Key="Str_FFmpegBitrate">Bitrate</s:String>
     <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpeg bitrate (equivalent to "-b:v"), e.g. "6K", "2M"</s:String>
     <s:String x:Key="Str_FFmpegFilter">Filter</s:String>

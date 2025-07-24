@@ -184,7 +184,7 @@
     <s:String x:Key="Str_FFmpegCodec">コーデック</s:String>
     <s:String x:Key="Str_FFmpegCodecTooltip">FFmpegコーデック。パラメーター“-c:v”に相当します。例: “libx264”、“libx265”</s:String>
     <s:String x:Key="Str_FFmpegPixelFormat">ピクセルフォーマット</s:String>
-    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpegピクセルフォーマット。パラメーター“-pix_fmt”に相当します。例: “yuv420”、“yuv444”</s:String>
+    <s:String x:Key="Str_FFmpegPixelFormatTooltip">FFmpegピクセルフォーマット。パラメーター“-pix_fmt”に相当します。例: “yuv420p”、“yuv444p”</s:String>
     <s:String x:Key="Str_FFmpegBitrate">ビットレート</s:String>
     <s:String x:Key="Str_FFmpegBitrateTooltip">FFmpegビットレート。パラメーター“-b:v”に相当します。例: “6K”、“2M”</s:String>
     <s:String x:Key="Str_FFmpegFilter">フィルター</s:String>
