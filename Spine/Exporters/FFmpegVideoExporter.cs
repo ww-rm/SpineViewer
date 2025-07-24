@@ -126,8 +126,10 @@ namespace Spine.Exporters
 
         private void SetMp4Options(FFMpegArgumentOptions options)
         {
+            // XXX: windows 默认播放器在播放 MP4 格式时对于 libx264 编码器只支持 yuv420p 的像素格式
+            // 但是如果是 libx265 则没有该限制
             var customArgs = "-vf unpremultiply=inplace=1";
-            options.ForceFormat("mp4").WithVideoCodec("libx264").ForcePixelFormat("yuv444p")
+            options.ForceFormat("mp4").WithVideoCodec("libx264").ForcePixelFormat("yuv420p")
                 .WithFastStart()
                 .WithConstantRateFactor(_crf)
                 .WithCustomArgument(customArgs);
