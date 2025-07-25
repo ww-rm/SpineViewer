@@ -56,7 +56,9 @@ namespace SpineViewer.ViewModels.Exporters
                 var output = Path.Combine(_outputDir!, folderName);
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
-                exporter.Duration = _duration >= 0 ? _duration : spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
+
+                // 如果时长是一个负数值则使用所有动画时长的最大值
+                exporter.Duration = _duration < 0 ? spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max() : _duration;
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {
@@ -83,18 +85,18 @@ namespace SpineViewer.ViewModels.Exporters
             {
                 // 统计总帧数
                 int totalFrameCount = 0;
-                if (_duration > 0)
-                {
-                    exporter.Duration = _duration;
-                    totalFrameCount = exporter.GetFrameCount() * spines.Length;
-                }
-                else
+                if (_duration < 0)
                 {
                     foreach (var sp in spines)
                     {
                         exporter.Duration = sp.GetAnimationMaxDuration();
                         totalFrameCount += exporter.GetFrameCount();
                     }
+                }
+                else
+                {
+                    exporter.Duration = _duration;
+                    totalFrameCount = exporter.GetFrameCount() * spines.Length;
                 }
 
                 pr.Total = totalFrameCount;
@@ -118,7 +120,9 @@ namespace SpineViewer.ViewModels.Exporters
                     }
 
                     if (_autoResolution) SetAutoResolutionAnimated(exporter, sp);
-                    if (_duration <= 0) exporter.Duration = sp.GetAnimationMaxDuration();
+
+                    // 如果时长是负数则需要每次都设置成动画的时长值, 否则前面统计帧数时已经设置过时长值
+                    if (_duration < 0) exporter.Duration = sp.GetAnimationMaxDuration();
 
                     var folderName = $"{sp.Name}_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{_fps}";
                     var output = Path.Combine(_outputDir ?? sp.AssetsDir, folderName);
