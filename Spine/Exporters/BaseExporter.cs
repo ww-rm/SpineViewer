@@ -82,12 +82,12 @@ namespace Spine.Exporters
                 _backgroundColorPma = bcPma;
             }
         }
-        protected Color _backgroundColor = Color.Transparent;
+        protected Color _backgroundColor = Color.Black;
 
         /// <summary>
         /// 预乘后的背景颜色
         /// </summary>
-        protected Color _backgroundColorPma = Color.Transparent;
+        protected Color _backgroundColorPma = Color.Black;
 
         /// <summary>
         /// 画面分辨率

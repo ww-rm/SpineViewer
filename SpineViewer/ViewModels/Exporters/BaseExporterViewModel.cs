@@ -54,7 +54,7 @@ namespace SpineViewer.ViewModels.Exporters
         /// 背景颜色
         /// </summary>
         public Color BackgroundColor { get => _backgroundColor; set => SetProperty(ref _backgroundColor, value); }
-        protected Color _backgroundColor = Color.FromArgb(0, 0, 0, 0);
+        protected Color _backgroundColor = Color.FromArgb(255, 0, 0, 0);
 
         /// <summary>
         /// 四周边缘距离
