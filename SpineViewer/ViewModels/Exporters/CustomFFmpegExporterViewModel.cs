@@ -92,7 +92,7 @@ namespace SpineViewer.ViewModels.Exporters
                 var output = Path.Combine(_outputDir!, filename);
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
-                if (_duration < 0) exporter.Duration = spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
+                exporter.Duration = _duration >= 0 ? _duration : spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {
