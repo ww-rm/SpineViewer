@@ -1,5 +1,4 @@
 ﻿using NLog;
-using System.Runtime.InteropServices;
 using SpineViewer.Views;
 using System.Collections.Frozen;
 using System.Configuration;
@@ -8,7 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Windows;
-using SpineViewerCLI;
 
 namespace SpineViewer
 {
@@ -17,9 +15,6 @@ namespace SpineViewer
     /// </summary>
     public partial class App : Application
     {
-        [DllImport("kernel32.dll")]
-        private static extern bool AttachConsole(int dwProcessId);
-
         public static string Version => Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
         private static readonly Logger _logger;
@@ -66,11 +61,6 @@ namespace SpineViewer
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            if (e.Args.Length > 0)
-            {
-                AttachConsole(-1);
-                CLI.CliMain(e.Args);
-            }
 
             var dict = new ResourceDictionary();
 

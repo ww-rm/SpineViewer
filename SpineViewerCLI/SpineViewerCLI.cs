@@ -1,10 +1,9 @@
-
 using System.Globalization;
 using System.IO;
 using SFML.Graphics;
+using SFML.System;
 using Spine;
 using Spine.Exporters;
-using SpineViewer.Extensions;
 
 namespace SpineViewerCLI
 {
@@ -32,7 +31,7 @@ options:
   --quiet               Removes console progress log, default false
 ";
 
-        public static void CliMain(string[] args)
+        public static void Main(string[] args)
         {
 
             string? skelPath = null;
@@ -155,9 +154,7 @@ options:
             }
             else
             {
-                var rect = sp.GetAnimationBounds();
-                var bounds = new FloatRect((float)rect.X, (float)rect.Y, (float)rect.Width, (float)rect.Height).GetCanvasBounds(new(width ?? 512, height ?? 512));
-
+                var bounds = GetFloatRectCanvasBounds(GetSpineObjectAnimationBounds(sp, fps), new(width ?? 512, height ?? 512));
                 exporter = new FFmpegVideoExporter(width ?? (uint)Math.Ceiling(bounds.Width), height ?? (uint)Math.Ceiling(bounds.Height))
                 {
                     Center = bounds.Position + bounds.Size / 2,
@@ -182,6 +179,63 @@ options:
                 Console.WriteLine();
 
             Environment.Exit(0);
+        }
+
+        public static SpineObject CopySpineObject(SpineObject sp)
+        {
+            var spineObject = new SpineObject(sp, true);
+            foreach (var tr in sp.AnimationState.IterTracks().Where(t => t is not null))
+            {
+                var t = spineObject.AnimationState.SetAnimation(tr!.TrackIndex, tr.Animation, tr.Loop);
+            }
+            spineObject.Update(0);
+            return spineObject;
+        }
+
+        static FloatRect GetSpineObjectBounds(SpineObject sp)
+        {
+            sp.Skeleton.GetBounds(out var x, out var y, out var w, out var h);
+            return new(x, y, Math.Max(w, 1e-6f), Math.Max(h, 1e-6f));
+        }
+        static FloatRect FloatRectUnion(FloatRect a, FloatRect b)
+        {
+            float left = Math.Min(a.Left, b.Left);
+            float top = Math.Min(a.Top, b.Top);
+            float right = Math.Max(a.Left + a.Width, b.Left + b.Width);
+            float bottom = Math.Max(a.Top + a.Height, b.Top + b.Height);
+            return new FloatRect(left, top, right - left, bottom - top);
+        }
+        static FloatRect GetSpineObjectAnimationBounds(SpineObject sp, float fps = 10)
+        {
+            sp = CopySpineObject(sp);
+            var bounds = GetSpineObjectBounds(sp);
+            var maxDuration = sp.AnimationState.IterTracks().Select(t => t?.Animation.Duration ?? 0).DefaultIfEmpty(0).Max();
+            sp.Update(0);
+            for (float tick = 0, delta = 1 / fps; tick < maxDuration; tick += delta)
+            {
+                bounds = FloatRectUnion(bounds, GetSpineObjectBounds(sp));
+                sp.Update(delta);
+            }
+            return bounds;
+        }
+        static FloatRect GetFloatRectCanvasBounds(FloatRect rect, Vector2u resolution)
+        {
+            float sizeW = rect.Width;
+            float sizeH = rect.Height;
+            float innerW = resolution.X;
+            float innerH = resolution.Y;
+            var scale = Math.Max(Math.Abs(sizeW / innerW), Math.Abs(sizeH / innerH));
+            var scaleW = scale * Math.Sign(sizeW);
+            var scaleH = scale * Math.Sign(sizeH);
+
+            innerW *= scaleW;
+            innerH *= scaleH;
+
+            var x = rect.Left - (innerW - sizeW) / 2;
+            var y = rect.Top - (innerH - sizeH) / 2;
+            var w = resolution.X * scaleW;
+            var h = resolution.Y * scaleH;
+            return new(x, y, w, h);
         }
     }
 }
