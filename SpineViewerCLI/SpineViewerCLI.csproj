@@ -1,19 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
-    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-    <Version>0.0.1</Version>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>x64</Platforms>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <Version>0.0.1</Version>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
-    <ProjectReference Include="..\Spine\Spine.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
+        <ProjectReference Include="..\Spine\Spine.csproj" />
+    </ItemGroup>
 
 </Project>
