@@ -13,6 +13,7 @@ jobs:
     runs-on: windows-latest
     env:
       PROJECT_NAME: SpineViewer
+      PROJ_CLI_NAME: SpineViewerCLI
 
     steps:
       - name: Checkout code
@@ -54,11 +55,13 @@ jobs:
         shell: pwsh
         run: |
           dotnet publish "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj" -c Release -r win-x64 --sc false -o "publish\$env:PROJECT_NAME-$env:VERSION"
+          dotnet publish "$env:PROJECT_NAME\$env:PROJ_CLI_NAME.csproj" -c Release -r win-x64 --sc false -o "publish\$env:PROJECT_NAME-$env:VERSION"
 
       - name: Publish SelfContained version
         shell: pwsh
         run: |
           dotnet publish "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj" -c Release -r win-x64 --sc true -o "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained"
+          dotnet publish "$env:PROJECT_NAME\$env:PROJ_CLI_NAME.csproj" -c Release -r win-x64 --sc true -o "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained"
 
       - name: Create release directory
         shell: pwsh
