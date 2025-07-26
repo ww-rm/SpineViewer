@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFMLRenderer", "SFMLRendere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Windows.Wpf", "NLog.Windows.Wpf\NLog.Windows.Wpf.csproj", "{8EAB9780-9DBA-A755-6C73-0CE5AC5CE557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineViewerCLI", "SpineViewerCLI\SpineViewerCLI.csproj", "{6BC146FC-F81E-65DA-EDDF-5734DBCCB628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -86,6 +88,10 @@ Global
 		{8EAB9780-9DBA-A755-6C73-0CE5AC5CE557}.Debug|x64.Build.0 = Debug|x64
 		{8EAB9780-9DBA-A755-6C73-0CE5AC5CE557}.Release|x64.ActiveCfg = Release|x64
 		{8EAB9780-9DBA-A755-6C73-0CE5AC5CE557}.Release|x64.Build.0 = Release|x64
+		{6BC146FC-F81E-65DA-EDDF-5734DBCCB628}.Debug|x64.ActiveCfg = Debug|x64
+		{6BC146FC-F81E-65DA-EDDF-5734DBCCB628}.Debug|x64.Build.0 = Debug|x64
+		{6BC146FC-F81E-65DA-EDDF-5734DBCCB628}.Release|x64.ActiveCfg = Release|x64
+		{6BC146FC-F81E-65DA-EDDF-5734DBCCB628}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
