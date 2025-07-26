@@ -10,7 +10,7 @@ namespace SpineViewerCLI
     public class CLI
     {
         const string USAGE = @"
-usage: SpineExporter.exe [--skel PATH] [--atlas PATH] [--output PATH] [--animation STR] [--pma] [--fps INT] [--loop] [--crf INT] [--width INT] [--height INT] [--centerx INT] [--centery INT] [--zoom FLOAT] [--speed FLOAT] [--color HEX] [--quiet]
+usage: SpineViewerCLI.exe [--skel PATH] [--atlas PATH] [--output PATH] [--animation STR] [--pma] [--fps INT] [--loop] [--crf INT] [--width INT] [--height INT] [--centerx INT] [--centery INT] [--zoom FLOAT] [--speed FLOAT] [--color HEX] [--quiet]
 
 options:
   --skel PATH           Path to the .skel file
@@ -33,7 +33,6 @@ options:
 
         public static void Main(string[] args)
         {
-
             string? skelPath = null;
             string? atlasPath = null;
             string? output = null;
