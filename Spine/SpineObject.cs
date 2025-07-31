@@ -478,7 +478,6 @@ namespace Spine
                 }
 
                 var attachment = slot.Attachment;
-                SFML.Graphics.Texture texture;
 
                 float[] worldVertices;                          // 顶点世界坐标数组, 连续的 [x0, y0, x1, y1, ...] 坐标值
                 int worldVerticesLength;                        // 顶点数组的长度
@@ -491,10 +490,11 @@ namespace Spine
                 float tintB = _skeleton.B * slot.B;
                 float tintA = _skeleton.A * slot.A;
 
+                SFML.Graphics.Texture texture;
+
                 switch (attachment)
                 {
                     case IRegionAttachment regionAttachment:
-                        texture = regionAttachment.RendererObject;
                         worldVerticesLength = regionAttachment.ComputeWorldVertices(slot, ref _worldVertices);
                         worldVertices = _worldVertices;
                         triangles = regionAttachment.Triangles;
@@ -504,9 +504,11 @@ namespace Spine
                         tintG *= regionAttachment.G;
                         tintB *= regionAttachment.B;
                         tintA *= regionAttachment.A;
+
+                        // NOTE: RenderObject 的获取要在 ComputeWorldVertices 发生之后, 否则可能存在某些 Region 尚未被赋值产生 null 引用报错
+                        texture = regionAttachment.RendererObject;
                         break;
                     case IMeshAttachment meshAttachment:
-                        texture = meshAttachment.RendererObject;
                         worldVerticesLength = meshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
                         worldVertices = _worldVertices;
                         triangles = meshAttachment.Triangles;
@@ -516,9 +518,9 @@ namespace Spine
                         tintG *= meshAttachment.G;
                         tintB *= meshAttachment.B;
                         tintA *= meshAttachment.A;
+                        texture = meshAttachment.RendererObject;
                         break;
                     case ISkinnedMeshAttachment skinnedMeshAttachment:
-                        texture = skinnedMeshAttachment.RendererObject;
                         worldVerticesLength = skinnedMeshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
                         worldVertices = _worldVertices;
                         triangles = skinnedMeshAttachment.Triangles;
@@ -528,6 +530,7 @@ namespace Spine
                         tintG *= skinnedMeshAttachment.G;
                         tintB *= skinnedMeshAttachment.B;
                         tintA *= skinnedMeshAttachment.A;
+                        texture = skinnedMeshAttachment.RendererObject;
                         break;
                     case IClippingAttachment clippingAttachment:
                         _clipping.ClipStart(slot, clippingAttachment);
