@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>x64</Platforms>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <Version>3.5.51</Version>
+    </PropertyGroup>
+
+</Project>

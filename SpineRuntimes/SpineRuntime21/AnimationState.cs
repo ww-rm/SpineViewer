@@ -38,7 +38,7 @@ namespace SpineRuntime21 {
         static readonly Animation EmptyAnimation = new Animation("<empty>", new List<Timeline>(), 0);
         private AnimationStateData data;
 
-        Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
+        private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
         private List<TrackEntry> tracks = new List<TrackEntry>();
 		private List<Event> events = new List<Event>();
 		private float timeScale = 1;
