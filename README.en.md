@@ -32,6 +32,8 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 | Version |     View & Export    |
 | :-----: | :------------------: |
 | `2.1.x` | :white\_check\_mark: |
+| `3.4.x` | :white\_check\_mark: |
+| `3.5.x` | :white\_check\_mark: |
 | `3.6.x` | :white\_check\_mark: |
 | `3.7.x` | :white\_check\_mark: |
 | `3.8.x` | :white\_check\_mark: |
