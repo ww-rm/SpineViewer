@@ -45,8 +45,8 @@ namespace SpineRuntime35 {
 		internal Skin skin;
 		internal float r = 1, g = 1, b = 1, a = 1;
 		internal float time;
-		internal bool flipX, flipY;
-		internal float x, y;
+        internal float scaleX = 1, scaleY = 1;
+        internal float x, y;
 
 		public SkeletonData Data { get { return data; } }
 		public ExposedList<Bone> Bones { get { return bones; } }
@@ -64,8 +64,14 @@ namespace SpineRuntime35 {
 		public float Time { get { return time; } set { time = value; } }
 		public float X { get { return x; } set { x = value; } }
 		public float Y { get { return y; } set { y = value; } }
-		public bool FlipX { get { return flipX; } set { flipX = value; } }
-		public bool FlipY { get { return flipY; } set { flipY = value; } }
+        public float ScaleX { get { return scaleX; } set { scaleX = value; } }
+        public float ScaleY { get { return scaleY; } set { scaleY = value; } }
+
+		[Obsolete("Use ScaleX instead. FlipX is when ScaleX is negative.")]
+		public bool FlipX { get { return scaleX < 0; } set { scaleX = value ? -1f : 1f; } }
+
+		[Obsolete("Use ScaleY instead. FlipY is when ScaleY is negative.")]
+		public bool FlipY { get { return scaleY < 0; } set { scaleY = value ? -1f : 1f; } }
 
 		public Bone RootBone {
 			get { return bones.Count == 0 ? null : bones.Items[0]; }

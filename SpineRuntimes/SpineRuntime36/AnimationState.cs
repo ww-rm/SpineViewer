@@ -38,8 +38,8 @@ namespace SpineRuntime36 {
 
 		private AnimationStateData data;
 
-		Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
-		private readonly ExposedList<TrackEntry> tracks = new ExposedList<TrackEntry>();
+        private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
+        private readonly ExposedList<TrackEntry> tracks = new ExposedList<TrackEntry>();
 		private readonly ExposedList<Event> events = new ExposedList<Event>();
 		private readonly EventQueue queue; // Initialized by constructor.
 

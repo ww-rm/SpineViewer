@@ -105,22 +105,13 @@ namespace SpineRuntime34 {
 			Bone parent = this.parent;
 			if (parent == null) { // Root bone.
 				Skeleton skeleton = this.skeleton;
-				if (skeleton.flipX) {
-					x = -x;
-					la = -la;
-					lb = -lb;
-				}
-				if (skeleton.flipY != yDown) {
-					y = -y;
-					lc = -lc;
-					ld = -ld;
-				}
-				a = la;
-				b = lb;
-				c = lc;
-				d = ld;
-				worldX = x;
-				worldY = y;
+				float sx = skeleton.scaleX, sy = skeleton.scaleY;
+				a = la * sx;
+				b = lb * sx;
+				c = lc * sy;
+				d = ld * sy;
+				worldX = x * sx;
+				worldY = y * sy;
 				worldSignX = Math.Sign(scaleX);
 				worldSignY = Math.Sign(scaleY);
 				return;
@@ -196,15 +187,11 @@ namespace SpineRuntime34 {
 					c = lc;
 					d = ld;
 				}
-				if (skeleton.flipX) {
-					a = -a;
-					b = -b;
-				}
-				if (skeleton.flipY != yDown) {
-					c = -c;
-					d = -d;
-				}
-			}
+                a *= skeleton.scaleX;
+                b *= skeleton.scaleX;
+                c *= skeleton.scaleY;
+                d *= skeleton.scaleY;
+            }
 		}
 
 		public void SetToSetupPose () {

@@ -47,9 +47,9 @@ namespace SpineRuntime35 {
 
 		private float timeScale = 1;
 
-		Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
+        private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
 
-		public AnimationStateData Data { get { return data; } }
+        public AnimationStateData Data { get { return data; } }
 		/// <summary>A list of tracks that have animations, which may contain nulls.</summary>
 		public ExposedList<TrackEntry> Tracks { get { return tracks; } }
 		public float TimeScale { get { return timeScale; } set { timeScale = value; } }

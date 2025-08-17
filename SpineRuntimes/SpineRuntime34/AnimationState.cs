@@ -34,25 +34,24 @@ using System.Text;
 
 namespace SpineRuntime34 {
 	public class AnimationState {
-		private AnimationStateData data;
+        static readonly Animation EmptyAnimation = new Animation("<empty>", new ExposedList<Timeline>(), 0);
+        private AnimationStateData data;
 		private ExposedList<TrackEntry> tracks = new ExposedList<TrackEntry>();
 		private ExposedList<Event> events = new ExposedList<Event>();
 		private float timeScale = 1;
 
 		public AnimationStateData Data { get { return data; } }
-		/// <summary>A list of tracks that have animations, which may contain nulls.</summary>
-		public ExposedList<TrackEntry> Tracks { get { return tracks; } }
+        private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
+
+        /// <summary>A list of tracks that have animations, which may contain nulls.</summary>
+        public ExposedList<TrackEntry> Tracks { get { return tracks; } }
 		public float TimeScale { get { return timeScale; } set { timeScale = value; } }
 
-		public delegate void StartEndDelegate (AnimationState state, int trackIndex);
-		public event StartEndDelegate Start;
-		public event StartEndDelegate End;
+        public delegate void TrackEntryDelegate(TrackEntry trackEntry);
+        public event TrackEntryDelegate Start, End, Complete;
 
-		public delegate void EventDelegate (AnimationState state, int trackIndex, Event e);
+        public delegate void EventDelegate (AnimationState state, int trackIndex, Event e);
 		public event EventDelegate Event;
-
-		public delegate void CompleteDelegate (AnimationState state, int trackIndex, int loopCount);
-		public event CompleteDelegate Complete;
 
 		public AnimationState (AnimationStateData data) {
 			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
@@ -78,8 +77,8 @@ namespace SpineRuntime34 {
 				// Check if completed the animation or a loop iteration.
 				if (current.loop ? (current.lastTime % endTime > time % endTime) : (current.lastTime < endTime && time >= endTime)) {
 					int count = (int)(time / endTime);
-					current.OnComplete(this, i, count);
-					if (Complete != null) Complete(this, i, count);
+					current.OnComplete();
+					if (Complete != null) Complete(current);
 				}
 
 				TrackEntry next = current.next;
@@ -149,11 +148,18 @@ namespace SpineRuntime34 {
 			TrackEntry current = tracks.Items[trackIndex];
 			if (current == null) return;
 
-			current.OnEnd(this, trackIndex);
-			if (End != null) End(this, trackIndex);
+			current.OnEnd();
+			if (End != null) End(current);
 
 			tracks.Items[trackIndex] = null;
-		}
+
+            while (current is not null)
+            {
+                var tmp = current.next;
+                trackEntryPool.Free(current);
+                current = tmp;
+            }
+        }
 
 		private TrackEntry ExpandToIndex (int index) {
 			if (index < tracks.Count) return tracks.Items[index];
@@ -168,8 +174,8 @@ namespace SpineRuntime34 {
 				TrackEntry previous = current.previous;
 				current.previous = null;
 
-				current.OnEnd(this, index);
-				if (End != null) End(this, index);
+				current.OnEnd();
+				if (End != null) End(current);
 
 				entry.mixDuration = data.GetMix(current.animation, entry.animation);
 				if (entry.mixDuration > 0) {
@@ -184,8 +190,15 @@ namespace SpineRuntime34 {
 
 			tracks.Items[index] = entry;
 
-			entry.OnStart(this, index);
-			if (Start != null) Start(this, index);
+            while (current is not null)
+            {
+                var tmp = current.next;
+                trackEntryPool.Free(current);
+                current = tmp;
+            }
+
+            entry.OnStart();
+			if (Start != null) Start(entry);
 		}
 
 		/// <seealso cref="SetAnimation(int, Animation, bool)" />
@@ -198,8 +211,9 @@ namespace SpineRuntime34 {
 		/// <summary>Set the current animation. Any queued animations are cleared.</summary>
 		public TrackEntry SetAnimation (int trackIndex, Animation animation, bool loop) {
 			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
-			entry.animation = animation;
+            TrackEntry entry = trackEntryPool.Obtain();
+            entry.trackIndex = trackIndex;
+            entry.animation = animation;
 			entry.loop = loop;
 			entry.time = 0;
 			entry.endTime = animation.Duration;
@@ -218,8 +232,10 @@ namespace SpineRuntime34 {
 		/// <param name="delay">May be &lt;= 0 to use duration of previous animation minus any mix duration plus the negative delay.</param>
 		public TrackEntry AddAnimation (int trackIndex, Animation animation, bool loop, float delay) {
 			if (animation == null) throw new ArgumentNullException("animation", "animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
-			entry.animation = animation;
+            TrackEntry entry = trackEntryPool.Obtain();
+            entry.trackIndex = trackIndex;
+            entry.animation = animation;
+            entry.animation = animation;
 			entry.loop = loop;
 			entry.time = 0;
 			entry.endTime = animation.Duration;
@@ -243,8 +259,48 @@ namespace SpineRuntime34 {
 			return entry;
 		}
 
-		/// <returns>May be null.</returns>
-		public TrackEntry GetCurrent (int trackIndex) {
+        /// <summary>
+        /// Sets an empty animation for a track, discarding any queued animations, and mixes to it over the specified mix duration.</summary>
+        public TrackEntry SetEmptyAnimation(int trackIndex, float mixDuration)
+        {
+            TrackEntry entry = SetAnimation(trackIndex, AnimationState.EmptyAnimation, false);
+            entry.mixDuration = mixDuration;
+            entry.endTime = mixDuration;
+            return entry;
+        }
+
+        /// <summary>
+        /// Adds an empty animation to be played after the current or last queued animation for a track, and mixes to it over the
+        /// specified mix duration.</summary>
+        /// <returns>
+        /// A track entry to allow further customization of animation playback. References to the track entry must not be kept after <see cref="AnimationState.Dispose"/>.
+        /// </returns>
+        /// <param name="trackIndex">Track number.</param>
+        /// <param name="mixDuration">Mix duration.</param>
+        /// <param name="delay">Seconds to begin this animation after the start of the previous animation. May be &lt;= 0 to use the animation
+        /// duration of the previous track minus any mix duration plus the negative delay.</param>
+        public TrackEntry AddEmptyAnimation(int trackIndex, float mixDuration, float delay)
+        {
+            if (delay <= 0) delay -= mixDuration;
+            TrackEntry entry = AddAnimation(trackIndex, AnimationState.EmptyAnimation, false, delay);
+            entry.mixDuration = mixDuration;
+            entry.endTime = mixDuration;
+            return entry;
+        }
+
+        /// <summary>
+        /// Sets an empty animation for every track, discarding any queued animations, and mixes to it over the specified mix duration.</summary>
+        public void SetEmptyAnimations(float mixDuration)
+        {
+            for (int i = 0, n = tracks.Count; i < n; i++)
+            {
+                TrackEntry current = tracks.Items[i];
+                if (current != null) SetEmptyAnimation(i, mixDuration);
+            }
+        }
+
+        /// <returns>May be null.</returns>
+        public TrackEntry GetCurrent (int trackIndex) {
 			if (trackIndex >= tracks.Count) return null;
 			return tracks.Items[trackIndex];
 		}
@@ -262,15 +318,17 @@ namespace SpineRuntime34 {
 		}
 	}
 
-	public class TrackEntry {
+	public class TrackEntry : Pool<TrackEntry>.IPoolable {
 		internal TrackEntry next, previous;
-		internal Animation animation;
+        internal int trackIndex;
+        internal Animation animation;
 		internal bool loop;
 		internal float delay, time, lastTime = -1, endTime, timeScale = 1;
 		internal float mixTime, mixDuration, mix = 1;
 
-		public Animation Animation { get { return animation; } }
-		public float Delay { get { return delay; } set { delay = value; } }
+        public int TrackIndex { get { return trackIndex; } }
+        public Animation Animation { get { return animation; } }
+        public float Delay { get { return delay; } set { delay = value; } }
 		public float Time { get { return time; } set { time = value; } }
 		public float LastTime { get { return lastTime; } set { lastTime = value; } }
 		public float EndTime { get { return endTime; } set { endTime = value; } }
@@ -278,29 +336,111 @@ namespace SpineRuntime34 {
 		public float Mix { get { return mix; } set { mix = value; } }
 		public bool Loop { get { return loop; } set { loop = value; } }
 
-		public event AnimationState.StartEndDelegate Start;
-		public event AnimationState.StartEndDelegate End;
-		public event AnimationState.EventDelegate Event;
-		public event AnimationState.CompleteDelegate Complete;
+        /// <summary>
+        /// Seconds for mixing from the previous animation to this animation. Defaults to the value provided by
+        /// <see cref="AnimationStateData"/> based on the animation before this animation (if any).
+        ///
+        /// The mix duration can be set manually rather than use the value from AnimationStateData.GetMix.
+        /// In that case, the mixDuration must be set before <see cref="AnimationState.Update(float)"/> is next called.
+        /// <para>
+        /// When using <seealso cref="AnimationState.AddAnimation(int, Animation, bool, float)"/> with a
+        /// <code>delay</code> less than or equal to 0, note the <seealso cref="Delay"/> is set using the mix duration from the <see cref=" AnimationStateData"/>
+        /// </para>
+        ///
+        /// </summary>
+        public float MixDuration { get { return mixDuration; } set { mixDuration = value; } }
 
-		internal void OnStart (AnimationState state, int index) {
-			if (Start != null) Start(state, index);
-		}
+        /// <summary>
+        /// The animation queued to start after this animation, or null.</summary>
+        public TrackEntry Next { get { return next; } }
 
-		internal void OnEnd (AnimationState state, int index) {
-			if (End != null) End(state, index);
-		}
+        public event AnimationState.TrackEntryDelegate Start, End, Complete;
+        public event AnimationState.EventDelegate Event;
 
-		internal void OnEvent (AnimationState state, int index, Event e) {
-			if (Event != null) Event(state, index, e);
-		}
+        // IPoolable.Reset()
+        public void Reset()
+        {
+            next = null;
+            previous = null;
+            animation = null;
 
-		internal void OnComplete (AnimationState state, int index, int loopCount) {
-			if (Complete != null) Complete(state, index, loopCount);
-		}
+            Start = null;
+            End = null;
+            Complete = null;
+            Event = null;
+        }
 
-		override public String ToString () {
+        internal void OnStart() { if (Start != null) Start(this); }
+        internal void OnEnd() { if (End != null) End(this); }
+        internal void OnComplete() { if (Complete != null) Complete(this); }
+
+        internal void OnEvent(AnimationState state, int index, Event e)
+        {
+            if (Event != null) Event(state, index, e);
+        }
+
+        override public String ToString () {
 			return animation == null ? "<none>" : animation.name;
 		}
 	}
+
+    public class Pool<T> where T : class, new()
+    {
+        public readonly int max;
+        readonly Stack<T> freeObjects;
+
+        public int Count { get { return freeObjects.Count; } }
+        public int Peak { get; private set; }
+
+        public Pool(int initialCapacity = 16, int max = int.MaxValue)
+        {
+            freeObjects = new Stack<T>(initialCapacity);
+            this.max = max;
+        }
+
+        public T Obtain()
+        {
+            return freeObjects.Count == 0 ? new T() : freeObjects.Pop();
+        }
+
+        public void Free(T obj)
+        {
+            if (obj == null) throw new ArgumentNullException("obj", "obj cannot be null");
+            if (freeObjects.Count < max)
+            {
+                freeObjects.Push(obj);
+                Peak = Math.Max(Peak, freeObjects.Count);
+            }
+            Reset(obj);
+        }
+
+        //		protected void FreeAll (List<T> objects) {
+        //			if (objects == null) throw new ArgumentNullException("objects", "objects cannot be null.");
+        //			var freeObjects = this.freeObjects;
+        //			int max = this.max;
+        //			for (int i = 0; i < objects.Count; i++) {
+        //				T obj = objects[i];
+        //				if (obj == null) continue;
+        //				if (freeObjects.Count < max) freeObjects.Push(obj);
+        //				Reset(obj);
+        //			}
+        //			Peak = Math.Max(Peak, freeObjects.Count);
+        //		}
+
+        public void Clear()
+        {
+            freeObjects.Clear();
+        }
+
+        protected void Reset(T obj)
+        {
+            var poolable = obj as IPoolable;
+            if (poolable != null) poolable.Reset();
+        }
+
+        public interface IPoolable
+        {
+            void Reset();
+        }
+    }
 }

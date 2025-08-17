@@ -44,8 +44,8 @@ namespace SpineRuntime34 {
 		internal Skin skin;
 		internal float r = 1, g = 1, b = 1, a = 1;
 		internal float time;
-		internal bool flipX, flipY;
-		internal float x, y;
+        internal float scaleX = 1, scaleY = 1;
+        internal float x, y;
 
 		public SkeletonData Data { get { return data; } }
 		public ExposedList<Bone> Bones { get { return bones; } }
@@ -63,10 +63,16 @@ namespace SpineRuntime34 {
 		public float Time { get { return time; } set { time = value; } }
 		public float X { get { return x; } set { x = value; } }
 		public float Y { get { return y; } set { y = value; } }
-		public bool FlipX { get { return flipX; } set { flipX = value; } }
-		public bool FlipY { get { return flipY; } set { flipY = value; } }
+        public float ScaleX { get { return scaleX; } set { scaleX = value; } }
+        public float ScaleY { get { return scaleY; } set { scaleY = value; } }
 
-		public Bone RootBone {
+        [Obsolete("Use ScaleX instead. FlipX is when ScaleX is negative.")]
+        public bool FlipX { get { return scaleX < 0; } set { scaleX = value ? -1f : 1f; } }
+
+        [Obsolete("Use ScaleY instead. FlipY is when ScaleY is negative.")]
+        public bool FlipY { get { return scaleY < 0; } set { scaleY = value ? -1f : 1f; } }
+
+        public Bone RootBone {
 			get { return bones.Count == 0 ? null : bones.Items[0]; }
 		}
 
@@ -453,5 +459,50 @@ namespace SpineRuntime34 {
 		public void Update (float delta) {
 			time += delta;
 		}
-	}
+
+        public void GetBounds(out float x, out float y, out float width, out float height)
+        {
+            float[] temp = new float[8];
+            float minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            for (int i = 0, n = drawOrder.Count; i < n; i++)
+            {
+                Slot slot = drawOrder.Items[i];
+                int verticesLength = 0;
+                float[] vertices = null;
+                Attachment attachment = slot.Attachment;
+                if (attachment is RegionAttachment regionAttachment)
+                {
+                    verticesLength = 8;
+                    vertices = temp;
+                    if (vertices.Length < 8) vertices = temp = new float[8];
+                    regionAttachment.ComputeWorldVertices(slot.Bone, temp);
+                }
+                else if (attachment is MeshAttachment meshAttachment)
+                {
+
+                    MeshAttachment mesh = meshAttachment;
+                    verticesLength = mesh.Vertices.Length;
+                    vertices = temp;
+                    if (vertices.Length < verticesLength) vertices = temp = new float[verticesLength];
+                    mesh.ComputeWorldVertices(slot, temp);
+                }
+
+                if (vertices != null)
+                {
+                    for (int ii = 0; ii < verticesLength; ii += 2)
+                    {
+                        float vx = vertices[ii], vy = vertices[ii + 1];
+                        minX = Math.Min(minX, vx);
+                        minY = Math.Min(minY, vy);
+                        maxX = Math.Max(maxX, vx);
+                        maxY = Math.Max(maxY, vy);
+                    }
+                }
+            }
+            x = minX;
+            y = minY;
+            width = maxX - minX;
+            height = maxY - minY;
+        }
+    }
 }

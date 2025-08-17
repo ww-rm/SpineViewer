@@ -11,6 +11,8 @@ namespace Spine.SpineWrappers
     /// </summary>
     public class TextureLoader :
         SpineRuntime21.TextureLoader,
+        SpineRuntime34.TextureLoader,
+        SpineRuntime35.TextureLoader,
         SpineRuntime36.TextureLoader,
         SpineRuntime37.TextureLoader,
         SpineRuntime38.TextureLoader,
@@ -95,6 +97,76 @@ namespace Spine.SpineWrappers
                 case SpineRuntime21.TextureFilter.MipMapLinearNearest:
                 case SpineRuntime21.TextureFilter.MipMapNearestLinear:
                 case SpineRuntime21.TextureFilter.MipMapLinearLinear:
+                    texture.Smooth = true;
+                    texture.GenerateMipmap();
+                    break;
+            }
+
+            if (ForceNearest) texture.Smooth = false;
+            if (ForceMipmap) texture.GenerateMipmap();
+
+            page.rendererObject = texture;
+        }
+
+        public virtual void Load(SpineRuntime34.AtlasPage page, string path)
+        {
+            var texture = ReadTexture(path);
+
+            if (page.magFilter == SpineRuntime34.TextureFilter.Linear)
+            {
+                texture.Smooth = true;
+            }
+            if (page.uWrap == SpineRuntime34.TextureWrap.Repeat && page.vWrap == SpineRuntime34.TextureWrap.Repeat)
+            {
+                texture.Repeated = true;
+            }
+            switch (page.minFilter)
+            {
+                case SpineRuntime34.TextureFilter.Linear:
+                    texture.Smooth = true;
+                    break;
+                case SpineRuntime34.TextureFilter.MipMap:
+                case SpineRuntime34.TextureFilter.MipMapNearestNearest:
+                    texture.GenerateMipmap();
+                    break;
+                case SpineRuntime34.TextureFilter.MipMapLinearNearest:
+                case SpineRuntime34.TextureFilter.MipMapNearestLinear:
+                case SpineRuntime34.TextureFilter.MipMapLinearLinear:
+                    texture.Smooth = true;
+                    texture.GenerateMipmap();
+                    break;
+            }
+
+            if (ForceNearest) texture.Smooth = false;
+            if (ForceMipmap) texture.GenerateMipmap();
+
+            page.rendererObject = texture;
+        }
+
+        public virtual void Load(SpineRuntime35.AtlasPage page, string path)
+        {
+            var texture = ReadTexture(path);
+
+            if (page.magFilter == SpineRuntime35.TextureFilter.Linear)
+            {
+                texture.Smooth = true;
+            }
+            if (page.uWrap == SpineRuntime35.TextureWrap.Repeat && page.vWrap == SpineRuntime35.TextureWrap.Repeat)
+            {
+                texture.Repeated = true;
+            }
+            switch (page.minFilter)
+            {
+                case SpineRuntime35.TextureFilter.Linear:
+                    texture.Smooth = true;
+                    break;
+                case SpineRuntime35.TextureFilter.MipMap:
+                case SpineRuntime35.TextureFilter.MipMapNearestNearest:
+                    texture.GenerateMipmap();
+                    break;
+                case SpineRuntime35.TextureFilter.MipMapLinearNearest:
+                case SpineRuntime35.TextureFilter.MipMapNearestLinear:
+                case SpineRuntime35.TextureFilter.MipMapLinearLinear:
                     texture.Smooth = true;
                     texture.GenerateMipmap();
                     break;

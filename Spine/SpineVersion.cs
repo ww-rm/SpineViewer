@@ -19,6 +19,8 @@ namespace Spine
     public sealed class SpineVersion : IEquatable<SpineVersion>, IComparable<SpineVersion>
     {
         public static readonly SpineVersion V21 = new(typeof(SpineRuntime21.Skeleton));
+        public static readonly SpineVersion V34 = new(typeof(SpineRuntime34.Skeleton));
+        public static readonly SpineVersion V35 = new(typeof(SpineRuntime35.Skeleton));
         public static readonly SpineVersion V36 = new(typeof(SpineRuntime36.Skeleton));
         public static readonly SpineVersion V37 = new(typeof(SpineRuntime37.Skeleton));
         public static readonly SpineVersion V38 = new(typeof(SpineRuntime38.Skeleton));
