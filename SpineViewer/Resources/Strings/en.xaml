@@ -78,6 +78,8 @@
 
     <s:String x:Key="Str_Slot">Slot</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">Clear Slots Attachment</s:String>
+    <s:String x:Key="Str_EnableSlots">Enable Slots</s:String>
+    <s:String x:Key="Str_DisableSlots">Disable Slots</s:String>
 
     <s:String x:Key="Str_Animation">Animation</s:String>
     <s:String x:Key="Str_AppendTrack">Add</s:String>

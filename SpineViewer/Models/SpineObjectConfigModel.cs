@@ -31,6 +31,8 @@ namespace SpineViewer.Models
 
         public Dictionary<string, string?> SlotAttachment { get; set; } = [];
 
+        public List<string> DisabledSlots { get; set; } = [];
+
         public List<string?> Animations { get; set; } = [];
 
         public bool DebugTexture { get; set; } = true;

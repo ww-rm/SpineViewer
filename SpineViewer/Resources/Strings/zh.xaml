@@ -78,6 +78,8 @@
 
     <s:String x:Key="Str_Slot">插槽</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">清除附件</s:String>
+    <s:String x:Key="Str_EnableSlots">启用</s:String>
+    <s:String x:Key="Str_DisableSlots">禁用</s:String>
 
     <s:String x:Key="Str_Animation">动画</s:String>
     <s:String x:Key="Str_AppendTrack">添加</s:String>

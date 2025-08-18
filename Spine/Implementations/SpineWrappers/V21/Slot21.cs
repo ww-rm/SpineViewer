@@ -66,6 +66,8 @@ namespace Spine.Implementations.SpineWrappers.V21
             }
         }
 
+        public bool Disabled { get; set; }
+
         public override string ToString() => _o.ToString();
     }
 }

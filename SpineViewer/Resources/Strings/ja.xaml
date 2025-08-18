@@ -78,6 +78,8 @@
 
     <s:String x:Key="Str_Slot">スロット</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">アタッチメントをクリア</s:String>
+    <s:String x:Key="Str_EnableSlots">有効</s:String>
+    <s:String x:Key="Str_DisableSlots">無効</s:String>
 
     <s:String x:Key="Str_Animation">アニメーション</s:String>
     <s:String x:Key="Str_AppendTrack">追加</s:String>
