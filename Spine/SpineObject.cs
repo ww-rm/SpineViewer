@@ -172,9 +172,12 @@ namespace Spine
                 _skinLoadStatus = other._skinLoadStatus.ToDictionary();
                 ReloadSkins();
 
-                // 拷贝自定义插槽附件加载情况
+                // 拷贝插槽属性值
                 for (int i = 0; i < other._skeleton.Slots.Length; i++)
+                {
                     _skeleton.Slots[i].Attachment = other._skeleton.Slots[i].Attachment;
+                    _skeleton.Slots[i].Disabled = other._skeleton.Slots[i].Disabled;
+                }
 
                 // 拷贝调试属性
                 EnableDebug = other.EnableDebug;
