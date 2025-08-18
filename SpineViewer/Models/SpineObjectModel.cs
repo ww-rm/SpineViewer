@@ -85,6 +85,8 @@ namespace SpineViewer.Models
 
         public event EventHandler<SkinStatusChangedEventArgs>? SkinStatusChanged;
 
+        public event EventHandler<SlotVisibleChangedEventArgs>? SlotVisibleChanged;
+
         public event EventHandler<SlotAttachmentChangedEventArgs>? SlotAttachmentChanged;
 
         public event EventHandler<AnimationChangedEventArgs>? AnimationChanged;
@@ -199,6 +201,19 @@ namespace SpineViewer.Models
         }
 
         public FrozenDictionary<string, ImmutableArray<string>> SlotAttachments => _slotAttachments;
+
+        public bool GetSlotVisible(string slotName)
+        {
+            lock (_lock) return _spineObject.GetSlotVisible(slotName);
+        }
+
+        public bool SetSlotVisible(string slotName, bool visible)
+        {
+            bool changed = false;
+            lock (_lock) changed = _spineObject.SetSlotVisible(slotName, visible);
+            if (changed) SlotVisibleChanged?.Invoke(this, new(slotName, visible));
+            return changed;
+        }
 
         public string? GetAttachment(string slotName)
         {
@@ -390,6 +405,8 @@ namespace SpineViewer.Models
 
                     foreach (var slot in _spineObject.Skeleton.Slots) config.SlotAttachment[slot.Name] = slot.Attachment?.Name;
 
+                    config.DisabledSlots = _spineObject.Skeleton.Slots.Where(it => it.Disabled).Select(it => it.Name).ToList();
+
                     // XXX: 处理空动画
                     config.Animations.AddRange(_spineObject.AnimationState.IterTracks().Select(tr => tr?.Animation.Name));
 
@@ -421,6 +438,10 @@ namespace SpineViewer.Models
                     foreach (var (slotName, attachmentName) in value.SlotAttachment)
                         if (_spineObject.SetAttachment(slotName, attachmentName))
                             SlotAttachmentChanged?.Invoke(this, new(slotName, attachmentName));
+
+                    foreach (var slotName in value.DisabledSlots)
+                        if (_spineObject.SetSlotVisible(slotName, false))
+                            SlotVisibleChanged?.Invoke(this, new(slotName, false));
 
                     // XXX: 处理空动画
                     _spineObject.AnimationState.ClearTracks();
@@ -505,6 +526,12 @@ namespace SpineViewer.Models
     {
         public string Name { get; } = name;
         public bool Status { get; } = status;
+    }
+
+    public class SlotVisibleChangedEventArgs(string slotName, bool visible) : EventArgs
+    {
+        public string SlotName { get; } = slotName;
+        public bool Visible { get; } = visible;
     }
 
     public class SlotAttachmentChangedEventArgs(string slotName, string? attachmentName) : EventArgs

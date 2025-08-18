@@ -172,9 +172,12 @@ namespace Spine
                 _skinLoadStatus = other._skinLoadStatus.ToDictionary();
                 ReloadSkins();
 
-                // 拷贝自定义插槽附件加载情况
+                // 拷贝插槽属性值
                 for (int i = 0; i < other._skeleton.Slots.Length; i++)
+                {
                     _skeleton.Slots[i].Attachment = other._skeleton.Slots[i].Attachment;
+                    _skeleton.Slots[i].Disabled = other._skeleton.Slots[i].Disabled;
+                }
 
                 // 拷贝调试属性
                 EnableDebug = other.EnableDebug;
@@ -300,6 +303,30 @@ namespace Spine
         public bool DebugClippings { get; set; }
 
         /// <summary>
+        /// 获取插槽可见性, 如果不存在则默认返回 false
+        /// </summary>
+        public bool GetSlotVisible(string slotName)
+        {
+            if (_skeleton.SlotsByName.TryGetValue(slotName, out var slot))
+                return !slot.Disabled;
+            return false;
+        }
+
+        /// <summary>
+        /// 设置插槽可见性, 插槽不可见后将不会在任何渲染中出现, 插槽不存在则忽略操作
+        /// </summary>
+        /// <returns>操作是否成功, 插槽不存在则返回 false</returns>
+        public bool SetSlotVisible(string slotName, bool visible)
+        {
+            if (_skeleton.SlotsByName.TryGetValue(slotName, out var slot))
+            {
+                slot.Disabled = !visible;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 获取某个插槽上的附件名, 插槽不存在或者无附件均返回 null
         /// </summary>
         public string? GetAttachment(string slotName)
@@ -310,7 +337,7 @@ namespace Spine
         }
 
         /// <summary>
-        /// 设置某个插槽的附件, 如果不存在则忽略, 可以使用 null 来清除附件
+        /// 设置某个插槽的附件, 如果不存在则忽略, 可以使用 null 来尝试清除附件
         /// </summary>
         /// <returns>是否操作成功</returns>
         public bool SetAttachment(string slotName, string? attachmentName)
@@ -471,7 +498,7 @@ namespace Spine
 
             foreach (var slot in _skeleton.IterDrawOrder())
             {
-                if (slot.A <= 0 || !slot.Bone.Active)
+                if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
                 {
                     _clipping.ClipEnd(slot);
                     continue;
@@ -602,7 +629,7 @@ namespace Spine
             if (DebugRegions)
             {
                 vt.Color = AttachmentLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active))
+                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IRegionAttachment regionAttachment)
                     {
@@ -634,7 +661,7 @@ namespace Spine
             if (DebugMeshes)
             {
                 vt.Color = MeshLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active))
+                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IMeshAttachment meshAttachment)
                     {
@@ -698,7 +725,7 @@ namespace Spine
             if (DebugMeshHulls)
             {
                 vt.Color = AttachmentLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active))
+                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IMeshAttachment meshAttachment)
                     {
@@ -767,7 +794,7 @@ namespace Spine
             if (DebugClippings)
             {
                 vt.Color = ClippingLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active))
+                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IClippingAttachment clippingAttachment)
                     {

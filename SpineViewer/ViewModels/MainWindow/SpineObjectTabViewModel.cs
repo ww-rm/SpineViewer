@@ -15,7 +15,7 @@ namespace SpineViewer.ViewModels.MainWindow
     {
         private SpineObjectModel[] _selectedObjects = [];
         private readonly ObservableCollection<SkinViewModel> _skins = [];
-        private readonly ObservableCollection<SlotAttachmentViewModel> _slots = [];
+        private readonly ObservableCollection<SlotViewModel> _slots = [];
         private readonly ObservableCollection<AnimationTrackViewModel> _animationTracks = [];
 
         public ImmutableArray<ISkeleton.Physics> PhysicsOptions { get; } = Enum.GetValues<ISkeleton.Physics>().ToImmutableArray();
@@ -324,11 +324,16 @@ namespace SpineViewer.ViewModels.MainWindow
             args => { return args is not null && args.OfType<SkinViewModel>().Any(); }
         );
 
-        public ObservableCollection<SlotAttachmentViewModel> Slots => _slots;
+        public ObservableCollection<SlotViewModel> Slots => _slots;
 
-        public RelayCommand<IList?> Cmd_ClearSlotsAttachment { get; } = new(
-            args => { if (args is null) return; foreach (var s in args.OfType<SlotAttachmentViewModel>()) s.AttachmentName = null; },
-            args => { return args is not null && args.OfType<SlotAttachmentViewModel>().Any(); }
+        public RelayCommand<IList?> Cmd_EnableSlots { get; } = new(
+            args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = true; },
+            args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
+        );
+
+        public RelayCommand<IList?> Cmd_DisableSlots { get; } = new(
+            args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = false; },
+            args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
 
         public ObservableCollection<AnimationTrackViewModel> AnimationTracks => _animationTracks;
@@ -672,13 +677,13 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
 
-        public class SlotAttachmentViewModel : ObservableObject
+        public class SlotViewModel : ObservableObject
         {
             private readonly SpineObjectModel[] _spines;
             private readonly string[] _attachmentNames = [];
             private readonly string _slotName;
 
-            public SlotAttachmentViewModel(string slotName, SpineObjectModel[] spines)
+            public SlotViewModel(string slotName, SpineObjectModel[] spines)
             {
                 _spines = spines;
                 _slotName = slotName;
@@ -694,6 +699,11 @@ namespace SpineViewer.ViewModels.MainWindow
                 // 使用弱引用, 则此 ViewModel 被释放时无需显式退订事件
                 foreach (var sp in _spines)
                 {
+                    WeakEventManager<SpineObjectModel, SlotVisibleChangedEventArgs>.AddHandler(
+                        sp,
+                        nameof(sp.SlotVisibleChanged),
+                        SingleModel_SlotVisibleChanged
+                    );
                     WeakEventManager<SpineObjectModel, SlotAttachmentChangedEventArgs>.AddHandler(
                         sp,
                         nameof(sp.SlotAttachmentChanged),
@@ -706,9 +716,6 @@ namespace SpineViewer.ViewModels.MainWindow
                     );
                 }
             }
-
-            public RelayCommand Cmd_ClearAttachment => _cmd_ClearAttachment ??= new(() => AttachmentName = null);
-            private RelayCommand? _cmd_ClearAttachment;
 
             public ReadOnlyCollection<string> AttachmentNames => _attachmentNames.AsReadOnly();
 
@@ -731,6 +738,30 @@ namespace SpineViewer.ViewModels.MainWindow
                     foreach (var sp in _spines) if (sp.SetAttachment(_slotName, value)) changed = true;
                     if (changed) OnPropertyChanged();
                 }
+            }
+
+            public bool? Visible
+            {
+                get
+                {
+                    if (_spines.Length <= 0) return null;
+                    var val = _spines[0].GetSlotVisible(_slotName);
+                    if (_spines.Skip(1).Any(it => it.GetSlotVisible(_slotName) != val)) return null;
+                    return val;
+                }
+
+                set
+                {
+                    if (_spines.Length <= 0) return;
+                    if (value is null) return;
+                    foreach (var sp in _spines) sp.SetSlotVisible(_slotName, (bool)value);
+                    OnPropertyChanged();
+                }
+            }
+
+            private void SingleModel_SlotVisibleChanged(object? sender, SlotVisibleChangedEventArgs e)
+            {
+                if (e.SlotName == _slotName) OnPropertyChanged(nameof(Visible));
             }
 
             private void SingleModel_SlotAttachmentChanged(object? sender, SlotAttachmentChangedEventArgs e)

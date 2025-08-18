@@ -19,6 +19,7 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 * Batch adjustment of skeleton parameters using multi-selection.
 * Multi-track animation settings.
 * Skin and custom slot attachment settings.
+* Custom slot visibility settings.
 * Debug rendering support.
 * Fullscreen preview mode.
 * Export to single frame/image sequence/animated GIF/video formats.

@@ -524,8 +524,11 @@
 
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="{DynamicResource Str_ClearSlotsAttachment}" 
-                                                                  Command="{Binding Cmd_ClearSlotsAttachment}"
+                                                        <MenuItem Header="{DynamicResource Str_EnableSlots}" 
+                                                                  Command="{Binding Cmd_EnableSlots}"
+                                                                  CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_DisableSlots}" 
+                                                                  Command="{Binding Cmd_DisableSlots}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
@@ -540,9 +543,7 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Label Grid.Column="0" Content="{Binding SlotName}" HorizontalAlignment="Left"/>
                                                             <ComboBox Grid.Column="1" SelectedValue="{Binding AttachmentName}" ItemsSource="{Binding AttachmentNames}"/>
-                                                            <Button Grid.Column="2" 
-                                                                    Command="{Binding Cmd_ClearAttachment}"
-                                                                    hc:IconElement.Geometry="{StaticResource Geo_Ban}"/>
+                                                            <ToggleButton Grid.Column="2" IsChecked="{Binding Visible}"/>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>

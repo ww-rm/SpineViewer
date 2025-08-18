@@ -53,5 +53,10 @@ namespace Spine.SpineWrappers
         /// 使用的附件, 可以设置为 null 清空附件
         /// </summary>
         public IAttachment? Attachment { get; set; }
+
+        /// <summary>
+        /// 是否已禁用渲染该插槽
+        /// </summary>
+        public bool Disabled { get; set; }
     }
 }
