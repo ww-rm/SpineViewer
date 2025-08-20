@@ -35,6 +35,9 @@ namespace SpineViewer.ViewModels.Exporters
         public int Crf { get => _crf; set => SetProperty(ref _crf, Math.Clamp(value, 0, 63)); }
         protected int _crf = 23;
 
+        public int Profile { get => _profile; set => SetProperty(ref _profile, Math.Clamp(value, -1, 5)); }
+        protected int _profile = 5;
+
         private string FormatSuffix => $".{_format.ToString().ToLower()}";
 
         protected override void Export(SpineObjectModel[] models)
@@ -60,7 +63,8 @@ namespace SpineViewer.ViewModels.Exporters
                 Loop = _loop,
                 Quality = _quality,
                 Lossless = _lossless,
-                Crf = _crf
+                Crf = _crf,
+                Profile = _profile,
             };
 
             // 非自动分辨率则直接用预览画面的视区参数

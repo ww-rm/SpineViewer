@@ -60,8 +60,9 @@ namespace Spine.Exporters
             if (!string.IsNullOrEmpty(_codec)) options.WithVideoCodec(_codec);
             if (!string.IsNullOrEmpty(_pixelFormat)) options.ForcePixelFormat(_pixelFormat);
             if (!string.IsNullOrEmpty(_bitrate)) options.WithCustomArgument($"-b:v {_bitrate}");
-            if (!string.IsNullOrEmpty(_filter)) options.WithCustomArgument($"-vf unpremultiply=inplace=1, {_customArgs}");
+            if (!string.IsNullOrEmpty(_filter)) options.WithCustomArgument($"-vf unpremultiply=inplace=1, {_filter}");
             else options.WithCustomArgument("-vf unpremultiply=inplace=1");
+            if (!string.IsNullOrEmpty(_customArgs)) options.WithCustomArgument($"{_customArgs}");
         }
 
         /// <summary>

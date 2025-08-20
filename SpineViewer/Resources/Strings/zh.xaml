@@ -149,6 +149,10 @@
     <s:String x:Key="Str_InvalidMaxResolution">使用自动分辨率时需要提供有效的最大分辨率</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">必须指定 FFmpeg 导出格式</s:String>
 
+    <s:String x:Key="Str_ExportBaseArgs">基本参数</s:String>
+    <s:String x:Key="Str_ExportVideoArgs">视频参数</s:String>
+    <s:String x:Key="Str_ExportOtherArgs">其他参数</s:String>
+
     <s:String x:Key="Str_ResolutionTooltip">画面分辨率，相关参数请在画面参数面板进行调整</s:String>
     <s:String x:Key="Str_ExportSingle">导出单个</s:String>
     <s:String x:Key="Str_ExportSingleTooltip">勾选后将所选模型在同一个画面上进行导出，且必须提供输出文件夹</s:String>
@@ -170,19 +174,21 @@
 
     <s:String x:Key="Str_Fps">帧率</s:String>
     <s:String x:Key="Str_ExportSpeed">导出速度</s:String>
-    <s:String x:Key="Str_ExportSpeedTooltip">导出速度因子, 仅影响模型的动作速度, 不影响导出时长和帧率等参数</s:String>
+    <s:String x:Key="Str_ExportSpeedTooltip">导出速度因子，仅影响模型的动作速度，不影响导出时长和帧率等参数</s:String>
     <s:String x:Key="Str_KeepLastFrame">保留最后一帧</s:String>
     <s:String x:Key="Str_KeepLastFrameTooltip">当设置保留最后一帧时，动图会更为连贯，但是帧数可能比预期帧数多 1</s:String>
 
     <s:String x:Key="Str_VideoFormat">视频格式</s:String>
     <s:String x:Key="Str_LoopPlay">循环播放</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip">动图是否循环播放，仅对 Gif/Webp 格式生效</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;动图是否循环播放</s:String>
     <s:String x:Key="Str_QualityParameter">质量参数</s:String>
-    <s:String x:Key="Str_QualityParameterTooltip">质量参数，取值范围 0-100，越高质量越好, 仅对 Webp 格式生效</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;质量参数，取值范围 0-100，越高质量越好</s:String>
     <s:String x:Key="Str_LosslessParam">无损压缩</s:String>
-    <s:String x:Key="Str_LosslessParamTooltip">无损压缩, 会忽略质量参数, 仅对 Webp 格式生效</s:String>
+    <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;无损压缩，会忽略质量参数</s:String>
     <s:String x:Key="Str_CrfParameter">CRF 参数</s:String>
-    <s:String x:Key="Str_CrfParameterTooltip">CRF 参数，取值范围 0-63，越小质量越高，仅对 Mp4/Webm/Mkv 格式生效</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF 参数，取值范围 0-63，越小质量越高</s:String>
+    <s:String x:Key="Str_ProfileParameter">Profile 参数</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile 参数，取值集合为 -1 到 5 之间的整数，&#x0A;-1 表示自动，0-5 取值越高质量越高，&#x0A;仅在取值大于等于 4 时可以编码透明度通道</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">导出格式</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg 导出格式，等价于参数 “-f”，例如 “mp4”、“webm”</s:String>
