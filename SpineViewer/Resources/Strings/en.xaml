@@ -149,6 +149,10 @@
     <s:String x:Key="Str_InvalidMaxResolution">Valid max resolution required when using auto resolution</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">FFmpeg export format is required</s:String>
 
+    <s:String x:Key="Str_ExportBaseArgs">Base Parameters</s:String>
+    <s:String x:Key="Str_ExportVideoArgs">Video Parameters</s:String>
+    <s:String x:Key="Str_ExportOtherArgs">Other Parameters</s:String>
+
     <s:String x:Key="Str_ResolutionTooltip">Screen resolution; adjust related parameters in the render settings panel</s:String>
     <s:String x:Key="Str_ExportSingle">Export Single</s:String>
     <s:String x:Key="Str_ExportSingleTooltip">When checked, export selected models in a single frame; output folder is required</s:String>
@@ -176,13 +180,15 @@
 
     <s:String x:Key="Str_VideoFormat">Video Format</s:String>
     <s:String x:Key="Str_LoopPlay">Loop Play</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip">Loop animation; only effective for GIF/WebP formats</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;Whether the animation loops</s:String>
     <s:String x:Key="Str_QualityParameter">Quality Parameter</s:String>
-    <s:String x:Key="Str_QualityParameterTooltip">Range 0–100; higher is better; only for WebP format</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;Quality parameter, range 0-100, higher value means better quality</s:String>
     <s:String x:Key="Str_LosslessParam">Lossless Compression</s:String>
-    <s:String x:Key="Str_LosslessParamTooltip">Lossless compression. Ignores the quality parameter and only applies to WebP format.</s:String>
+    <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;Lossless compression, quality parameter will be ignored</s:String>
     <s:String x:Key="Str_CrfParameter">CRF Parameter</s:String>
-    <s:String x:Key="Str_CrfParameterTooltip">Range 0–63; lower is higher quality; only for MP4/WebM/MKV formats</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF parameter, range 0-63, lower value means higher quality</s:String>
+    <s:String x:Key="Str_ProfileParameter">Profile Parameter</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile parameter, integer between -1 and 5,&#x0A;-1 means automatic, higher values indicate higher quality,&#x0A;Alpha channel encoding is only available when value is 4 or higher</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">Export Format</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg export format (equivalent to "-f"), e.g. "mp4", "webm"</s:String>

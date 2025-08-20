@@ -149,6 +149,10 @@
     <s:String x:Key="Str_InvalidMaxResolution">自動解像度使用時は有効な最大解像度を指定する必要があります</s:String>
     <s:String x:Key="Str_FFmpegFormatRequired">FFmpegエクスポートフォーマットを指定する必要があります</s:String>
 
+    <s:String x:Key="Str_ExportBaseArgs">基本パラメータ</s:String>
+    <s:String x:Key="Str_ExportVideoArgs">ビデオパラメータ</s:String>
+    <s:String x:Key="Str_ExportOtherArgs">その他のパラメータ</s:String>
+
     <s:String x:Key="Str_ResolutionTooltip">画面解像度。関連パラメーターは画面パネルで調整してください</s:String>
     <s:String x:Key="Str_ExportSingle">単一エクスポート</s:String>
     <s:String x:Key="Str_ExportSingleTooltip">チェックすると、選択モデルを同一画面でエクスポートし、出力フォルダーの指定が必要になります</s:String>
@@ -176,13 +180,15 @@
 
     <s:String x:Key="Str_VideoFormat">ビデオフォーマット</s:String>
     <s:String x:Key="Str_LoopPlay">ループ再生</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip">アニメーションをループ再生するか。Gif/Webp形式のみ有効です</s:String>
-    <s:String x:Key="Str_QualityParameter">品質パラメーター</s:String>
-    <s:String x:Key="Str_QualityParameterTooltip">品質パラメーター。値の範囲は0-100。数値が大きいほど品質が高くなります。Webp形式のみ有効です</s:String>
-    <s:String x:Key="Str_LosslessParam">可逆圧縮</s:String>
-    <s:String x:Key="Str_LosslessParamTooltip">可逆圧縮を行います。品質パラメータは無視され、WebP形式にのみ適用されます。</s:String>
-    <s:String x:Key="Str_CrfParameter">CRFパラメーター</s:String>
-    <s:String x:Key="Str_CrfParameterTooltip">CRFパラメーター。値の範囲は0-63。数値が小さいほど品質が高くなります。Mp4/Webm/Mkv形式のみ有効です</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;アニメーションをループ再生するかどうか</s:String>
+    <s:String x:Key="Str_QualityParameter">品質パラメータ</s:String>
+    <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;品質パラメータ、範囲は0-100。値が高いほど品質が良い</s:String>
+    <s:String x:Key="Str_LosslessParam">無損失圧縮</s:String>
+    <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;無損失圧縮、品質パラメータは無視されます</s:String>
+    <s:String x:Key="Str_CrfParameter">CRF パラメータ</s:String>
+    <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF パラメータ、範囲0-63。値が小さいほど品質が高い</s:String>
+    <s:String x:Key="Str_ProfileParameter">プロファイルパラメータ</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;プロファイルパラメータ、-1から5の整数、&#x0A;-1は自動、値が大きいほど品質が高い、&#x0A;値が4以上の場合のみアルファチャンネルをエンコード可能</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">エクスポートフォーマット</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpegエクスポートフォーマット。パラメーター“-f”に相当します。例: “mp4”、“webm”</s:String>

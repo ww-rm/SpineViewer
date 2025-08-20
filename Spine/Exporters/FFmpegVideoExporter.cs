@@ -31,6 +31,7 @@ namespace Spine.Exporters
             Mp4,
             Webm,
             Mkv,
+            Mov,
         }
 
         /// <summary>
@@ -40,28 +41,34 @@ namespace Spine.Exporters
         private VideoFormat _format = VideoFormat.Mp4;
 
         /// <summary>
-        /// 动图是否循环
+        /// 动图是否循环 [Gif/Webp]
         /// </summary>
         public bool Loop { get => _loop; set => _loop = value; }
         private bool _loop = true;
 
         /// <summary>
-        /// 质量
+        /// 质量 [Webp]
         /// </summary>
         public int Quality { get => _quality; set => _quality = Math.Clamp(value, 0, 100); }
         private int _quality = 75;
 
         /// <summary>
-        /// 无损压缩 (Webp)
+        /// 无损压缩 [Webp]
         /// </summary>
         public bool Lossless { get => _lossless; set => _lossless = value; }
         private bool _lossless = false;
 
         /// <summary>
-        /// CRF
+        /// CRF [Mp4/Webm/Mkv]
         /// </summary>
         public int Crf { get => _crf; set => _crf = Math.Clamp(value, 0, 63); }
         private int _crf = 23;
+
+        /// <summary>
+        /// prores_ks 编码器的配置等级, -1 是自动, 越高质量越好, 只有 4 及以上才有透明通道 [Mov]
+        /// </summary>
+        public int Profile { get => _profile; set => _profile = Math.Clamp(value, -1, 5); }
+        private int _profile = 5;
 
         /// <summary>
         /// 获取的一帧, 结果是预乘的
@@ -89,6 +96,7 @@ namespace Spine.Exporters
                 VideoFormat.Mp4 => SetMp4Options,
                 VideoFormat.Webm => SetWebmOptions,
                 VideoFormat.Mkv => SetMkvOptions,
+                VideoFormat.Mov => SetMovOptions,
                 _ => throw new NotImplementedException(),
             };
 
@@ -110,8 +118,8 @@ namespace Spine.Exporters
         {
             // Gif 固定使用 256 调色板和 128 透明度阈值
             var v = "split [s0][s1]";
-            var s0 = "[s0] palettegen=reserve_transparent=1:max_colors=256 [p]";
-            var s1 = "[s1][p] paletteuse=dither=bayer:alpha_threshold=128";
+            var s0 = "[s0] palettegen=max_colors=256 [p]";
+            var s1 = "[s1][p] paletteuse=alpha_threshold=128";
             var customArgs = $"-vf \"unpremultiply=inplace=1, {v};{s0};{s1}\" -loop {(_loop ? 0 : -1)}";
             options.ForceFormat("gif")
                 .WithCustomArgument(customArgs);
@@ -151,5 +159,13 @@ namespace Spine.Exporters
                 .WithCustomArgument(customArgs);
         }
 
+        private void SetMovOptions(FFMpegArgumentOptions options)
+        {
+            var customArgs = "-vf unpremultiply=inplace=1";
+            options.ForceFormat("mov").WithVideoCodec("prores_ks").ForcePixelFormat("yuva444p10le")
+                .WithFastStart()
+                .WithCustomArgument($"-profile {_profile}")
+                .WithCustomArgument(customArgs);
+        }
     }
 }
