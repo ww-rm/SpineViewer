@@ -87,7 +87,7 @@
                     <Border Grid.Column="0" x:Name="_mainTabControlContainer">
 
                         <!-- 功能页 -->
-                        <TabControl x:Name="_mainTabControl" TabStripPlacement="Left">
+                        <TabControl x:Name="_mainTabControl" TabStripPlacement="Left" SelectedIndex="1">
 
                             <!-- 浏览页 -->
                             <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
