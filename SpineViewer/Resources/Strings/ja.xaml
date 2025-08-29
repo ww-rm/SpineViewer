@@ -84,6 +84,7 @@
     <s:String x:Key="Str_Animation">アニメーション</s:String>
     <s:String x:Key="Str_AppendTrack">追加</s:String>
     <s:String x:Key="Str_InsertTrack">挿入</s:String>
+    <s:String x:Key="Str_ClearTrack">削除</s:String>
 
     <s:String x:Key="Str_Debug">デバッグ</s:String>
     <s:String x:Key="Str_DebugTexture">テクスチャ</s:String>

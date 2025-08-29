@@ -84,6 +84,7 @@
     <s:String x:Key="Str_Animation">Animation</s:String>
     <s:String x:Key="Str_AppendTrack">Add</s:String>
     <s:String x:Key="Str_InsertTrack">Insert</s:String>
+    <s:String x:Key="Str_ClearTrack">Clear</s:String>
 
     <s:String x:Key="Str_Debug">Debug</s:String>
     <s:String x:Key="Str_DebugTexture">Texture</s:String>

@@ -384,6 +384,27 @@ namespace SpineViewer.ViewModels.MainWindow
         );
         private RelayCommand<IList?>? _cmd_InsertTrack;
 
+        public RelayCommand<IList?>? Cmd_ClearTrack => _cmd_ClearTrack ??= new(
+            args =>
+            {
+                if (_selectedObjects.Length <= 0) return;
+                if (args is null) return;
+                if (args.Count <= 0) return;
+
+                foreach (var vm in args.OfType<AnimationTrackViewModel>())
+                    foreach (var sp in _selectedObjects)
+                        sp.ClearTrack(vm.TrackIndex);
+            },
+            args =>
+            {
+                if (_selectedObjects.Length <= 0) return false;
+                if (args is null) return false;
+                if (args.Count <= 0) return false;
+                return true;
+            }
+        );
+        private RelayCommand<IList?>? _cmd_ClearTrack;
+
         public bool? DebugTexture
         {
             get
@@ -805,9 +826,6 @@ namespace SpineViewer.ViewModels.MainWindow
                     );
                 }
             }
-
-            public RelayCommand Cmd_ClearTrack => _cmd_ClearTrack ??= new(() => { foreach (var sp in _spines) sp.ClearTrack(_trackIndex); });
-            private RelayCommand? _cmd_ClearTrack;
 
             public ReadOnlyCollection<string> AnimationNames => _animationNames.AsReadOnly();
 
