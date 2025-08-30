@@ -107,6 +107,7 @@
     <s:String x:Key="Str_Zoom">Zoom</s:String>
     <s:String x:Key="Str_Rotation">Rotation (Degrees)</s:String>
     <s:String x:Key="Str_MaxFps">Max FPS</s:String>
+    <s:String x:Key="Str_MaxFpsTooltip">Maximum frame rate of the preview. Set to 0 for no limit.</s:String>
     <s:String x:Key="Str_PlaySpeed">Playback Speed</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
     <s:String x:Key="Str_ShowAxis">Show Axis</s:String>

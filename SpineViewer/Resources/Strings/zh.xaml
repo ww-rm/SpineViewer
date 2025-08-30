@@ -107,6 +107,7 @@
     <s:String x:Key="Str_Zoom">缩放</s:String>
     <s:String x:Key="Str_Rotation">旋转（角度）</s:String>
     <s:String x:Key="Str_MaxFps">最大帧率</s:String>
+    <s:String x:Key="Str_MaxFpsTooltip">预览画面的最大帧率，设置为 0 时则无帧率限制</s:String>
     <s:String x:Key="Str_PlaySpeed">播放速度</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
     <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>
