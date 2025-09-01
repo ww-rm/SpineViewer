@@ -64,6 +64,8 @@
     <s:String x:Key="Str_IsShown">显示</s:String>
     <s:String x:Key="Str_UsePma">预乘Alpha通道</s:String>
     <s:String x:Key="Str_Physics">物理</s:String>
+    <s:String x:Key="Str_TimeScale">时间因子</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">单个模型的时间因子，取负数时可以倒放动画</s:String>
 
     <s:String x:Key="Str_Transform">变换</s:String>
     <s:String x:Key="Str_Scale">缩放</s:String>

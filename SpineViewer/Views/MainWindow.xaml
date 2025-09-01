@@ -310,6 +310,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
                                                 <!-- 显示 -->
@@ -323,6 +324,10 @@
                                                 <!-- 物理 -->
                                                 <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_Physics}"/>
                                                 <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding Physics}" ItemsSource="{Binding PhysicsOptions}"/>
+
+                                                <!-- 时间因子 -->
+                                                <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
+                                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
                                             </Grid>
                                         </TabItem>
 

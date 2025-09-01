@@ -129,6 +129,12 @@ namespace SpineViewer.Models
             set { lock (_lock) SetProperty(_spineObject.Physics, value, v => _spineObject.Physics = v); }
         }
 
+        public float TimeScale
+        {
+            get { lock (_lock) return _spineObject.AnimationState.TimeScale; }
+            set { lock (_lock) SetProperty(_spineObject.AnimationState.TimeScale, Math.Clamp(value, -100f, 100f), v => _spineObject.AnimationState.TimeScale = v); }
+        }
+
         /// <summary>
         /// 缩放倍数, 绝对值大小, 两个方向大小不一致时返回 -1, 设置时不会影响正负号
         /// </summary>
@@ -388,6 +394,7 @@ namespace SpineViewer.Models
 
                         UsePma = _spineObject.UsePma,
                         Physics = _spineObject.Physics.ToString(),
+                        TimeScale = _spineObject.AnimationState.TimeScale,
 
                         DebugTexture = _spineObject.DebugTexture,
                         DebugBounds = _spineObject.DebugBounds,
@@ -427,6 +434,7 @@ namespace SpineViewer.Models
                     SetProperty(_spineObject.Skeleton.Y, value.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
                     SetProperty(_spineObject.UsePma, value.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
                     SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(value.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
+                    SetProperty(_spineObject.AnimationState.TimeScale, value.TimeScale, v => _spineObject.AnimationState.TimeScale = v, nameof(TimeScale));
 
                     foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(value.LoadedSkins))
                         if (_spineObject.SetSkinStatus(name, false))

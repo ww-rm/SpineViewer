@@ -74,6 +74,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 OnPropertyChanged(nameof(IsShown));
                 OnPropertyChanged(nameof(UsePma));
                 OnPropertyChanged(nameof(Physics));
+                OnPropertyChanged(nameof(TimeScale));
 
                 OnPropertyChanged(nameof(Scale));
                 OnPropertyChanged(nameof(FlipX));
@@ -213,6 +214,25 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (_selectedObjects.Length <= 0) return;
                 if (value is null) return;
                 foreach (var sp in _selectedObjects) sp.Physics = (ISkeleton.Physics)value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float? TimeScale
+        {
+            get
+            {
+                if (_selectedObjects.Length <= 0) return null;
+                var val = _selectedObjects[0].TimeScale;
+                if (_selectedObjects.Skip(1).Any(it => it.TimeScale != val)) return null;
+                return val;
+            }
+
+            set
+            {
+                if (_selectedObjects.Length <= 0) return;
+                if (value is null) return;
+                foreach (var sp in _selectedObjects) sp.TimeScale = (float)value;
                 OnPropertyChanged();
             }
         }
@@ -595,35 +615,44 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
 
-        /// <summary>
-        /// 监听单个模型属性发生变化, 则更新聚合属性值
-        /// </summary>
-        private void SingleModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private static readonly Dictionary<string, string> _singleModelPropertyMap = new()
         {
-            if (e.PropertyName == nameof(SpineObjectModel.IsShown)) OnPropertyChanged(nameof(IsShown));
-            else if (e.PropertyName == nameof(SpineObjectModel.UsePma)) OnPropertyChanged(nameof(UsePma));
-            else if (e.PropertyName == nameof(SpineObjectModel.Physics)) OnPropertyChanged(nameof(Physics));
+            { nameof(SpineObjectModel.IsShown), nameof(IsShown) },
+            { nameof(SpineObjectModel.UsePma), nameof(UsePma) },
+            { nameof(SpineObjectModel.Physics), nameof(Physics) },
+            { nameof(SpineObjectModel.TimeScale), nameof(TimeScale) },
 
-            else if (e.PropertyName == nameof(SpineObjectModel.Scale)) OnPropertyChanged(nameof(Scale));
-            else if (e.PropertyName == nameof(SpineObjectModel.FlipX)) OnPropertyChanged(nameof(FlipX));
-            else if (e.PropertyName == nameof(SpineObjectModel.FlipY)) OnPropertyChanged(nameof(FlipY));
-            else if (e.PropertyName == nameof(SpineObjectModel.X)) OnPropertyChanged(nameof(X));
-            else if (e.PropertyName == nameof(SpineObjectModel.Y)) OnPropertyChanged(nameof(Y));
+            { nameof(SpineObjectModel.Scale), nameof(Scale) },
+            { nameof(SpineObjectModel.FlipX), nameof(FlipX) },
+            { nameof(SpineObjectModel.FlipY), nameof(FlipY) },
+            { nameof(SpineObjectModel.X), nameof(X) },
+            { nameof(SpineObjectModel.Y), nameof(Y) },
 
             // Skins 变化在 SkinViewModel 中监听
             // Slots 变化在 SlotAttachmentViewModel 中监听
             // AnimationTracks 变化在 AnimationTrackViewModel 中监听
 
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugTexture)) OnPropertyChanged(nameof(DebugTexture));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBounds)) OnPropertyChanged(nameof(DebugBounds));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBones)) OnPropertyChanged(nameof(DebugBones));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugRegions)) OnPropertyChanged(nameof(DebugRegions));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugMeshHulls)) OnPropertyChanged(nameof(DebugMeshHulls));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugMeshes)) OnPropertyChanged(nameof(DebugMeshes));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBoundingBoxes)) OnPropertyChanged(nameof(DebugBoundingBoxes));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugPaths)) OnPropertyChanged(nameof(DebugPaths));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugPoints)) OnPropertyChanged(nameof(DebugPoints));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugClippings)) OnPropertyChanged(nameof(DebugClippings));
+            { nameof(SpineObjectModel.DebugTexture), nameof(DebugTexture) },
+            { nameof(SpineObjectModel.DebugBounds), nameof(DebugBounds) },
+            { nameof(SpineObjectModel.DebugBones), nameof(DebugBones) },
+            { nameof(SpineObjectModel.DebugRegions), nameof(DebugRegions) },
+            { nameof(SpineObjectModel.DebugMeshHulls), nameof(DebugMeshHulls) },
+            { nameof(SpineObjectModel.DebugMeshes), nameof(DebugMeshes) },
+            { nameof(SpineObjectModel.DebugBoundingBoxes), nameof(DebugBoundingBoxes) },
+            { nameof(SpineObjectModel.DebugPaths), nameof(DebugPaths) },
+            { nameof(SpineObjectModel.DebugPoints), nameof(DebugPoints) },
+            { nameof(SpineObjectModel.DebugClippings), nameof(DebugClippings) },
+        };
+
+        /// <summary>
+        /// 监听单个模型属性发生变化, 则更新聚合属性值
+        /// </summary>
+        private void SingleModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (_singleModelPropertyMap.TryGetValue(e.PropertyName, out var targetProperty))
+            {
+                OnPropertyChanged(targetProperty);
+            }
         }
 
         /// <summary>

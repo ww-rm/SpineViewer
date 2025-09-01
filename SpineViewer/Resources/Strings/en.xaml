@@ -64,6 +64,8 @@
     <s:String x:Key="Str_IsShown">Show</s:String>
     <s:String x:Key="Str_UsePma">Premultiply Alpha</s:String>
     <s:String x:Key="Str_Physics">Physics</s:String>
+    <s:String x:Key="Str_TimeScale">Time Scale</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">Time scale for a single model; a negative value plays the animation in reverse.</s:String>
 
     <s:String x:Key="Str_Transform">Transform</s:String>
     <s:String x:Key="Str_Scale">Scale</s:String>

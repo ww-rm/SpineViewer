@@ -64,6 +64,8 @@
     <s:String x:Key="Str_IsShown">表示</s:String>
     <s:String x:Key="Str_UsePma">プレマルチプライドアルファ</s:String>
     <s:String x:Key="Str_Physics">物理</s:String>
+    <s:String x:Key="Str_TimeScale">時間スケール</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">単一モデルの時間スケール。負の値にするとアニメーションを逆再生します。</s:String>
 
     <s:String x:Key="Str_Transform">変換</s:String>
     <s:String x:Key="Str_Scale">スケール</s:String>

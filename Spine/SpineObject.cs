@@ -167,6 +167,7 @@ namespace Spine
                 // 拷贝渲染设置
                 UsePma = other.UsePma;
                 Physics = other.Physics;
+                _animationState.TimeScale = other._animationState.TimeScale;
 
                 // 拷贝皮肤加载情况
                 _skinLoadStatus = other._skinLoadStatus.ToDictionary();
