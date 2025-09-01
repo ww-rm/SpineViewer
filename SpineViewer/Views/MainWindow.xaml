@@ -392,7 +392,7 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding Name}"/>
+                                                            <Label Grid.Column="0" Content="{Binding Name}" Background="#bfffffff"/>
                                                             <ToggleButton Grid.Column="1" IsChecked="{Binding Status}"/>
                                                         </Grid>
                                                     </DataTemplate>
@@ -430,7 +430,7 @@
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding SlotName}" HorizontalAlignment="Left"/>
+                                                            <Label Grid.Column="0" Content="{Binding SlotName}" HorizontalAlignment="Left" Background="#bfffffff"/>
                                                             <ComboBox Grid.Column="1" SelectedValue="{Binding AttachmentName}" ItemsSource="{Binding AttachmentNames}"/>
                                                             <ToggleButton Grid.Column="2" IsChecked="{Binding Visible}"/>
                                                         </Grid>
@@ -471,7 +471,7 @@
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left"/>
+                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" Background="#bfffffff"/>
                                                             <ComboBox Grid.Column="1" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
                                                             <Label Grid.Column="2" 
                                                                    Content="{Binding AnimationDuration}"
