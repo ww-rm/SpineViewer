@@ -35,7 +35,7 @@ namespace SpineViewer.Models
 
         public List<string> DisabledSlots { get; set; } = [];
 
-        public List<string?> Animations { get; set; } = [];
+        public List<TrackConfigModel?> Animations { get; set; } = [];
 
         public bool DebugTexture { get; set; } = true;
 
@@ -59,12 +59,12 @@ namespace SpineViewer.Models
 
     }
 
-    public class AnimationConfigModel
+    public class TrackConfigModel
     {
-        string Name { get; set; } = "";
+        public string AnimationName { get; set; } = "";
 
-        float TimeScale { get; set; } = 1f;
+        public float TimeScale { get; set; } = 1f;
 
-        float Alpha { get; set; } = 1f;
+        public float Alpha { get; set; } = 1f;
     }
 }
