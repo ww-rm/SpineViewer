@@ -21,6 +21,8 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 * Skin and custom slot attachment settings.
 * Custom slot visibility settings.
 * Debug rendering support.
+* View/model/track time scale adjustment.
+* Track alpha blending parameter settings.
 * Fullscreen preview mode.
 * Export to single frame/image sequence/animated GIF/video formats.
 * Automatic resolution batch export.
