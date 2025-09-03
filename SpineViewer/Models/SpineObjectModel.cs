@@ -459,7 +459,22 @@ namespace SpineViewer.Models
                     config.DisabledSlots = _spineObject.Skeleton.Slots.Where(it => it.Disabled).Select(it => it.Name).ToList();
 
                     // XXX: 处理空动画
-                    config.Animations.AddRange(_spineObject.AnimationState.IterTracks().Select(tr => tr?.Animation.Name));
+                    foreach (var tr in _spineObject.AnimationState.IterTracks())
+                    {
+                        if (tr is not null)
+                        {
+                            config.Animations.Add(new()
+                            {
+                                AnimationName = tr.Animation.Name,
+                                TimeScale = tr.TimeScale,
+                                Alpha = tr.Alpha
+                            });
+                        }
+                        else
+                        {
+                            config.Animations.Add(null);
+                        }
+                    }
 
                     return config;
                 }
@@ -498,11 +513,15 @@ namespace SpineViewer.Models
                     // XXX: 处理空动画
                     _spineObject.AnimationState.ClearTracks();
                     int trackIndex = 0;
-                    foreach (var name in value.Animations)
+                    foreach (var trConfig in value.Animations)
                     {
-                        if (!string.IsNullOrEmpty(name))
-                            _spineObject.AnimationState.SetAnimation(trackIndex, name, true);
-                        TrackPropertyChanged?.Invoke(this, new(trackIndex, nameof(TrackPropertyChangedEventArgs.AnimationName)));
+                        if (trConfig is not null && !string.IsNullOrEmpty(trConfig.AnimationName))
+                        {
+                            var tr = _spineObject.AnimationState.SetAnimation(trackIndex, trConfig.AnimationName, true);
+                            tr.TimeScale = trConfig.TimeScale;
+                            tr.Alpha = trConfig.Alpha;
+                            TrackPropertyChanged?.Invoke(this, new(trackIndex, nameof(TrackPropertyChangedEventArgs.AnimationName)));
+                        }
                         trackIndex++;
                     }
 
