@@ -65,7 +65,7 @@
     <s:String x:Key="Str_UsePma">Premultiply Alpha</s:String>
     <s:String x:Key="Str_Physics">Physics</s:String>
     <s:String x:Key="Str_TimeScale">Time Scale</s:String>
-    <s:String x:Key="Str_TimeScaleTootltip">Time scale for a single model; a negative value plays the animation in reverse.</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">Time scale for a single model, must be positive.</s:String>
 
     <s:String x:Key="Str_Transform">Transform</s:String>
     <s:String x:Key="Str_Scale">Scale</s:String>
@@ -87,6 +87,10 @@
     <s:String x:Key="Str_AppendTrack">Add</s:String>
     <s:String x:Key="Str_InsertTrack">Insert</s:String>
     <s:String x:Key="Str_ClearTrack">Clear</s:String>
+    <s:String x:Key="Str_TrackTimeScale">Time Scale</s:String>
+    <s:String x:Key="Str_TrackTimeScaleTooltip">Time scale for a single track, must be positive.</s:String>
+    <s:String x:Key="Str_TrackAlpha">Alpha Blending</s:String>
+    <s:String x:Key="Str_TrackAlphaTooltip">Value range: 0–1. Similar to image blending, controls how animations from higher-index tracks mix into lower-index tracks.</s:String>
 
     <s:String x:Key="Str_Debug">Debug</s:String>
     <s:String x:Key="Str_DebugTexture">Texture</s:String>

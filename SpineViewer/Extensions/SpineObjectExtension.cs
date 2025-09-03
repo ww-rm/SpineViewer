@@ -21,6 +21,8 @@ namespace SpineViewer.Extensions
             foreach (var tr in self.AnimationState.IterTracks().Where(t => t is not null))
             {
                 var t = spineObject.AnimationState.SetAnimation(tr!.TrackIndex, tr.Animation, tr.Loop);
+                t.TimeScale = tr.TimeScale;
+                t.Alpha = tr.Alpha;
                 if (keepTrackTime)
                     t.TrackTime = tr.TrackTime;
             }
@@ -38,7 +40,8 @@ namespace SpineViewer.Extensions
             foreach (var e in self.AnimationState.IterTracks())
             {
                 if (e is not null)
-                    self.AnimationState.SetAnimation(e.TrackIndex, e.Animation, e.Loop);
+                    e.TrackTime = 0; // 直接重置时间能保留原本的 TrackEntry
+                    //self.AnimationState.SetAnimation(e.TrackIndex, e.Animation, e.Loop);
             }
             self.Update(0);
         }
@@ -65,7 +68,7 @@ namespace SpineViewer.Extensions
         /// <summary>
         /// 按给定的帧率获取所有轨道第一个条目动画全时长包围盒大小, 是一个耗时操作, 如果可能的话最好缓存结果
         /// </summary>
-        public static Rect GetAnimationBounds(this SpineObject self, float fps = 10)
+        public static Rect GetAnimationBounds(this SpineObject self, float fps = 30)
         {
             using var copy = self.Copy();
             var bounds = copy.GetCurrentBounds();

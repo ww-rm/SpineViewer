@@ -65,7 +65,7 @@
     <s:String x:Key="Str_UsePma">プレマルチプライドアルファ</s:String>
     <s:String x:Key="Str_Physics">物理</s:String>
     <s:String x:Key="Str_TimeScale">時間スケール</s:String>
-    <s:String x:Key="Str_TimeScaleTootltip">単一モデルの時間スケール。負の値にするとアニメーションを逆再生します。</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">単一モデルの時間スケール。正の値のみ指定可能です。</s:String>
 
     <s:String x:Key="Str_Transform">変換</s:String>
     <s:String x:Key="Str_Scale">スケール</s:String>
@@ -87,6 +87,10 @@
     <s:String x:Key="Str_AppendTrack">追加</s:String>
     <s:String x:Key="Str_InsertTrack">挿入</s:String>
     <s:String x:Key="Str_ClearTrack">削除</s:String>
+    <s:String x:Key="Str_TrackTimeScale">時間スケール</s:String>
+    <s:String x:Key="Str_TrackTimeScaleTooltip">単一トラックの時間スケール。正の値のみ指定可能です。</s:String>
+    <s:String x:Key="Str_TrackAlpha">アルファ合成</s:String>
+    <s:String x:Key="Str_TrackAlphaTooltip">値の範囲：0～1。画像の合成と同様に、高インデックストラックのアニメーションが低インデックストラックにどの程度混合されるかを制御します。</s:String>
 
     <s:String x:Key="Str_Debug">デバッグ</s:String>
     <s:String x:Key="Str_DebugTexture">テクスチャ</s:String>

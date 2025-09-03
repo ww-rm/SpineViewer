@@ -472,15 +472,38 @@
                                                     <DataTemplate>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col0"/>
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColTrackIdx"/>
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColAniTime"/>
                                                                 <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" Background="#bfffffff"/>
-                                                            <ComboBox Grid.Column="1" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
-                                                            <Label Grid.Column="2" 
-                                                                   Content="{Binding AnimationDuration}"
-                                                                   ContentStringFormat="{}{0:F3} s"/>
+                                                            
+                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" VerticalAlignment="Top" Background="#bfffffff"/>
+                                                            <Label Grid.Column="1" Content="{Binding AnimationDuration}" VerticalAlignment="Top" ContentStringFormat="{}{0:F3} s"/>
+
+                                                            <Expander Grid.Column="2" HorizontalContentAlignment="Stretch">
+                                                                <Expander.Header>
+                                                                    <!-- hc 的模板自带左侧 10 的 padding, 此处用 -10 的 margin 来抵消去除 -->
+                                                                    <ComboBox Margin="-10 0 0 0" Grid.Column="2" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
+                                                                </Expander.Header>
+                                                                <Grid Margin="1 0 0 0">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <!-- 时间因子 -->
+                                                                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_TrackTimeScale}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+                                                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TrackTimeScale, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+
+                                                                    <!-- Alpha 混合 -->
+                                                                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_TrackAlpha}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrackAlpha, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                </Grid>
+                                                            </Expander>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -735,7 +758,7 @@
                                     <ToggleButton Grid.Row="7" Grid.Column="1" IsChecked="{Binding FlipY}"/>
 
                                     <Separator Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5"/>
-                                    
+
                                     <!-- 最大帧率 -->
                                     <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_MaxFps}" ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
                                     <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding MaxFps}"  ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
@@ -751,7 +774,7 @@
                                     <!-- 背景颜色 -->
                                     <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
                                     <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
-                                    
+
                                     <!-- 背景图案 -->
                                     <!-- 背景图案模式 -->
                                 </Grid>

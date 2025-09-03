@@ -31,7 +31,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 foreach (var obj in _selectedObjects)
                 {
                     obj.PropertyChanged -= SingleModel_PropertyChanged;
-                    obj.AnimationChanged -= SingleModel_AnimationChanged;
+                    obj.TrackPropertyChanged -= SingleModel_TrackPropChanged;
                 }
                 _skins.Clear();
                 _slots.Clear();
@@ -44,7 +44,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     foreach (var obj in _selectedObjects)
                     {
                         obj.PropertyChanged += SingleModel_PropertyChanged;
-                        obj.AnimationChanged += SingleModel_AnimationChanged;
+                        obj.TrackPropertyChanged += SingleModel_TrackPropChanged;
                     }
 
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
@@ -658,24 +658,24 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 监听单个模型动画轨道发生变化, 则重建聚合后的动画列表
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SingleModel_AnimationChanged(object? sender, AnimationChangedEventArgs e)
+        private void SingleModel_TrackPropChanged(object? sender, TrackPropertyChangedEventArgs e)
         {
-            // XXX: 这里应该有更好的实现, 当 e.AnimationName == null 的时候代表删除轨道需要重新构建列表
-            // 但是目前无法识别是否增加了轨道, 因此总是重建列表
+            if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.AnimationName))
+            {
+                // XXX: 这里应该有更好的实现, 当 e.AnimationName == null 的时候代表删除轨道需要重新构建列表
+                // 但是目前无法识别是否增加了轨道, 因此总是重建列表
 
-            // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
-            Application.Current.Dispatcher.BeginInvoke(
-                () =>
-                {
-                    _animationTracks.Clear();
-                    IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
-                    foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
-                    foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
-                }
-            );
-
+                // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
+                Application.Current.Dispatcher.BeginInvoke(
+                    () =>
+                    {
+                        _animationTracks.Clear();
+                        IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
+                        foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
+                        foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
+                    }
+                );
+            }
         }
 
         public class SkinViewModel : ObservableObject
@@ -848,10 +848,10 @@ namespace SpineViewer.ViewModels.MainWindow
                 // 使用弱引用, 则此 ViewModel 被释放时无需显式退订事件
                 foreach (var sp in _spines)
                 {
-                    WeakEventManager<SpineObjectModel, AnimationChangedEventArgs>.AddHandler(
+                    WeakEventManager<SpineObjectModel, TrackPropertyChangedEventArgs>.AddHandler(
                         sp,
-                        nameof(sp.AnimationChanged),
-                        SingleModel_AnimationChanged
+                        nameof(sp.TrackPropertyChanged),
+                        SingleModel_TrackPropChanged
                     );
                 }
             }
@@ -859,6 +859,24 @@ namespace SpineViewer.ViewModels.MainWindow
             public ReadOnlyCollection<string> AnimationNames => _animationNames.AsReadOnly();
 
             public int TrackIndex => _trackIndex;
+
+            public float? AnimationDuration
+            {
+                get
+                {
+                    if (_spines.Length <= 0) return null;
+                    var ani = _spines[0].GetAnimation(_trackIndex);
+                    if (ani is null) return null;
+                    var val = _spines[0].GetAnimationDuration(ani);
+                    foreach (var sp in _spines.Skip(1))
+                    {
+                        var a = sp.GetAnimation(_trackIndex);
+                        if (a is null) return null;
+                        if (sp.GetAnimationDuration(a) != val) return null;
+                    }
+                    return val;
+                }
+            }
 
             public string? AnimationName
             {
@@ -881,27 +899,54 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
             }
 
-            public float? AnimationDuration
+            public float? TrackTimeScale
             {
                 get
                 {
+                    // XXX: 空轨道和多选不相同都会返回 null
                     if (_spines.Length <= 0) return null;
-                    var ani = _spines[0].GetAnimation(_trackIndex);
-                    if (ani is null) return null;
-                    var val = _spines[0].GetAnimationDuration(ani);
-                    foreach (var sp in _spines.Skip(1))
-                    {
-                        var a = sp.GetAnimation(_trackIndex);
-                        if (a is null) return null;
-                        if (sp.GetAnimationDuration(a) != val) return null;
-                    }
+                    var val = _spines[0].GetTrackTimeScale(_trackIndex);
+                    if (_spines.Skip(1).Any(it => it.GetTrackTimeScale(_trackIndex) != val)) return null;
                     return val;
+                }
+
+                set
+                {
+                    if (_spines.Length <= 0) return;
+                    if (value is null) return;
+                    foreach (var sp in _spines) sp.SetTrackTimeScale(_trackIndex, (float)value);
+                    OnPropertyChanged();
                 }
             }
 
-            private void SingleModel_AnimationChanged(object? sender, AnimationChangedEventArgs e)
+            public float? TrackAlpha
             {
-                if (e.TrackIndex == _trackIndex) OnPropertyChanged(nameof(AnimationName));
+                get
+                {
+                    // XXX: 空轨道和多选不相同都会返回 null
+                    if (_spines.Length <= 0) return null;
+                    var val = _spines[0].GetTrackAlpha(_trackIndex);
+                    if (_spines.Skip(1).Any(it => it.GetTrackAlpha(_trackIndex) != val)) return null;
+                    return val;
+                }
+
+                set
+                {
+                    if (_spines.Length <= 0) return;
+                    if (value is null) return;
+                    foreach (var sp in _spines) sp.SetTrackAlpha(_trackIndex, (float)value);
+                    OnPropertyChanged();
+                }
+            }
+
+            private void SingleModel_TrackPropChanged(object? sender, TrackPropertyChangedEventArgs e)
+            {
+                if (e.TrackIndex == _trackIndex)
+                {
+                    if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.AnimationName)) OnPropertyChanged(nameof(AnimationName));
+                    else if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.TimeScale)) OnPropertyChanged(nameof(TrackTimeScale));
+                    else if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.Alpha)) OnPropertyChanged(nameof(TrackAlpha));
+                }
             }
         }
     }
