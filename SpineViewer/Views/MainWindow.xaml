@@ -89,117 +89,6 @@
                         <!-- 功能页 -->
                         <TabControl x:Name="_mainTabControl" TabStripPlacement="Left">
 
-                            <!-- 浏览页 -->
-                            <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <DockPanel>
-                                        <Grid DockPanel.Dock="Top">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <hc:TextBox hc:InfoElement.Placeholder="{StaticResource Str_Filter}"
-                                                        Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Button Grid.Column="1" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
-                                                    Command="{Binding Cmd_ChangeCurrentDirectory}"
-                                                    ToolTip="{DynamicResource Str_ChangeCurrentDirectoryTooltip}"/>
-                                            <Button Grid.Column="2" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" 
-                                                    Command="{Binding Cmd_RefreshItems}"
-                                                    ToolTip="{DynamicResource Str_RefreshItemsTooltip}"/>
-                                        </Grid>
-
-                                        <StatusBar DockPanel.Dock="Bottom">
-                                            <TextBlock>
-                                                <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
-                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
-                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </StatusBar>
-
-                                        <ListBox x:Name="_spineFilesListBox"
-                                                 VirtualizingPanel.IsVirtualizing="True"
-                                                 ItemsSource="{Binding ShownItems}"
-                                                 DisplayMemberPath="FileName"
-                                                 MouseLeftButtonDown="SpineFilesListBox_MouseLeftButtonDown">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="SelectionChanged">
-                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
-                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spineFilesListBox}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-
-                                            <ListBox.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddSelectedItems}"
-                                                              Command="{Binding Cmd_AddSelectedItems}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
-                                                              Command="{Binding Cmd_GeneratePreviews}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{StaticResource Str_DeletePreviewsForSelected}"
-                                                              Command="{Binding Cmd_DeletePreviews}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                </ContextMenu>
-                                            </ListBox.ContextMenu>
-                                        </ListBox>
-                                    </DockPanel>
-
-                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
-
-                                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
-                                        <Grid.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
-                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                                            </Style>
-                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                                            </Style>
-                                        </Grid.Resources>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <!-- 文件目录 -->
-                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_FileDirectory}"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1"
-                                                 Text="{Binding FileDirectory, Mode=OneWay}"
-                                                 IsReadOnly="True"
-                                                 ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-
-                                        <!-- 文件名 -->
-                                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_FileName}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1"
-                                                 Text="{Binding FileName, Mode=OneWay}"
-                                                 IsReadOnly="True"/>
-
-                                        <!-- 预览图 -->
-                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#a0a0a0">
-                                            <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
-                                        </Border>
-                                    </Grid>
-                                </Grid>
-                            </TabItem>
-
                             <!-- 模型列表页 -->
                             <TabItem Header="{DynamicResource Str_SpineObject}">
                                 <Grid>
@@ -421,6 +310,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
                                                 <!-- 显示 -->
@@ -434,6 +324,10 @@
                                                 <!-- 物理 -->
                                                 <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_Physics}"/>
                                                 <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding Physics}" ItemsSource="{Binding PhysicsOptions}"/>
+
+                                                <!-- 时间因子 -->
+                                                <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
+                                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
                                             </Grid>
                                         </TabItem>
 
@@ -503,7 +397,7 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding Name}"/>
+                                                            <Label Grid.Column="0" Content="{Binding Name}" Background="#bfffffff"/>
                                                             <ToggleButton Grid.Column="1" IsChecked="{Binding Status}"/>
                                                         </Grid>
                                                     </DataTemplate>
@@ -541,7 +435,7 @@
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding SlotName}" HorizontalAlignment="Left"/>
+                                                            <Label Grid.Column="0" Content="{Binding SlotName}" HorizontalAlignment="Left" Background="#bfffffff"/>
                                                             <ComboBox Grid.Column="1" SelectedValue="{Binding AttachmentName}" ItemsSource="{Binding AttachmentNames}"/>
                                                             <ToggleButton Grid.Column="2" IsChecked="{Binding Visible}"/>
                                                         </Grid>
@@ -568,6 +462,9 @@
                                                         <MenuItem Header="{DynamicResource Str_InsertTrack}" 
                                                                   Command="{Binding Cmd_InsertTrack}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_ClearTrack}" 
+                                                                  Command="{Binding Cmd_ClearTrack}"
+                                                                  CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
 
@@ -575,19 +472,38 @@
                                                     <DataTemplate>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col0"/>
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColTrackIdx"/>
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColAniTime"/>
                                                                 <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"/>
-                                                                <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left"/>
-                                                            <ComboBox Grid.Column="1" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
-                                                            <Label Grid.Column="2" 
-                                                                   Content="{Binding AnimationDuration}"
-                                                                   ContentStringFormat="{}{0:F3} s"/>
-                                                            <Button Grid.Column="3" 
-                                                                    Command="{Binding Cmd_ClearTrack}"
-                                                                    hc:IconElement.Geometry="{StaticResource Geo_TrashXmark}"/>
+                                                            
+                                                            <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" VerticalAlignment="Top" Background="#bfffffff"/>
+                                                            <Label Grid.Column="1" Content="{Binding AnimationDuration}" VerticalAlignment="Top" ContentStringFormat="{}{0:F3} s"/>
+
+                                                            <Expander Grid.Column="2" HorizontalContentAlignment="Stretch">
+                                                                <Expander.Header>
+                                                                    <!-- hc 的模板自带左侧 10 的 padding, 此处用 -10 的 margin 来抵消去除 -->
+                                                                    <ComboBox Margin="-10 0 0 0" Grid.Column="2" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
+                                                                </Expander.Header>
+                                                                <Grid Margin="1 0 0 0">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <!-- 时间因子 -->
+                                                                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_TrackTimeScale}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+                                                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TrackTimeScale, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+
+                                                                    <!-- Alpha 混合 -->
+                                                                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_TrackAlpha}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrackAlpha, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                </Grid>
+                                                            </Expander>
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -660,6 +576,117 @@
                                 </Grid>
                             </TabItem>
 
+                            <!-- 浏览页 -->
+                            <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <DockPanel>
+                                        <Grid DockPanel.Dock="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <hc:TextBox hc:InfoElement.Placeholder="{StaticResource Str_Filter}"
+                                                        Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Grid.Column="1" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
+                                                    Command="{Binding Cmd_ChangeCurrentDirectory}"
+                                                    ToolTip="{DynamicResource Str_ChangeCurrentDirectoryTooltip}"/>
+                                            <Button Grid.Column="2" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" 
+                                                    Command="{Binding Cmd_RefreshItems}"
+                                                    ToolTip="{DynamicResource Str_RefreshItemsTooltip}"/>
+                                        </Grid>
+
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
+                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </StatusBar>
+
+                                        <ListBox x:Name="_spineFilesListBox"
+                                                 VirtualizingPanel.IsVirtualizing="True"
+                                                 ItemsSource="{Binding ShownItems}"
+                                                 DisplayMemberPath="FileName"
+                                                 MouseLeftButtonDown="SpineFilesListBox_MouseLeftButtonDown">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spineFilesListBox}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_AddSelectedItems}"
+                                                              Command="{Binding Cmd_AddSelectedItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{StaticResource Str_DeletePreviewsForSelected}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
+                                        </ListBox>
+                                    </DockPanel>
+
+                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
+                                        <Grid.Resources>
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                            </Style>
+                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- 文件目录 -->
+                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_FileDirectory}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1"
+                                                 Text="{Binding FileDirectory, Mode=OneWay}"
+                                                 IsReadOnly="True"
+                                                 ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
+
+                                        <!-- 文件名 -->
+                                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_FileName}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1"
+                                                 Text="{Binding FileName, Mode=OneWay}"
+                                                 IsReadOnly="True"/>
+
+                                        <!-- 预览图 -->
+                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#a0a0a0">
+                                            <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+
                             <!-- 画面参数页 -->
                             <TabItem Header="{DynamicResource Str_Canvas}" DataContext="{Binding SFMLRendererViewModel}">
                                 <TabItem.Resources>
@@ -683,6 +710,7 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
@@ -729,22 +757,24 @@
                                     <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource Str_FlipY}"/>
                                     <ToggleButton Grid.Row="7" Grid.Column="1" IsChecked="{Binding FlipY}"/>
 
+                                    <Separator Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5"/>
+
                                     <!-- 最大帧率 -->
-                                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource Str_MaxFps}"/>
-                                    <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding MaxFps}"/>
+                                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_MaxFps}" ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
+                                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding MaxFps}"  ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
 
                                     <!-- 播放速度 -->
-                                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_PlaySpeed}"/>
-                                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Speed}"/>
+                                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_PlaySpeed}"/>
+                                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Speed}"/>
 
                                     <!-- 显示坐标轴 -->
-                                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_ShowAxis}"/>
-                                    <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
+                                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_ShowAxis}"/>
+                                    <ToggleButton Grid.Row="11" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
 
                                     <!-- 背景颜色 -->
-                                    <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
-                                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
-                                    
+                                    <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                    <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+
                                     <!-- 背景图案 -->
                                     <!-- 背景图案模式 -->
                                 </Grid>

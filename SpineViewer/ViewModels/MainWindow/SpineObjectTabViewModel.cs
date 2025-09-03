@@ -31,7 +31,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 foreach (var obj in _selectedObjects)
                 {
                     obj.PropertyChanged -= SingleModel_PropertyChanged;
-                    obj.AnimationChanged -= SingleModel_AnimationChanged;
+                    obj.TrackPropertyChanged -= SingleModel_TrackPropChanged;
                 }
                 _skins.Clear();
                 _slots.Clear();
@@ -44,7 +44,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     foreach (var obj in _selectedObjects)
                     {
                         obj.PropertyChanged += SingleModel_PropertyChanged;
-                        obj.AnimationChanged += SingleModel_AnimationChanged;
+                        obj.TrackPropertyChanged += SingleModel_TrackPropChanged;
                     }
 
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
@@ -74,6 +74,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 OnPropertyChanged(nameof(IsShown));
                 OnPropertyChanged(nameof(UsePma));
                 OnPropertyChanged(nameof(Physics));
+                OnPropertyChanged(nameof(TimeScale));
 
                 OnPropertyChanged(nameof(Scale));
                 OnPropertyChanged(nameof(FlipX));
@@ -213,6 +214,25 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (_selectedObjects.Length <= 0) return;
                 if (value is null) return;
                 foreach (var sp in _selectedObjects) sp.Physics = (ISkeleton.Physics)value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float? TimeScale
+        {
+            get
+            {
+                if (_selectedObjects.Length <= 0) return null;
+                var val = _selectedObjects[0].TimeScale;
+                if (_selectedObjects.Skip(1).Any(it => it.TimeScale != val)) return null;
+                return val;
+            }
+
+            set
+            {
+                if (_selectedObjects.Length <= 0) return;
+                if (value is null) return;
+                foreach (var sp in _selectedObjects) sp.TimeScale = (float)value;
                 OnPropertyChanged();
             }
         }
@@ -383,6 +403,27 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         );
         private RelayCommand<IList?>? _cmd_InsertTrack;
+
+        public RelayCommand<IList?>? Cmd_ClearTrack => _cmd_ClearTrack ??= new(
+            args =>
+            {
+                if (_selectedObjects.Length <= 0) return;
+                if (args is null) return;
+                if (args.Count <= 0) return;
+
+                foreach (var vm in args.OfType<AnimationTrackViewModel>())
+                    foreach (var sp in _selectedObjects)
+                        sp.ClearTrack(vm.TrackIndex);
+            },
+            args =>
+            {
+                if (_selectedObjects.Length <= 0) return false;
+                if (args is null) return false;
+                if (args.Count <= 0) return false;
+                return true;
+            }
+        );
+        private RelayCommand<IList?>? _cmd_ClearTrack;
 
         public bool? DebugTexture
         {
@@ -574,58 +615,67 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
 
-        /// <summary>
-        /// 监听单个模型属性发生变化, 则更新聚合属性值
-        /// </summary>
-        private void SingleModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private static readonly Dictionary<string, string> _singleModelPropertyMap = new()
         {
-            if (e.PropertyName == nameof(SpineObjectModel.IsShown)) OnPropertyChanged(nameof(IsShown));
-            else if (e.PropertyName == nameof(SpineObjectModel.UsePma)) OnPropertyChanged(nameof(UsePma));
-            else if (e.PropertyName == nameof(SpineObjectModel.Physics)) OnPropertyChanged(nameof(Physics));
+            { nameof(SpineObjectModel.IsShown), nameof(IsShown) },
+            { nameof(SpineObjectModel.UsePma), nameof(UsePma) },
+            { nameof(SpineObjectModel.Physics), nameof(Physics) },
+            { nameof(SpineObjectModel.TimeScale), nameof(TimeScale) },
 
-            else if (e.PropertyName == nameof(SpineObjectModel.Scale)) OnPropertyChanged(nameof(Scale));
-            else if (e.PropertyName == nameof(SpineObjectModel.FlipX)) OnPropertyChanged(nameof(FlipX));
-            else if (e.PropertyName == nameof(SpineObjectModel.FlipY)) OnPropertyChanged(nameof(FlipY));
-            else if (e.PropertyName == nameof(SpineObjectModel.X)) OnPropertyChanged(nameof(X));
-            else if (e.PropertyName == nameof(SpineObjectModel.Y)) OnPropertyChanged(nameof(Y));
+            { nameof(SpineObjectModel.Scale), nameof(Scale) },
+            { nameof(SpineObjectModel.FlipX), nameof(FlipX) },
+            { nameof(SpineObjectModel.FlipY), nameof(FlipY) },
+            { nameof(SpineObjectModel.X), nameof(X) },
+            { nameof(SpineObjectModel.Y), nameof(Y) },
 
             // Skins 变化在 SkinViewModel 中监听
             // Slots 变化在 SlotAttachmentViewModel 中监听
             // AnimationTracks 变化在 AnimationTrackViewModel 中监听
 
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugTexture)) OnPropertyChanged(nameof(DebugTexture));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBounds)) OnPropertyChanged(nameof(DebugBounds));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBones)) OnPropertyChanged(nameof(DebugBones));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugRegions)) OnPropertyChanged(nameof(DebugRegions));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugMeshHulls)) OnPropertyChanged(nameof(DebugMeshHulls));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugMeshes)) OnPropertyChanged(nameof(DebugMeshes));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugBoundingBoxes)) OnPropertyChanged(nameof(DebugBoundingBoxes));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugPaths)) OnPropertyChanged(nameof(DebugPaths));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugPoints)) OnPropertyChanged(nameof(DebugPoints));
-            else if (e.PropertyName == nameof(SpineObjectModel.DebugClippings)) OnPropertyChanged(nameof(DebugClippings));
+            { nameof(SpineObjectModel.DebugTexture), nameof(DebugTexture) },
+            { nameof(SpineObjectModel.DebugBounds), nameof(DebugBounds) },
+            { nameof(SpineObjectModel.DebugBones), nameof(DebugBones) },
+            { nameof(SpineObjectModel.DebugRegions), nameof(DebugRegions) },
+            { nameof(SpineObjectModel.DebugMeshHulls), nameof(DebugMeshHulls) },
+            { nameof(SpineObjectModel.DebugMeshes), nameof(DebugMeshes) },
+            { nameof(SpineObjectModel.DebugBoundingBoxes), nameof(DebugBoundingBoxes) },
+            { nameof(SpineObjectModel.DebugPaths), nameof(DebugPaths) },
+            { nameof(SpineObjectModel.DebugPoints), nameof(DebugPoints) },
+            { nameof(SpineObjectModel.DebugClippings), nameof(DebugClippings) },
+        };
+
+        /// <summary>
+        /// 监听单个模型属性发生变化, 则更新聚合属性值
+        /// </summary>
+        private void SingleModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (_singleModelPropertyMap.TryGetValue(e.PropertyName, out var targetProperty))
+            {
+                OnPropertyChanged(targetProperty);
+            }
         }
 
         /// <summary>
         /// 监听单个模型动画轨道发生变化, 则重建聚合后的动画列表
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SingleModel_AnimationChanged(object? sender, AnimationChangedEventArgs e)
+        private void SingleModel_TrackPropChanged(object? sender, TrackPropertyChangedEventArgs e)
         {
-            // XXX: 这里应该有更好的实现, 当 e.AnimationName == null 的时候代表删除轨道需要重新构建列表
-            // 但是目前无法识别是否增加了轨道, 因此总是重建列表
+            if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.AnimationName))
+            {
+                // XXX: 这里应该有更好的实现, 当 e.AnimationName == null 的时候代表删除轨道需要重新构建列表
+                // 但是目前无法识别是否增加了轨道, 因此总是重建列表
 
-            // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
-            Application.Current.Dispatcher.BeginInvoke(
-                () =>
-                {
-                    _animationTracks.Clear();
-                    IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
-                    foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
-                    foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
-                }
-            );
-
+                // 由于某些原因, 直接使用 Clear 会和 UI 逻辑冲突产生报错, 因此需要放到 Dispatcher 里延迟执行
+                Application.Current.Dispatcher.BeginInvoke(
+                    () =>
+                    {
+                        _animationTracks.Clear();
+                        IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
+                        foreach (var obj in _selectedObjects.Skip(1)) commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
+                        foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
+                    }
+                );
+            }
         }
 
         public class SkinViewModel : ObservableObject
@@ -798,20 +848,35 @@ namespace SpineViewer.ViewModels.MainWindow
                 // 使用弱引用, 则此 ViewModel 被释放时无需显式退订事件
                 foreach (var sp in _spines)
                 {
-                    WeakEventManager<SpineObjectModel, AnimationChangedEventArgs>.AddHandler(
+                    WeakEventManager<SpineObjectModel, TrackPropertyChangedEventArgs>.AddHandler(
                         sp,
-                        nameof(sp.AnimationChanged),
-                        SingleModel_AnimationChanged
+                        nameof(sp.TrackPropertyChanged),
+                        SingleModel_TrackPropChanged
                     );
                 }
             }
 
-            public RelayCommand Cmd_ClearTrack => _cmd_ClearTrack ??= new(() => { foreach (var sp in _spines) sp.ClearTrack(_trackIndex); });
-            private RelayCommand? _cmd_ClearTrack;
-
             public ReadOnlyCollection<string> AnimationNames => _animationNames.AsReadOnly();
 
             public int TrackIndex => _trackIndex;
+
+            public float? AnimationDuration
+            {
+                get
+                {
+                    if (_spines.Length <= 0) return null;
+                    var ani = _spines[0].GetAnimation(_trackIndex);
+                    if (ani is null) return null;
+                    var val = _spines[0].GetAnimationDuration(ani);
+                    foreach (var sp in _spines.Skip(1))
+                    {
+                        var a = sp.GetAnimation(_trackIndex);
+                        if (a is null) return null;
+                        if (sp.GetAnimationDuration(a) != val) return null;
+                    }
+                    return val;
+                }
+            }
 
             public string? AnimationName
             {
@@ -834,27 +899,54 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
             }
 
-            public float? AnimationDuration
+            public float? TrackTimeScale
             {
                 get
                 {
+                    // XXX: 空轨道和多选不相同都会返回 null
                     if (_spines.Length <= 0) return null;
-                    var ani = _spines[0].GetAnimation(_trackIndex);
-                    if (ani is null) return null;
-                    var val = _spines[0].GetAnimationDuration(ani);
-                    foreach (var sp in _spines.Skip(1))
-                    {
-                        var a = sp.GetAnimation(_trackIndex);
-                        if (a is null) return null;
-                        if (sp.GetAnimationDuration(a) != val) return null;
-                    }
+                    var val = _spines[0].GetTrackTimeScale(_trackIndex);
+                    if (_spines.Skip(1).Any(it => it.GetTrackTimeScale(_trackIndex) != val)) return null;
                     return val;
+                }
+
+                set
+                {
+                    if (_spines.Length <= 0) return;
+                    if (value is null) return;
+                    foreach (var sp in _spines) sp.SetTrackTimeScale(_trackIndex, (float)value);
+                    OnPropertyChanged();
                 }
             }
 
-            private void SingleModel_AnimationChanged(object? sender, AnimationChangedEventArgs e)
+            public float? TrackAlpha
             {
-                if (e.TrackIndex == _trackIndex) OnPropertyChanged(nameof(AnimationName));
+                get
+                {
+                    // XXX: 空轨道和多选不相同都会返回 null
+                    if (_spines.Length <= 0) return null;
+                    var val = _spines[0].GetTrackAlpha(_trackIndex);
+                    if (_spines.Skip(1).Any(it => it.GetTrackAlpha(_trackIndex) != val)) return null;
+                    return val;
+                }
+
+                set
+                {
+                    if (_spines.Length <= 0) return;
+                    if (value is null) return;
+                    foreach (var sp in _spines) sp.SetTrackAlpha(_trackIndex, (float)value);
+                    OnPropertyChanged();
+                }
+            }
+
+            private void SingleModel_TrackPropChanged(object? sender, TrackPropertyChangedEventArgs e)
+            {
+                if (e.TrackIndex == _trackIndex)
+                {
+                    if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.AnimationName)) OnPropertyChanged(nameof(AnimationName));
+                    else if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.TimeScale)) OnPropertyChanged(nameof(TrackTimeScale));
+                    else if (e.PropertyName == nameof(TrackPropertyChangedEventArgs.Alpha)) OnPropertyChanged(nameof(TrackAlpha));
+                }
             }
         }
     }

@@ -64,6 +64,8 @@
     <s:String x:Key="Str_IsShown">显示</s:String>
     <s:String x:Key="Str_UsePma">预乘Alpha通道</s:String>
     <s:String x:Key="Str_Physics">物理</s:String>
+    <s:String x:Key="Str_TimeScale">时间因子</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">单个模型的时间因子，只能取正数</s:String>
 
     <s:String x:Key="Str_Transform">变换</s:String>
     <s:String x:Key="Str_Scale">缩放</s:String>
@@ -84,6 +86,11 @@
     <s:String x:Key="Str_Animation">动画</s:String>
     <s:String x:Key="Str_AppendTrack">添加</s:String>
     <s:String x:Key="Str_InsertTrack">插入</s:String>
+    <s:String x:Key="Str_ClearTrack">删除</s:String>
+    <s:String x:Key="Str_TrackTimeScale">时间因子</s:String>
+    <s:String x:Key="Str_TrackTimeScaleTooltip">单个轨道的时间因子，只能取正数</s:String>
+    <s:String x:Key="Str_TrackAlpha">Alpha 混合</s:String>
+    <s:String x:Key="Str_TrackAlphaTooltip">取值范围 0-1，与图像混合类似，可以控制高索引轨道在低索引轨道中的动画混合比例</s:String>
 
     <s:String x:Key="Str_Debug">调试</s:String>
     <s:String x:Key="Str_DebugTexture">Texture</s:String>
@@ -106,6 +113,7 @@
     <s:String x:Key="Str_Zoom">缩放</s:String>
     <s:String x:Key="Str_Rotation">旋转（角度）</s:String>
     <s:String x:Key="Str_MaxFps">最大帧率</s:String>
+    <s:String x:Key="Str_MaxFpsTooltip">预览画面的最大帧率，设置为 0 时则无帧率限制</s:String>
     <s:String x:Key="Str_PlaySpeed">播放速度</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
     <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>

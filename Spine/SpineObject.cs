@@ -66,10 +66,10 @@ namespace Spine
                 }
                 catch (InvalidOperationException)
                 {
-                    throw new KeyNotFoundException($"Unrecognized skel suffix '{skelPath}'");
+                    throw new KeyNotFoundException($"Unrecognized skel file suffix");
                 }
             }
-            else if (!File.Exists(atlasPath)) throw new FileNotFoundException($"{nameof(atlasPath)} not found", skelPath);
+            else if (!File.Exists(atlasPath)) throw new FileNotFoundException($"{nameof(atlasPath)} not found", atlasPath);
             AtlasPath = Path.GetFullPath(atlasPath);
 
             // 自动检测版本, 可能会抛出异常
@@ -105,13 +105,20 @@ namespace Spine
 
                 // 依然加载不成功就只能报错
                 if (_data is null || Version is null)
-                    throw new InvalidDataException($"Failed to load spine by existed versions: '{skelPath}', '{atlasPath}'");
+                    throw new InvalidDataException($"Failed to load spine by existed versions");
             }
             else
             {
                 // 根据版本实例化对象
                 Version = version;
-                _data = SpineObjectData.New(Version, skelPath, atlasPath, textureLoader);
+                try
+                {
+                    _data = SpineObjectData.New(Version, skelPath, atlasPath, textureLoader);
+                }
+                catch
+                {
+                    throw new InvalidDataException($"Failed to load spine with version '{version}'");
+                }
             }
 
             // 创建状态实例
@@ -167,6 +174,7 @@ namespace Spine
                 // 拷贝渲染设置
                 UsePma = other.UsePma;
                 Physics = other.Physics;
+                _animationState.TimeScale = other._animationState.TimeScale;
 
                 // 拷贝皮肤加载情况
                 _skinLoadStatus = other._skinLoadStatus.ToDictionary();

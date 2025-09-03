@@ -17,6 +17,8 @@ namespace SpineViewer.Models
 
         public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();
 
+        public float TimeScale { get; set; } = 1f;
+
         public float Scale { get; set; } = 1f;
 
         public bool FlipX { get; set; }
@@ -54,5 +56,15 @@ namespace SpineViewer.Models
         public bool DebugPoints { get; set; }
 
         public bool DebugClippings { get; set; }
+
+    }
+
+    public class AnimationConfigModel
+    {
+        string Name { get; set; } = "";
+
+        float TimeScale { get; set; } = 1f;
+
+        float Alpha { get; set; } = 1f;
     }
 }

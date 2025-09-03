@@ -89,7 +89,7 @@ namespace SpineViewer.Models
 
         public event EventHandler<SlotAttachmentChangedEventArgs>? SlotAttachmentChanged;
 
-        public event EventHandler<AnimationChangedEventArgs>? AnimationChanged;
+        public event EventHandler<TrackPropertyChangedEventArgs>? TrackPropertyChanged;
 
         public SpineVersion Version => _spineObject.Version;
 
@@ -127,6 +127,12 @@ namespace SpineViewer.Models
         {
             get { lock (_lock) return _spineObject.Physics; }
             set { lock (_lock) SetProperty(_spineObject.Physics, value, v => _spineObject.Physics = v); }
+        }
+
+        public float TimeScale
+        {
+            get { lock (_lock) return _spineObject.AnimationState.TimeScale; }
+            set { lock (_lock) SetProperty(_spineObject.AnimationState.TimeScale, Math.Clamp(value, 0.01f, 100f), v => _spineObject.AnimationState.TimeScale = v); }
         }
 
         /// <summary>
@@ -248,15 +254,59 @@ namespace SpineViewer.Models
         public void SetAnimation(int index, string name)
         {
             bool changed = false;
+            float lastTimeScale = 1f;
+            float lastAlpha = 1f;
             lock (_lock)
             {
                 if (_spineObject.Data.AnimationsByName.ContainsKey(name))
                 {
-                    _spineObject.AnimationState.SetAnimation(index, name, true);
+                    // 需要记录之前的轨道属性值并还原
+                    if (_spineObject.AnimationState.GetCurrent(index) is ITrackEntry entry)
+                    {
+                        lastTimeScale = entry.TimeScale;
+                        lastAlpha = entry.Alpha;
+                    }
+                    entry = _spineObject.AnimationState.SetAnimation(index, name, true);
+                    entry.TimeScale = lastTimeScale;
+                    entry.Alpha = lastAlpha;
                     changed = true;
                 }
             }
-            if (changed) AnimationChanged?.Invoke(this, new(index, name));
+            if (changed) TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.AnimationName)));
+        }
+
+        public float GetTrackTimeScale(int index)
+        {
+            lock (_lock) return _spineObject.AnimationState.GetCurrent(index)?.TimeScale ?? 1;
+        }
+
+        public void SetTrackTimeScale(int index, float scale)
+        {
+            lock (_lock)
+            {
+                if (_spineObject.AnimationState.GetCurrent(index) is ITrackEntry entry)
+                {
+                    entry.TimeScale = Math.Clamp(scale, 0.01f, 100f);
+                    TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.TimeScale)));
+                }
+            }
+        }
+
+        public float GetTrackAlpha(int index)
+        {
+            lock (_lock) return _spineObject.AnimationState.GetCurrent(index)?.Alpha ?? 1;
+        }
+
+        public void SetTrackAlpha(int index, float alpha)
+        {
+            lock (_lock)
+            {
+                if (_spineObject.AnimationState.GetCurrent(index) is ITrackEntry entry)
+                {
+                    entry.Alpha = Math.Clamp(alpha, 0f, 1f);
+                    TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.Alpha)));
+                }
+            }
         }
 
         public int[] GetTrackIndices()
@@ -277,7 +327,7 @@ namespace SpineViewer.Models
         public void ClearTrack(int index)
         {
             lock (_lock) _spineObject.AnimationState.ClearTrack(index);
-            AnimationChanged?.Invoke(this, new(index, null));
+            TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.AnimationName)));
         }
 
         public void ResetAnimationsTime()
@@ -388,6 +438,7 @@ namespace SpineViewer.Models
 
                         UsePma = _spineObject.UsePma,
                         Physics = _spineObject.Physics.ToString(),
+                        TimeScale = _spineObject.AnimationState.TimeScale,
 
                         DebugTexture = _spineObject.DebugTexture,
                         DebugBounds = _spineObject.DebugBounds,
@@ -427,6 +478,7 @@ namespace SpineViewer.Models
                     SetProperty(_spineObject.Skeleton.Y, value.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
                     SetProperty(_spineObject.UsePma, value.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
                     SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(value.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
+                    SetProperty(_spineObject.AnimationState.TimeScale, value.TimeScale, v => _spineObject.AnimationState.TimeScale = v, nameof(TimeScale));
 
                     foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(value.LoadedSkins))
                         if (_spineObject.SetSkinStatus(name, false))
@@ -450,7 +502,7 @@ namespace SpineViewer.Models
                     {
                         if (!string.IsNullOrEmpty(name))
                             _spineObject.AnimationState.SetAnimation(trackIndex, name, true);
-                        AnimationChanged?.Invoke(this, new(trackIndex, name));
+                        TrackPropertyChanged?.Invoke(this, new(trackIndex, nameof(TrackPropertyChangedEventArgs.AnimationName)));
                         trackIndex++;
                     }
 
@@ -540,10 +592,23 @@ namespace SpineViewer.Models
         public string? AttachmentName { get; } = attachmentName;
     }
 
-    public class AnimationChangedEventArgs(int trackIndex, string? animationName) : EventArgs
+    /// <summary>
+    /// 模型动画轨道属性变化事件参数, 需要检索 <c><see cref="PropertyName"/></c> 来确定发生变化的属性是什么
+    /// </summary>
+    /// <param name="trackIndex">发生属性变化的轨道索引</param>
+    /// <param name="propertyName">使用 <c>nameof</c> 设置发生改变的属性名</param>
+    public class TrackPropertyChangedEventArgs(int trackIndex, string propertyName) : EventArgs
     {
         public int TrackIndex { get; } = trackIndex;
-        public string? AnimationName { get; } = animationName;
+
+        /// <summary>
+        /// 发生变化的属性名, 将会使用 <c>nameof</c> 设置为属性名称字符串
+        /// </summary>
+        public string PropertyName { get; } = propertyName;
+
+        public string? AnimationName { get; }
+        public float TimeScale { get; } = 1f;
+        public float Alpha { get; } = 1f;
     }
 
     public class SpineObjectLoadOptions

@@ -64,6 +64,8 @@
     <s:String x:Key="Str_IsShown">表示</s:String>
     <s:String x:Key="Str_UsePma">プレマルチプライドアルファ</s:String>
     <s:String x:Key="Str_Physics">物理</s:String>
+    <s:String x:Key="Str_TimeScale">時間スケール</s:String>
+    <s:String x:Key="Str_TimeScaleTootltip">単一モデルの時間スケール。正の値のみ指定可能です。</s:String>
 
     <s:String x:Key="Str_Transform">変換</s:String>
     <s:String x:Key="Str_Scale">スケール</s:String>
@@ -84,6 +86,11 @@
     <s:String x:Key="Str_Animation">アニメーション</s:String>
     <s:String x:Key="Str_AppendTrack">追加</s:String>
     <s:String x:Key="Str_InsertTrack">挿入</s:String>
+    <s:String x:Key="Str_ClearTrack">削除</s:String>
+    <s:String x:Key="Str_TrackTimeScale">時間スケール</s:String>
+    <s:String x:Key="Str_TrackTimeScaleTooltip">単一トラックの時間スケール。正の値のみ指定可能です。</s:String>
+    <s:String x:Key="Str_TrackAlpha">アルファ合成</s:String>
+    <s:String x:Key="Str_TrackAlphaTooltip">値の範囲：0～1。画像の合成と同様に、高インデックストラックのアニメーションが低インデックストラックにどの程度混合されるかを制御します。</s:String>
 
     <s:String x:Key="Str_Debug">デバッグ</s:String>
     <s:String x:Key="Str_DebugTexture">テクスチャ</s:String>
@@ -106,6 +113,7 @@
     <s:String x:Key="Str_Zoom">ズーム</s:String>
     <s:String x:Key="Str_Rotation">回転（度）</s:String>
     <s:String x:Key="Str_MaxFps">最大FPS</s:String>
+    <s:String x:Key="Str_MaxFpsTooltip">プレビュー画面の最大フレームレート。0 に設定すると制限なし。</s:String>
     <s:String x:Key="Str_PlaySpeed">再生速度</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
     <s:String x:Key="Str_ShowAxis">座標軸を表示</s:String>
