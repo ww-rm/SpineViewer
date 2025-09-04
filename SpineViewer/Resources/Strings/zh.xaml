@@ -229,6 +229,8 @@
 
     <s:String x:Key="Str_SpineLoadPreference">模型加载选项</s:String>
 
+    <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
+
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
 

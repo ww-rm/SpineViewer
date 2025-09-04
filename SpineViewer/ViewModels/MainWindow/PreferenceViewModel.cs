@@ -93,6 +93,11 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
 
+                    MaxFps = MaxFps,
+                    Speed = Speed,
+                    ShowAxis = ShowAxis,
+                    BackgroundColor = BackgroundColor,
+
                     RenderSelectedOnly = RenderSelectedOnly,
                     AppLanguage = AppLanguage,
                 };
@@ -116,6 +121,11 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPaths = value.DebugPaths;
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
+
+                MaxFps = value.MaxFps;
+                Speed = value.Speed;
+                ShowAxis = value.ShowAxis;
+                BackgroundColor = value.BackgroundColor;
 
                 RenderSelectedOnly = value.RenderSelectedOnly;
                 AppLanguage = value.AppLanguage;
@@ -216,6 +226,34 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => SpineObjectModel.LoadOptions.DebugClippings;
             set => SetProperty(SpineObjectModel.LoadOptions.DebugClippings, value, v => SpineObjectModel.LoadOptions.DebugClippings = v);
+        }
+
+        #endregion
+
+        #region 预览画面首选项
+
+        public uint MaxFps
+        {
+            get => _vmMain.SFMLRendererViewModel.MaxFps;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.MaxFps, value, v => _vmMain.SFMLRendererViewModel.MaxFps = value);
+        }
+
+        public float Speed
+        {
+            get => _vmMain.SFMLRendererViewModel.Speed;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.Speed, value, v => _vmMain.SFMLRendererViewModel.Speed = value);
+        }
+
+        public bool ShowAxis
+        {
+            get => _vmMain.SFMLRendererViewModel.ShowAxis;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.ShowAxis, value, v => _vmMain.SFMLRendererViewModel.ShowAxis = value);
+        }
+
+        public Color BackgroundColor
+        {
+            get => _vmMain.SFMLRendererViewModel.BackgroundColor;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.BackgroundColor, value, v => _vmMain.SFMLRendererViewModel.BackgroundColor = value);
         }
 
         #endregion
