@@ -76,7 +76,7 @@
             </Border>
 
             <Border Grid.Row="1">
-                <Grid>
+                <Grid x:Name="_rootGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto" />
@@ -91,7 +91,7 @@
 
                             <!-- 模型列表页 -->
                             <TabItem Header="{DynamicResource Str_SpineObject}">
-                                <Grid>
+                                <Grid x:Name="_modelListGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition Height="Auto"/>
@@ -578,7 +578,7 @@
 
                             <!-- 浏览页 -->
                             <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
-                                <Grid>
+                                <Grid x:Name="_explorerGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition Height="Auto"/>
@@ -785,14 +785,14 @@
                     <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
 
                     <Border Grid.Column="2">
-                        <Grid>
+                        <Grid x:Name="_rightPanelGrid">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="5*"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Grid >
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>

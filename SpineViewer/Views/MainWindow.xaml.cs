@@ -3,12 +3,15 @@ using NLog;
 using NLog.Layouts;
 using NLog.Targets;
 using Spine;
+using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Resources;
+using SpineViewer.Utils;
 using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +29,11 @@ namespace SpineViewer.Views;
 /// </summary>
 public partial class MainWindow : Window
 {
+    /// <summary>
+    /// 布局文件保存路径
+    /// </summary>
+    public static readonly string LayoutFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "layout.json");
+
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private ListViewItem? _listViewDragSourceItem = null;
     private Point _listViewDragSourcePoint;
@@ -46,6 +54,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        LoadLayout();
+
         var vm = _vm.SFMLRendererViewModel;
         _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
         _renderPanel.CanvasMouseButtonPressed += vm.CanvasMouseButtonPressed;
@@ -70,6 +80,8 @@ public partial class MainWindow : Window
     {
         var vm = _vm.SFMLRendererViewModel;
         vm.StopRender();
+
+        SaveLayout();
     }
 
     /// <summary>
@@ -98,6 +110,50 @@ public partial class MainWindow : Window
         LogManager.Configuration.AddTarget(rtbTarget);
         LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
         LogManager.ReconfigExistingLoggers();
+    }
+
+    private void LoadLayout()
+    {
+        if (JsonHelper.Deserialize<MainWindowLayoutModel>(LayoutFilePath, out var m, true))
+        {
+            Left = m.WindowLeft;
+            Top = m.WindowTop;
+            Width = m.WindowWidth;
+            Height = m.WindowHeight;
+            if (m.WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+            }
+
+            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width);
+            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
+            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
+            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
+        }
+        
+    }
+
+    private void SaveLayout()
+    {
+        var m = new MainWindowLayoutModel()
+        {
+            WindowLeft = Left,
+            WindowTop = Top,
+            WindowWidth = Width,
+            WindowHeight = Height,
+            WindowState = WindowState,
+
+            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].ActualWidth,
+            ModelListRow0Height = _modelListGrid.RowDefinitions[0].ActualHeight,
+            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].ActualHeight,
+            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].ActualHeight,
+        };
+
+        JsonHelper.Serialize(m, LayoutFilePath);
     }
 
     #region _spinesListView 事件处理
