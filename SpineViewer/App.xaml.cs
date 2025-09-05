@@ -23,7 +23,7 @@ namespace SpineViewer
         {
             InitializeLogConfiguration();
             _logger = LogManager.GetCurrentClassLogger();
-            _logger.Info("Application Started");
+            _logger.Info("Application Started, v{0}", Version);
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
