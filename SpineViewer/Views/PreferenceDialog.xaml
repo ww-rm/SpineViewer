@@ -134,34 +134,6 @@
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Header="{DynamicResource Str_RendererPreference}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_MaxFps}"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MaxFps}"/>
-
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_PlaySpeed}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Speed}"/>
-
-                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_ShowAxis}"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding ShowAxis}"/>
-
-                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
-
-                        </Grid>
-                    </GroupBox>
-                    
                     <GroupBox Header="{DynamicResource Str_AppPreference}">
                         <Grid>
                             <Grid.ColumnDefinitions>

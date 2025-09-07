@@ -86,6 +86,14 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public event NotifyCollectionChangedEventHandler? RequestSelectionChanging;
 
+        public void SetResolution(uint x, uint y)
+        {
+            var lastRes = _renderer.Resolution;
+            _renderer.Resolution = new(x, y);
+            if (lastRes.X != x) OnPropertyChanged(nameof(ResolutionX));
+            if (lastRes.Y != y) OnPropertyChanged(nameof(ResolutionY));
+        }
+
         public uint ResolutionX
         {
             get => _renderer.Resolution.X;
@@ -455,8 +463,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             set
             {
-                ResolutionX = value.ResolutionX;
-                ResolutionY = value.ResolutionY;
+                SetResolution(value.ResolutionX, value.ResolutionY);
                 CenterX = value.CenterX;
                 CenterY = value.CenterY;
                 Zoom = value.Zoom;
