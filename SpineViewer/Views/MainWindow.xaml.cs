@@ -32,7 +32,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 布局文件保存路径
     /// </summary>
-    public static readonly string LayoutFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "layout.json");
+    public static readonly string LastStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "laststate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private ListViewItem? _listViewDragSourceItem = null;
@@ -54,8 +54,6 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        LoadLayout();
-
         var vm = _vm.SFMLRendererViewModel;
         _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
         _renderPanel.CanvasMouseButtonPressed += vm.CanvasMouseButtonPressed;
@@ -63,8 +61,7 @@ public partial class MainWindow : Window
         _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
 
         // 设置默认参数并启动渲染
-        vm.ResolutionX = 1500;
-        vm.ResolutionY = 1000;
+        vm.SetResolution(1500, 1000);
         vm.Zoom = 0.75f;
         vm.CenterX = 0;
         vm.CenterY = 0;
@@ -74,14 +71,16 @@ public partial class MainWindow : Window
 
         // 加载首选项
         _vm.PreferenceViewModel.LoadPreference();
+
+        LoadLastState();
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
+        SaveLastState();
+
         var vm = _vm.SFMLRendererViewModel;
         vm.StopRender();
-
-        SaveLayout();
     }
 
     /// <summary>
@@ -112,9 +111,9 @@ public partial class MainWindow : Window
         LogManager.ReconfigExistingLoggers();
     }
 
-    private void LoadLayout()
+    private void LoadLastState()
     {
-        if (JsonHelper.Deserialize<MainWindowLayoutModel>(LayoutFilePath, out var m, true))
+        if (JsonHelper.Deserialize<LastStateModel>(LastStateFilePath, out var m, true))
         {
             Left = m.WindowLeft;
             Top = m.WindowTop;
@@ -133,13 +132,19 @@ public partial class MainWindow : Window
             _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
             _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
+
+            _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
+            _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
+            _vm.SFMLRendererViewModel.Speed = m.Speed;
+            _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
+            _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
         }
         
     }
 
-    private void SaveLayout()
+    private void SaveLastState()
     {
-        var m = new MainWindowLayoutModel()
+        var m = new LastStateModel()
         {
             WindowLeft = Left,
             WindowTop = Top,
@@ -151,9 +156,16 @@ public partial class MainWindow : Window
             ModelListRow0Height = _modelListGrid.RowDefinitions[0].ActualHeight,
             ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].ActualHeight,
             RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].ActualHeight,
+
+            ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
+            ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
+            MaxFps = _vm.SFMLRendererViewModel.MaxFps,
+            Speed = _vm.SFMLRendererViewModel.Speed,
+            ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
+            BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
         };
 
-        JsonHelper.Serialize(m, LayoutFilePath);
+        JsonHelper.Serialize(m, LastStateFilePath);
     }
 
     #region _spinesListView 事件处理
@@ -292,9 +304,7 @@ public partial class MainWindow : Window
         IntPtr hwnd = new WindowInteropHelper(this).Handle;
         if (Win32.GetScreenResolution(hwnd, out var resX, out var resY))
         {
-            var vm = _vm.SFMLRendererViewModel;
-            vm.ResolutionX = resX;
-            vm.ResolutionY = resY;
+            _vm.SFMLRendererViewModel.SetResolution(resX, resY);
         }
 
         HandyControl.Controls.IconElement.SetGeometry(_fullScreenButton, AppResource.Geo_ArrowsMinimize);

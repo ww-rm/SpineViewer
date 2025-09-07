@@ -71,22 +71,6 @@ namespace SpineViewer.Models
 
         #endregion
 
-        #region 预览画面首选项
-
-        [ObservableProperty]
-        private uint _maxFps = 30;
-
-        [ObservableProperty]
-        private float _speed = 1f;
-
-        [ObservableProperty]
-        private bool _showAxis = true;
-
-        [ObservableProperty]
-        private Color _backgroundColor = Color.FromRgb(105, 105, 105);
-
-        #endregion
-
         #region 程序选项
 
         [ObservableProperty]
