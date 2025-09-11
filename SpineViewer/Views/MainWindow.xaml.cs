@@ -30,7 +30,7 @@ namespace SpineViewer.Views;
 public partial class MainWindow : Window
 {
     /// <summary>
-    /// 布局文件保存路径
+    /// 上一次状态文件保存路径
     /// </summary>
     public static readonly string LastStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "laststate.json");
 
@@ -46,8 +46,8 @@ public partial class MainWindow : Window
         InitializeLogConfiguration();
         _vm = new (_renderPanel);
         DataContext = _vm;
+        _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
-
         Loaded += MainWindow_Loaded;
         Closed += MainWindow_Closed;
     }

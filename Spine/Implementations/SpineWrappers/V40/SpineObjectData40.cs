@@ -30,10 +30,16 @@ namespace Spine.Implementations.SpineWrappers.V40
             : base(skelPath, atlasPath, textureLoader)
         {
             // 加载 atlas
-            try { _atlas = new Atlas(atlasPath, textureLoader); }
-            catch (Exception ex) { throw new InvalidDataException($"Failed to load atlas '{atlasPath}'", ex); }
+            try
+            {
+                _atlas = new Atlas(atlasPath, textureLoader);
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                throw new InvalidDataException($"Failed to load atlas '{atlasPath}'");
+            }
 
-            // 加载 skel
             try
             {
                 if (Utf8Validator.IsUtf8(skelPath))
@@ -42,8 +48,9 @@ namespace Spine.Implementations.SpineWrappers.V40
                     {
                         _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        _logger.Trace(ex.ToString());
                         _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
                     }
                 }
@@ -53,8 +60,9 @@ namespace Spine.Implementations.SpineWrappers.V40
                     {
                         _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        _logger.Trace(ex.ToString());
                         _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
                     }
                 }
@@ -62,7 +70,8 @@ namespace Spine.Implementations.SpineWrappers.V40
             catch (Exception ex)
             {
                 _atlas.Dispose();
-                throw new InvalidDataException($"Failed to load skeleton file {skelPath}", ex);
+                _logger.Trace(ex.ToString());
+                throw new InvalidDataException($"Failed to load skeleton file {skelPath}");
             }
 
             // 加载动画数据

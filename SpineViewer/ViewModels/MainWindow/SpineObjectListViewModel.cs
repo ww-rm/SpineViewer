@@ -11,6 +11,7 @@ using SpineViewer.ViewModels.Exporters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,11 @@ namespace SpineViewer.ViewModels.MainWindow
             _ffmpegVideoExporterViewModel = new(_vmMain);
             _customFFmpegExporterViewModel = new(_vmMain);
         }
+
+        /// <summary>
+        /// 请求选中项发生变化
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler? RequestSelectionChanging;
 
         /// <summary>
         /// 单帧导出 ViewModel
@@ -489,6 +495,19 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 var sp = new SpineObjectModel(skelPath, atlasPath);
                 lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                    });
+                }
                 return true;
             }
             catch (Exception ex)
@@ -505,6 +524,19 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 var sp = new SpineObjectModel(cfg);
                 lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                    });
+                }
                 return true;
             }
             catch (Exception ex)
