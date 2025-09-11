@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Spine.SpineWrappers.Attachments;
 
 namespace Spine.SpineWrappers
@@ -17,6 +18,8 @@ namespace Spine.SpineWrappers
         ISpineObjectData, 
         IDisposable
     {
+        protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 构建版本对象
         /// </summary>

@@ -115,8 +115,9 @@ namespace Spine
                 {
                     _data = SpineObjectData.New(Version, skelPath, atlasPath, textureLoader);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    _logger.Trace(ex.ToString());
                     throw new InvalidDataException($"Failed to load spine with version '{version}'");
                 }
             }
