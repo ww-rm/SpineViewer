@@ -145,6 +145,34 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 移除全部模型
+        /// </summary>
+        public RelayCommand<IList?> Cmd_RemoveAllSpineObject => _cmd_RemoveAllSpineObject ??= new(RemoveAllSpineObject_Execute, RemoveAllSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_RemoveAllSpineObject;
+
+        private void RemoveAllSpineObject_Execute(IList? args)
+        {
+            if (!RemoveAllSpineObject_CanExecute(args)) return;
+
+            if (!MessagePopupService.Quest(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+                return;
+
+            lock (_spineObjectModels.Lock)
+            {
+                foreach (var sp in _spineObjectModels)
+                    sp.Dispose();
+                _spineObjectModels.Clear();
+            }
+        }
+
+        private bool RemoveAllSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        /// <summary>
         /// 从剪贴板文件列表添加模型
         /// </summary>
         public RelayCommand Cmd_AddSpineObjectFromClipboard => _cmd_AddSpineObjectFromClipboard ??= new(AddSpineObjectFromClipboard_Execute);
