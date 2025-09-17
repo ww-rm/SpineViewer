@@ -463,7 +463,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var skelPath = paths[i];
+                var skelPath = paths[totalCount - 1 - i]; // 从后往前添加, 每次插入到列表的第一个
                 reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
 
                 if (AddSpineObject(skelPath))
@@ -486,7 +486,7 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// 安全地在末尾添加一个模型, 发生错误会输出日志
+        /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
         private bool AddSpineObject(string skelPath, string? atlasPath = null)
@@ -494,7 +494,7 @@ namespace SpineViewer.ViewModels.MainWindow
             try
             {
                 var sp = new SpineObjectModel(skelPath, atlasPath);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
                     RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
@@ -514,35 +514,6 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 _logger.Trace(ex.ToString());
                 _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
-            }
-            return false;
-        }
-
-        private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
-        {
-            try
-            {
-                var sp = new SpineObjectModel(cfg);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
-                if (Application.Current.Dispatcher.CheckAccess())
-                {
-                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
-                    });
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Trace(ex.ToString());
-                _logger.Error("Failed to load: {0}, {1}", cfg.SkelPath, ex.Message);
             }
             return false;
         }
@@ -609,7 +580,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var cfg = models[i];
+                var cfg = models[totalCount - 1 - i]; // 从后往前添加, 每次插入到列表的第一个
                 reporter.ProgressText = $"[{i}/{totalCount}] {cfg}";
 
                 if (AddSpineObject(cfg))
@@ -636,6 +607,26 @@ namespace SpineViewer.ViewModels.MainWindow
                 foreach (var sp in _spineObjectModels) 
                     sp.ResetAnimationsTime();
             }
+        }
+
+        /// <summary>
+        /// 安全地在列表头添加一个模型, 发生错误会输出日志
+        /// </summary>
+        /// <returns>是否添加成功</returns>
+        private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
+        {
+            try
+            {
+                var sp = new SpineObjectModel(cfg);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Error("Failed to load: {0}, {1}", cfg.SkelPath, ex.Message);
+            }
+            return false;
         }
     }
 }
