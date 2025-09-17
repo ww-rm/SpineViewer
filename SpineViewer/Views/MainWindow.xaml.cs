@@ -193,6 +193,9 @@ public partial class MainWindow : Window
             default:
                 break;
         }
+
+        // 选中项发生变化时转移焦点到列表
+        _spinesListView.Focus();
     }
 
     private void SpinesListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
