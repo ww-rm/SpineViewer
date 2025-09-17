@@ -619,6 +619,19 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 var sp = new SpineObjectModel(cfg);
                 lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                    });
+                }
                 return true;
             }
             catch (Exception ex)
