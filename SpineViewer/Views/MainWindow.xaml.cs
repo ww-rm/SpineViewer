@@ -56,7 +56,7 @@ public partial class MainWindow : Window
     {
         var vm = _vm.SFMLRendererViewModel;
         _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
-        _renderPanel.CanvasMouseButtonPressed += vm.CanvasMouseButtonPressed;
+        _renderPanel.CanvasMouseButtonPressed += (s, e) => { vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
         _renderPanel.CanvasMouseMove += vm.CanvasMouseMove;
         _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
 
@@ -193,9 +193,6 @@ public partial class MainWindow : Window
             default:
                 break;
         }
-
-        // 选中项发生变化时转移焦点到列表
-        _spinesListView.Focus();
     }
 
     private void SpinesListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

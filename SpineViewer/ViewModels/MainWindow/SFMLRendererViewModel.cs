@@ -275,9 +275,12 @@ namespace SpineViewer.ViewModels.MainWindow
 
                                 hit = true;
 
-                                // 不管点到了哪个, 都清空原先选中的, 改为只选中这一次点的, 强制触发一次选中项改变, 以及焦点转移到模型列表
-                                RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                                RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                                // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
+                                if (!sp.IsSelected)
+                                {
+                                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                                }
                                 break;
                             }
 
