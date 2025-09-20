@@ -18,6 +18,8 @@ namespace SpineViewer
     /// </summary>
     public partial class App : Application
     {
+        public const string ProgId = "SpineViewer.skel";
+
         public static readonly string ExeFilePath = Environment.ProcessPath;
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
@@ -123,7 +125,7 @@ namespace SpineViewer
                 // 已有实例在运行，把参数通过命名管道发过去
                 using (var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
                 {
-                    client.Connect(1000); // 等待 1 秒
+                    client.Connect(10000); // 10 秒超时
                     using (var writer = new StreamWriter(client))
                     {
                         foreach (var v in args)
@@ -144,6 +146,16 @@ namespace SpineViewer
         {
             var t = new Task(() =>
             {
+                while (Current is null) Thread.Sleep(10);
+                while (true)
+                {
+                    var windowCreated = false;
+                    Current.Dispatcher.Invoke(() => windowCreated = Current.MainWindow is MainWindow);
+                    if (windowCreated)
+                        break;
+                    else
+                        Thread.Sleep(100);
+                }
                 while (true)
                 {
                     using (var server = new NamedPipeServerStream(PipeName, PipeDirection.In))
@@ -158,11 +170,7 @@ namespace SpineViewer
 
                             if (args.Count > 0)
                             {
-                                Current.Dispatcher.Invoke(() =>
-                                {
-                                    if (Current?.MainWindow is MainWindow mainWindow)
-                                        mainWindow.OpenFiles(args);
-                                });
+                                Current.Dispatcher.Invoke(() => ((MainWindow)Current.MainWindow).OpenFiles(args));
                             }
                         }
                     }
