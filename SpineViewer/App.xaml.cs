@@ -20,7 +20,8 @@ namespace SpineViewer
     {
         public const string ProgId = "SpineViewer.skel";
 
-        public static readonly string ExeFilePath = Environment.ProcessPath;
+        public static readonly string ProcessPath = Environment.ProcessPath;
+        public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 

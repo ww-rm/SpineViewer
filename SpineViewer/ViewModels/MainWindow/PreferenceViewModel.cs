@@ -1,13 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using NLog;
 using Spine.SpineWrappers;
 using SpineViewer.Models;
+using SpineViewer.Natives;
 using SpineViewer.Services;
 using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,6 +25,10 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 文件保存路径
         /// </summary>
         public static readonly string PreferenceFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "preference.json");
+
+        private static readonly string SkelFileDescription = "SpineViewer File";
+        private static readonly string SkelIconFilePath = Path.Combine(App.ProcessDirectory, "Resources\\Images\\skel.ico");
+        private static readonly string ShellOpenCommand = $"\"{App.ProcessPath}\" \"%1\"";
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -63,8 +70,19 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public void LoadPreference()
         {
-            if (JsonHelper.Deserialize<PreferenceModel>(PreferenceFilePath, out var obj, true)) 
-                Preference = obj;
+            if (JsonHelper.Deserialize<PreferenceModel>(PreferenceFilePath, out var obj, true))
+            {
+                try
+                {
+                    Preference = obj;
+                }
+                catch (Exception ex)
+                {
+
+                    _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to load some prefereneces, {0}", ex.Message);
+                }
+            }
         }
 
         /// <summary>
@@ -94,6 +112,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugClippings = DebugClippings,
 
                     RenderSelectedOnly = RenderSelectedOnly,
+                    AssociateFileSuffix = AssociateFileSuffix,
                     AppLanguage = AppLanguage,
                 };
             }
@@ -118,6 +137,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugClippings = value.DebugClippings;
 
                 RenderSelectedOnly = value.RenderSelectedOnly;
+                AssociateFileSuffix = value.AssociateFileSuffix;
                 AppLanguage = value.AppLanguage;
             }
         }
@@ -228,6 +248,71 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
             set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
+        }
+
+        public bool AssociateFileSuffix
+        {
+            get
+            {
+                try
+                {
+                    // 检查 .skel 的 ProgID
+                    using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\.skel"))
+                    {
+                        var progIdValue = key?.GetValue("") as string;
+                        if (!string.Equals(progIdValue, App.ProgId, StringComparison.OrdinalIgnoreCase))
+                            return false;
+                    }
+
+                    // 检查 command 指令是否相同
+                    using (var key = Registry.CurrentUser.OpenSubKey($@"Software\Classes\{App.ProgId}\shell\open\command"))
+                    {
+                        var command = key?.GetValue("") as string;
+                        if (string.IsNullOrWhiteSpace(command))
+                            return false;
+                        return command == ShellOpenCommand;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                SetProperty(AssociateFileSuffix, value, v =>
+                {
+                    if (v)
+                    {
+                        // 文件关联
+                        using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.skel"))
+                        {
+                            key?.SetValue("", App.ProgId);
+                        }
+
+                        using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{App.ProgId}"))
+                        {
+                            key?.SetValue("", SkelFileDescription);
+                            using (var iconKey = key?.CreateSubKey("DefaultIcon"))
+                            {
+                                iconKey?.SetValue("", $"\"{SkelIconFilePath}\"");
+                            }
+                            using (var shellKey = key?.CreateSubKey(@"shell\open\command"))
+                            {
+                                shellKey?.SetValue("", ShellOpenCommand);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 删除关联
+                        Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\.skel", false);
+                        Registry.CurrentUser.DeleteSubKeyTree($@"Software\Classes\{App.ProgId}", false);
+                    }
+
+                    Shell32.SHChangeNotify(Shell32.SHCNE_ASSOCCHANGED, Shell32.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+                });
+            }
         }
 
         public AppLanguage AppLanguage

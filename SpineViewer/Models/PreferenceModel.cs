@@ -77,6 +77,9 @@ namespace SpineViewer.Models
         private bool _renderSelectedOnly;
 
         [ObservableProperty]
+        private bool _associateFileSuffix;
+
+        [ObservableProperty]
         private AppLanguage _appLanguage;
 
         #endregion

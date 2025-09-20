@@ -233,6 +233,7 @@
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">Associate File Extension</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
 
 </ResourceDictionary>

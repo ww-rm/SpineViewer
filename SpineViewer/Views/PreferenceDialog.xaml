@@ -143,13 +143,17 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_RenderSelectedOnly}"/>
                             <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding RenderSelectedOnly}"/>
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_Language}"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1"
+                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_AssociateFileSuffix}"/>
+                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding AssociateFileSuffix}"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_Language}"/>
+                            <ComboBox Grid.Row="2" Grid.Column="1"
                                       SelectedItem="{Binding AppLanguage}"
                                       ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
 

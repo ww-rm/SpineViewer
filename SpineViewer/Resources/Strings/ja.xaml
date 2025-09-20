@@ -233,6 +233,7 @@
     <s:String x:Key="Str_RendererPreference">プレビュー画面オプション</s:String>
 
     <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">ファイル拡張子を関連付ける</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
 
 </ResourceDictionary>
