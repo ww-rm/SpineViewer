@@ -28,6 +28,7 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 * Automatic resolution batch export.
 * FFmpeg custom export support.
 * Program parameter saving.
+* File name extension association.
 * ...
 
 ### Supported Spine Versions
