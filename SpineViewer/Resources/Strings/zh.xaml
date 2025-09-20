@@ -37,8 +37,11 @@
     <s:String x:Key="Str_Show">显示</s:String>
     <s:String x:Key="Str_ListViewStatusBar">共 {0} 项，已选择 {1} 项</s:String>
     <s:String x:Key="Str_AddSpineObject">添加...</s:String>
-    <s:String x:Key="Str_RemoveSpineObject">移除</s:String>
+    <s:String x:Key="Str_OpenSkelFileTitle">选择骨骼文件（skel）</s:String>
+    <s:String x:Key="Str_OpenAtlasFileTitle">选择图集文件（atlas）</s:String>
     <s:String x:Key="Str_AddSpineObjectFromClipboard">从剪贴板添加</s:String>
+    <s:String x:Key="Str_RemoveSpineObject">移除</s:String>
+    <s:String x:Key="Str_RemoveAllSpineObject">移除全部</s:String>
     <s:String x:Key="Str_Reload">重新加载</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
@@ -232,6 +235,7 @@
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
 
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">关联文件后缀</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
 
 </ResourceDictionary>

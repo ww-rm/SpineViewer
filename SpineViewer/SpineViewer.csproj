@@ -7,19 +7,22 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.15.15</Version>
+        <Version>0.15.16</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
     <PropertyGroup>
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
-        <ApplicationIcon>appicon.ico</ApplicationIcon>
+        <ApplicationIcon>Resources\Images\spineviewer.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
-    
+
     <ItemGroup>
-      <Content Include="appicon.ico" />
+      <Content Include="Resources\Images\skel.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Resources\Images\spineviewer.ico" />
     </ItemGroup>
 
     <ItemGroup>

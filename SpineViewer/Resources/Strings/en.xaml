@@ -37,8 +37,11 @@
     <s:String x:Key="Str_Show">Show</s:String>
     <s:String x:Key="Str_ListViewStatusBar">{0} items, {1} selected</s:String>
     <s:String x:Key="Str_AddSpineObject">Add...</s:String>
-    <s:String x:Key="Str_RemoveSpineObject">Remove</s:String>
+    <s:String x:Key="Str_OpenSkelFileTitle">Select Skeleton File (skel)</s:String>
+    <s:String x:Key="Str_OpenAtlasFileTitle">Select Atlas File (atlas)</s:String>
     <s:String x:Key="Str_AddSpineObjectFromClipboard">Add from Clipboard</s:String>
+    <s:String x:Key="Str_RemoveSpineObject">Remove</s:String>
+    <s:String x:Key="Str_RemoveAllSpineObject">Remove All</s:String>
     <s:String x:Key="Str_Reload">Reload</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
@@ -232,6 +235,7 @@
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">Associate File Extension</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
 
 </ResourceDictionary>

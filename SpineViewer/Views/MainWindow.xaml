@@ -147,13 +147,16 @@
                                                 <ContextMenu>
                                                     <MenuItem Header="{DynamicResource Str_AddSpineObject}"
                                                               Command="{Binding Cmd_AddSpineObject}"/>
+                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
+                                                              InputGestureText="Ctrl+V"
+                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveSpineObject}"
                                                               InputGestureText="Delete"
                                                               Command="{Binding Cmd_RemoveSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_AddSpineObjectFromClipboard}"
-                                                              InputGestureText="Ctrl+V"
-                                                              Command="{Binding Cmd_AddSpineObjectFromClipboard}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RemoveAllSpineObject}"
+                                                              Command="{Binding Cmd_RemoveAllSpineObject}"
+                                                              CommandParameter="{Binding PlacementTarget.Items, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_Reload}"
                                                               InputGestureText="Ctrl+R"
                                                               Command="{Binding Cmd_ReloadSpineObject}"
