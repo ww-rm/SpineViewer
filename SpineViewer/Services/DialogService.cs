@@ -61,6 +61,18 @@ namespace SpineViewer.Services
             return dialog.ShowDialog() ?? false;
         }
 
+        public static bool ShowOpenFileDialog(out string? fileName, string title = null, string filter = "")
+        {
+            var dialog = new OpenFileDialog() { Title = title, Filter = filter };
+            if (dialog.ShowDialog() is true)
+            {
+                fileName = dialog.FileName;
+                return true;
+            }
+            fileName = null;
+            return false;
+        }
+
         /// <summary>
         /// 获取用户选择的文件夹
         /// </summary>

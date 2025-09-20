@@ -107,7 +107,12 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void AddSpineObject_Execute()
         {
-            MessagePopupService.Info("Not Implemented, please drag files into here or add them from clipboard :)");
+            if (!DialogService.ShowOpenFileDialog(out var skelFileName, AppResource.Str_OpenSkelFileTitle))
+                return;
+            if (!DialogService.ShowOpenFileDialog(out var atlasFileName, AppResource.Str_OpenAtlasFileTitle))
+                return;
+            AddSpineObject(skelFileName, atlasFileName);
+            _logger.LogCurrentProcessMemoryUsage();
         }
 
         /// <summary>

@@ -37,6 +37,8 @@
     <s:String x:Key="Str_Show">表示</s:String>
     <s:String x:Key="Str_ListViewStatusBar">全{0}件、選択中{1}件</s:String>
     <s:String x:Key="Str_AddSpineObject">追加...</s:String>
+    <s:String x:Key="Str_OpenSkelFileTitle">スケルトンファイルを選択（skel）</s:String>
+    <s:String x:Key="Str_OpenAtlasFileTitle">アトラスファイルを選択（atlas）</s:String>
     <s:String x:Key="Str_AddSpineObjectFromClipboard">クリップボードから追加</s:String>
     <s:String x:Key="Str_RemoveSpineObject">削除</s:String>
     <s:String x:Key="Str_RemoveAllSpineObject">すべて削除</s:String>
