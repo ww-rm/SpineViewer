@@ -10,9 +10,9 @@ using System.Windows;
 namespace SpineViewer.Natives
 {
     /// <summary>
-    /// Win32 Sdk 包装类
+    /// user32.dll 包装类
     /// </summary>
-    public static class Win32
+    public static class User32
     {
         public const int GWL_STYLE = -16;
         public const int WS_SIZEBOX = 0x40000;
@@ -178,17 +178,11 @@ namespace SpineViewer.Natives
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool ShowWindow(nint hWnd, int nCmdShow);
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern nint CreateCompatibleDC(nint hdc);
+        [DllImport("user32.dll")]
+        public static extern bool IsIconic(IntPtr hWnd);
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteDC(nint hdc);
-
-        [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern nint SelectObject(nint hdc, nint hgdiobj);
-
-        [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteObject(nint hObject);
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);

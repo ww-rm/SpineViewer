@@ -49,6 +49,7 @@ public partial class MainWindow : Window
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         Loaded += MainWindow_Loaded;
+        ContentRendered += MainWindow_ContentRendered;
         Closed += MainWindow_Closed;
     }
 
@@ -75,12 +76,30 @@ public partial class MainWindow : Window
         LoadLastState();
     }
 
+    private void MainWindow_ContentRendered(object? sender, EventArgs e)
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        if (args.Length > 1)
+        {
+            string[] filePaths = args.Skip(1).ToArray();
+            _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+        }
+    }
+
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
         SaveLastState();
 
         var vm = _vm.SFMLRendererViewModel;
         vm.StopRender();
+    }
+
+    /// <summary>
+    /// 给管道通信提供的打开文件外部调用方法
+    /// </summary>
+    public void OpenFiles(IEnumerable<string> filePaths)
+    {
+        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
     }
 
     /// <summary>
@@ -193,6 +212,9 @@ public partial class MainWindow : Window
             default:
                 break;
         }
+
+        // 如果选中项发生变化也强制转移焦点
+        _spinesListView.Focus();
     }
 
     private void SpinesListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -302,7 +324,7 @@ public partial class MainWindow : Window
         if (_fullScreenLayout.Visibility == Visibility.Visible) return;
 
         IntPtr hwnd = new WindowInteropHelper(this).Handle;
-        if (Win32.GetScreenResolution(hwnd, out var resX, out var resY))
+        if (User32.GetScreenResolution(hwnd, out var resX, out var resY))
         {
             _vm.SFMLRendererViewModel.SetResolution(resX, resY);
         }

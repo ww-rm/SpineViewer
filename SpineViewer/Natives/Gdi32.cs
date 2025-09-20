@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace SpineViewer.Natives
+{
+    /// <summary>
+    /// gdi32.dll 包装类
+    /// </summary>
+    public static class Gdi32
+    {
+        [DllImport("gdi32.dll", SetLastError = true)]
+        public static extern nint CreateCompatibleDC(nint hdc);
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        public static extern bool DeleteDC(nint hdc);
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        public static extern nint SelectObject(nint hdc, nint hgdiobj);
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        public static extern bool DeleteObject(nint hObject);
+    }
+}
