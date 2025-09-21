@@ -1,34 +1,27 @@
-﻿using NLog.Config;
-using NLog.Layouts;
+﻿using NLog;
+using NLog.Common;
+using NLog.Config;
 using NLog.Targets;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows;
 
 namespace NLog.Windows.Wpf
 {
-    // TODO: 完善日志实现
     [Target("RichTextBox")]
     public sealed class RichTextBoxTarget : TargetWithLayout
     {
-        private int lineCount;
-        private int _width = 500;
-        private int _height = 500;
-        private static readonly TypeConverter colorConverter = new ColorConverter();
+        public static ReadOnlyCollection<RichTextBoxRowColoringRule> DefaultRowColoringRules { get; } = CreateDefaultColoringRules();
 
-        static RichTextBoxTarget()
+        private static ReadOnlyCollection<RichTextBoxRowColoringRule> CreateDefaultColoringRules()
         {
-            var rules = new List<RichTextBoxRowColoringRule>()
+            return new List<RichTextBoxRowColoringRule>()
             {
                 new RichTextBoxRowColoringRule("level == LogLevel.Fatal", "White", "Red", FontStyles.Normal, FontWeights.Bold),
                 new RichTextBoxRowColoringRule("level == LogLevel.Error", "Red", "Empty", FontStyles.Italic, FontWeights.Bold),
@@ -36,220 +29,252 @@ namespace NLog.Windows.Wpf
                 new RichTextBoxRowColoringRule("level == LogLevel.Info", "Black", "Empty"),
                 new RichTextBoxRowColoringRule("level == LogLevel.Debug", "Gray", "Empty"),
                 new RichTextBoxRowColoringRule("level == LogLevel.Trace", "DarkGray", "Empty", FontStyles.Italic, FontWeights.Normal),
-            };
-
-            DefaultRowColoringRules = rules.AsReadOnly();
+            }.AsReadOnly();
         }
 
-        public RichTextBoxTarget()
-        {
-            WordColoringRules = new List<RichTextBoxWordColoringRule>();
-            RowColoringRules = new List<RichTextBoxRowColoringRule>();
-            ToolWindow = true;
-        }
-
-        private delegate void DelSendTheMessageToRichTextBox(string logMessage, RichTextBoxRowColoringRule rule);
-
-        private delegate void FormCloseDelegate();
-
-        public static ReadOnlyCollection<RichTextBoxRowColoringRule> DefaultRowColoringRules { get; private set; }
+        public RichTextBoxTarget() { }
 
         public string ControlName { get; set; }
 
-        public string FormName { get; set; }
+        public string WindowName { get; set; }
 
-        [DefaultValue(false)]
         public bool UseDefaultRowColoringRules { get; set; }
-
-        [ArrayParameter(typeof(RichTextBoxRowColoringRule), "row-coloring")]
-        public IList<RichTextBoxRowColoringRule> RowColoringRules { get; private set; }
-
-        [ArrayParameter(typeof(RichTextBoxWordColoringRule), "word-coloring")]
-        public IList<RichTextBoxWordColoringRule> WordColoringRules { get; private set; }
-
-        [DefaultValue(true)]
-        public bool ToolWindow { get; set; }
-
-        public bool ShowMinimized { get; set; }
-
-        public int Width
-        {
-            get { return _width; }
-            set { _width = value; }
-        }
-
-        public int Height
-        {
-            get { return _height; }
-            set { _height = value; }
-        }
 
         public bool AutoScroll { get; set; }
 
         public int MaxLines { get; set; }
 
-        internal Window TargetForm { get; set; }
+        [ArrayParameter(typeof(RichTextBoxRowColoringRule), "row-coloring")]
+        public IList<RichTextBoxRowColoringRule> RowColoringRules { get; } = new List<RichTextBoxRowColoringRule>();
 
-        internal RichTextBox TargetRichTextBox { get; set; }
+        [ArrayParameter(typeof(RichTextBoxWordColoringRule), "word-coloring")]
+        public IList<RichTextBoxWordColoringRule> WordColoringRules { get; } = new List<RichTextBoxWordColoringRule>();
 
-        internal bool CreatedForm { get; set; }
+        [NLogConfigurationIgnoreProperty]
+        public Window TargetWindow { get; set; }
+
+        [NLogConfigurationIgnoreProperty]
+        public RichTextBox TargetRichTextBox { get; set; }
 
         protected override void InitializeTarget()
         {
-            TargetRichTextBox = Application.Current.MainWindow.FindName(ControlName) as RichTextBox;
+            base.InitializeTarget();
+            if (TargetRichTextBox != null)
+                return;
 
-            if (TargetRichTextBox != null) return;
-            //this.TargetForm = FormHelper.CreateForm(this.FormName, this.Width, this.Height, false, this.ShowMinimized, this.ToolWindow);
-            //this.CreatedForm = true;
-
-            var openFormByName = Application.Current.Windows.Cast<Window>().FirstOrDefault(x => x.GetType().Name == FormName);
-            if (openFormByName != null)
+            if (WindowName == null)
             {
-                TargetForm = openFormByName;
-                if (string.IsNullOrEmpty(ControlName))
-                {
-                    // throw new NLogConfigurationException("Rich text box control name must be specified for " + GetType().Name + ".");
-                    Trace.WriteLine("Rich text box control name must be specified for " + GetType().Name + ".");
-                }
-
-                CreatedForm = false;
-                TargetRichTextBox = TargetForm.FindName(ControlName) as RichTextBox;
-
-                if (TargetRichTextBox == null)
-                {
-                    // throw new NLogConfigurationException("Rich text box control '" + ControlName + "' cannot be found on form '" + FormName + "'.");
-                    Trace.WriteLine("Rich text box control '" + ControlName + "' cannot be found on form '" + FormName + "'.");
-                }
+                HandleError("WindowName should be specified for {0}.{1}", GetType().Name, Name);
+                return;
             }
 
-            if (TargetRichTextBox == null)
+            if (string.IsNullOrEmpty(ControlName))
             {
-                TargetForm = new Window
-                {
-                    Name = FormName,
-                    Width = Width,
-                    Height = Height,
-                    WindowStyle = ToolWindow ? WindowStyle.ToolWindow : WindowStyle.None,
-                    WindowState = ShowMinimized ? WindowState.Minimized : WindowState.Normal,
-                    Title = "NLog Messages"
-                };
-                TargetForm.Show();
-
-                TargetRichTextBox = new RichTextBox { Name = ControlName };
-                var style = new Style(typeof(Paragraph));
-                TargetRichTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                style.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0, 0, 0, 0)));
-                TargetRichTextBox.Resources.Add(typeof(Paragraph), style);
-                TargetForm.Content = TargetRichTextBox;
-
-                CreatedForm = true;
+                HandleError("Rich text box control name must be specified for {0}.{1}", GetType().Name, Name);
+                return;
             }
+
+            var targetWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.Name == WindowName);
+            if (targetWindow == null)
+            {
+                InternalLogger.Info("{0}: WindowName '{1}' not found", this, WindowName);
+                return;
+            }
+
+            var targetControl = targetWindow.FindName(ControlName) as RichTextBox;
+            if (targetControl == null)
+            {
+                InternalLogger.Info("{0}: WIndowName '{1}' does not contain ControlName '{2}'", this, WindowName, ControlName);
+                return;
+            }
+
+            AttachToControl(targetWindow, targetControl);
+        }
+
+        private static void HandleError(string message, params object[] args)
+        {
+            if (LogManager.ThrowExceptions)
+            {
+                throw new NLogConfigurationException(string.Format(message, args));
+            }
+            InternalLogger.Error(message, args);
+        }
+
+        private void AttachToControl(Window window, RichTextBox textboxControl)
+        {
+            InternalLogger.Info("{0}: Attaching target to textbox {1}.{2}", this, window.Name, textboxControl.Name);
+            DetachFromControl();
+            TargetWindow = window;
+            TargetRichTextBox = textboxControl;
+        }
+
+        private void DetachFromControl()
+        {
+            TargetWindow = null;
+            TargetRichTextBox = null;
         }
 
         protected override void CloseTarget()
         {
-            if (CreatedForm)
-            {
-                try
-                {
-                    TargetForm.Dispatcher.Invoke(() =>
-                    {
-                        TargetForm.Close();
-                        TargetForm = null;
-                    });
-                }
-                catch
-                {
-                }
-
-
-
-            }
+            DetachFromControl();
         }
 
         protected override void Write(LogEventInfo logEvent)
         {
-            RichTextBoxRowColoringRule matchingRule = RowColoringRules.FirstOrDefault(rr => rr.CheckCondition(logEvent));
-
-            if (UseDefaultRowColoringRules && matchingRule == null)
+            RichTextBox textbox = TargetRichTextBox;
+            if (textbox == null || textbox.Dispatcher.HasShutdownStarted || textbox.Dispatcher.HasShutdownFinished)
             {
-                foreach (var rr in DefaultRowColoringRules.Where(rr => rr.CheckCondition(logEvent)))
-                {
-                    matchingRule = rr;
-                    break;
-                }
+                //no last logged textbox
+                InternalLogger.Trace("{0}: Attached Textbox is {1}, skipping logging", this, textbox == null ? "null" : "disposed");
+                return;
             }
 
-            if (matchingRule == null)
-            {
-                matchingRule = RichTextBoxRowColoringRule.Default;
-            }
+            string logMessage = RenderLogEvent(Layout, logEvent);
+            RichTextBoxRowColoringRule matchingRule = FindMatchingRule(logEvent);
+            _ = DoSendMessageToTextbox(logMessage, matchingRule, logEvent);
+        }
 
-            var logMessage = Layout.Render(logEvent);
-
-            if (Application.Current == null) return;
-
+        private bool DoSendMessageToTextbox(string logMessage, RichTextBoxRowColoringRule rule, LogEventInfo logEvent)
+        {
+            RichTextBox textbox = TargetRichTextBox;
             try
             {
-                if (Application.Current.Dispatcher.CheckAccess() == false)
+                if (textbox != null && !textbox.Dispatcher.HasShutdownStarted && !textbox.Dispatcher.HasShutdownFinished)
                 {
-                    Application.Current.Dispatcher.Invoke(() => SendTheMessageToRichTextBox(logMessage, matchingRule));
-                }
-                else
-                {
-                    SendTheMessageToRichTextBox(logMessage, matchingRule);
+                    if (!textbox.Dispatcher.CheckAccess())
+                    {
+                        textbox.Dispatcher.BeginInvoke(() => SendTheMessageToRichTextBox(textbox, logMessage, rule, logEvent));
+                    }
+                    else
+                    {
+                        SendTheMessageToRichTextBox(textbox, logMessage, rule, logEvent);
+                    }
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-            }
+                InternalLogger.Warn(ex, "{0}: Failed to append RichTextBox", this);
 
-        }
-
-
-        private static Color GetColorFromString(string color, Brush defaultColor)
-        {
-
-            if (color == "Empty")
-            {
-                return defaultColor is SolidColorBrush solidBrush ? solidBrush.Color : Colors.White;
-            }
-
-            return (Color)colorConverter.ConvertFromString(color);
-        }
-
-
-        private void SendTheMessageToRichTextBox(string logMessage, RichTextBoxRowColoringRule rule)
-        {
-            RichTextBox rtbx = TargetRichTextBox;
-
-            var tr = new TextRange(rtbx.Document.ContentEnd, rtbx.Document.ContentEnd);
-            tr.Text = logMessage + "\n";
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty,
-                new SolidColorBrush(GetColorFromString(rule.FontColor, (Brush)tr.GetPropertyValue(TextElement.ForegroundProperty)))
-            );
-            tr.ApplyPropertyValue(TextElement.BackgroundProperty,
-                new SolidColorBrush(GetColorFromString(rule.BackgroundColor, (Brush)tr.GetPropertyValue(TextElement.BackgroundProperty)))
-            );
-            tr.ApplyPropertyValue(TextElement.FontStyleProperty, rule.Style);
-            tr.ApplyPropertyValue(TextElement.FontWeightProperty, rule.Weight);
-
-
-            if (MaxLines > 0)
-            {
-                lineCount++;
-                if (lineCount > MaxLines)
+                if (LogManager.ThrowExceptions)
                 {
-                    tr = new TextRange(rtbx.Document.ContentStart, rtbx.Document.ContentEnd);
-                    tr.Text.Remove(0, tr.Text.IndexOf('\n'));
-                    lineCount--;
+                    throw;
+                }
+            }
+            return false;
+        }
+
+        private RichTextBoxRowColoringRule FindMatchingRule(LogEventInfo logEvent)
+        {
+            //custom rules first
+            if (RowColoringRules.Count > 0)
+            {
+                foreach (RichTextBoxRowColoringRule coloringRule in RowColoringRules)
+                {
+                    if (coloringRule.CheckCondition(logEvent))
+                    {
+                        return coloringRule;
+                    }
                 }
             }
 
+            if (UseDefaultRowColoringRules && DefaultRowColoringRules != null)
+            {
+                foreach (RichTextBoxRowColoringRule coloringRule in DefaultRowColoringRules)
+                {
+                    if (coloringRule.CheckCondition(logEvent))
+                    {
+                        return coloringRule;
+                    }
+                }
+            }
+
+            return RichTextBoxRowColoringRule.Default;
+        }
+
+        private void SendTheMessageToRichTextBox(RichTextBox textBox, string logMessage, RichTextBoxRowColoringRule rule, LogEventInfo logEvent)
+        {
+            if (textBox == null) return;
+
+            var document = textBox.Document;
+
+            // 插入文本（带换行）
+            var tr = new TextRange(document.ContentEnd, document.ContentEnd)
+            {
+                Text = logMessage + Environment.NewLine
+            };
+
+            // 设置行级样式
+            var fgColor = rule.FontColor?.Render(logEvent);
+            var bgColor = rule.BackgroundColor?.Render(logEvent);
+
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty,
+                string.IsNullOrEmpty(fgColor) || fgColor == "Empty"
+                    ? textBox.Foreground
+                    : new SolidColorBrush((Color)ColorConverter.ConvertFromString(fgColor)));
+
+            tr.ApplyPropertyValue(TextElement.BackgroundProperty,
+                string.IsNullOrEmpty(bgColor) || bgColor == "Empty"
+                    ? Brushes.Transparent
+                    : new SolidColorBrush((Color)ColorConverter.ConvertFromString(bgColor)));
+
+            tr.ApplyPropertyValue(TextElement.FontStyleProperty, rule.FontStyle);
+            tr.ApplyPropertyValue(TextElement.FontWeightProperty, rule.FontWeight);
+
+            // Word coloring（在刚插入的范围内做匹配）
+            if (WordColoringRules.Count > 0)
+            {
+                foreach (var wordRule in WordColoringRules)
+                {
+                    var pattern = wordRule.Regex?.Render(logEvent) ?? string.Empty;
+                    var text = wordRule.Text?.Render(logEvent) ?? string.Empty;
+                    var wholeWords = wordRule.WholeWords.RenderValue(logEvent);
+                    var ignoreCase = wordRule.IgnoreCase.RenderValue(logEvent);
+
+                    var regex = wordRule.ResolveRegEx(pattern, text, wholeWords, ignoreCase);
+                    var matches = regex.Matches(tr.Text);
+
+                    foreach (Match match in matches)
+                    {
+                        // 匹配到的部分范围
+                        var start = tr.Start.GetPositionAtOffset(match.Index, LogicalDirection.Forward);
+                        var endPos = tr.Start.GetPositionAtOffset(match.Index + match.Length, LogicalDirection.Backward);
+                        if (start == null || endPos == null) continue;
+
+                        var wordRange = new TextRange(start, endPos);
+
+                        var wordFg = wordRule.FontColor?.Render(logEvent);
+                        var wordBg = wordRule.BackgroundColor?.Render(logEvent);
+
+                        wordRange.ApplyPropertyValue(TextElement.ForegroundProperty,
+                            string.IsNullOrEmpty(wordFg) || wordFg == "Empty"
+                                ? tr.GetPropertyValue(TextElement.ForegroundProperty)
+                                : new SolidColorBrush((Color)ColorConverter.ConvertFromString(wordFg)));
+
+                        wordRange.ApplyPropertyValue(TextElement.BackgroundProperty,
+                            string.IsNullOrEmpty(wordBg) || wordBg == "Empty"
+                                ? tr.GetPropertyValue(TextElement.BackgroundProperty)
+                                : new SolidColorBrush((Color)ColorConverter.ConvertFromString(wordBg)));
+
+                        wordRange.ApplyPropertyValue(TextElement.FontStyleProperty, wordRule.FontStyle);
+                        wordRange.ApplyPropertyValue(TextElement.FontWeightProperty, wordRule.FontWeight);
+                    }
+                }
+            }
+
+            // 限制最大行数
+            if (MaxLines > 0)
+            {
+                while (document.Blocks.Count > MaxLines)
+                {
+                    document.Blocks.Remove(document.Blocks.FirstBlock);
+                }
+            }
+
+            // 自动滚动到最后
             if (AutoScroll)
             {
-                rtbx.ScrollToEnd();
+                textBox.ScrollToEnd();
             }
         }
     }

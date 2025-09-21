@@ -9,6 +9,7 @@
         xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
+        x:Name="_mainWindow"
         Title="{Binding Title}"
         Width="1500"
         Height="800"
