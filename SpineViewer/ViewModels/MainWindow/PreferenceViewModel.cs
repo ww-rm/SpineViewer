@@ -310,7 +310,7 @@ namespace SpineViewer.ViewModels.MainWindow
                         Registry.CurrentUser.DeleteSubKeyTree($@"Software\Classes\{App.ProgId}", false);
                     }
 
-                    Shell32.SHChangeNotify(Shell32.SHCNE_ASSOCCHANGED, Shell32.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+                    Shell32.NotifyAssociationChanged();
                 });
             }
         }
