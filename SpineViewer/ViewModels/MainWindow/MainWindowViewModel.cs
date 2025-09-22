@@ -5,6 +5,7 @@ using SFMLRenderer;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using System.Windows;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -71,6 +72,8 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public SFMLRendererViewModel SFMLRendererViewModel => _sfmlRendererViewModel;
         private readonly SFMLRendererViewModel _sfmlRendererViewModel;
+
+        public RelayCommand Cmd_Exit => new(App.Current.Shutdown);
 
         /// <summary>
         /// 打开工作区

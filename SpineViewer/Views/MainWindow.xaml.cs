@@ -44,8 +44,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         InitializeLogConfiguration();
-        _vm = new (_renderPanel);
-        DataContext = _vm;
+        DataContext = _vm = new(_renderPanel);
+        _notifyIcon.Text = _vm.Title; // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
+
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         Loaded += MainWindow_Loaded;
@@ -313,6 +314,31 @@ public partial class MainWindow : Window
 
     #endregion
 
+    #region _spineFilesListBox 事件
+
+    private void SpineFilesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var list = (ListBox)sender;
+        if (VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject) is null)
+            list.SelectedItems.Clear();
+    }
+
+    #endregion
+
+    #region _nofityIcon 事件处理
+
+    private void _notifyIcon_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _notifyIcon_MouseDoubleClick(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    #endregion
+
     #region 切换全屏布局事件处理
 
     private void SwitchToFullScreenLayout()
@@ -571,10 +597,4 @@ public partial class MainWindow : Window
 
     #endregion
 
-    private void SpineFilesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        var list = (ListBox)sender;
-        if (VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject) is null)
-            list.SelectedItems.Clear();
-    }
 }

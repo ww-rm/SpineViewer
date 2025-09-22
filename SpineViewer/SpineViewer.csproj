@@ -22,7 +22,9 @@
       <Content Include="Resources\Images\skel.ico">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="Resources\Images\spineviewer.ico" />
+      <Content Include="Resources\Images\spineviewer.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

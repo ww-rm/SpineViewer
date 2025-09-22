@@ -480,7 +480,7 @@
                                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="ColAniTime"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            
+
                                                             <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" VerticalAlignment="Top" Background="#bfffffff"/>
                                                             <Label Grid.Column="1" Content="{Binding AnimationDuration}" VerticalAlignment="Top" ContentStringFormat="{}{0:F3} s"/>
 
@@ -922,6 +922,21 @@
                    Opened="BottomPopup_Opened"
                    MouseLeave="PopupContainer_MouseLeave"/>
         </Grid>
+
+        <!-- 非可视元素通知栏图标 -->
+        <hc:NotifyIcon x:Name="_notifyIcon"
+                       Icon="/Resources/Images/spineviewer.ico"
+                       Click="_notifyIcon_Click"
+                       MouseDoubleClick="_notifyIcon_MouseDoubleClick">
+            <hc:NotifyIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="There may be a funtion :)" IsChecked="True"/>
+                    <Separator/>
+                    <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_Exit}"/>
+                </ContextMenu>
+            </hc:NotifyIcon.ContextMenu>
+        </hc:NotifyIcon>
+
     </Grid>
 
 </Window>
