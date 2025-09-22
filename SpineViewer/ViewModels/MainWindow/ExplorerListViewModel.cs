@@ -163,6 +163,7 @@ namespace SpineViewer.ViewModels.MainWindow
                         Size = new(bounds.Width, -bounds.Height),
                         Format = SkiaSharp.SKEncodedImageFormat.Webp,
                         Quality = PreviewQuality,
+                        BackgroundColor = SFML.Graphics.Color.Transparent,
                     };
                     exporter.Export(m.PreviewFilePath, sp);
                 }
@@ -199,6 +200,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 Format = SkiaSharp.SKEncodedImageFormat.Webp,
                 Quality = PreviewQuality,
+                BackgroundColor = SFML.Graphics.Color.Transparent,
             };
             for (int i = 0; i < totalCount; i++)
             {
