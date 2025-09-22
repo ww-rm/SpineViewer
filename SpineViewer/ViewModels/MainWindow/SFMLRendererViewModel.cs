@@ -217,6 +217,8 @@ namespace SpineViewer.ViewModels.MainWindow
                             _backgroundImageSprite = sprite;
                         }
                         _backgroundImagePath = v;
+                        _logger.Info("Load background image from {0}", v);
+                        _logger.LogCurrentProcessMemoryUsage();
                     }
                     catch (Exception ex)
                     {
