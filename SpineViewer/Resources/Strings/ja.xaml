@@ -121,7 +121,8 @@
     <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
     <s:String x:Key="Str_ShowAxis">座標軸を表示</s:String>
     <s:String x:Key="Str_BackgroundColor">背景色</s:String>
-    <s:String x:Key="Str_BackgroundImage">背景画像</s:String>
+    <s:String x:Key="Str_BackgroundImagePath">背景画像のパス</s:String>
+    <s:String x:Key="Str_BackgroundImageMode">背景画像のモード</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>

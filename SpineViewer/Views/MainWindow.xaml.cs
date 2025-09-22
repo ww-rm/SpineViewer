@@ -157,6 +157,8 @@ public partial class MainWindow : Window
             _vm.SFMLRendererViewModel.Speed = m.Speed;
             _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
             _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
+            _vm.SFMLRendererViewModel.BackgroundImagePath = m.BackgroundImagePath;
+            _vm.SFMLRendererViewModel.BackgroundImageMode = m.BackgroundImageMode;
         }
     }
 
@@ -181,6 +183,8 @@ public partial class MainWindow : Window
             Speed = _vm.SFMLRendererViewModel.Speed,
             ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
             BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
+            BackgroundImagePath = _vm.SFMLRendererViewModel.BackgroundImagePath,
+            BackgroundImageMode = _vm.SFMLRendererViewModel.BackgroundImageMode,
         };
 
         JsonHelper.Serialize(m, LastStateFilePath);
@@ -596,5 +600,4 @@ public partial class MainWindow : Window
     }
 
     #endregion
-
 }

@@ -727,6 +727,8 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
                                     <!-- 水平分辨率 -->
@@ -780,7 +782,15 @@
                                     <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
 
                                     <!-- 背景图案 -->
+                                    <Label Grid.Row="13" Grid.Column="0" Content="{DynamicResource Str_BackgroundImagePath}"/>
+                                    <DockPanel Grid.Row="13" Grid.Column="1" >
+                                        <Button DockPanel.Dock="Right" Content="..." Command="{Binding Cmd_SelectBackgroundImage}"/>
+                                        <TextBox Text="{Binding BackgroundImagePath}"/>
+                                    </DockPanel>
+
                                     <!-- 背景图案模式 -->
+                                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_BackgroundImageMode}"/>
+                                    <ComboBox Grid.Row="14" Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{Binding StretchOptions}"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>

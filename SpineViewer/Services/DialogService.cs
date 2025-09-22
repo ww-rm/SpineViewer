@@ -90,6 +90,22 @@ namespace SpineViewer.Services
             return false;
         }
 
+        public static bool ShowOpenSFMLImageDialog(out string? fileName, string initialDirectory = "")
+        {
+            var dialog = new OpenFileDialog()
+            {
+                InitialDirectory = initialDirectory,
+                Filter = "SFML Image|*.png;*.jpg;*.jpeg;*.bmp;*.tga|All|*.*"
+            };
+            if (dialog.ShowDialog() is true)
+            {
+                fileName = dialog.FileName;
+                return true;
+            }
+            fileName = null;
+            return false;
+        }
+
         public static bool ShowOpenJsonDialog(out string? fileName, string initialDirectory = "")
         {
             var dialog = new OpenFileDialog()
