@@ -551,7 +551,6 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public RendererWorkspaceConfigModel WorkspaceConfig
         {
-            // TODO: 背景图片
             get
             {
                 return new()
@@ -568,6 +567,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     Speed = Speed,
                     ShowAxis = ShowAxis,
                     BackgroundColor = BackgroundColor,
+                    BackgroundImagePath = BackgroundImagePath,
+                    BackgroundImageMode = BackgroundImageMode,
                 };
             }
             set
@@ -583,6 +584,8 @@ namespace SpineViewer.ViewModels.MainWindow
                 Speed = value.Speed;
                 ShowAxis = value.ShowAxis;
                 BackgroundColor = value.BackgroundColor;
+                BackgroundImagePath = value.BackgroundImagePath;
+                BackgroundImageMode = value.BackgroundImageMode;
             }
         }
     }

@@ -43,10 +43,9 @@ namespace SpineViewer.Models
 
         public Color BackgroundColor { get; set; }
 
-        // TODO: 背景图片
-        //public string? BackgroundImagePath { get; set; }
+        public string BackgroundImagePath { get; set; }
 
-        //public ? BackgroundImageDisplayMode { get; set; }
+        public Stretch BackgroundImageMode { get; set; } = Stretch.Uniform;
     }
 
     public class SpineObjectWorkspaceConfigModel
