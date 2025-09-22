@@ -148,7 +148,7 @@ public partial class MainWindow : Window
 
             _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width);
             _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
-            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
+            if (m.ExplorerGridRow0Height > 0) _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
@@ -157,7 +157,6 @@ public partial class MainWindow : Window
             _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
             _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
         }
-        
     }
 
     private void SaveLastState()
