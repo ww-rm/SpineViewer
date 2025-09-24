@@ -121,7 +121,8 @@
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
     <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>
     <s:String x:Key="Str_BackgroundColor">背景颜色</s:String>
-    <s:String x:Key="Str_BackgroundImage">背景图片</s:String>
+    <s:String x:Key="Str_BackgroundImagePath">背景图片路径</s:String>
+    <s:String x:Key="Str_BackgroundImageMode">背景图片模式</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>

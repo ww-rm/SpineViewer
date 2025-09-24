@@ -44,8 +44,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         InitializeLogConfiguration();
-        _vm = new (_renderPanel);
-        DataContext = _vm;
+        DataContext = _vm = new(_renderPanel);
+        _notifyIcon.Text = _vm.Title; // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
+
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         Loaded += MainWindow_Loaded;
@@ -111,14 +112,13 @@ public partial class MainWindow : Window
         var rtbTarget = new NLog.Windows.Wpf.RichTextBoxTarget
         {
             Name = "rtbTarget",
-            FormName = GetType().Name,
+            WindowName = _mainWindow.Name,
             ControlName = _loggerRichTextBox.Name,
             AutoScroll = true,
             MaxLines = 3000,
-            Layout = "[${level:format=OneLetter}]${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${message}"
+            Layout = "[${level:format=OneLetter}]${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${message}",
         };
 
-        // TODO: 完善日志实现
         rtbTarget.WordColoringRules.Add(new("[D]", "Gray", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[I]", "DimGray", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[W]", "DarkOrange", "Empty"));
@@ -149,7 +149,7 @@ public partial class MainWindow : Window
 
             _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width);
             _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
-            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
+            if (m.ExplorerGridRow0Height > 0) _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
@@ -157,8 +157,9 @@ public partial class MainWindow : Window
             _vm.SFMLRendererViewModel.Speed = m.Speed;
             _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
             _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
+            _vm.SFMLRendererViewModel.BackgroundImagePath = m.BackgroundImagePath;
+            _vm.SFMLRendererViewModel.BackgroundImageMode = m.BackgroundImageMode;
         }
-        
     }
 
     private void SaveLastState()
@@ -182,6 +183,8 @@ public partial class MainWindow : Window
             Speed = _vm.SFMLRendererViewModel.Speed,
             ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
             BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
+            BackgroundImagePath = _vm.SFMLRendererViewModel.BackgroundImagePath,
+            BackgroundImageMode = _vm.SFMLRendererViewModel.BackgroundImageMode,
         };
 
         JsonHelper.Serialize(m, LastStateFilePath);
@@ -311,6 +314,31 @@ public partial class MainWindow : Window
         while (source != null && source is not T)
             source = VisualTreeHelper.GetParent(source);
         return source as T;
+    }
+
+    #endregion
+
+    #region _spineFilesListBox 事件
+
+    private void SpineFilesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var list = (ListBox)sender;
+        if (VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject) is null)
+            list.SelectedItems.Clear();
+    }
+
+    #endregion
+
+    #region _nofityIcon 事件处理
+
+    private void _notifyIcon_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _notifyIcon_MouseDoubleClick(object sender, RoutedEventArgs e)
+    {
+
     }
 
     #endregion
@@ -572,11 +600,4 @@ public partial class MainWindow : Window
     }
 
     #endregion
-
-    private void SpineFilesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        var list = (ListBox)sender;
-        if (VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject) is null)
-            list.SelectedItems.Clear();
-    }
 }

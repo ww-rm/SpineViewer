@@ -10,8 +10,10 @@ using SpineViewer.Services;
 using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace SpineViewer.ViewModels.MainWindow
 {
     public class SFMLRendererViewModel : ObservableObject
     {
+        public ImmutableArray<Stretch> StretchOptions { get; } = Enum.GetValues<Stretch>().ToImmutableArray();
+
         /// <summary>
         /// 日志器
         /// </summary>
@@ -68,6 +72,13 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         private float _forwardDelta = 0;
         private readonly object _forwardDeltaLock = new();
+
+        /// <summary>
+        /// 背景图片
+        /// </summary>
+        private SFML.Graphics.Sprite? _backgroundImageSprite; // XXX: 暂时未使用 Dispose 释放
+        private SFML.Graphics.Texture? _backgroundImageTexture; // XXX: 暂时未使用 Dispose 释放
+        private readonly object _bgLock = new();
 
         /// <summary>
         /// 临时变量, 记录拖放世界源点
@@ -169,6 +180,64 @@ namespace SpineViewer.ViewModels.MainWindow
         }
         private SFML.Graphics.Color _backgroundColor = new(105, 105, 105);
 
+        public string BackgroundImagePath
+        {
+            get => _backgroundImagePath;
+            set => SetProperty(_backgroundImagePath, value, v =>
+            {
+                if (string.IsNullOrWhiteSpace(v))
+                {
+                    lock (_bgLock)
+                    {
+                        _backgroundImageSprite?.Dispose();
+                        _backgroundImageTexture?.Dispose();
+                        _backgroundImageTexture = null;
+                        _backgroundImageSprite = null;
+                    }
+                    _backgroundImagePath = v;
+                }
+                else
+                {
+                    if (!File.Exists(v))
+                    {
+                        _logger.Warn("Omit non-existed background image path, {0}", v);
+                        return;
+                    }
+                    SFML.Graphics.Texture tex = null;
+                    SFML.Graphics.Sprite sprite = null;
+                    try
+                    {
+                        tex = new(v);
+                        sprite = new(tex) { Origin = new(tex.Size.X / 2f, tex.Size.Y / 2f) };
+                        lock (_bgLock)
+                        {
+                            _backgroundImageSprite?.Dispose();
+                            _backgroundImageTexture?.Dispose();
+                            _backgroundImageTexture = tex;
+                            _backgroundImageSprite = sprite;
+                        }
+                        _backgroundImagePath = v;
+                        _logger.Info("Load background image from {0}", v);
+                        _logger.LogCurrentProcessMemoryUsage();
+                    }
+                    catch (Exception ex)
+                    {
+                        sprite?.Dispose();
+                        tex?.Dispose();
+                        _logger.Error("Failed to load background image from path: {0}, {1}", v, ex.Message);
+                    }
+                }
+            });
+        }
+        private string _backgroundImagePath;
+
+        public Stretch BackgroundImageMode
+        {
+            get => _backgroundImageMode;
+            set => SetProperty(ref _backgroundImageMode, value);
+        }
+        private Stretch _backgroundImageMode = Stretch.Uniform;
+
         public bool RenderSelectedOnly
         {
             get => _renderSelectedOnly;
@@ -188,6 +257,14 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
         private bool _isUpdating = true;
+
+        public RelayCommand Cmd_SelectBackgroundImage => _cmd_SelectBackgroundImage ??= new(() =>
+        {
+            if (!DialogService.ShowOpenSFMLImageDialog(out var fileName))
+                return;
+            BackgroundImagePath = fileName;
+        });
+        private RelayCommand? _cmd_SelectBackgroundImage;
 
         public RelayCommand Cmd_Stop => _cmd_Stop ??= new(() =>
         {
@@ -386,6 +463,38 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     _renderer.Clear(_backgroundColor);
 
+                    // 渲染背景
+                    lock (_bgLock)
+                    {
+                        if (_backgroundImageSprite is not null)
+                        {
+                            using var view = _renderer.GetView();
+                            var bg = _backgroundImageSprite;
+                            var viewSize = view.Size;
+                            var bgSize = bg.Texture.Size;
+                            var scaleX = Math.Abs(viewSize.X / bgSize.X);
+                            var scaleY = Math.Abs(viewSize.Y / bgSize.Y);
+                            var signX = Math.Sign(viewSize.X);
+                            var signY = Math.Sign(viewSize.Y);
+                            if (_backgroundImageMode == Stretch.None)
+                            {
+                                scaleX = scaleY = 1f / _renderer.Zoom;
+                            }
+                            else if (_backgroundImageMode == Stretch.Uniform)
+                            {
+                                scaleX = scaleY = Math.Min(scaleX, scaleY);
+                            }
+                            else if (_backgroundImageMode == Stretch.UniformToFill)
+                            {
+                                scaleX = scaleY = Math.Max(scaleX, scaleY);
+                            }
+                            bg.Scale = new(signX * scaleX, signY * scaleY);
+                            bg.Position = view.Center;
+                            bg.Rotation = view.Rotation;
+                            _renderer.Draw(bg);
+                        }
+                    }
+
                     if (_showAxis)
                     {
                         // 画一个很长的坐标轴, 用 1e9 比较合适
@@ -442,7 +551,6 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public RendererWorkspaceConfigModel WorkspaceConfig
         {
-            // TODO: 背景图片
             get
             {
                 return new()
@@ -459,6 +567,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     Speed = Speed,
                     ShowAxis = ShowAxis,
                     BackgroundColor = BackgroundColor,
+                    BackgroundImagePath = BackgroundImagePath,
+                    BackgroundImageMode = BackgroundImageMode,
                 };
             }
             set
@@ -474,6 +584,8 @@ namespace SpineViewer.ViewModels.MainWindow
                 Speed = value.Speed;
                 ShowAxis = value.ShowAxis;
                 BackgroundColor = value.BackgroundColor;
+                BackgroundImagePath = value.BackgroundImagePath;
+                BackgroundImageMode = value.BackgroundImageMode;
             }
         }
     }

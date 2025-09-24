@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SFML.Graphics;
+using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,37 +42,26 @@ namespace Spine.SpineWrappers
         /// </summary>
         public bool ForceMipmap { get; set; }
 
-        private SFML.Graphics.Texture ReadTexture(string path)
+        private Texture ReadTexture(string path)
         {
-            if (ForcePremul)
-            {
-                using var image = new SFML.Graphics.Image(path);
-                var width = image.Size.X;
-                var height = image.Size.Y;
-                var pixels = image.Pixels;
-                var size = width * height * 4;
-                for (int i = 0; i < size; i += 4)
-                {
-                    byte a = pixels[i + 3];
-                    if (a == 0)
-                    {
-                        pixels[i + 0] = 0;
-                        pixels[i + 1] = 0;
-                        pixels[i + 2] = 0;
-                    }
-                    else if (a != 255)
-                    {
-                        float f = a / 255f;
-                        pixels[i + 0] = (byte)(pixels[i + 0] * f);
-                        pixels[i + 1] = (byte)(pixels[i + 1] * f);
-                        pixels[i + 2] = (byte)(pixels[i + 2] * f);
-                    }
-                }
-                var tex = new SFML.Graphics.Texture(width, height);
-                tex.Update(pixels);
-                return tex;
-            }
-            return new(path);
+            using var codec = SKCodec.Create(path, out var result);
+            if (codec is null || result != SKCodecResult.Success)
+                throw new InvalidOperationException($"Failed to create codec '{path}', {result}");
+
+            var width = codec.Info.Width;
+            var height = codec.Info.Height;
+
+            // 判断是否需要强制预乘
+            var alphaType = ForcePremul ? SKAlphaType.Premul : SKAlphaType.Unpremul;
+            var info = new SKImageInfo(width, height, SKColorType.Rgba8888, alphaType);
+
+            result = codec.GetPixels(info, out var pixels);
+            if (result != SKCodecResult.Success)
+                throw new InvalidOperationException($"Failed to decode image '{path}', {result}");
+
+            Texture tex = new((uint)width, (uint)height);
+            tex.Update(pixels);
+            return tex;
         }
 
         public virtual void Load(SpineRuntime21.AtlasPage page, string path)
@@ -394,7 +385,7 @@ namespace Spine.SpineWrappers
 
         public virtual void Unload(object texture)
         {
-            ((SFML.Graphics.Texture)texture).Dispose();
+            ((Texture)texture).Dispose();
         }
     }
 }

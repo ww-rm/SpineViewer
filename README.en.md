@@ -29,6 +29,7 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 * FFmpeg custom export support.
 * Program parameter saving.
 * File name extension association.
+* Supports texture image formats other than PNG.
 * ...
 
 ### Supported Spine Versions

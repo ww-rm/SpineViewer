@@ -121,7 +121,8 @@
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
     <s:String x:Key="Str_ShowAxis">Show Axis</s:String>
     <s:String x:Key="Str_BackgroundColor">Background Color</s:String>
-    <s:String x:Key="Str_BackgroundImage">Background Image</s:String>
+    <s:String x:Key="Str_BackgroundImagePath">Background Image Path</s:String>
+    <s:String x:Key="Str_BackgroundImageMode">Background Image Mode</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">Stop</s:String>
