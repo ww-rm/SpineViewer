@@ -15,15 +15,15 @@ namespace SpineViewer.Natives
     public static class Gdi32
     {
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern nint CreateCompatibleDC(nint hdc);
+        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteDC(nint hdc);
+        public static extern bool DeleteDC(IntPtr hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern nint SelectObject(nint hdc, nint hgdiobj);
+        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteObject(nint hObject);
+        public static extern bool DeleteObject(IntPtr hObject);
     }
 }

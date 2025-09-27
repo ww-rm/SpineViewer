@@ -17,9 +17,10 @@ namespace SpineViewer.ViewModels.MainWindow
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public MainWindowViewModel(ISFMLRenderer sfmlRenderer)
+        public MainWindowViewModel(ISFMLRenderer sfmlRenderer, ISFMLRenderer wallpaperRenderer)
         {
             _sfmlRenderer = sfmlRenderer;
+            _wallpaperRenderer = wallpaperRenderer;
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
             _sfmlRendererViewModel = new(this);
@@ -33,6 +34,9 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public ISFMLRenderer SFMLRenderer => _sfmlRenderer;
         private readonly ISFMLRenderer _sfmlRenderer;
+
+        public ISFMLRenderer WallpaperRenderer => _wallpaperRenderer;
+        private readonly ISFMLRenderer _wallpaperRenderer;
 
         public TaskbarItemProgressState ProgressState { get => _progressState; set => SetProperty(ref _progressState, value); }
         private TaskbarItemProgressState _progressState = TaskbarItemProgressState.None;
@@ -132,20 +136,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 _sfmlRendererViewModel.WorkspaceConfig = value.RendererConfig;
                 _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
             }
-        }
-
-        /// <summary>
-        /// 调试命令
-        /// </summary>
-        public RelayCommand Cmd_Debug => _cmd_Debug ??= new(Debug_Execute);
-        private RelayCommand? _cmd_Debug;
-
-        private void Debug_Execute()
-        {
-#if DEBUG
-
-            MessagePopupService.Quest("测试一下");
-#endif
         }
     }
 }

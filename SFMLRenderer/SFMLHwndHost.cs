@@ -64,10 +64,10 @@ namespace SFMLRenderer
             hs?.Dispose();
         }
 
-        private nint HwndMessageHook(nint hwnd, int msg, nint wParam, nint lParam, ref bool handled)
+        private IntPtr HwndMessageHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             _renderWindow?.DispatchEvents();
-            return nint.Zero;
+            return IntPtr.Zero;
         }
     }
 }

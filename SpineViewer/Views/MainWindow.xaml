@@ -69,7 +69,7 @@
                         <MenuItem Header="{DynamicResource Str_Diagnostics}" Command="{Binding Cmd_ShowDiagnosticsDialog}"/>
                         <Separator/>
                         <MenuItem Header="{DynamicResource Str_Abount}" Command="{Binding Cmd_ShowAboutDialog}"/>
-                        <MenuItem Header="{DynamicResource Str_Debug}" Command="{Binding Cmd_Debug}"/>
+                        <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click"/>
                     </MenuItem>
                     <!--<MenuItem Header="{DynamicResource Str_Experiment}"/>-->
                 </Menu>

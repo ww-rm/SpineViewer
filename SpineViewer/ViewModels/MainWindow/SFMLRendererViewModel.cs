@@ -35,6 +35,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly MainWindowViewModel _vmMain;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _models;
         private readonly ISFMLRenderer _renderer;
+        private readonly ISFMLRenderer _wallpaperRenderer;
 
         /// <summary>
         /// 被选中对象的背景颜色
@@ -90,6 +91,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _vmMain = vmMain;
             _models = _vmMain.SpineObjects;
             _renderer = _vmMain.SFMLRenderer;
+            _wallpaperRenderer = _vmMain.WallpaperRenderer;
         }
 
         /// <summary>
@@ -443,6 +445,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             try
             {
+                _wallpaperRenderer.SetActive(true);
                 _renderer.SetActive(true);
 
                 float delta;
@@ -461,7 +464,11 @@ namespace SpineViewer.ViewModels.MainWindow
                         _forwardDelta = 0;
                     }
 
+                    using var v = _renderer.GetView();
+                    _wallpaperRenderer.SetView(v);
+
                     _renderer.Clear(_backgroundColor);
+                    _wallpaperRenderer.Clear(_backgroundColor);
 
                     // 渲染背景
                     lock (_bgLock)
@@ -492,6 +499,7 @@ namespace SpineViewer.ViewModels.MainWindow
                             bg.Position = view.Center;
                             bg.Rotation = view.Rotation;
                             _renderer.Draw(bg);
+                            _wallpaperRenderer.Draw(bg);
                         }
                     }
 
@@ -531,10 +539,12 @@ namespace SpineViewer.ViewModels.MainWindow
                             sp.EnableDebug = true;
                             _renderer.Draw(sp);
                             sp.EnableDebug = false;
+                            _wallpaperRenderer.Draw(sp);
                         }
                     }
 
                     _renderer.Display();
+                    _wallpaperRenderer.Display();
                 }
             }
             catch (Exception ex)
@@ -546,6 +556,7 @@ namespace SpineViewer.ViewModels.MainWindow
             finally
             {
                 _renderer.SetActive(false);
+                _wallpaperRenderer.SetActive(false);
             }
         }
 

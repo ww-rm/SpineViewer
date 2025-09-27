@@ -1,7 +1,7 @@
-﻿using Microsoft.Win32;
-using NLog;
+﻿using NLog;
 using NLog.Layouts;
 using NLog.Targets;
+using SFMLRenderer;
 using Spine;
 using SpineViewer.Models;
 using SpineViewer.Natives;
@@ -35,17 +35,24 @@ public partial class MainWindow : Window
     public static readonly string LastStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "laststate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     private ListViewItem? _listViewDragSourceItem = null;
     private Point _listViewDragSourcePoint;
 
+    private readonly SFMLRenderWindow _wallpaperRenderWindow;
     private readonly MainWindowViewModel _vm;
 
     public MainWindow()
     {
         InitializeComponent();
         InitializeLogConfiguration();
-        DataContext = _vm = new(_renderPanel);
-        _notifyIcon.Text = _vm.Title; // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
+
+        _wallpaperRenderWindow = new(new(500, 500), "SpineViewerWallpaper", SFML.Window.Styles.None);
+        _wallpaperRenderWindow.SetVisible(false);
+        DataContext = _vm = new(_renderPanel, _wallpaperRenderWindow);
+
+        // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
+        _notifyIcon.Text = _vm.Title;
 
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
@@ -333,7 +340,7 @@ public partial class MainWindow : Window
 
     private void _notifyIcon_Click(object sender, RoutedEventArgs e)
     {
-
+        
     }
 
     private void _notifyIcon_MouseDoubleClick(object sender, RoutedEventArgs e)
@@ -600,4 +607,33 @@ public partial class MainWindow : Window
     }
 
     #endregion
+
+    private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+#if DEBUG
+        var www = _wallpaperRenderWindow;
+        User32.GetPrimaryScreenResolution(out var sw, out var sh);
+        www.Position = new(0, 0);
+        www.Size = new(sw, sh);
+
+        var handle = www.SystemHandle;
+        Debug.WriteLine($"Handle: {handle:x8}");
+
+        var style = User32.GetWindowLong(handle, User32.GWL_STYLE) | User32.WS_POPUP;
+        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED | User32.WS_EX_TOOLWINDOW | User32.WS_EX_TOPMOST;
+        User32.SetWindowLong(handle, User32.GWL_STYLE, style);
+        User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
+        User32.SetLayeredWindowAttributes(handle, 0, 200, User32.LWA_ALPHA);
+
+        var workerw = User32.GetWorkerW();
+        var res = User32.SetParent(handle, workerw);
+        Debug.WriteLine($"SetParent: {res:x8}");
+
+        User32.SetLayeredWindowAttributes(handle, 0, 255, User32.LWA_ALPHA);
+        var s = www.Size;
+        www.Size = new(s.X + 1, s.Y + 1);
+        www.Size = s;
+        www.SetVisible(true);
+#endif
+    }
 }
