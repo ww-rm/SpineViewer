@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using NLog;
+using SFML.Graphics;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace Spine.SpineWrappers
         SpineRuntime41.TextureLoader,
         SpineRuntime42.TextureLoader
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 默认的全局纹理加载器
         /// </summary>
@@ -44,9 +47,18 @@ namespace Spine.SpineWrappers
 
         private Texture ReadTexture(string path)
         {
+            if (!File.Exists(path))
+            {
+                _logger.Error($"Texture file not found, {path}");
+                throw new FileNotFoundException("Texture file not found", path);
+            }
+
             using var codec = SKCodec.Create(path, out var result);
             if (codec is null || result != SKCodecResult.Success)
+            {
+                _logger.Error($"Failed to create codec '{path}', {result}");
                 throw new InvalidOperationException($"Failed to create codec '{path}', {result}");
+            }
 
             var width = codec.Info.Width;
             var height = codec.Info.Height;
@@ -57,7 +69,10 @@ namespace Spine.SpineWrappers
 
             result = codec.GetPixels(info, out var pixels);
             if (result != SKCodecResult.Success)
+            {
+                _logger.Error($"Failed to decode image '{path}', {result}");
                 throw new InvalidOperationException($"Failed to decode image '{path}', {result}");
+            }
 
             Texture tex = new((uint)width, (uint)height);
             tex.Update(pixels);

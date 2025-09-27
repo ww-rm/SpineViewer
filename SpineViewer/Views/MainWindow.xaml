@@ -69,7 +69,7 @@
                         <MenuItem Header="{DynamicResource Str_Diagnostics}" Command="{Binding Cmd_ShowDiagnosticsDialog}"/>
                         <Separator/>
                         <MenuItem Header="{DynamicResource Str_Abount}" Command="{Binding Cmd_ShowAboutDialog}"/>
-                        <MenuItem Header="{DynamicResource Str_Debug}" Command="{Binding Cmd_Debug}"/>
+                        <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click"/>
                     </MenuItem>
                     <!--<MenuItem Header="{DynamicResource Str_Experiment}"/>-->
                 </Menu>
@@ -940,7 +940,7 @@
                        MouseDoubleClick="_notifyIcon_MouseDoubleClick">
             <hc:NotifyIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="There may be a funtion :)" IsChecked="True"/>
+                    <MenuItem Header="{DynamicResource Str_WallpaperView}" Command="{Binding Cmd_SwitchWallpaperView}" IsChecked="{Binding PreferenceViewModel.WallpaperView}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_Exit}"/>
                 </ContextMenu>

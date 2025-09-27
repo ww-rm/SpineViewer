@@ -74,6 +74,9 @@ namespace SpineViewer.Models
         #region 程序选项
 
         [ObservableProperty]
+        private bool _wallpaperView;
+
+        [ObservableProperty]
         private bool _renderSelectedOnly;
 
         [ObservableProperty]

@@ -489,7 +489,7 @@ namespace SpineRuntime34 {
 
                 if (vertices != null)
                 {
-                    for (int ii = 0; ii < verticesLength; ii += 2)
+                    for (int ii = 0; ii + 1 < verticesLength; ii += 2)
                     {
                         float vx = vertices[ii], vy = vertices[ii + 1];
                         minX = Math.Min(minX, vx);

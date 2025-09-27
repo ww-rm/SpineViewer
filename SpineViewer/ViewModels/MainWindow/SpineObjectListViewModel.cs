@@ -213,6 +213,8 @@ namespace SpineViewer.ViewModels.MainWindow
                         spNew.ObjectConfig = sp.ObjectConfig;
                         _spineObjectModels[idx] = spNew;
                         sp.Dispose();
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, spNew));
                     }
                     catch (Exception ex)
                     {
@@ -268,6 +270,11 @@ namespace SpineViewer.ViewModels.MainWindow
                             _spineObjectModels[idx] = spNew;
                             sp.Dispose();
                             success++;
+                            Application.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                                RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, spNew));
+                            });
                         }
                         catch (Exception ex)
                         {

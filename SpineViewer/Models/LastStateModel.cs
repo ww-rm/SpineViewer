@@ -33,7 +33,6 @@ namespace SpineViewer.Models
         public float Speed { get; set; } = 1f;
         public bool ShowAxis { get; set; } = true;
         public Color BackgroundColor { get; set; } = Color.FromRgb(105, 105, 105);
-        public string BackgroundImagePath { get; set; }
         public Stretch BackgroundImageMode { get; set; } = Stretch.Uniform;
 
         #endregion

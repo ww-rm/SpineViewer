@@ -334,27 +334,31 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public ObservableCollection<SkinViewModel> Skins => _skins;
 
-        public RelayCommand<IList?> Cmd_EnableSkins { get; } = new(
+        public RelayCommand<IList?> Cmd_EnableSkins => _cmd_EnableSkins ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SkinViewModel>()) s.Status = true; },
             args => { return args is not null && args.OfType<SkinViewModel>().Any(); }
         );
+        private RelayCommand<IList?> _cmd_EnableSkins;
 
-        public RelayCommand<IList?> Cmd_DisableSkins { get; } = new(
+        public RelayCommand<IList?> Cmd_DisableSkins => _cmd_DisableSkins ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SkinViewModel>()) s.Status = false; },
             args => { return args is not null && args.OfType<SkinViewModel>().Any(); }
         );
+        private RelayCommand<IList?> _cmd_DisableSkins;
 
         public ObservableCollection<SlotViewModel> Slots => _slots;
 
-        public RelayCommand<IList?> Cmd_EnableSlots { get; } = new(
+        public RelayCommand<IList?> Cmd_EnableSlots => _cmd_EnableSlots ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = true; },
             args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
+        private RelayCommand<IList?> _cmd_EnableSlots;
 
-        public RelayCommand<IList?> Cmd_DisableSlots { get; } = new(
+        public RelayCommand<IList?> Cmd_DisableSlots => _cmd_DisableSlots ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = false; },
             args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
+        private RelayCommand<IList?> _cmd_DisableSlots;
 
         public ObservableCollection<AnimationTrackViewModel> AnimationTracks => _animationTracks;
 

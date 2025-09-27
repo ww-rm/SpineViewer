@@ -17,9 +17,10 @@ namespace SpineViewer.ViewModels.MainWindow
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public MainWindowViewModel(ISFMLRenderer sfmlRenderer)
+        public MainWindowViewModel(ISFMLRenderer sfmlRenderer, ISFMLRenderer wallpaperRenderer)
         {
             _sfmlRenderer = sfmlRenderer;
+            _wallpaperRenderer = wallpaperRenderer;
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
             _sfmlRendererViewModel = new(this);
@@ -33,6 +34,9 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public ISFMLRenderer SFMLRenderer => _sfmlRenderer;
         private readonly ISFMLRenderer _sfmlRenderer;
+
+        public ISFMLRenderer WallpaperRenderer => _wallpaperRenderer;
+        private readonly ISFMLRenderer _wallpaperRenderer;
 
         public TaskbarItemProgressState ProgressState { get => _progressState; set => SetProperty(ref _progressState, value); }
         private TaskbarItemProgressState _progressState = TaskbarItemProgressState.None;
@@ -73,7 +77,15 @@ namespace SpineViewer.ViewModels.MainWindow
         public SFMLRendererViewModel SFMLRendererViewModel => _sfmlRendererViewModel;
         private readonly SFMLRendererViewModel _sfmlRendererViewModel;
 
-        public RelayCommand Cmd_Exit => new(App.Current.Shutdown);
+        public RelayCommand Cmd_SwitchWallpaperView => _cmd_SwitchWallpaperView ??= new(() =>
+        {
+            _preferenceViewModel.WallpaperView = !_preferenceViewModel.WallpaperView;
+            _preferenceViewModel.SavePreference();
+        });
+        private RelayCommand _cmd_SwitchWallpaperView;
+
+        public RelayCommand Cmd_Exit => _cmd_Exit ??= new(App.Current.Shutdown);
+        private RelayCommand? _cmd_Exit;
 
         /// <summary>
         /// 打开工作区
@@ -134,18 +146,5 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
 
-        /// <summary>
-        /// 调试命令
-        /// </summary>
-        public RelayCommand Cmd_Debug => _cmd_Debug ??= new(Debug_Execute);
-        private RelayCommand? _cmd_Debug;
-
-        private void Debug_Execute()
-        {
-#if DEBUG
-
-            MessagePopupService.Quest("测试一下");
-#endif
-        }
     }
 }
