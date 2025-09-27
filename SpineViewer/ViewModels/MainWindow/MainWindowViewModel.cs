@@ -77,7 +77,15 @@ namespace SpineViewer.ViewModels.MainWindow
         public SFMLRendererViewModel SFMLRendererViewModel => _sfmlRendererViewModel;
         private readonly SFMLRendererViewModel _sfmlRendererViewModel;
 
-        public RelayCommand Cmd_Exit => new(App.Current.Shutdown);
+        public RelayCommand Cmd_SwitchWallpaperView => _cmd_SwitchWallpaperView ??= new(() =>
+        {
+            _preferenceViewModel.WallpaperView = !_preferenceViewModel.WallpaperView;
+            _preferenceViewModel.SavePreference();
+        });
+        private RelayCommand _cmd_SwitchWallpaperView;
+
+        public RelayCommand Cmd_Exit => _cmd_Exit ??= new(App.Current.Shutdown);
+        private RelayCommand? _cmd_Exit;
 
         /// <summary>
         /// 打开工作区
@@ -137,5 +145,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
             }
         }
+
     }
 }

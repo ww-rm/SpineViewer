@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,67 +48,28 @@ public partial class MainWindow : Window
         InitializeComponent();
         InitializeLogConfiguration();
 
-        _wallpaperRenderWindow = new(new(500, 500), "SpineViewerWallpaper", SFML.Window.Styles.None);
+        // Initialize Wallpaper RenderWindow
+        _wallpaperRenderWindow = new(new(1, 1), "SpineViewerWallpaper", SFML.Window.Styles.None);
         _wallpaperRenderWindow.SetVisible(false);
+        var handle = _wallpaperRenderWindow.SystemHandle;
+        var style = User32.GetWindowLong(handle, User32.GWL_STYLE) | User32.WS_POPUP;
+        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED | User32.WS_EX_TOOLWINDOW;
+        User32.SetWindowLong(handle, User32.GWL_STYLE, style);
+        User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
+        User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
+
         DataContext = _vm = new(_renderPanel, _wallpaperRenderWindow);
 
         // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
         _notifyIcon.Text = _vm.Title;
 
-        _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
-        _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         Loaded += MainWindow_Loaded;
         ContentRendered += MainWindow_ContentRendered;
         Closed += MainWindow_Closed;
-    }
 
-    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-    {
-        var vm = _vm.SFMLRendererViewModel;
-        _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
-        _renderPanel.CanvasMouseButtonPressed += (s, e) => { vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
-        _renderPanel.CanvasMouseMove += vm.CanvasMouseMove;
-        _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
-
-        // 设置默认参数并启动渲染
-        vm.SetResolution(1500, 1000);
-        vm.Zoom = 0.75f;
-        vm.CenterX = 0;
-        vm.CenterY = 0;
-        vm.FlipY = true;
-        vm.MaxFps = 30;
-        vm.StartRender();
-
-        // 加载首选项
-        _vm.PreferenceViewModel.LoadPreference();
-
-        LoadLastState();
-    }
-
-    private void MainWindow_ContentRendered(object? sender, EventArgs e)
-    {
-        string[] args = Environment.GetCommandLineArgs();
-        if (args.Length > 1)
-        {
-            string[] filePaths = args.Skip(1).ToArray();
-            _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
-        }
-    }
-
-    private void MainWindow_Closed(object? sender, EventArgs e)
-    {
-        SaveLastState();
-
-        var vm = _vm.SFMLRendererViewModel;
-        vm.StopRender();
-    }
-
-    /// <summary>
-    /// 给管道通信提供的打开文件外部调用方法
-    /// </summary>
-    public void OpenFiles(IEnumerable<string> filePaths)
-    {
-        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+        _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
+        _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
+        _vm.PreferenceViewModel.PropertyChanged += PreferenceViewModel_PropertyChanged;
     }
 
     /// <summary>
@@ -194,6 +156,95 @@ public partial class MainWindow : Window
 
         JsonHelper.Serialize(m, LastStateFilePath);
     }
+
+    /// <summary>
+    /// 给管道通信提供的打开文件外部调用方法
+    /// </summary>
+    public void OpenFiles(IEnumerable<string> filePaths)
+    {
+        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+    }
+
+    #region MainWindow 事件处理
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        var vm = _vm.SFMLRendererViewModel;
+        _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
+        _renderPanel.CanvasMouseButtonPressed += (s, e) => { vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
+        _renderPanel.CanvasMouseMove += vm.CanvasMouseMove;
+        _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
+
+        // 设置默认参数并启动渲染
+        vm.SetResolution(1500, 1000);
+        vm.Zoom = 0.75f;
+        vm.CenterX = 0;
+        vm.CenterY = 0;
+        vm.FlipY = true;
+        vm.MaxFps = 30;
+        vm.StartRender();
+
+        // 加载首选项
+        _vm.PreferenceViewModel.LoadPreference();
+
+        LoadLastState();
+    }
+
+    private void MainWindow_ContentRendered(object? sender, EventArgs e)
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        if (args.Length > 1)
+        {
+            string[] filePaths = args.Skip(1).ToArray();
+            _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+        }
+    }
+
+    private void MainWindow_Closed(object? sender, EventArgs e)
+    {
+        SaveLastState();
+
+        var vm = _vm.SFMLRendererViewModel;
+        vm.StopRender();
+    }
+
+    #endregion
+
+    #region PreferenceViewModel 事件处理
+
+    private void PreferenceViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(PreferenceViewModel.WallpaperView))
+        {
+            if (_vm.PreferenceViewModel.WallpaperView)
+            {
+                var workerw = User32.GetWorkerW();
+                if (workerw == IntPtr.Zero)
+                {
+                    _logger.Error("Failed to enable wallpaper view, WorkerW not found");
+                    return;
+                }
+                var wnd = _wallpaperRenderWindow;
+                var handle = wnd.SystemHandle;
+
+                User32.GetPrimaryScreenResolution(out var sw, out var sh);
+
+                User32.SetParent(handle, workerw);
+                User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
+
+                wnd.Position = new(0, 0);
+                wnd.Size = new(sw + 1, sh);
+                wnd.Size = new(sw, sh);
+                wnd.SetVisible(true);
+            }
+            else
+            {
+                _wallpaperRenderWindow.SetVisible(false);
+            }
+        }
+    }
+
+    #endregion
 
     #region _spinesListView 事件处理
 
@@ -609,29 +660,7 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        var www = _wallpaperRenderWindow;
-        User32.GetPrimaryScreenResolution(out var sw, out var sh);
-        www.Position = new(0, 0);
-        www.Size = new(sw, sh);
 
-        var handle = www.SystemHandle;
-        Debug.WriteLine($"Handle: {handle:x8}");
-
-        var style = User32.GetWindowLong(handle, User32.GWL_STYLE) | User32.WS_POPUP;
-        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED | User32.WS_EX_TOOLWINDOW | User32.WS_EX_TOPMOST;
-        User32.SetWindowLong(handle, User32.GWL_STYLE, style);
-        User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
-        User32.SetLayeredWindowAttributes(handle, 0, 200, User32.LWA_ALPHA);
-
-        var workerw = User32.GetWorkerW();
-        var res = User32.SetParent(handle, workerw);
-        Debug.WriteLine($"SetParent: {res:x8}");
-
-        User32.SetLayeredWindowAttributes(handle, 0, 255, User32.LWA_ALPHA);
-        var s = www.Size;
-        www.Size = new(s.X + 1, s.Y + 1);
-        www.Size = s;
-        www.SetVisible(true);
 #endif
     }
 }

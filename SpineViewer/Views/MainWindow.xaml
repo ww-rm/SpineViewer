@@ -940,7 +940,7 @@
                        MouseDoubleClick="_notifyIcon_MouseDoubleClick">
             <hc:NotifyIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="There may be a funtion :)" IsChecked="True"/>
+                    <MenuItem Header="{DynamicResource Str_WallpaperView}" Command="{Binding Cmd_SwitchWallpaperView}" IsChecked="{Binding PreferenceViewModel.WallpaperView}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_Exit}"/>
                 </ContextMenu>

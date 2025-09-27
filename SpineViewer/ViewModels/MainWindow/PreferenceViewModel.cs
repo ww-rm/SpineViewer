@@ -111,6 +111,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
 
+                    WallpaperView = WallpaperView,
                     RenderSelectedOnly = RenderSelectedOnly,
                     AssociateFileSuffix = AssociateFileSuffix,
                     AppLanguage = AppLanguage,
@@ -136,6 +137,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
 
+                WallpaperView = value.WallpaperView;
                 RenderSelectedOnly = value.RenderSelectedOnly;
                 AssociateFileSuffix = value.AssociateFileSuffix;
                 AppLanguage = value.AppLanguage;
@@ -243,6 +245,19 @@ namespace SpineViewer.ViewModels.MainWindow
         #region 程序选项
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
+
+        public bool AutoRun
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
+        public bool WallpaperView
+        {
+            get => _wallpaperView;
+            set => SetProperty(ref _wallpaperView, value);
+        }
+        private bool _wallpaperView; // UI 变化通过 PropertyChanged 事件交由 View 层处理
 
         public bool RenderSelectedOnly
         {
