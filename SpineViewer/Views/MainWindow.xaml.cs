@@ -232,6 +232,7 @@ public partial class MainWindow : Window
                 User32.SetParent(handle, workerw);
                 User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
+                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
                 wnd.Position = new(0, 0);
                 wnd.Size = new(sw + 1, sh);
                 wnd.Size = new(sw, sh);
