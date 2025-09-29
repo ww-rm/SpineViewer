@@ -203,9 +203,10 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_AutoRun}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding AutoRun}"/>
+                                <Label Content="{DynamicResource Str_Language}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding AppLanguage}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
                             </Grid>
                             
                             <Grid>
@@ -213,16 +214,9 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_AutoRunWorkspaceConfigPath}"
-                                       ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
-                                <DockPanel Grid.Column="1">
-                                    <Button DockPanel.Dock="Right"
-                                            Content="..."
-                                            Command="{Binding Cmd_SelectAutoRunWorkspaceConfigPath}"/>
-                                    <TextBox Grid.Column="1"
-                                             Text="{Binding AutoRunWorkspaceConfigPath}"
-                                             ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
-                                </DockPanel>
+                                <Label Content="{DynamicResource Str_RenderSelectedOnly}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding RenderSelectedOnly}"/>
                             </Grid>
 
                             <Grid>
@@ -240,9 +234,26 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_RenderSelectedOnly}"/>
+                                <Label Content="{DynamicResource Str_AutoRun}"/>
                                 <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding RenderSelectedOnly}"/>
+                                              IsChecked="{Binding AutoRun}"/>
+                            </Grid>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AutoRunWorkspaceConfigPath}"
+                                       ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
+                                <DockPanel Grid.Column="1" IsEnabled="{Binding AutoRun}">
+                                    <Button DockPanel.Dock="Right"
+                                            Content="..."
+                                            Command="{Binding Cmd_SelectAutoRunWorkspaceConfigPath}"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding AutoRunWorkspaceConfigPath}"
+                                             ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
+                                </DockPanel>
                             </Grid>
 
                             <Grid>
@@ -253,17 +264,6 @@
                                 <Label Content="{DynamicResource Str_AssociateFileSuffix}"/>
                                 <ToggleButton Grid.Column="1"
                                               IsChecked="{Binding AssociateFileSuffix}"/>
-                            </Grid>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_Language}"/>
-                                <ComboBox Grid.Column="1" 
-                                          SelectedItem="{Binding AppLanguage}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
                             </Grid>
                         </StackPanel>
                     </GroupBox>

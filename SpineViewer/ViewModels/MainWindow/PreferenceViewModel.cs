@@ -107,12 +107,12 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
 
+                    AppLanguage = AppLanguage,
+                    RenderSelectedOnly = RenderSelectedOnly,
+                    WallpaperView = WallpaperView,
                     AutoRun = AutoRun,
                     AutoRunWorkspaceConfigPath = AutoRunWorkspaceConfigPath,
-                    WallpaperView = WallpaperView,
-                    RenderSelectedOnly = RenderSelectedOnly,
                     AssociateFileSuffix = AssociateFileSuffix,
-                    AppLanguage = AppLanguage,
                 };
             }
             set
@@ -135,12 +135,12 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
 
+                AppLanguage = value.AppLanguage;
+                RenderSelectedOnly = value.RenderSelectedOnly;
+                WallpaperView = value.WallpaperView;
                 AutoRun = value.AutoRun;
                 AutoRunWorkspaceConfigPath = value.AutoRunWorkspaceConfigPath;
-                WallpaperView = value.WallpaperView;
-                RenderSelectedOnly = value.RenderSelectedOnly;
                 AssociateFileSuffix = value.AssociateFileSuffix;
-                AppLanguage = value.AppLanguage;
             }
         }
 
@@ -246,6 +246,24 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
 
+        public AppLanguage AppLanguage
+        {
+            get => ((App)App.Current).Language;
+            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+        }
+
+        public bool RenderSelectedOnly
+        {
+            get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
+        }
+
+        public bool WallpaperView
+        {
+            get => _vmMain.SFMLRendererViewModel.WallpaperView;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
+        }
+
         public bool AutoRun
         {
             get => ((App)App.Current).AutoRun;
@@ -258,28 +276,10 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_vmMain.AutoRunWorkspaceConfigPath, value, v => _vmMain.AutoRunWorkspaceConfigPath = v);
         }
 
-        public bool WallpaperView
-        {
-            get => _vmMain.SFMLRendererViewModel.WallpaperView;
-            set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
-        }
-
-        public bool RenderSelectedOnly
-        {
-            get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
-            set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
-        }
-
         public bool AssociateFileSuffix
         {
             get => ((App)App.Current).AssociateFileSuffix;
             set => SetProperty(((App)App.Current).AssociateFileSuffix, value, v => ((App)App.Current).AssociateFileSuffix = v);
-        }
-
-        public AppLanguage AppLanguage
-        {
-            get => ((App)App.Current).Language;
-            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
         }
 
         #endregion
