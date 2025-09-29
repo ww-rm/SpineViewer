@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using NLog;
 using SpineViewer.Natives;
+using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
 using System.Configuration;
@@ -185,7 +186,8 @@ namespace SpineViewer
 
                             if (args.Count > 0)
                             {
-                                Current.Dispatcher.Invoke(() => ((MainWindow)Current.MainWindow).OpenFiles(args));
+                                var vm = (MainWindowViewModel)((MainWindow)Current.MainWindow).DataContext;
+                                Current.Dispatcher.Invoke(() => vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args));
                             }
                         }
                     }

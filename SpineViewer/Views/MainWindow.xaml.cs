@@ -116,10 +116,17 @@ public partial class MainWindow : Window
                 WindowState = WindowState.Normal;
             }
 
-            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width);
-            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
-            if (m.ExplorerGridRow0Height > 0) _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
-            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
+            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
+            _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
+
+            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
+            _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
+
+            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height, GridUnitType.Star);
+            _explorerGrid.RowDefinitions[2].Height = new(m.ExplorerGridRow2Height, GridUnitType.Star);
+
+            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
+            _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
             _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
@@ -140,10 +147,17 @@ public partial class MainWindow : Window
             WindowHeight = Height,
             WindowState = WindowState,
 
-            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].ActualWidth,
-            ModelListRow0Height = _modelListGrid.RowDefinitions[0].ActualHeight,
-            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].ActualHeight,
-            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].ActualHeight,
+            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
+            RootGridCol2Width = _rootGrid.ColumnDefinitions[2].Width.Value,
+
+            ModelListRow0Height = _modelListGrid.RowDefinitions[0].Height.Value,
+            ModelListRow2Height = _modelListGrid.RowDefinitions[2].Height.Value,
+
+            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].Height.Value,
+            ExplorerGridRow2Height = _explorerGrid.RowDefinitions[2].Height.Value,
+
+            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
+            RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
@@ -155,14 +169,6 @@ public partial class MainWindow : Window
         };
 
         JsonHelper.Serialize(m, LastStateFilePath);
-    }
-
-    /// <summary>
-    /// 给管道通信提供的打开文件外部调用方法
-    /// </summary>
-    public void OpenFiles(IEnumerable<string> filePaths)
-    {
-        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
     }
 
     #region MainWindow 事件处理
@@ -676,7 +682,11 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-
+        var a = _rootGrid.ColumnDefinitions[0].Width;
+        var b = _rootGrid.ColumnDefinitions[1].Width;
+        var c = _rootGrid.ColumnDefinitions[2].Width;
+        Debug.WriteLine(a);
+        Debug.WriteLine(_rootGrid.ColumnDefinitions[0].Width.IsStar);
 #endif
     }
 }

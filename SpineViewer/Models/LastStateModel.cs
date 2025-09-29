@@ -19,9 +19,16 @@ namespace SpineViewer.Models
         public WindowState WindowState { get; set; }
         
         public double RootGridCol0Width { get; set; }
+        public double RootGridCol2Width { get; set; }
+
         public double ModelListRow0Height { get; set; }
+        public double ModelListRow2Height { get; set; }
+
         public double ExplorerGridRow0Height { get; set; }
+        public double ExplorerGridRow2Height { get; set; }
+
         public double RightPanelGridRow0Height { get; set; }
+        public double RightPanelGridRow2Height { get; set; }
 
         #endregion
 

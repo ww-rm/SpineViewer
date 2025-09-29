@@ -80,7 +80,7 @@
                 <Grid x:Name="_rootGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
 
