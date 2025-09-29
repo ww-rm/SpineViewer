@@ -29,6 +29,13 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public string Title => $"SpineViewer - v{App.Version}";
 
+        public string AutoRunWorkspaceConfigPath
+        {
+            get => _autoRunWorkspaceConfigPath;
+            set => SetProperty(ref _autoRunWorkspaceConfigPath, value);
+        }
+        private string _autoRunWorkspaceConfigPath;
+
         /// <summary>
         /// SFML 渲染对象
         /// </summary>

@@ -17,6 +17,11 @@
     <s:String x:Key="Str_PreferenceWithDots">Preferences...</s:String>
     <s:String x:Key="Str_Exit">Exit</s:String>
 
+    <!-- 首选项 -->
+    <s:String x:Key="Str_AutoRun_Short">Auto Start</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPath">Auto-load Workspace File on Startup</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">Specifies the workspace configuration file to be automatically loaded when the program starts with Windows startup. This takes effect only if auto-startup is enabled.</s:String>
+
     <!-- 标签页 -->
     <s:String x:Key="Str_Explorer">Explorer</s:String>
     <s:String x:Key="Str_SpineObject">Model</s:String>

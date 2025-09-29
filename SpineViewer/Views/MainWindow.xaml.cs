@@ -69,7 +69,7 @@ public partial class MainWindow : Window
 
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
-        _vm.PreferenceViewModel.PropertyChanged += PreferenceViewModel_PropertyChanged;
+        _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererViewModel_PropertyChanged;
     }
 
     /// <summary>
@@ -193,11 +193,26 @@ public partial class MainWindow : Window
     private void MainWindow_ContentRendered(object? sender, EventArgs e)
     {
         string[] args = Environment.GetCommandLineArgs();
-        if (args.Length > 1)
+
+        // 不带参数启动
+        if (args.Length <= 1)
+            return;
+
+        // 带一个参数启动, 允许提供一些启动选项
+        if (args.Length == 2)
         {
-            string[] filePaths = args.Skip(1).ToArray();
-            _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+            if (args[1] == App.AutoRunFlag)
+            {
+                var autoPath = _vm.AutoRunWorkspaceConfigPath;
+                if (!string.IsNullOrWhiteSpace(autoPath) && JsonHelper.Deserialize<WorkspaceModel>(autoPath, out var obj))
+                    _vm.Workspace = obj;
+                return;
+            }
         }
+
+        // 其余提供了任意参数的情况
+        string[] filePaths = args.Skip(1).ToArray();
+        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
@@ -210,9 +225,9 @@ public partial class MainWindow : Window
 
     #endregion
 
-    #region PreferenceViewModel 事件处理
+    #region SFMLRendererViewModel 事件处理
 
-    private void PreferenceViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void SFMLRendererViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(PreferenceViewModel.WallpaperView))
         {

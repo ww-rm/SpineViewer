@@ -16,6 +16,11 @@
     <s:String x:Key="Str_Preference">首选项</s:String>
     <s:String x:Key="Str_PreferenceWithDots">首选项...</s:String>
     <s:String x:Key="Str_Exit">退出</s:String>
+    
+    <!-- 首选项 -->
+    <s:String x:Key="Str_AutoRun">开机自启</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPath">自启动加载工作区文件</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">设置程序开机自启后自动加载的工作区配置文件，仅在启用开机自启时生效</s:String>
 
     <!-- 标签页 -->
     <s:String x:Key="Str_Explorer">浏览</s:String>

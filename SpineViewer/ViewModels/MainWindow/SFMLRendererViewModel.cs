@@ -240,6 +240,13 @@ namespace SpineViewer.ViewModels.MainWindow
         }
         private Stretch _backgroundImageMode = Stretch.Uniform;
 
+        public bool WallpaperView
+        {
+            get => _wallpaperView;
+            set => SetProperty(ref _wallpaperView, value);
+        }
+        private bool _wallpaperView;
+
         public bool RenderSelectedOnly
         {
             get => _renderSelectedOnly;
@@ -465,10 +472,13 @@ namespace SpineViewer.ViewModels.MainWindow
                     }
 
                     using var v = _renderer.GetView();
-                    _wallpaperRenderer.SetView(v);
-
                     _renderer.Clear(_backgroundColor);
-                    _wallpaperRenderer.Clear(_backgroundColor);
+
+                    if (_wallpaperView)
+                    {
+                        _wallpaperRenderer.SetView(v);
+                        _wallpaperRenderer.Clear(_backgroundColor);
+                    }
 
                     // 渲染背景
                     lock (_bgLock)
@@ -499,7 +509,11 @@ namespace SpineViewer.ViewModels.MainWindow
                             bg.Position = view.Center;
                             bg.Rotation = view.Rotation;
                             _renderer.Draw(bg);
-                            _wallpaperRenderer.Draw(bg);
+
+                            if (_wallpaperView)
+                            {
+                                _wallpaperRenderer.Draw(bg);
+                            }
                         }
                     }
 
@@ -539,12 +553,20 @@ namespace SpineViewer.ViewModels.MainWindow
                             sp.EnableDebug = true;
                             _renderer.Draw(sp);
                             sp.EnableDebug = false;
-                            _wallpaperRenderer.Draw(sp);
+
+                            if (_wallpaperView)
+                            {
+                                _wallpaperRenderer.Draw(sp);
+                            }
                         }
                     }
 
                     _renderer.Display();
-                    _wallpaperRenderer.Display();
+
+                    if (_wallpaperView)
+                    {
+                        _wallpaperRenderer.Display();
+                    }
                 }
             }
             catch (Exception ex)

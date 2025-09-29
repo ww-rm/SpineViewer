@@ -53,115 +53,219 @@
             <ScrollViewer  VerticalScrollBarVisibility="Auto">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <GroupBox Header="{DynamicResource Str_TextureLoadPreference}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
+                            </Grid>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
-                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_ForceNearest}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding ForceNearest}"/>
+                            </Grid>
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_ForceNearest}"/>
-                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding ForceNearest}"/>
-
-                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_ForceMipmap}" ToolTip="{DynamicResource Str_ForceMipmapTooltip}"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding ForceMipmap}" ToolTip="{DynamicResource Str_ForceMipmapTooltip}"/>
-                        </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_ForceMipmap}" ToolTip="{DynamicResource Str_ForceMipmapTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding ForceMipmap}" ToolTip="{DynamicResource Str_ForceMipmapTooltip}"/>
+                            </Grid>
+                        </StackPanel>
                     </GroupBox>
 
                     <GroupBox Header="{DynamicResource Str_SpineLoadPreference}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_IsShown}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding IsShown}"/>
+                            </Grid>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_IsShown}"/>
-                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding IsShown}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_UsePma}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding UsePma}"/>
+                            </Grid>
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_UsePma}"/>
-                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding UsePma}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugTexture}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
+                            </Grid>
 
-                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_DebugTexture}"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugBounds}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
+                            </Grid>
 
-                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_DebugBounds}"/>
-                            <ToggleButton Grid.Row="3" Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugBones}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBones}"/>
+                            </Grid>
 
-                            <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource Str_DebugBones}"/>
-                            <ToggleButton Grid.Row="4" Grid.Column="1" IsChecked="{Binding DebugBones}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugRegions}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
+                            </Grid>
 
-                            <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Str_DebugRegions}"/>
-                            <ToggleButton Grid.Row="5" Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugMeshHulls}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
+                            </Grid>
 
-                            <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Str_DebugMeshHulls}"/>
-                            <ToggleButton Grid.Row="6" Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugMeshes}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
+                            </Grid>
 
-                            <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource Str_DebugMeshes}"/>
-                            <ToggleButton Grid.Row="7" Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugClippings}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
+                            </Grid>
 
-                            <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource Str_DebugClippings}"/>
-                            <ToggleButton Grid.Row="8" Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
+                            <!-- <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugBoundingBoxes}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBoundingBoxes}"/>
+                            </Grid>
 
-                            <!--<Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource Str_DebugBoundingBoxes}"/>
-                            <ToggleButton Grid.Row="9" Grid.Column="1" IsChecked="{Binding DebugBoundingBoxes}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugPaths}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugPaths}"/>
+                            </Grid>
 
-                            <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Str_DebugPaths}"/>
-                            <ToggleButton Grid.Row="10" Grid.Column="1" IsChecked="{Binding DebugPaths}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DebugPoints}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DebugPoints}"/>
+                            </Grid> -->
 
-                            <Label Grid.Row="11" Grid.Column="0" Content="{DynamicResource Str_DebugPoints}"/>
-                            <ToggleButton Grid.Row="11" Grid.Column="1" IsChecked="{Binding DebugPoints}"/>-->
-                        </Grid>
+                        </StackPanel>
                     </GroupBox>
 
                     <GroupBox Header="{DynamicResource Str_AppPreference}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AutoRun}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding AutoRun}"/>
+                            </Grid>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AutoRunWorkspaceConfigPath}"
+                                       ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
+                                <DockPanel Grid.Column="1">
+                                    <Button DockPanel.Dock="Right"
+                                            Content="..."
+                                            Command="{Binding Cmd_SelectAutoRunWorkspaceConfigPath}"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding AutoRunWorkspaceConfigPath}"
+                                             ToolTip="{DynamicResource Str_AutoRunWorkspaceConfigPathTooltip}"/>
+                                </DockPanel>
+                            </Grid>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_WallpaperView}"/>
-                            <ToggleButton Grid.Row="0" Grid.Column="1" IsChecked="{Binding WallpaperView}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_WallpaperView}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding WallpaperView}"/>
+                            </Grid>
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_RenderSelectedOnly}"/>
-                            <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding RenderSelectedOnly}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_RenderSelectedOnly}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding RenderSelectedOnly}"/>
+                            </Grid>
 
-                            <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_AssociateFileSuffix}"/>
-                            <ToggleButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding AssociateFileSuffix}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AssociateFileSuffix}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding AssociateFileSuffix}"/>
+                            </Grid>
 
-                            <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_Language}"/>
-                            <ComboBox Grid.Row="3" Grid.Column="1"
-                                      SelectedItem="{Binding AppLanguage}"
-                                      ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
-
-                        </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_Language}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding AppLanguage}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
+                            </Grid>
+                        </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </ScrollViewer>

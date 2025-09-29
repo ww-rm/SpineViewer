@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Spine.SpineWrappers;
+using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,6 +76,12 @@ namespace SpineViewer.Models
         #region 程序选项
 
         [ObservableProperty]
+        private bool _autoRun;
+
+        [ObservableProperty]
+        private string _autoRunWorkspaceConfigPath;
+
+        [ObservableProperty]
         private bool _wallpaperView;
 
         [ObservableProperty]
@@ -84,6 +92,14 @@ namespace SpineViewer.Models
 
         [ObservableProperty]
         private AppLanguage _appLanguage;
+
+        public RelayCommand Cmd_SelectAutoRunWorkspaceConfigPath => _cmd_SelectAutoRunWorkspaceConfigPath ??= new(() =>
+        {
+            if (!DialogService.ShowOpenJsonDialog(out var fileName))
+                return;
+            AutoRunWorkspaceConfigPath = fileName;
+        });
+        private RelayCommand? _cmd_SelectAutoRunWorkspaceConfigPath;
 
         #endregion
     }

@@ -17,6 +17,11 @@
     <s:String x:Key="Str_PreferenceWithDots">設定...</s:String>
     <s:String x:Key="Str_Exit">終了</s:String>
 
+    <!-- 首选项 -->
+    <s:String x:Key="Str_AutoRun_Short" xml:lang="ja">自動起動</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPath">起動時にワークスペースファイルを自動読み込み</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">プログラムが Windows 起動と同時に自動起動した場合に、自動的に読み込むワークスペース設定ファイルを指定します。自動起動が有効な場合にのみ適用されます。</s:String>
+
     <!-- 标签页 -->
     <s:String x:Key="Str_Explorer">エクスプローラー</s:String>
     <s:String x:Key="Str_SpineObject">モデル</s:String>
