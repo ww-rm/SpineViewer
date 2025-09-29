@@ -234,6 +234,16 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_CloseToTray}"/>
+                                <ToggleButton Grid.Column="1"
+                                              IsChecked="{Binding CloseToTray}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_AutoRun}"/>
                                 <ToggleButton Grid.Column="1"
                                               IsChecked="{Binding AutoRun}"/>

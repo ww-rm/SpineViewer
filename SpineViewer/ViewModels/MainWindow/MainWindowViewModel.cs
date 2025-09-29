@@ -29,6 +29,13 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public string Title => $"SpineViewer - v{App.Version}";
 
+        public bool? CloseToTray
+        {
+            get => _closeToTray;
+            set => SetProperty(ref _closeToTray, value);
+        }
+        private bool? _closeToTray = null;
+
         public string AutoRunWorkspaceConfigPath
         {
             get => _autoRunWorkspaceConfigPath;
@@ -57,6 +64,9 @@ namespace SpineViewer.ViewModels.MainWindow
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _spineObjectModels = [];
 
+        /// <summary>
+        /// 首选项 ViewModel
+        /// </summary>
         public PreferenceViewModel PreferenceViewModel => _preferenceViewModel;
         private readonly PreferenceViewModel _preferenceViewModel;
 

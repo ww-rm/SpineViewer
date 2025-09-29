@@ -6,6 +6,7 @@ using Spine;
 using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.Utils;
 using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
@@ -65,10 +66,12 @@ public partial class MainWindow : Window
 
         Loaded += MainWindow_Loaded;
         ContentRendered += MainWindow_ContentRendered;
+        Closing += MainWindow_Closing;
         Closed += MainWindow_Closed;
 
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
+
         _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererViewModel_PropertyChanged;
     }
 
@@ -221,6 +224,20 @@ public partial class MainWindow : Window
         _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
     }
 
+    private void MainWindow_Closing(object? sender, CancelEventArgs e)
+    {
+        if (_vm.CloseToTray is null)
+        {
+            _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
+            _vm.PreferenceViewModel.SavePreference();
+        }
+        if (_vm.CloseToTray is true)
+        {
+            Hide();
+            e.Cancel = true;
+        }
+    }
+
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
         SaveLastState();
@@ -231,13 +248,14 @@ public partial class MainWindow : Window
 
     #endregion
 
-    #region SFMLRendererViewModel 事件处理
+    #region ViewModel PropertyChanged 事件处理
 
     private void SFMLRendererViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(PreferenceViewModel.WallpaperView))
+        if (e.PropertyName == nameof(SFMLRendererViewModel.WallpaperView))
         {
-            if (_vm.PreferenceViewModel.WallpaperView)
+            var wnd = _wallpaperRenderWindow;
+            if (_vm.SFMLRendererViewModel.WallpaperView)
             {
                 var workerw = User32.GetWorkerW();
                 if (workerw == IntPtr.Zero)
@@ -245,7 +263,6 @@ public partial class MainWindow : Window
                     _logger.Error("Failed to enable wallpaper view, WorkerW not found");
                     return;
                 }
-                var wnd = _wallpaperRenderWindow;
                 var handle = wnd.SystemHandle;
 
                 User32.GetPrimaryScreenResolution(out var sw, out var sh);
@@ -261,7 +278,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                _wallpaperRenderWindow.SetVisible(false);
+                wnd.SetVisible(false);
             }
         }
     }
@@ -416,7 +433,12 @@ public partial class MainWindow : Window
 
     private void _notifyIcon_MouseDoubleClick(object sender, RoutedEventArgs e)
     {
-
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+        Activate();
     }
 
     #endregion

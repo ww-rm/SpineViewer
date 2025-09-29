@@ -110,6 +110,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     AppLanguage = AppLanguage,
                     RenderSelectedOnly = RenderSelectedOnly,
                     WallpaperView = WallpaperView,
+                    CloseToTray = CloseToTray,
                     AutoRun = AutoRun,
                     AutoRunWorkspaceConfigPath = AutoRunWorkspaceConfigPath,
                     AssociateFileSuffix = AssociateFileSuffix,
@@ -138,6 +139,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 AppLanguage = value.AppLanguage;
                 RenderSelectedOnly = value.RenderSelectedOnly;
                 WallpaperView = value.WallpaperView;
+                CloseToTray = value.CloseToTray;
                 AutoRun = value.AutoRun;
                 AutoRunWorkspaceConfigPath = value.AutoRunWorkspaceConfigPath;
                 AssociateFileSuffix = value.AssociateFileSuffix;
@@ -262,6 +264,12 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => _vmMain.SFMLRendererViewModel.WallpaperView;
             set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
+        }
+
+        public bool? CloseToTray
+        {
+            get => _vmMain.CloseToTray;
+            set => SetProperty(_vmMain.CloseToTray, value, v => _vmMain.CloseToTray = v);
         }
 
         public bool AutoRun

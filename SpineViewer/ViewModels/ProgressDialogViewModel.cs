@@ -64,7 +64,7 @@ namespace SpineViewer.ViewModels
         private void Cancel_Execute()
         {
             if (!Cancel_CanExecute()) return;
-            if (!MessagePopupService.Quest(AppResource.Str_CancelQuest)) return;
+            if (!MessagePopupService.OKCancel(AppResource.Str_CancelQuest)) return;
             _cts.Cancel();
             Cmd_Cancel.NotifyCanExecuteChanged();
         }
