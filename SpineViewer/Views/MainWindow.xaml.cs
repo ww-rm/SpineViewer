@@ -226,6 +226,9 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
+        if (_vm.IsShuttingDownFromTray)
+            return;
+
         if (_vm.CloseToTray is null)
         {
             _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);

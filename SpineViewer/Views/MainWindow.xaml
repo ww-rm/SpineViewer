@@ -942,7 +942,7 @@
                 <ContextMenu>
                     <MenuItem Header="{DynamicResource Str_WallpaperView}" Command="{Binding Cmd_SwitchWallpaperView}" IsChecked="{Binding PreferenceViewModel.WallpaperView}"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_Exit}"/>
+                    <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_ExitFromTray}"/>
                 </ContextMenu>
             </hc:NotifyIcon.ContextMenu>
         </hc:NotifyIcon>
