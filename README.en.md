@@ -10,7 +10,7 @@ A simple and user-friendly Spine file viewer and exporter with multi-language su
 
 ![previewer](https://github.com/user-attachments/assets/697ae86f-ddf0-445d-951c-cf04f5206e40)
 
-<video src="https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0"></video>
+https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ## Features
 
