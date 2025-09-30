@@ -8,29 +8,30 @@
 
 A simple and user-friendly Spine file viewer and exporter with multi-language support (Chinese/English/Japanese).
 
-![previewer](img/preview.webp)
+![previewer](https://github.com/user-attachments/assets/f2663975-63b9-4b90-93f2-af57be1c64b2)
 
 ## Features
 
-* Supports multiple versions of Spine files.
-* Batch open files via drag-and-drop or copy-paste.
-* Batch preview functionality.
-* List-based multi-skeleton viewing and render order management.
-* Batch adjustment of skeleton parameters using multi-selection.
-* Multi-track animation settings.
-* Skin and custom slot attachment settings.
-* Custom slot visibility settings.
-* Debug rendering support.
-* View/model/track time scale adjustment.
-* Track alpha blending parameter settings.
-* Fullscreen preview mode.
-* Export to single frame/image sequence/animated GIF/video formats.
-* Automatic resolution batch export.
-* FFmpeg custom export support.
-* Program parameter saving.
-* File name extension association.
-* Supports texture image formats other than PNG.
-* ...
+- Multiple versions of Spine files
+- Batch file opening via drag-and-drop or copy-paste
+- Batch preview
+- List-based multi-skeleton viewing and render order management
+- Multi-selection in lists for batch skeleton parameter settings
+- Multi-track animation settings
+- Skin and custom slot attachment settings
+- Custom slot visibility
+- Debug rendering
+- Playback speed adjustment for view/model/track timelines
+- Track alpha blending parameter settings
+- Fullscreen preview
+- Export to single frame, image sequence, animated GIF, or video file
+- Automatic resolution batch export
+- Custom export with FFmpeg
+- Program parameter saving
+- File extension association
+- Texture images in formats other than PNG
+- Launch at startup with persistent dynamic wallpaper
+- ......
 
 ### Supported Spine Versions
 
@@ -78,14 +79,14 @@ In the menu, go to "File" -> "Preferences..." -> "Language," select your desired
 
 The program is organized into a left-right layout:
 
-* **Left Panel:** Functionality panel.
-* **Right Panel:** Preview display.
+- **Left Panel:** Functionality panel.
+- **Right Panel:** Preview display.
 
 The left panel includes three sub-panels:
 
-* **Browse:** Preview the content of a specified folder without importing files into the program. This panel allows generating `.webp` previews for models or importing selected models.
-* **Model:** Lists imported models for rendering. Parameters and rendering order can be adjusted here, along with other model-related functionalities.
-* **Display:** Adjust parameters for the right-side preview display.
+- **Browse:** Preview the content of a specified folder without importing files into the program. This panel allows generating `.webp` previews for models or importing selected models.
+- **Model:** Lists imported models for rendering. Parameters and rendering order can be adjusted here, along with other model-related functionalities.
+- **Display:** Adjust parameters for the right-side preview display.
 
 Hover your mouse over buttons, labels, or input fields to see help text for most UI elements.
 
@@ -101,10 +102,10 @@ The Model panel supports right-click menus, some shortcuts, and batch adjustment
 
 For preview display adjustments:
 
-* **Left-click:** Select and drag models. Hold `Ctrl` for multi-selection, synchronized with the left-side list.
-* **Right-click:** Drag the entire display.
-* **Scroll wheel:** Zoom in/out. Hold `Ctrl` to scale selected models.
-* **Render selected-only mode:** In this mode, the preview only shows selected models, and selection status can only be changed via the left-side list.
+- **Left-click:** Select and drag models. Hold `Ctrl` for multi-selection, synchronized with the left-side list.
+- **Right-click:** Drag the entire display.
+- **Scroll wheel:** Zoom in/out. Hold `Ctrl` to scale selected models.
+- **Render selected-only mode:** In this mode, the preview only shows selected models, and selection status can only be changed via the left-side list.
 
 The buttons below the preview display allow time adjustments, serving as a simple playback control.
 
@@ -116,9 +117,17 @@ Use the right-click menu in the Model panel to export selected items.
 
 Key export parameters include:
 
-* **Output folder:** Optional. When not specified, output is saved to the respective model folder; otherwise, all output is saved to the provided folder.
-* **Export single:** By default, each model is exported independently. Selecting "Export single" renders all selected models in a single frame, producing a unified output.
-* **Auto resolution:** Ignores the preview resolution and viewport parameters, exporting output at the actual size of the content. For animations/videos, the output matches the size required for full visibility.
+- **Output folder:** Optional. When not specified, output is saved to the respective model folder; otherwise, all output is saved to the provided folder.
+- **Export single:** By default, each model is exported independently. Selecting "Export single" renders all selected models in a single frame, producing a unified output.
+- **Auto resolution:** Ignores the preview resolution and viewport parameters, exporting output at the actual size of the content. For animations/videos, the output matches the size required for full visibility.
+
+### Dynamic Wallpaper
+
+Dynamic wallpaper is implemented through desktop projection, allowing the content of the current preview to be projected onto the desktop in real time.
+
+You can enable or disable desktop projection from the program preferences or the right-click menu of the tray icon. After adjusting the model and display parameters, you can save the current configuration as a workspace file for convenient restoration later.
+
+If you want the wallpaper to stay active after startup, you can enable auto-start in the preferences and specify which workspace file should be loaded when the program launches.
 
 ### More Information
 
@@ -126,12 +135,12 @@ For detailed usage and documentation, see the [Wiki](https://github.com/ww-rm/Sp
 
 ## Acknowledgements
 
-* [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes)
-* [SFML.Net](https://github.com/SFML/SFML.Net)
-* [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
-* [HandyControl](https://github.com/HandyOrg/HandyControl)
-* [NLog](https://github.com/NLog/NLog)
-* [SkiaSharp](https://github.com/mono/SkiaSharp)
+- [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes)
+- [SFML.Net](https://github.com/SFML/SFML.Net)
+- [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
+- [HandyControl](https://github.com/HandyOrg/HandyControl)
+- [NLog](https://github.com/NLog/NLog)
+- [SkiaSharp](https://github.com/mono/SkiaSharp)
 
 ---
 
