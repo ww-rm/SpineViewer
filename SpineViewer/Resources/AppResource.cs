@@ -33,6 +33,7 @@ namespace SpineViewer.Resources
         public static string Str_TooManyItemsToAddQuest => Get<string>("Str_TooManyItemsToAddQuest");
         public static string Str_RemoveItemsQuest => Get<string>("Str_RemoveItemsQuest");
         public static string Str_DeleteItemsQuest => Get<string>("Str_DeleteItemsQuest");
+        public static string Str_CloseToTrayQuest => Get<string>("Str_CloseToTrayQuest");
 
         public static string Str_FrameExporterTitle => Get<string>("Str_FrameExporterTitle");
         public static string Str_FrameSequenceExporterTitle => Get<string>("Str_FrameSequenceExporterTitle");

@@ -1,5 +1,7 @@
-﻿using NLog;
+﻿using Microsoft.Win32;
+using NLog;
 using SpineViewer.Natives;
+using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
 using System.Configuration;
@@ -18,15 +20,28 @@ namespace SpineViewer
     /// </summary>
     public partial class App : Application
     {
+#if DEBUG
+        public const string AppName = "SpineViewer_D";
+        public const string ProgId = "SpineViewer_D.skel";
+#else
+        public const string AppName = "SpineViewer";
         public const string ProgId = "SpineViewer.skel";
+#endif
+
+        public const string AutoRunFlag = "--autorun";
+        private const string MutexName = "__SpineViewerInstance__";
+        private const string PipeName = "__SpineViewerPipe__";
 
         public static readonly string ProcessPath = Environment.ProcessPath;
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
-        private const string MutexName = "SpineViewerInstance";
-        private const string PipeName = "SpineViewerPipe";
+        private static readonly string AutoRunCommand = $"\"{ProcessPath}\" {AutoRunFlag}";
+
+        private static readonly string SkelFileDescription = $"SpineViewer File";
+        private static readonly string SkelIconFilePath = Path.Combine(ProcessDirectory, "Resources\\Images\\skel.ico");
+        private static readonly string ShellOpenCommand = $"\"{ProcessPath}\" \"%1\"";
 
         private static readonly Logger _logger;
         private static readonly Mutex _instanceMutex;
@@ -87,7 +102,7 @@ namespace SpineViewer
         {
             try
             {
-                // 2. 遍历同名进程
+                // 遍历同名进程
                 var processes = Process.GetProcessesByName(ProcessName);
                 foreach (var p in processes)
                 {
@@ -171,7 +186,11 @@ namespace SpineViewer
 
                             if (args.Count > 0)
                             {
-                                Current.Dispatcher.Invoke(() => ((MainWindow)Current.MainWindow).OpenFiles(args));
+                                Current.Dispatcher.Invoke(() =>
+                                {
+                                    var vm = (MainWindowViewModel)((MainWindow)Current.MainWindow).DataContext;
+                                    vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args);
+                                });
                             }
                         }
                     }
@@ -186,7 +205,6 @@ namespace SpineViewer
             base.OnStartup(e);
             var uiCulture = CultureInfo.CurrentUICulture.Name.ToLowerInvariant();
             _logger.Info("Current UI Culture: {0}", uiCulture);
-
             if (uiCulture.StartsWith("zh")) { } // 默认就是中文, 无需操作
             else if (uiCulture.StartsWith("ja")) Language = AppLanguage.JA;
             else Language = AppLanguage.EN;
@@ -197,6 +215,116 @@ namespace SpineViewer
             _logger.Trace(e.Exception.ToString());
             _logger.Error("Dispatcher unhandled exception: {0}", e.Exception.Message);
             e.Handled = true;
+        }
+
+        public bool AutoRun
+        {
+            get
+            {
+                try
+                {
+                    using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                    {
+                        var command = key?.GetValue(AppName) as string;
+                        return string.Equals(command, AutoRunCommand, StringComparison.OrdinalIgnoreCase);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Failed to query autorun registry key, {0}", ex.Message);
+                    _logger.Trace(ex.ToString());
+                    return false;
+                }
+            }
+            set
+            {
+                try
+                {
+                    if (value)
+                    {
+                        // 写入自启命令
+                        using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                        {
+                            key?.SetValue(AppName, AutoRunCommand);
+                        }
+                    }
+                    else
+                    {
+                        // 删除自启命令
+                        using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                        {
+                            key?.DeleteValue(AppName, false);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Failed to set autorun registry key, {0}", ex.Message);
+                    _logger.Trace(ex.ToString());
+                }
+            }
+        }
+
+        public bool AssociateFileSuffix
+        {
+            get
+            {
+                try
+                {
+                    // 检查 .skel 的 ProgID
+                    using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\.skel"))
+                    {
+                        var progIdValue = key?.GetValue("") as string;
+                        if (!string.Equals(progIdValue, App.ProgId, StringComparison.OrdinalIgnoreCase))
+                            return false;
+                    }
+
+                    // 检查 command 指令是否相同
+                    using (var key = Registry.CurrentUser.OpenSubKey($@"Software\Classes\{App.ProgId}\shell\open\command"))
+                    {
+                        var command = key?.GetValue("") as string;
+                        if (string.IsNullOrWhiteSpace(command))
+                            return false;
+                        return command == ShellOpenCommand;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                if (value)
+                {
+                    // 文件关联
+                    using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.skel"))
+                    {
+                        key?.SetValue("", App.ProgId);
+                    }
+
+                    using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{App.ProgId}"))
+                    {
+                        key?.SetValue("", SkelFileDescription);
+                        using (var iconKey = key?.CreateSubKey("DefaultIcon"))
+                        {
+                            iconKey?.SetValue("", $"\"{SkelIconFilePath}\"");
+                        }
+                        using (var shellKey = key?.CreateSubKey(@"shell\open\command"))
+                        {
+                            shellKey?.SetValue("", ShellOpenCommand);
+                        }
+                    }
+                }
+                else
+                {
+                    // 删除关联
+                    Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\.skel", false);
+                    Registry.CurrentUser.DeleteSubKeyTree($@"Software\Classes\{App.ProgId}", false);
+                }
+
+                Shell32.NotifyAssociationChanged();
+            }
         }
 
         /// <summary>
@@ -221,7 +349,6 @@ namespace SpineViewer
             }
         }
         private AppLanguage _language = AppLanguage.ZH;
-
     }
 
     public enum AppLanguage

@@ -30,6 +30,26 @@ namespace SpineViewer.ViewModels.MainWindow
         public string Title => $"SpineViewer - v{App.Version}";
 
         /// <summary>
+        /// 指示是否通过托盘图标进行退出
+        /// </summary>
+        public bool IsShuttingDownFromTray => _isShuttingDownFromTray;
+        private bool _isShuttingDownFromTray;
+
+        public bool? CloseToTray
+        {
+            get => _closeToTray;
+            set => SetProperty(ref _closeToTray, value);
+        }
+        private bool? _closeToTray = null;
+
+        public string AutoRunWorkspaceConfigPath
+        {
+            get => _autoRunWorkspaceConfigPath;
+            set => SetProperty(ref _autoRunWorkspaceConfigPath, value);
+        }
+        private string _autoRunWorkspaceConfigPath;
+
+        /// <summary>
         /// SFML 渲染对象
         /// </summary>
         public ISFMLRenderer SFMLRenderer => _sfmlRenderer;
@@ -50,6 +70,9 @@ namespace SpineViewer.ViewModels.MainWindow
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
         private readonly ObservableCollectionWithLock<SpineObjectModel> _spineObjectModels = [];
 
+        /// <summary>
+        /// 首选项 ViewModel
+        /// </summary>
         public PreferenceViewModel PreferenceViewModel => _preferenceViewModel;
         private readonly PreferenceViewModel _preferenceViewModel;
 
@@ -84,8 +107,13 @@ namespace SpineViewer.ViewModels.MainWindow
         });
         private RelayCommand _cmd_SwitchWallpaperView;
 
-        public RelayCommand Cmd_Exit => _cmd_Exit ??= new(App.Current.Shutdown);
-        private RelayCommand? _cmd_Exit;
+        public RelayCommand Cmd_ExitFromTray => _cmd_ExitFromTray ??= new(() =>
+        {
+            _isShuttingDownFromTray = true;
+            OnPropertyChanged(nameof(IsShuttingDownFromTray));
+            App.Current.Shutdown();
+        });
+        private RelayCommand? _cmd_ExitFromTray;
 
         /// <summary>
         /// 打开工作区

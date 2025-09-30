@@ -6,6 +6,7 @@ using Spine;
 using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.Utils;
 using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
@@ -65,11 +66,13 @@ public partial class MainWindow : Window
 
         Loaded += MainWindow_Loaded;
         ContentRendered += MainWindow_ContentRendered;
+        Closing += MainWindow_Closing;
         Closed += MainWindow_Closed;
 
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
-        _vm.PreferenceViewModel.PropertyChanged += PreferenceViewModel_PropertyChanged;
+
+        _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererViewModel_PropertyChanged;
     }
 
     /// <summary>
@@ -116,10 +119,17 @@ public partial class MainWindow : Window
                 WindowState = WindowState.Normal;
             }
 
-            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width);
-            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height);
-            if (m.ExplorerGridRow0Height > 0) _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height);
-            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height);
+            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
+            _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
+
+            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
+            _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
+
+            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height, GridUnitType.Star);
+            _explorerGrid.RowDefinitions[2].Height = new(m.ExplorerGridRow2Height, GridUnitType.Star);
+
+            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
+            _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
             _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
@@ -132,18 +142,26 @@ public partial class MainWindow : Window
 
     private void SaveLastState()
     {
+        var rb = RestoreBounds;
         var m = new LastStateModel()
         {
-            WindowLeft = Left,
-            WindowTop = Top,
-            WindowWidth = Width,
-            WindowHeight = Height,
+            WindowLeft = rb.Left,
+            WindowTop = rb.Top,
+            WindowWidth = rb.Width,
+            WindowHeight = rb.Height,
             WindowState = WindowState,
 
-            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].ActualWidth,
-            ModelListRow0Height = _modelListGrid.RowDefinitions[0].ActualHeight,
-            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].ActualHeight,
-            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].ActualHeight,
+            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
+            RootGridCol2Width = _rootGrid.ColumnDefinitions[2].Width.Value,
+
+            ModelListRow0Height = _modelListGrid.RowDefinitions[0].Height.Value,
+            ModelListRow2Height = _modelListGrid.RowDefinitions[2].Height.Value,
+
+            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].Height.Value,
+            ExplorerGridRow2Height = _explorerGrid.RowDefinitions[2].Height.Value,
+
+            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
+            RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
@@ -155,14 +173,6 @@ public partial class MainWindow : Window
         };
 
         JsonHelper.Serialize(m, LastStateFilePath);
-    }
-
-    /// <summary>
-    /// 给管道通信提供的打开文件外部调用方法
-    /// </summary>
-    public void OpenFiles(IEnumerable<string> filePaths)
-    {
-        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
     }
 
     #region MainWindow 事件处理
@@ -193,30 +203,64 @@ public partial class MainWindow : Window
     private void MainWindow_ContentRendered(object? sender, EventArgs e)
     {
         string[] args = Environment.GetCommandLineArgs();
-        if (args.Length > 1)
+
+        // 不带参数启动
+        if (args.Length <= 1)
+            return;
+
+        // 带一个参数启动, 允许提供一些启动选项
+        if (args.Length == 2)
         {
-            string[] filePaths = args.Skip(1).ToArray();
-            _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+            if (args[1] == App.AutoRunFlag)
+            {
+                var autoPath = _vm.AutoRunWorkspaceConfigPath;
+                if (!string.IsNullOrWhiteSpace(autoPath) && JsonHelper.Deserialize<WorkspaceModel>(autoPath, out var obj))
+                    _vm.Workspace = obj;
+                return;
+            }
         }
+
+        // 其余提供了任意参数的情况
+        string[] filePaths = args.Skip(1).ToArray();
+        _vm.SpineObjectListViewModel.AddSpineObjectFromFileList(filePaths);
+    }
+
+    private void MainWindow_Closing(object? sender, CancelEventArgs e)
+    {
+        if (!_vm.IsShuttingDownFromTray)
+        {
+            if (_vm.CloseToTray is null)
+            {
+                _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
+                _vm.PreferenceViewModel.SavePreference();
+            }
+            if (_vm.CloseToTray is true)
+            {
+                Hide();
+                e.Cancel = true;
+                return;
+            }
+        }
+
+        SaveLastState();
+        _vm.SFMLRendererViewModel.StopRender();
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
-        SaveLastState();
 
-        var vm = _vm.SFMLRendererViewModel;
-        vm.StopRender();
     }
 
     #endregion
 
-    #region PreferenceViewModel 事件处理
+    #region ViewModel PropertyChanged 事件处理
 
-    private void PreferenceViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void SFMLRendererViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(PreferenceViewModel.WallpaperView))
+        if (e.PropertyName == nameof(SFMLRendererViewModel.WallpaperView))
         {
-            if (_vm.PreferenceViewModel.WallpaperView)
+            var wnd = _wallpaperRenderWindow;
+            if (_vm.SFMLRendererViewModel.WallpaperView)
             {
                 var workerw = User32.GetWorkerW();
                 if (workerw == IntPtr.Zero)
@@ -224,7 +268,6 @@ public partial class MainWindow : Window
                     _logger.Error("Failed to enable wallpaper view, WorkerW not found");
                     return;
                 }
-                var wnd = _wallpaperRenderWindow;
                 var handle = wnd.SystemHandle;
 
                 User32.GetPrimaryScreenResolution(out var sw, out var sh);
@@ -232,6 +275,7 @@ public partial class MainWindow : Window
                 User32.SetParent(handle, workerw);
                 User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
+                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
                 wnd.Position = new(0, 0);
                 wnd.Size = new(sw + 1, sh);
                 wnd.Size = new(sw, sh);
@@ -239,7 +283,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                _wallpaperRenderWindow.SetVisible(false);
+                wnd.SetVisible(false);
             }
         }
     }
@@ -394,7 +438,12 @@ public partial class MainWindow : Window
 
     private void _notifyIcon_MouseDoubleClick(object sender, RoutedEventArgs e)
     {
-
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+        Activate();
     }
 
     #endregion
@@ -660,7 +709,11 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-
+        var a = _rootGrid.ColumnDefinitions[0].Width;
+        var b = _rootGrid.ColumnDefinitions[1].Width;
+        var c = _rootGrid.ColumnDefinitions[2].Width;
+        Debug.WriteLine(a);
+        Debug.WriteLine(_rootGrid.ColumnDefinitions[0].Width.IsStar);
 #endif
     }
 }

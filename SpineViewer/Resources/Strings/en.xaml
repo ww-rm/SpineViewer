@@ -149,6 +149,7 @@
     <s:String x:Key="Str_TooManyItemsToAddQuest">{0} items total, add all at once?</s:String>
     <s:String x:Key="Str_RemoveItemsQuest">Remove {0} items?</s:String>
     <s:String x:Key="Str_DeleteItemsQuest">Delete {0} items?</s:String>
+    <s:String x:Key="Str_CloseToTrayQuest" xml:space="preserve">You clicked the close button. Do you want to minimize to the tray icon instead of closing the application directly?&#x0A;(If you choose Yes, the window will be minimized to the tray and can be restored by double-clicking the icon. You can change this option later in the application preferences.)</s:String>
 
     <!-- 导出对话框弹窗文本 -->
     <s:String x:Key="Str_FrameExporterTitle">Export Single Frame</s:String>
@@ -237,7 +238,11 @@
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
-    <s:String x:Key="Str_AssociateFileSuffix">Associate File Extension</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
+    <s:String x:Key="Str_CloseToTray">Minimize to tray when closing</s:String>
+    <s:String x:Key="Str_AutoRun">Auto Start</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPath">Auto-load Workspace File on Startup</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">Specifies the workspace configuration file to be automatically loaded when the program starts with Windows startup. This takes effect only if auto-startup is enabled.</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">Associate File Extension</s:String>
 
 </ResourceDictionary>

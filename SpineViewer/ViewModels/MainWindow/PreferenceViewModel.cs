@@ -26,10 +26,6 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public static readonly string PreferenceFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "preference.json");
 
-        private static readonly string SkelFileDescription = "SpineViewer File";
-        private static readonly string SkelIconFilePath = Path.Combine(App.ProcessDirectory, "Resources\\Images\\skel.ico");
-        private static readonly string ShellOpenCommand = $"\"{App.ProcessPath}\" \"%1\"";
-
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly MainWindowViewModel _vmMain;
@@ -111,10 +107,13 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
 
-                    WallpaperView = WallpaperView,
-                    RenderSelectedOnly = RenderSelectedOnly,
-                    AssociateFileSuffix = AssociateFileSuffix,
                     AppLanguage = AppLanguage,
+                    RenderSelectedOnly = RenderSelectedOnly,
+                    WallpaperView = WallpaperView,
+                    CloseToTray = CloseToTray,
+                    AutoRun = AutoRun,
+                    AutoRunWorkspaceConfigPath = AutoRunWorkspaceConfigPath,
+                    AssociateFileSuffix = AssociateFileSuffix,
                 };
             }
             set
@@ -137,10 +136,13 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
 
-                WallpaperView = value.WallpaperView;
-                RenderSelectedOnly = value.RenderSelectedOnly;
-                AssociateFileSuffix = value.AssociateFileSuffix;
                 AppLanguage = value.AppLanguage;
+                RenderSelectedOnly = value.RenderSelectedOnly;
+                WallpaperView = value.WallpaperView;
+                CloseToTray = value.CloseToTray;
+                AutoRun = value.AutoRun;
+                AutoRunWorkspaceConfigPath = value.AutoRunWorkspaceConfigPath;
+                AssociateFileSuffix = value.AssociateFileSuffix;
             }
         }
 
@@ -246,18 +248,11 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
 
-        public bool AutoRun
+        public AppLanguage AppLanguage
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => ((App)App.Current).Language;
+            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
         }
-
-        public bool WallpaperView
-        {
-            get => _wallpaperView;
-            set => SetProperty(ref _wallpaperView, value);
-        }
-        private bool _wallpaperView; // UI 变化通过 PropertyChanged 事件交由 View 层处理
 
         public bool RenderSelectedOnly
         {
@@ -265,75 +260,34 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
         }
 
-        public bool AssociateFileSuffix
+        public bool WallpaperView
         {
-            get
-            {
-                try
-                {
-                    // 检查 .skel 的 ProgID
-                    using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\.skel"))
-                    {
-                        var progIdValue = key?.GetValue("") as string;
-                        if (!string.Equals(progIdValue, App.ProgId, StringComparison.OrdinalIgnoreCase))
-                            return false;
-                    }
-
-                    // 检查 command 指令是否相同
-                    using (var key = Registry.CurrentUser.OpenSubKey($@"Software\Classes\{App.ProgId}\shell\open\command"))
-                    {
-                        var command = key?.GetValue("") as string;
-                        if (string.IsNullOrWhiteSpace(command))
-                            return false;
-                        return command == ShellOpenCommand;
-                    }
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            set
-            {
-                SetProperty(AssociateFileSuffix, value, v =>
-                {
-                    if (v)
-                    {
-                        // 文件关联
-                        using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.skel"))
-                        {
-                            key?.SetValue("", App.ProgId);
-                        }
-
-                        using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{App.ProgId}"))
-                        {
-                            key?.SetValue("", SkelFileDescription);
-                            using (var iconKey = key?.CreateSubKey("DefaultIcon"))
-                            {
-                                iconKey?.SetValue("", $"\"{SkelIconFilePath}\"");
-                            }
-                            using (var shellKey = key?.CreateSubKey(@"shell\open\command"))
-                            {
-                                shellKey?.SetValue("", ShellOpenCommand);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // 删除关联
-                        Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\.skel", false);
-                        Registry.CurrentUser.DeleteSubKeyTree($@"Software\Classes\{App.ProgId}", false);
-                    }
-
-                    Shell32.NotifyAssociationChanged();
-                });
-            }
+            get => _vmMain.SFMLRendererViewModel.WallpaperView;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
         }
 
-        public AppLanguage AppLanguage
+        public bool? CloseToTray
         {
-            get => ((App)App.Current).Language;
-            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+            get => _vmMain.CloseToTray;
+            set => SetProperty(_vmMain.CloseToTray, value, v => _vmMain.CloseToTray = v);
+        }
+
+        public bool AutoRun
+        {
+            get => ((App)App.Current).AutoRun;
+            set => SetProperty(((App)App.Current).AutoRun, value, v => ((App)App.Current).AutoRun = v);
+        }
+
+        public string AutoRunWorkspaceConfigPath
+        {
+            get => _vmMain.AutoRunWorkspaceConfigPath;
+            set => SetProperty(_vmMain.AutoRunWorkspaceConfigPath, value, v => _vmMain.AutoRunWorkspaceConfigPath = v);
+        }
+
+        public bool AssociateFileSuffix
+        {
+            get => ((App)App.Current).AssociateFileSuffix;
+            set => SetProperty(((App)App.Current).AssociateFileSuffix, value, v => ((App)App.Current).AssociateFileSuffix = v);
         }
 
         #endregion

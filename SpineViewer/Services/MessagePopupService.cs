@@ -28,10 +28,16 @@ namespace SpineViewer.Services
             MessageBox.Show(text, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        public static bool Quest(string text, string? title = null)
+        public static bool OKCancel(string text, string? title = null)
         {
             title ??= AppResource.Str_QuestPopup;
             return MessageBox.Show(text, title, MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK;
+        }
+
+        public static bool YesNo(string text, string? title = null)
+        {
+            title ??= AppResource.Str_QuestPopup;
+            return MessageBox.Show(text, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         }
     }
 }

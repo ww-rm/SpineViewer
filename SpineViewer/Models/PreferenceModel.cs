@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Spine.SpineWrappers;
+using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,17 +75,34 @@ namespace SpineViewer.Models
 
         #region 程序选项
 
+        public RelayCommand Cmd_SelectAutoRunWorkspaceConfigPath => _cmd_SelectAutoRunWorkspaceConfigPath ??= new(() =>
+        {
+            if (!DialogService.ShowOpenJsonDialog(out var fileName))
+                return;
+            AutoRunWorkspaceConfigPath = fileName;
+        });
+        private RelayCommand? _cmd_SelectAutoRunWorkspaceConfigPath;
+
         [ObservableProperty]
-        private bool _wallpaperView;
+        private AppLanguage _appLanguage;
 
         [ObservableProperty]
         private bool _renderSelectedOnly;
 
         [ObservableProperty]
-        private bool _associateFileSuffix;
+        private bool _wallpaperView;
 
         [ObservableProperty]
-        private AppLanguage _appLanguage;
+        private bool? _closeToTray = null;
+
+        [ObservableProperty]
+        private bool _autoRun;
+
+        [ObservableProperty]
+        private string _autoRunWorkspaceConfigPath;
+
+        [ObservableProperty]
+        private bool _associateFileSuffix;
 
         #endregion
     }

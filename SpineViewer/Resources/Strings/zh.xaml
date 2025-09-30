@@ -149,6 +149,7 @@
     <s:String x:Key="Str_TooManyItemsToAddQuest">共 {0} 项，是否一次性添加？</s:String>
     <s:String x:Key="Str_RemoveItemsQuest">确定移除 {0} 项？</s:String>
     <s:String x:Key="Str_DeleteItemsQuest">确定删除 {0} 项？</s:String>
+    <s:String x:Key="Str_CloseToTrayQuest" xml:space="preserve">您点击了关闭按钮，是否需要最小化至托盘图标而不是直接关闭？&#x0A;（选是则最小化至托盘图标，可以通过双击图标还原窗口，以后也可以在程序首选项中重新设置该选项）</s:String>
 
     <!-- 导出对话框弹窗文本 -->
     <s:String x:Key="Str_FrameExporterTitle">导出单帧</s:String>
@@ -237,7 +238,11 @@
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
 
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
-    <s:String x:Key="Str_AssociateFileSuffix">关联文件后缀</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
+    <s:String x:Key="Str_CloseToTray">关闭时最小化至托盘图标</s:String>
+    <s:String x:Key="Str_AutoRun">开机自启</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPath">自启动加载工作区文件</s:String>
+    <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">设置程序开机自启后自动加载的工作区配置文件，仅在启用开机自启时生效</s:String>
+    <s:String x:Key="Str_AssociateFileSuffix">关联文件后缀</s:String>
 
 </ResourceDictionary>

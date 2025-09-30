@@ -127,7 +127,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
             if (args.Count > 1)
             {
-                if (!MessagePopupService.Quest(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+                if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
                     return;
             }
 
@@ -159,7 +159,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!RemoveAllSpineObject_CanExecute(args)) return;
 
-            if (!MessagePopupService.Quest(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
                 return;
 
             lock (_spineObjectModels.Lock)
@@ -469,7 +469,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (validPaths.Count > 100)
                 {
-                    if (!MessagePopupService.Quest(string.Format(AppResource.Str_TooManyItemsToAddQuest, validPaths.Count)))
+                    if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_TooManyItemsToAddQuest, validPaths.Count)))
                         return;
                 }
                 ProgressService.RunAsync((pr, ct) => AddSpineObjectsTask(

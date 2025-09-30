@@ -21,73 +21,120 @@
             <Button Width="120" Content="{DynamicResource Str_CopyDiagnosticsInfo}" Command="{Binding Cmd_CopyToClipboard}"/>
         </Border>
 
-        <Border>
+        <Border Grid.IsSharedSizeScope="True">
+            <Border.Resources>
+                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Style>
+            </Border.Resources>
             <ScrollViewer  VerticalScrollBarVisibility="Auto">
-                <Grid Margin="30 10">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
-                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <StackPanel Margin="30 10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="CPU"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding CPU, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="CPU"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding CPU, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="GPU"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding GPU, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="GPU"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding GPU, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Memory"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding Memory, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="Memory"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding Memory, Mode=OneWay}"/>
+                    <Separator Height="10"/>
 
-                    <Separator Grid.Row="3" Grid.ColumnSpan="2" Height="10"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="WindowsVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding WindowsVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="4" Grid.Column="0" Content="WindowsVersion"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" IsReadOnly="True" Text="{Binding WindowsVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="DotNetVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding DotNetVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="5" Grid.Column="0" Content="DotNetVersion"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" Text="{Binding DotNetVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="ProgramVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding ProgramVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="6" Grid.Column="0" Content="ProgramVersion"/>
-                    <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" Text="{Binding ProgramVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="NLogVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding NLogVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="7" Grid.Column="0" Content="NLogVersion"/>
-                    <TextBox Grid.Row="7" Grid.Column="1" IsReadOnly="True" Text="{Binding NLogVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="SFMLVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SFMLVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="8" Grid.Column="0" Content="SFMLVersion"/>
-                    <TextBox Grid.Row="8" Grid.Column="1" IsReadOnly="True" Text="{Binding SFMLVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="FFMpegCoreVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding FFMpegCoreVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="9" Grid.Column="0" Content="FFMpegCoreVersion"/>
-                    <TextBox Grid.Row="9" Grid.Column="1" IsReadOnly="True" Text="{Binding FFMpegCoreVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="SkiaSharpVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SkiaSharpVersion, Mode=OneWay}"/>
+                    </Grid>
 
-                    <Label Grid.Row="10" Grid.Column="0" Content="SkiaSharpVersion"/>
-                    <TextBox Grid.Row="10" Grid.Column="1" IsReadOnly="True" Text="{Binding SkiaSharpVersion, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="HandyControlVersion"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding HandyControlVersion, Mode=OneWay}"/>
+                    </Grid>
+                </StackPanel>
 
-                    <Label Grid.Row="11" Grid.Column="0" Content="HandyControlVersion"/>
-                    <TextBox Grid.Row="11" Grid.Column="1" IsReadOnly="True" Text="{Binding HandyControlVersion, Mode=OneWay}"/>
-
-                </Grid>
             </ScrollViewer>
         </Border>
     </DockPanel>

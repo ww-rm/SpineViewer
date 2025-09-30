@@ -249,7 +249,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void DeletePreview_Execute(IList? args)
         {
             if (args is null || args.Count <= 0) return;
-            if (!MessagePopupService.Quest(string.Format(AppResource.Str_DeleteItemsQuest, args.Count))) return;
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_DeleteItemsQuest, args.Count))) return;
 
             if (args.Count <= 10)
             {

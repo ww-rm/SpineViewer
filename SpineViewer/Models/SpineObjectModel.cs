@@ -269,6 +269,12 @@ namespace SpineViewer.Models
                     entry = _spineObject.AnimationState.SetAnimation(index, name, true);
                     entry.TimeScale = lastTimeScale;
                     entry.Alpha = lastAlpha;
+
+                    // XXX(#105): 部分 3.4.02 版本模型在设置动画后出现附件残留, 因此强制进行一次 Setup
+                    if (_spineObject.Version == SpineVersion.V34)
+                    {
+                        _spineObject.Skeleton.SetSlotsToSetupPose();
+                    }
                     changed = true;
                 }
             }
