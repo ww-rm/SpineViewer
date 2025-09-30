@@ -186,8 +186,11 @@ namespace SpineViewer
 
                             if (args.Count > 0)
                             {
-                                var vm = (MainWindowViewModel)((MainWindow)Current.MainWindow).DataContext;
-                                Current.Dispatcher.Invoke(() => vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args));
+                                Current.Dispatcher.Invoke(() =>
+                                {
+                                    var vm = (MainWindowViewModel)((MainWindow)Current.MainWindow).DataContext;
+                                    vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args);
+                                });
                             }
                         }
                     }
@@ -202,7 +205,6 @@ namespace SpineViewer
             base.OnStartup(e);
             var uiCulture = CultureInfo.CurrentUICulture.Name.ToLowerInvariant();
             _logger.Info("Current UI Culture: {0}", uiCulture);
-
             if (uiCulture.StartsWith("zh")) { } // 默认就是中文, 无需操作
             else if (uiCulture.StartsWith("ja")) Language = AppLanguage.JA;
             else Language = AppLanguage.EN;
