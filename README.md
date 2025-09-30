@@ -4,13 +4,15 @@
 [![GitHub Release](https://img.shields.io/github/v/release/ww-rm/SpineViewer?logo=github&logoColor=959da5&label=Release&labelColor=3f4850)](https://github.com/ww-rm/SpineViewer/releases)
 [![Downloads](https://img.shields.io/github/downloads/ww-rm/SpineViewer/total?logo=github&logoColor=959da5&label=Downloads&labelColor=3f4850)](https://github.com/ww-rm/SpineViewer/releases)
 
+![Languages](https://img.shields.io/badge/Languages-中文%20%7C%20English%20%7C%20日本語-blue)
+
 [中文](README.md) | [English](README.en.md)
 
 Spine 文件查看&导出程序, 同时也是支持 Spine 的动态壁纸程序.
 
 ![previewer](https://github.com/user-attachments/assets/697ae86f-ddf0-445d-951c-cf04f5206e40)
 
-<video src="https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0">
+<video src="https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0"></video>
 
 ## 功能
 
