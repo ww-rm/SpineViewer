@@ -181,6 +181,7 @@ namespace Spine
                 _skinLoadStatus = other._skinLoadStatus.ToDictionary();
                 ReloadSkins();
 
+                // XXX(#105): 部分 3.4 模型此处可能导致预期外的插槽附件残留
                 // 拷贝插槽属性值
                 for (int i = 0; i < other._skeleton.Slots.Length; i++)
                 {
