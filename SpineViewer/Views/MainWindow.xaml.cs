@@ -142,12 +142,13 @@ public partial class MainWindow : Window
 
     private void SaveLastState()
     {
+        var rb = RestoreBounds;
         var m = new LastStateModel()
         {
-            WindowLeft = Left,
-            WindowTop = Top,
-            WindowWidth = Width,
-            WindowHeight = Height,
+            WindowLeft = rb.Left,
+            WindowTop = rb.Top,
+            WindowWidth = rb.Width,
+            WindowHeight = rb.Height,
             WindowState = WindowState,
 
             RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
@@ -226,27 +227,28 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
-        if (_vm.IsShuttingDownFromTray)
-            return;
+        if (!_vm.IsShuttingDownFromTray)
+        {
+            if (_vm.CloseToTray is null)
+            {
+                _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
+                _vm.PreferenceViewModel.SavePreference();
+            }
+            if (_vm.CloseToTray is true)
+            {
+                Hide();
+                e.Cancel = true;
+                return;
+            }
+        }
 
-        if (_vm.CloseToTray is null)
-        {
-            _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
-            _vm.PreferenceViewModel.SavePreference();
-        }
-        if (_vm.CloseToTray is true)
-        {
-            Hide();
-            e.Cancel = true;
-        }
+        SaveLastState();
+        _vm.SFMLRendererViewModel.StopRender();
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
-        SaveLastState();
 
-        var vm = _vm.SFMLRendererViewModel;
-        vm.StopRender();
     }
 
     #endregion
