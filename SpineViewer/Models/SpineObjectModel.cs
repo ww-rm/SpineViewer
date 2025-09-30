@@ -531,6 +531,12 @@ namespace SpineViewer.Models
                         trackIndex++;
                     }
 
+                    // XXX(#105): 部分 3.4.02 版本模型在设置动画后出现附件残留, 因此强制进行一次 Setup
+                    if (_spineObject.Version == SpineVersion.V34)
+                    {
+                        _spineObject.Skeleton.SetSlotsToSetupPose();
+                    }
+
                     SetProperty(_spineObject.DebugTexture, value.DebugTexture, v => _spineObject.DebugTexture = v, nameof(DebugTexture));
                     SetProperty(_spineObject.DebugBounds, value.DebugBounds, v => _spineObject.DebugBounds = v, nameof(DebugBounds));
                     SetProperty(_spineObject.DebugBones, value.DebugBones, v => _spineObject.DebugBones = v, nameof(DebugBones));
