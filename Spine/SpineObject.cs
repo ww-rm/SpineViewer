@@ -558,18 +558,6 @@ namespace Spine
                         tintA *= meshAttachment.A;
                         texture = meshAttachment.RendererObject;
                         break;
-                    case ISkinnedMeshAttachment skinnedMeshAttachment:
-                        worldVerticesLength = skinnedMeshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
-                        worldVertices = _worldVertices;
-                        triangles = skinnedMeshAttachment.Triangles;
-                        trianglesLength = triangles.Length;
-                        uvs = skinnedMeshAttachment.UVs;
-                        tintR *= skinnedMeshAttachment.R;
-                        tintG *= skinnedMeshAttachment.G;
-                        tintB *= skinnedMeshAttachment.B;
-                        tintA *= skinnedMeshAttachment.A;
-                        texture = skinnedMeshAttachment.RendererObject;
-                        break;
                     case IClippingAttachment clippingAttachment:
                         _clipping.ClipStart(slot, clippingAttachment);
                         continue;
@@ -702,34 +690,6 @@ namespace Spine
                             _lineVertices.Append(vt);
                         }
                     }
-                    else if (slot.Attachment is ISkinnedMeshAttachment skinnedMeshAttachment)
-                    {
-                        skinnedMeshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
-
-                        var triangles = skinnedMeshAttachment.Triangles;
-                        for (int i = 0; i < triangles.Length - 2; i += 3)
-                        {
-                            var idx0 = triangles[i] << 1;
-                            var idx1 = triangles[i + 1] << 1;
-                            var idx2 = triangles[i + 2] << 1;
-
-                            vt.Position.X = _worldVertices[idx0];
-                            vt.Position.Y = _worldVertices[idx0 + 1];
-                            _lineVertices.Append(vt);
-
-                            vt.Position.X = _worldVertices[idx1];
-                            vt.Position.Y = _worldVertices[idx1 + 1];
-                            _lineVertices.Append(vt); _lineVertices.Append(vt);
-
-                            vt.Position.X = _worldVertices[idx2];
-                            vt.Position.Y = _worldVertices[idx2 + 1];
-                            _lineVertices.Append(vt); _lineVertices.Append(vt);
-
-                            vt.Position.X = _worldVertices[idx0];
-                            vt.Position.Y = _worldVertices[idx0 + 1];
-                            _lineVertices.Append(vt);
-                        }
-                    }
                 }
             }
 
@@ -743,29 +703,6 @@ namespace Spine
                         meshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
 
                         var hullLength = meshAttachment.HullLength;
-                        if (hullLength < 4) continue;
-
-                        vt.Position.X = _worldVertices[0];
-                        vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
-
-                        for (int i = 2; i < hullLength - 1; i += 2)
-                        {
-                            vt.Position.X = _worldVertices[i];
-                            vt.Position.Y = _worldVertices[i + 1];
-                            _lineVertices.Append(vt);
-                            _lineVertices.Append(vt);
-                        }
-
-                        vt.Position.X = _worldVertices[0];
-                        vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
-                    }
-                    else if (slot.Attachment is ISkinnedMeshAttachment skinnedMeshAttachment)
-                    {
-                        skinnedMeshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
-
-                        var hullLength = skinnedMeshAttachment.HullLength;
                         if (hullLength < 4) continue;
 
                         vt.Position.X = _worldVertices[0];
