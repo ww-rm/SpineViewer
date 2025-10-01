@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.System;
 using Spine;
 using Spine.Exporters;
+using Spine.Interfaces;
 
 namespace SpineViewerCLI
 {

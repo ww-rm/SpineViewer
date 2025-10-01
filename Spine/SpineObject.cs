@@ -1,6 +1,7 @@
 ﻿using NLog;
-using Spine.SpineWrappers;
-using Spine.SpineWrappers.Attachments;
+using Spine.Implementations;
+using Spine.Interfaces;
+using Spine.Interfaces.Attachments;
 using Spine.Utils;
 using System;
 using System.Collections.Frozen;

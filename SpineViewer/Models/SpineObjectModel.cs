@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using NLog;
 using Spine;
-using Spine.SpineWrappers;
+using Spine.Interfaces;
 using SpineViewer.Extensions;
 
 namespace SpineViewer.Models
@@ -426,6 +426,14 @@ namespace SpineViewer.Models
         public Rect GetCurrentBounds()
         {
             lock (_lock) return _spineObject.GetCurrentBounds();
+        }
+
+        /// <summary>
+        /// 命中检测, 可以比整体包围盒略精确一点
+        /// </summary>
+        public bool HitTest(float x, float y)
+        {
+            lock (_lock) return _spineObject.Skeleton.HitTest(x, y);
         }
 
         public SpineObjectConfigModel ObjectConfig

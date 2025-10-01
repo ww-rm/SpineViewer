@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using NLog;
-using Spine.SpineWrappers;
+using Spine.Implementations;
 using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Services;
