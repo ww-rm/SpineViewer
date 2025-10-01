@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Spine.SpineWrappers;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
@@ -88,6 +87,12 @@ namespace SpineViewer.Models
 
         [ObservableProperty]
         private bool _renderSelectedOnly;
+
+        [ObservableProperty]
+        private bool _usePreciseHitTest;
+
+        [ObservableProperty]
+        private bool _logHitSlots;
 
         [ObservableProperty]
         private bool _wallpaperView;

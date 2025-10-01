@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Spine;
-using Spine.SpineWrappers;
+using Spine.Interfaces;
 using SpineViewer.Models;
 using System.Collections;
 using System.Collections.Immutable;

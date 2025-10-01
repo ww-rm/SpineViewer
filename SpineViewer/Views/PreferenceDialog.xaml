@@ -215,8 +215,25 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_RenderSelectedOnly}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding RenderSelectedOnly}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding RenderSelectedOnly}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_UsePreciseHitTest}" ToolTip="{DynamicResource Str_UsePreciseHitTestTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding UsePreciseHitTest}" ToolTip="{DynamicResource Str_UsePreciseHitTestTooltip}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_LogHitSlots}" ToolTip="{DynamicResource Str_LogHitSlotsTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding LogHitSlots}" ToolTip="{DynamicResource Str_LogHitSlotsTooltip}"/>
                             </Grid>
 
                             <Grid>
@@ -225,8 +242,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_WallpaperView}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding WallpaperView}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding WallpaperView}"/>
                             </Grid>
 
                             <Grid>
@@ -235,8 +251,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_CloseToTray}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding CloseToTray}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding CloseToTray}"/>
                             </Grid>
 
                             <Grid>
@@ -245,8 +260,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_AutoRun}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding AutoRun}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding AutoRun}"/>
                             </Grid>
                             
                             <Grid>
@@ -272,8 +286,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_AssociateFileSuffix}"/>
-                                <ToggleButton Grid.Column="1"
-                                              IsChecked="{Binding AssociateFileSuffix}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding AssociateFileSuffix}"/>
                             </Grid>
                         </StackPanel>
                     </GroupBox>

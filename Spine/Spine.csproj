@@ -7,7 +7,7 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.1</Version>
+        <Version>0.16.2</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -32,10 +32,4 @@
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime41\SpineRuntime41.csproj" />
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime42\SpineRuntime42.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Implementations\SpineWrappers\V36\" />
-      <Folder Include="Implementations\SpineWrappers\V37\" />
-    </ItemGroup>
-
 </Project>

@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using NLog;
-using Spine.SpineWrappers;
+using Spine.Implementations;
 using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Services;
@@ -109,6 +109,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     AppLanguage = AppLanguage,
                     RenderSelectedOnly = RenderSelectedOnly,
+                    UsePreciseHitTest = UsePreciseHitTest,
+                    LogHitSlots = LogHitSlots,
                     WallpaperView = WallpaperView,
                     CloseToTray = CloseToTray,
                     AutoRun = AutoRun,
@@ -138,6 +140,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 AppLanguage = value.AppLanguage;
                 RenderSelectedOnly = value.RenderSelectedOnly;
+                UsePreciseHitTest = value.UsePreciseHitTest;
+                LogHitSlots = value.LogHitSlots;
                 WallpaperView = value.WallpaperView;
                 CloseToTray = value.CloseToTray;
                 AutoRun = value.AutoRun;
@@ -258,6 +262,18 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
             set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
+        }
+
+        public bool UsePreciseHitTest
+        {
+            get => _vmMain.SFMLRendererViewModel.UsePreciseHitTest;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.UsePreciseHitTest, value, v => _vmMain.SFMLRendererViewModel.UsePreciseHitTest = v);
+        }
+
+        public bool LogHitSlots
+        {
+            get => _vmMain.SFMLRendererViewModel.LogHitSlots;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.LogHitSlots, value, v => _vmMain.SFMLRendererViewModel.LogHitSlots = v);
         }
 
         public bool WallpaperView

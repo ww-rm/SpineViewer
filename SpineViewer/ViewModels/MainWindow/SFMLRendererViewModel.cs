@@ -240,19 +240,45 @@ namespace SpineViewer.ViewModels.MainWindow
         }
         private Stretch _backgroundImageMode = Stretch.Uniform;
 
+        /// <summary>
+        /// 仅渲染选中对象
+        /// </summary>
+        public bool RenderSelectedOnly
+        {
+            get => _renderSelectedOnly;
+            set => SetProperty(ref _renderSelectedOnly, value);
+        }
+        private bool _renderSelectedOnly;
+
+        /// <summary>
+        /// 启用精确命中测试
+        /// </summary>
+        public bool UsePreciseHitTest
+        {
+            get => _usePreciseHitTest;
+            set => SetProperty(ref _usePreciseHitTest, value);
+        }
+        private bool _usePreciseHitTest;
+
+        /// <summary>
+        /// 启用完整的命中测试并在日志中输出命中测试的插槽结果
+        /// </summary>
+        public bool LogHitSlots
+        {
+            get => _logHitSlots;
+            set => SetProperty(ref _logHitSlots, value);
+        }
+        private bool _logHitSlots;
+
+        /// <summary>
+        /// 启用桌面投影
+        /// </summary>
         public bool WallpaperView
         {
             get => _wallpaperView;
             set => SetProperty(ref _wallpaperView, value);
         }
         private bool _wallpaperView;
-
-        public bool RenderSelectedOnly
-        {
-            get => _renderSelectedOnly;
-            set => SetProperty(ref _renderSelectedOnly, value);
-        }
-        private bool _renderSelectedOnly = false;
 
         public bool IsUpdating
         {
@@ -333,17 +359,31 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (e.Button == SFML.Window.Mouse.Button.Left && !SFML.Window.Mouse.IsButtonPressed(SFML.Window.Mouse.Button.Right))
             {
-                var _src = _renderer.MapPixelToCoords(new(e.X, e.Y));
-                var src = new Point(_src.X, _src.Y);
-                _draggingSrc = _src;
+                var src = _renderer.MapPixelToCoords(new(e.X, e.Y));
+                _draggingSrc = src;
 
                 lock (_models.Lock)
                 {
                     // 仅渲染选中模式禁止在画面里选择对象
                     if (_renderSelectedOnly)
                     {
-                        // 只在被选中的对象里判断是否有效命中
-                        bool hit = _models.Any(m => m.IsSelected && m.GetCurrentBounds().Contains(src));
+                        bool hit = false;
+                        if (!_logHitSlots)
+                        {
+                            // 只在被选中的对象里判断是否有效命中
+                            hit = _models.Any(m => m.IsSelected && m.HitTest(src.X, src.Y, _usePreciseHitTest));
+                        }
+                        else
+                        {
+                            foreach (var sp in _models.Where(m => m.IsSelected))
+                            {
+                                var slotNames = sp.HitTestFull(src.X, src.Y, _usePreciseHitTest);
+                                if (slotNames.Length <= 0) continue;
+
+                                hit = true;
+                                _logger.Debug("Model Hit ({0}): [{1}]", sp.Name, string.Join(", ", slotNames));
+                            }
+                        }
 
                         // 如果没点到被选中的模型, 则不允许拖动
                         if (!hit) _draggingSrc = null;
@@ -354,20 +394,41 @@ namespace SpineViewer.ViewModels.MainWindow
                         {
                             // 没按 Ctrl 的情况下, 如果命中了已选中对象, 则就算普通命中
                             bool hit = false;
-                            foreach (var sp in _models)
+
+                            if (!_logHitSlots)
                             {
-                                if (!sp.IsShown) continue;
-                                if (!sp.GetCurrentBounds().Contains(src)) continue;
-
-                                hit = true;
-
-                                // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
-                                if (!sp.IsSelected)
+                                foreach (var sp in _models.Where(m => m.IsShown))
                                 {
-                                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                                    if (!sp.HitTest(src.X, src.Y, _usePreciseHitTest)) continue;
+
+                                    hit = true;
+
+                                    // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
+                                    if (!sp.IsSelected)
+                                    {
+                                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                                    }
+                                    break;
                                 }
-                                break;
+                            }
+                            else
+                            {
+                                foreach (var sp in _models.Where(m => m.IsShown))
+                                {
+                                    var slotNames = sp.HitTestFull(src.X, src.Y, _usePreciseHitTest);
+                                    if (slotNames.Length <= 0) continue;
+
+                                    // 如果点到了没被选中的东西, 则清空原先选中的, 改为只选中这一次点的
+                                    // 仅判断顶层对象 (首次命中)
+                                    if (!hit && !sp.IsSelected)
+                                    {
+                                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                                    }
+                                    hit = true;
+                                    _logger.Debug("Model Hit ({0}): [{1}]", sp.Name, string.Join(", ", slotNames));
+                                }
                             }
 
                             // 如果点了空白的地方, 就清空选中列表
@@ -376,7 +437,7 @@ namespace SpineViewer.ViewModels.MainWindow
                         else
                         {
                             // 按下 Ctrl 的情况就执行多选, 并且点空白处也不会清空选中, 如果点击了本来就是选中的则取消选中
-                            if (_models.FirstOrDefault(m => m.IsShown && m.GetCurrentBounds().Contains(src), null) is SpineObjectModel sp)
+                            if (_models.FirstOrDefault(m => m.IsShown && m.HitTest(src.X, src.Y, _usePreciseHitTest), null) is SpineObjectModel sp)
                             {
                                 if (sp.IsSelected)
                                     RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Remove, sp));
