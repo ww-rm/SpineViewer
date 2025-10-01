@@ -503,7 +503,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var skelPath = paths[totalCount - 1 - i]; // 从后往前添加, 每次插入到列表的第一个
+                var skelPath = paths[i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
 
                 if (AddSpineObject(skelPath))
@@ -620,7 +620,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var cfg = models[totalCount - 1 - i]; // 从后往前添加, 每次插入到列表的第一个
+                var cfg = models[i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {cfg}";
 
                 if (AddSpineObject(cfg))
