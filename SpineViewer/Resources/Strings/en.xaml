@@ -120,6 +120,10 @@
     <s:String x:Key="Str_PlaySpeed">Playback Speed</s:String>
     <s:String x:Key="Str_WallpaperView">Wallpaper View</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
+    <s:String x:Key="Str_UsePreciseHitTest">Use Precise Hit Testing</s:String>
+    <s:String x:Key="Str_UsePreciseHitTestTooltip">When enabled, click detection will be performed based on pixel transparency of the model.</s:String>
+    <s:String x:Key="Str_LogHitSlots">Log Hit Slot Names</s:String>
+    <s:String x:Key="Str_LogHitSlotsTooltip">When enabled, the log box will output the model and slot information hit by each click operation (will not output when using Ctrl for multi-selection).</s:String>
     <s:String x:Key="Str_ShowAxis">Show Axis</s:String>
     <s:String x:Key="Str_BackgroundColor">Background Color</s:String>
     <s:String x:Key="Str_BackgroundImagePath">Background Image Path</s:String>

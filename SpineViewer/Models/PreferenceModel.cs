@@ -89,6 +89,12 @@ namespace SpineViewer.Models
         private bool _renderSelectedOnly;
 
         [ObservableProperty]
+        private bool _usePreciseHitTest;
+
+        [ObservableProperty]
+        private bool _logHitSlots;
+
+        [ObservableProperty]
         private bool _wallpaperView;
 
         [ObservableProperty]
