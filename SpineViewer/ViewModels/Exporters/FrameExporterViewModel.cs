@@ -20,7 +20,7 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FrameExporterViewModel(MainWindowViewModel vmMain) : BaseExporterViewModel(vmMain)
     {
-        public ImmutableArray<SKEncodedImageFormat> FrameFormatOptions { get; } = Enum.GetValues<SKEncodedImageFormat>().ToImmutableArray();
+        public static ImmutableArray<SKEncodedImageFormat> FrameFormatOptions { get; } = Enum.GetValues<SKEncodedImageFormat>().ToImmutableArray();
 
         public SKEncodedImageFormat Format { get => _format; set => SetProperty(ref _format, value); }
         protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;

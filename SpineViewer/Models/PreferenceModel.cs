@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Spine.Interfaces;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace SpineViewer.Models
         private bool _renderSelectedOnly;
 
         [ObservableProperty]
-        private bool _usePreciseHitTest;
+        private HitTestLevel _hitTestLevel;
 
         [ObservableProperty]
         private bool _logHitSlots;

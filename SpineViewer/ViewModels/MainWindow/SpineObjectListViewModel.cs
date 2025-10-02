@@ -111,7 +111,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 return;
             if (!DialogService.ShowOpenFileDialog(out var atlasFileName, AppResource.Str_OpenAtlasFileTitle))
                 return;
-            AddSpineObject(skelFileName, atlasFileName);
+            InsertSpineObject(skelFileName, atlasFileName);
             _logger.LogCurrentProcessMemoryUsage();
         }
 
@@ -479,7 +479,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (validPaths.Count > 0)
             {
-                AddSpineObject(validPaths[0]);
+                InsertSpineObject(validPaths[0]);
                 _logger.LogCurrentProcessMemoryUsage();
             }
         }
@@ -506,7 +506,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 var skelPath = paths[i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
 
-                if (AddSpineObject(skelPath))
+                if (InsertSpineObject(skelPath))
                     success++;
                 else
                     error++;
@@ -529,7 +529,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        private bool AddSpineObject(string skelPath, string? atlasPath = null)
+        private bool InsertSpineObject(string skelPath, string? atlasPath = null)
         {
             try
             {
@@ -599,7 +599,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (models.Count > 0)
             {
-                AddSpineObject(models[0]);
+                InsertSpineObject(models[0]);
                 _logger.LogCurrentProcessMemoryUsage();
             }
         }
@@ -620,10 +620,10 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var cfg = models[i];
+                var cfg = models[totalCount - 1 - i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {cfg}";
 
-                if (AddSpineObject(cfg))
+                if (InsertSpineObject(cfg))
                     success++;
                 else
                     error++;
@@ -653,7 +653,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
+        private bool InsertSpineObject(SpineObjectWorkspaceConfigModel cfg)
         {
             try
             {

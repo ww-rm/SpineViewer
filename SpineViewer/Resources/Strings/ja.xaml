@@ -120,10 +120,9 @@
     <s:String x:Key="Str_PlaySpeed">再生速度</s:String>
     <s:String x:Key="Str_WallpaperView">壁紙表示</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
-    <s:String x:Key="Str_UsePreciseHitTest">精密ヒットテストを使用</s:String>
-    <s:String x:Key="Str_UsePreciseHitTestTooltip">有効にすると、モデルのピクセル透過度に基づいてクリック判定を行います。</s:String>
-    <s:String x:Key="Str_LogHitSlots">ヒットしたスロット名を出力</s:String>
-    <s:String x:Key="Str_LogHitSlotsTooltip">有効にすると、ログボックスに各クリック操作でヒットしたモデルとスロットの情報を出力します（Ctrlを押しながら複数選択する場合は出力されません）。</s:String>
+    <s:String x:Key="Str_HitTestLevel">ヒットテスト精度レベル</s:String>
+    <s:String x:Key="Str_LogHitSlots">ヒットテスト結果のスロット名を出力</s:String>
+    <s:String x:Key="Str_LogHitSlotsTooltip">有効にすると、ログボックスに各クリック操作で命中したモデルとスロットの情報が出力されます。</s:String>
     <s:String x:Key="Str_ShowAxis">座標軸を表示</s:String>
     <s:String x:Key="Str_BackgroundColor">背景色</s:String>
     <s:String x:Key="Str_BackgroundImagePath">背景画像のパス</s:String>

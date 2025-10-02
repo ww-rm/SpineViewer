@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:SpineViewer.Views.ExporterDialogs"
-        xmlns:exporters="clr-namespace:SpineViewer.ViewModels.Exporters"
-        d:DataContext="{d:DesignInstance Type=exporters:FFmpegVideoExporterViewModel}"
+        xmlns:vmexp="clr-namespace:SpineViewer.ViewModels.Exporters"
+        d:DataContext="{d:DesignInstance Type=vmexp:FFmpegVideoExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_FFmpegVideoExporterTitle}"
         Width="450"
@@ -161,7 +161,7 @@
 
                             <!-- 视频格式 -->
                             <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_VideoFormat}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding VideoFormatOptions}"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.VideoFormatOptions}"/>
 
                             <!-- 动图是否循环 -->
                             <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_LoopPlay}" ToolTip="{DynamicResource Str_LoopPlayTooltip}"/>

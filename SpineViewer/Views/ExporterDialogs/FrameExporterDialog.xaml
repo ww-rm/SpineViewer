@@ -126,7 +126,7 @@
 
                             <!-- 图像格式 -->
                             <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_ImageFormat}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{Binding FrameFormatOptions}"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{x:Static vmexp:FrameExporterViewModel.FrameFormatOptions}"/>
 
                             <!-- 图像质量 -->
                             <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_ImageQuality}" ToolTip="{DynamicResource Str_ImageQualityTooltip}"/>

@@ -51,7 +51,7 @@
                 </Style>
             </Border.Resources>
             <ScrollViewer  VerticalScrollBarVisibility="Auto">
-                <StackPanel Grid.IsSharedSizeScope="True">
+                <StackPanel Grid.IsSharedSizeScope="True" Margin="0 0 0 50">
                     <GroupBox Header="{DynamicResource Str_TextureLoadPreference}">
                         <StackPanel>
                             <Grid>
@@ -223,8 +223,10 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_UsePreciseHitTest}" ToolTip="{DynamicResource Str_UsePreciseHitTestTooltip}"/>
-                                <ToggleButton Grid.Column="1" IsChecked="{Binding UsePreciseHitTest}" ToolTip="{DynamicResource Str_UsePreciseHitTestTooltip}"/>
+                                <Label Content="{DynamicResource Str_HitTestLevel}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding HitTestLevel}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.HitTestLevelOptions}"/>
                             </Grid>
 
                             <Grid>

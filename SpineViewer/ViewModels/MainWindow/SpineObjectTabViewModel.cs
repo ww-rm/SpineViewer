@@ -18,7 +18,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly ObservableCollection<SlotViewModel> _slots = [];
         private readonly ObservableCollection<AnimationTrackViewModel> _animationTracks = [];
 
-        public ImmutableArray<ISkeleton.Physics> PhysicsOptions { get; } = Enum.GetValues<ISkeleton.Physics>().ToImmutableArray();
+        public static ImmutableArray<ISkeleton.Physics> PhysicsOptions { get; } = Enum.GetValues<ISkeleton.Physics>().ToImmutableArray();
 
         public SpineObjectModel[] SelectedObjects
         {

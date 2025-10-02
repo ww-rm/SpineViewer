@@ -120,10 +120,9 @@
     <s:String x:Key="Str_PlaySpeed">播放速度</s:String>
     <s:String x:Key="Str_WallpaperView">桌面投影</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
-    <s:String x:Key="Str_UsePreciseHitTest">使用精确命中检测</s:String>
-    <s:String x:Key="Str_UsePreciseHitTestTooltip">启用后将会按像素透明度来检测点击操作是否命中了模型</s:String>
-    <s:String x:Key="Str_LogHitSlots">输出命中的插槽名称</s:String>
-    <s:String x:Key="Str_LogHitSlotsTooltip">启用后将会在日志框内输出每一次点击操作命中的模型和插槽情况（按下 Ctrl 进行多选时不会输出）</s:String>
+    <s:String x:Key="Str_HitTestLevel">命中检测准确度等级</s:String>
+    <s:String x:Key="Str_LogHitSlots">输出命中检测结果的插槽名称</s:String>
+    <s:String x:Key="Str_LogHitSlotsTooltip">启用后将会在日志框内输出每一次点击操作命中的模型和插槽情况</s:String>
     <s:String x:Key="Str_ShowAxis">显示坐标轴</s:String>
     <s:String x:Key="Str_BackgroundColor">背景颜色</s:String>
     <s:String x:Key="Str_BackgroundImagePath">背景图片路径</s:String>
