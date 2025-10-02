@@ -429,19 +429,11 @@ namespace SpineViewer.Models
         }
 
         /// <summary>
-        /// 命中检测, 可选是否使用精确检测, 会有性能损失
+        /// 命中检测
         /// </summary>
-        public bool HitTest(float x, float y, bool precise = false)
+        public bool HitTest(float x, float y)
         {
-            lock (_lock) return _spineObject.Skeleton.HitTest(x, y, precise);
-        }
-
-        /// <summary>
-        /// 完整的命中检测, 会检测所有插槽是否命中并返回命中的插槽名称
-        /// </summary>
-        public string[] HitTestFull(float x, float y, bool precise = false)
-        {
-            lock (_lock) return _spineObject.Skeleton.HitTestFull(x, y, precise).Select(v => v.Name).ToArray();
+            lock (_lock) return _spineObject.Skeleton.HitTest(x, y);
         }
 
         public SpineObjectConfigModel ObjectConfig

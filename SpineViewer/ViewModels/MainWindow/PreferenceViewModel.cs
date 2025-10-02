@@ -109,7 +109,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     AppLanguage = AppLanguage,
                     RenderSelectedOnly = RenderSelectedOnly,
-                    UsePreciseHitTest = UsePreciseHitTest,
+                    HitTestLevel = HitTestLevel,
                     LogHitSlots = LogHitSlots,
                     WallpaperView = WallpaperView,
                     CloseToTray = CloseToTray,
@@ -140,7 +140,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 AppLanguage = value.AppLanguage;
                 RenderSelectedOnly = value.RenderSelectedOnly;
-                UsePreciseHitTest = value.UsePreciseHitTest;
+                HitTestLevel = value.HitTestLevel;
                 LogHitSlots = value.LogHitSlots;
                 WallpaperView = value.WallpaperView;
                 CloseToTray = value.CloseToTray;
@@ -252,6 +252,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
 
+        public static ImmutableArray<HitTestLevel> HitTestLevelOptions { get; } = Enum.GetValues<HitTestLevel>().ToImmutableArray();
+
         public AppLanguage AppLanguage
         {
             get => ((App)App.Current).Language;
@@ -264,16 +266,16 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
         }
 
-        public bool UsePreciseHitTest
+        public HitTestLevel HitTestLevel
         {
-            get => _vmMain.SFMLRendererViewModel.UsePreciseHitTest;
-            set => SetProperty(_vmMain.SFMLRendererViewModel.UsePreciseHitTest, value, v => _vmMain.SFMLRendererViewModel.UsePreciseHitTest = v);
+            get => SpineExtension.HitTestLevel;
+            set => SetProperty(SpineExtension.HitTestLevel, value, v => SpineExtension.HitTestLevel = v);
         }
 
         public bool LogHitSlots
         {
-            get => _vmMain.SFMLRendererViewModel.LogHitSlots;
-            set => SetProperty(_vmMain.SFMLRendererViewModel.LogHitSlots, value, v => _vmMain.SFMLRendererViewModel.LogHitSlots = v);
+            get => SpineExtension.LogHitSlots;
+            set => SetProperty(SpineExtension.LogHitSlots, value, v => SpineExtension.LogHitSlots = v);
         }
 
         public bool WallpaperView

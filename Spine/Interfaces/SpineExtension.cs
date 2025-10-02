@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using NLog;
+using SkiaSharp;
 using Spine.Interfaces.Attachments;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,25 @@ using System.Threading.Tasks;
 
 namespace Spine.Interfaces
 {
+    /// <summary>
+    /// 命中测试等级枚举值
+    /// </summary>
+    public enum HitTestLevel { Bounds, Meshes, Pixels }
+
     public static class SpineExtension
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// 命中检测精确度等级
+        /// </summary>
+        public static HitTestLevel HitTestLevel { get; set; } = HitTestLevel.Bounds;
+
+        /// <summary>
+        /// 命中测试时输出命中的插槽名称
+        /// </summary>
+        public static bool LogHitSlots { get; set; }
+
         /// <summary>
         /// 获取当前状态包围盒
         /// </summary>
@@ -105,12 +123,12 @@ namespace Spine.Interfaces
         /// </summary>
         /// <param name="precise">是否精确命中检测, 否则仅使用包围盒进行命中检测</param>
         /// <param name="cache">调用方管理的缓存表</param>
-        public static bool HitTest(this ISlot self, float x, float y, bool precise = false, Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image> cache = null)
+        public static bool HitTest(this ISlot self, float x, float y, Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image> cache = null)
         {
             if (self.A <= 0 || !self.Bone.Active || self.Disabled)
                 return false;
 
-            if (!precise)
+            if (HitTestLevel == HitTestLevel.Bounds)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
                 return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
@@ -140,22 +158,7 @@ namespace Spine.Interfaces
                         return false;
                 }
 
-                SFML.Graphics.Image img = null;
-                if (cache is not null)
-                {
-                    if (!cache.TryGetValue(tex, out img))
-                    {
-                        img = cache[tex] = tex.CopyToImage();
-                    }
-                }
-                else
-                {
-                    img = tex.CopyToImage();
-                }
-
-                bool hit = false;
                 var trianglesLength = triangles.Length;
-                var texSize = img.Size;
                 for (int i = 0; i + 2 < trianglesLength; i += 3)
                 {
                     var idx0 = triangles[i] << 1;
@@ -173,6 +176,9 @@ namespace Spine.Interfaces
                     // 判断是否全部同号 (或为 0, 点在边上)
                     if ((c0 >= 0 && c1 >= 0 && c2 >= 0) || (c0 <= 0 && c1 <= 0 && c2 <= 0))
                     {
+                        if (HitTestLevel == HitTestLevel.Meshes)
+                            return true;
+
                         float u0 = uvs[idx0], v0 = uvs[idx0 + 1];
                         float u1 = uvs[idx1], v1 = uvs[idx1 + 1];
                         float u2 = uvs[idx2], v2 = uvs[idx2 + 1];
@@ -183,43 +189,61 @@ namespace Spine.Interfaces
                         float u = u0 * w0 + u1 * w1 + u2 * w2;
                         float v = v0 * w0 + v1 * w1 + v2 * w2;
 
+                        SFML.Graphics.Image img = null;
+                        if (cache is not null)
+                        {
+                            if (!cache.TryGetValue(tex, out img))
+                            {
+                                img = cache[tex] = tex.CopyToImage();
+                            }
+                        }
+                        else
+                        {
+                            img = tex.CopyToImage();
+                        }
+
+                        var texSize = img.Size;
                         var pixel = img.GetPixel((uint)(u * texSize.X), (uint)(v * texSize.Y));
-                        hit = pixel.A > 0;
-                        break;
+                        bool hit = pixel.A > 0;
+
+                        // 无缓存需要立即释放资源
+                        if (cache is null)
+                        {
+                            img.Dispose();
+                        }
+
+                        return hit;
                     }
                 }
-
-                // 无缓存需要立即释放资源
-                if (cache is null)
-                {
-                    img.Dispose();
-                }
-
-                return hit;
+                return false;
             }
         }
 
         /// <summary>
         /// 逐插槽的命中测试, 命中后会提前返回结果中止计算
         /// </summary>
-        public static bool HitTest(this ISkeleton self, float x, float y, bool precise = false)
+        public static bool HitTest(this ISkeleton self, float x, float y)
         {
             var cache = new Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image>();
-            bool hit = self.IterDrawOrder().Any(st => st.HitTest(x, y, precise, cache));
+            bool hit = false;
+            List<string> slotNames = [];
+            foreach (var st in self.IterDrawOrder().Reverse())
+            {
+                if (st.HitTest(x, y, cache))
+                {
+                    hit = true;
+                    if (!LogHitSlots)
+                        break;
+                    slotNames.Add(st.Name);
+                }
+            }
             foreach (var img in cache.Values) img.Dispose();
-            return hit;
-        }
 
-        /// <summary>
-        /// 逐插槽的命中测试, 会完整计算所有插槽的命中情况并按顶层至底层的顺序返回命中的插槽
-        /// /// <param name="precise">是否精确命中检测, 否则仅使用每个插槽的包围盒进行命中检测</param>
-        /// </summary>
-        public static ISlot[] HitTestFull(this ISkeleton self, float x, float y, bool precise = false)
-        {
-            var cache = new Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image>();
-            var hitSlots = self.IterDrawOrder().Where(st => st.HitTest(x, y, precise, cache)).Reverse().ToArray();
-            foreach (var img in cache.Values) img.Dispose();
-            return hitSlots;
+            if (LogHitSlots && slotNames.Count > 0)
+            {
+                _logger.Debug("Hit ({0}): [{1}]", self.Name, string.Join(", ", slotNames));
+            }
+            return hit;
         }
 
         /// <summary>
