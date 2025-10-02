@@ -628,7 +628,7 @@ namespace Spine
             if (DebugRegions)
             {
                 vt.Color = AttachmentLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
+                foreach (var slot in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IRegionAttachment regionAttachment)
                     {
@@ -660,7 +660,7 @@ namespace Spine
             if (DebugMeshes)
             {
                 vt.Color = MeshLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
+                foreach (var slot in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IMeshAttachment meshAttachment)
                     {
@@ -696,7 +696,7 @@ namespace Spine
             if (DebugMeshHulls)
             {
                 vt.Color = AttachmentLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
+                foreach (var slot in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IMeshAttachment meshAttachment)
                     {
@@ -742,7 +742,7 @@ namespace Spine
             if (DebugClippings)
             {
                 vt.Color = ClippingLineColor;
-                foreach (var slot in _skeleton.Slots.Where(s => s.Bone.Active && !s.Disabled))
+                foreach (var slot in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled))
                 {
                     if (slot.Attachment is IClippingAttachment clippingAttachment)
                     {
@@ -799,7 +799,7 @@ namespace Spine
             if (DebugBones)
             {
                 var width = Math.Max(Math.Abs(_skeleton.ScaleX), Math.Abs(_skeleton.ScaleY));
-                foreach (var bone in _skeleton.Bones.Where(b => b.Active))
+                foreach (var bone in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled).Select(st => st.Bone))
                 {
                     var boneLength = bone.Length;
                     var p1 = new SFML.System.Vector2f(bone.WorldX, bone.WorldY);
@@ -815,7 +815,7 @@ namespace Spine
             if (DebugBones)
             {
                 var radius = Math.Max(Math.Abs(_skeleton.ScaleX), Math.Abs(_skeleton.ScaleY));
-                foreach (var bone in _skeleton.Bones.Where(b => b.Active))
+                foreach (var bone in _skeleton.IterDrawOrder().Where(s => s.A > 0 && s.Bone.Active && !s.Disabled).Select(st => st.Bone))
                 {
                     DrawCirclePoint(target, new(bone.WorldX, bone.WorldY), BonePointColor, radius);
                 }
