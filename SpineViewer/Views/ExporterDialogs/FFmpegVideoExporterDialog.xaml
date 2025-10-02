@@ -92,7 +92,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_OutputDir}" ToolTip="{DynamicResource Str_OutputDirTooltip}"/>
                                 <DockPanel Grid.Column="1">
-                                    <Button DockPanel.Dock="Right" Content="..." Click="ButtonSelectOutputDir_Click"/>
+                                    <Button DockPanel.Dock="Right" Content="..." Command="{Binding Cmd_SelectOutputDir}"/>
                                     <TextBox Text="{Binding OutputDir}" ToolTip="{DynamicResource Str_OutputDirTooltip}"/>
                                 </DockPanel>
                             </Grid>

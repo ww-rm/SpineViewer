@@ -42,15 +42,6 @@ namespace SpineViewer.Views.ExporterDialogs
             DialogResult = false;
         }
 
-        private void ButtonSelectOutputDir_Click(object sender, RoutedEventArgs e)
-        {
-            if (DialogService.ShowOpenFolderDialog(out var selectedPath))
-            {
-                var vm = (FFmpegVideoExporterViewModel)DataContext;
-                vm.OutputDir = selectedPath;
-            }
-        }
-
         private void ButtonPickColor_Click(object sender, RoutedEventArgs e)
         {
 
