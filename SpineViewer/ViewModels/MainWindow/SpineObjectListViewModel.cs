@@ -111,7 +111,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 return;
             if (!DialogService.ShowOpenFileDialog(out var atlasFileName, AppResource.Str_OpenAtlasFileTitle))
                 return;
-            AddSpineObject(skelFileName, atlasFileName);
+            InsertSpineObject(skelFileName, atlasFileName);
             _logger.LogCurrentProcessMemoryUsage();
         }
 
@@ -479,7 +479,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (validPaths.Count > 0)
             {
-                AddSpineObject(validPaths[0]);
+                InsertSpineObject(validPaths[0]);
                 _logger.LogCurrentProcessMemoryUsage();
             }
         }
@@ -506,7 +506,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 var skelPath = paths[i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
 
-                if (AddSpineObject(skelPath))
+                if (InsertSpineObject(skelPath))
                     success++;
                 else
                     error++;
@@ -529,7 +529,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        private bool AddSpineObject(string skelPath, string? atlasPath = null)
+        private bool InsertSpineObject(string skelPath, string? atlasPath = null)
         {
             try
             {
@@ -650,7 +650,7 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// 安全地在列表头添加一个模型, 发生错误会输出日志
+        /// 安全地在列表末尾添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
         private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
@@ -658,7 +658,7 @@ namespace SpineViewer.ViewModels.MainWindow
             try
             {
                 var sp = new SpineObjectModel(cfg);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
                     RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
