@@ -12,7 +12,7 @@ namespace Spine.Interfaces
     /// <summary>
     /// 命中测试等级枚举值
     /// </summary>
-    public enum HitTestLevel { Bounds, Meshes, Pixels }
+    public enum HitTestLevel { None, Bounds, Meshes, Pixels }
 
     public static class SpineExtension
     {
@@ -21,7 +21,7 @@ namespace Spine.Interfaces
         /// <summary>
         /// 命中检测精确度等级
         /// </summary>
-        public static HitTestLevel HitTestLevel { get; set; } = HitTestLevel.Bounds;
+        public static HitTestLevel HitTestLevel { get; set; }
 
         /// <summary>
         /// 命中测试时输出命中的插槽名称
@@ -128,12 +128,12 @@ namespace Spine.Interfaces
             if (self.A <= 0 || !self.Bone.Active || self.Disabled)
                 return false;
 
-            if (HitTestLevel == HitTestLevel.Bounds)
+            if (HitTestLevel == HitTestLevel.None || HitTestLevel == HitTestLevel.Bounds)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
                 return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
             }
-            else
+            else if (HitTestLevel == HitTestLevel.Meshes || HitTestLevel == HitTestLevel.Pixels)
             {
                 float[] vertices = new float[8];
                 int[] triangles;
@@ -217,6 +217,10 @@ namespace Spine.Interfaces
                 }
                 return false;
             }
+            else
+            {
+                throw new NotImplementedException(HitTestLevel.ToString());
+            }
         }
 
         /// <summary>
@@ -224,24 +228,29 @@ namespace Spine.Interfaces
         /// </summary>
         public static bool HitTest(this ISkeleton self, float x, float y)
         {
+            if (HitTestLevel == HitTestLevel.None)
+            {
+                self.GetBounds(out var bx, out var by, out var bw, out var bh);
+                return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
+            }
+
             var cache = new Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image>();
             bool hit = false;
-            List<string> slotNames = [];
+            string hitSlotName = "";
             foreach (var st in self.IterDrawOrder().Reverse())
             {
                 if (st.HitTest(x, y, cache))
                 {
                     hit = true;
-                    if (!LogHitSlots)
-                        break;
-                    slotNames.Add(st.Name);
+                    hitSlotName = st.Name;
+                    break;
                 }
             }
             foreach (var img in cache.Values) img.Dispose();
 
-            if (LogHitSlots && slotNames.Count > 0)
+            if (hit && LogHitSlots)
             {
-                _logger.Debug("Hit ({0}): [{1}]", self.Name, string.Join(", ", slotNames));
+                _logger.Debug("Hit ({0}): [{1}]", self.Name, hitSlotName);
             }
             return hit;
         }
