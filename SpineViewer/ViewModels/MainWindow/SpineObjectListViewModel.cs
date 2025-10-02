@@ -599,7 +599,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else if (models.Count > 0)
             {
-                AddSpineObject(models[0]);
+                InsertSpineObject(models[0]);
                 _logger.LogCurrentProcessMemoryUsage();
             }
         }
@@ -620,10 +620,10 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ct.IsCancellationRequested) break;
 
-                var cfg = models[i];
+                var cfg = models[totalCount - 1 - i];
                 reporter.ProgressText = $"[{i}/{totalCount}] {cfg}";
 
-                if (AddSpineObject(cfg))
+                if (InsertSpineObject(cfg))
                     success++;
                 else
                     error++;
@@ -650,15 +650,15 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// 安全地在列表末尾添加一个模型, 发生错误会输出日志
+        /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        private bool AddSpineObject(SpineObjectWorkspaceConfigModel cfg)
+        private bool InsertSpineObject(SpineObjectWorkspaceConfigModel cfg)
         {
             try
             {
                 var sp = new SpineObjectModel(cfg);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Add(sp);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
                     RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
