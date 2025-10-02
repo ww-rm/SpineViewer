@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Spine.Interfaces;
+using Spine;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
