@@ -1,5 +1,4 @@
 ﻿using NLog;
-using SkiaSharp;
 using Spine.Interfaces.Attachments;
 using System;
 using System.Collections.Generic;
@@ -121,9 +120,7 @@ namespace Spine.Interfaces
         /// <summary>
         /// 命中测试, 当插槽全透明或者处于禁用或者骨骼处于未激活则无法命中
         /// </summary>
-        /// <param name="precise">是否精确命中检测, 否则仅使用包围盒进行命中检测</param>
-        /// <param name="cache">调用方管理的缓存表</param>
-        public static bool HitTest(this ISlot self, float x, float y, Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image> cache = null)
+        public static bool HitTest(this ISlot self, float x, float y)
         {
             if (self.A <= 0 || !self.Bone.Active || self.Disabled)
                 return false;
@@ -188,32 +185,23 @@ namespace Spine.Interfaces
                         float w2 = c0 * inv;
                         float u = u0 * w0 + u1 * w1 + u2 * w2;
                         float v = v0 * w0 + v1 * w1 + v2 * w2;
+                        var texW = tex.Size.X;
+                        var texH = tex.Size.Y;
 
-                        // XXX: 如果贴图很大则 CopyToImage 比较耗时, 存在明显卡顿
-                        SFML.Graphics.Image img = null;
-                        if (cache is not null)
-                        {
-                            if (!cache.TryGetValue(tex, out img))
-                            {
-                                img = cache[tex] = tex.CopyToImage();
-                            }
-                        }
-                        else
-                        {
-                            img = tex.CopyToImage();
-                        }
+                        // 把要判断的那个像素点渲出来
+                        using var renderTex = new SFML.Graphics.RenderTexture(1, 1);
+                        using var view = renderTex.GetView();
 
-                        var texSize = tex.Size;
-                        var pixel = img.GetPixel((uint)(u * texSize.X), (uint)(v * texSize.Y));
-                        bool hit = pixel.A > 0;
+                        using var vertexArray = new SFML.Graphics.VertexArray(SFML.Graphics.PrimitiveType.Points, 1);
+                        vertexArray[0] = new(view.Center, new SFML.System.Vector2f(u * texW, v * texH));
 
-                        // 无缓存需要立即释放资源
-                        if (cache is null)
-                        {
-                            img.Dispose();
-                        }
+                        renderTex.Clear(SFML.Graphics.Color.Transparent);
+                        renderTex.Draw(vertexArray, new(tex));
+                        renderTex.Display();
 
-                        return hit;
+                        using var img = renderTex.Texture.CopyToImage();
+                        var pixel = img.GetPixel(0, 0);
+                        return pixel.A > 0;
                     }
                 }
                 return false;
@@ -235,19 +223,17 @@ namespace Spine.Interfaces
                 return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
             }
 
-            var cache = new Dictionary<SFML.Graphics.Texture, SFML.Graphics.Image>();
             bool hit = false;
             string hitSlotName = "";
             foreach (var st in self.IterDrawOrder().Reverse())
             {
-                if (st.HitTest(x, y, cache))
+                if (st.HitTest(x, y))
                 {
                     hit = true;
                     hitSlotName = st.Name;
                     break;
                 }
             }
-            foreach (var img in cache.Values) img.Dispose();
 
             if (hit && LogHitSlots)
             {
