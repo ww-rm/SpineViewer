@@ -20,23 +20,63 @@ namespace SpineViewer.ViewModels.Exporters
     {
         public static ImmutableArray<FFmpegVideoExporter.VideoFormat> VideoFormatOptions { get; } = Enum.GetValues<FFmpegVideoExporter.VideoFormat>().ToImmutableArray();
 
-        public FFmpegVideoExporter.VideoFormat Format { get => _format; set => SetProperty(ref _format, value); }
+        public FFmpegVideoExporter.VideoFormat Format 
+        { 
+            get => _format;
+            set
+            {
+                if (SetProperty(ref _format, value))
+                {
+                    OnPropertyChanged(nameof(EnableParamLoop));
+                    OnPropertyChanged(nameof(EnableParamQuality));
+                    OnPropertyChanged(nameof(EnableParamLossless));
+                    OnPropertyChanged(nameof(EnableParamApngPred));
+                    OnPropertyChanged(nameof(EnableParamCrf));
+                    OnPropertyChanged(nameof(EnableParamProfile));
+                }
+            }
+        }
         protected FFmpegVideoExporter.VideoFormat _format = FFmpegVideoExporter.VideoFormat.Mp4;
 
         public bool Loop { get => _loop; set => SetProperty(ref _loop, value); }
         protected bool _loop = true;
 
+        public bool EnableParamLoop =>
+            _format == FFmpegVideoExporter.VideoFormat.Gif ||
+            _format == FFmpegVideoExporter.VideoFormat.Webp ||
+            _format == FFmpegVideoExporter.VideoFormat.Apng;
+
         public int Quality { get => _quality; set => SetProperty(ref _quality, Math.Clamp(value, 0, 100)); }
         protected int _quality = 75;
+
+        public bool EnableParamQuality =>
+            _format == FFmpegVideoExporter.VideoFormat.Webp;
 
         public bool Lossless { get => _lossless; set => SetProperty(ref _lossless, value); }
         protected bool _lossless = false;
 
+        public bool EnableParamLossless =>
+            _format == FFmpegVideoExporter.VideoFormat.Webp;
+
+        public int ApngPred { get => _apngPred; set => SetProperty(ref _apngPred, Math.Clamp(value, 0, 5)); }
+        protected int _apngPred = 5;
+
+        public bool EnableParamApngPred =>
+            _format == FFmpegVideoExporter.VideoFormat.Apng;
+
         public int Crf { get => _crf; set => SetProperty(ref _crf, Math.Clamp(value, 0, 63)); }
         protected int _crf = 23;
 
+        public bool EnableParamCrf =>
+            _format == FFmpegVideoExporter.VideoFormat.Mp4 ||
+            _format == FFmpegVideoExporter.VideoFormat.Webm ||
+            _format == FFmpegVideoExporter.VideoFormat.Mkv;
+
         public int Profile { get => _profile; set => SetProperty(ref _profile, Math.Clamp(value, -1, 5)); }
         protected int _profile = 5;
+
+        public bool EnableParamProfile =>
+            _format == FFmpegVideoExporter.VideoFormat.Mov;
 
         private string FormatSuffix => $".{_format.ToString().ToLower()}";
 
@@ -63,6 +103,7 @@ namespace SpineViewer.ViewModels.Exporters
                 Loop = _loop,
                 Quality = _quality,
                 Lossless = _lossless,
+                ApngPred = _apngPred,
                 Crf = _crf,
                 Profile = _profile,
             };

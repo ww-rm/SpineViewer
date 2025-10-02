@@ -28,6 +28,7 @@ namespace Spine.Exporters
         {
             Gif,
             Webp,
+            Apng,
             Mp4,
             Webm,
             Mkv,
@@ -41,31 +42,37 @@ namespace Spine.Exporters
         private VideoFormat _format = VideoFormat.Mp4;
 
         /// <summary>
-        /// 动图是否循环 [Gif/Webp]
+        /// [Gif/Webp/Apng] 动图是否循环
         /// </summary>
         public bool Loop { get => _loop; set => _loop = value; }
         private bool _loop = true;
 
         /// <summary>
-        /// 质量 [Webp]
+        /// [Webp] 质量
         /// </summary>
         public int Quality { get => _quality; set => _quality = Math.Clamp(value, 0, 100); }
         private int _quality = 75;
 
         /// <summary>
-        /// 无损压缩 [Webp]
+        /// [Webp] 无损压缩
         /// </summary>
         public bool Lossless { get => _lossless; set => _lossless = value; }
         private bool _lossless = false;
 
         /// <summary>
-        /// CRF [Mp4/Webm/Mkv]
+        /// [Apng] 预测器算法, 取值范围 0-5, 分别对应 none, sub, up, avg, paeth, mixed
+        /// </summary>
+        public int ApngPred { get => _apngPred; set => _apngPred = Math.Clamp(value, 0, 5); }
+        private int _apngPred = 5;
+
+        /// <summary>
+        /// [Mp4/Webm/Mkv] CRF
         /// </summary>
         public int Crf { get => _crf; set => _crf = Math.Clamp(value, 0, 63); }
         private int _crf = 23;
 
         /// <summary>
-        /// prores_ks 编码器的配置等级, -1 是自动, 越高质量越好, 只有 4 及以上才有透明通道 [Mov]
+        /// [Mov] prores_ks 编码器的配置等级, -1 是自动, 越高质量越好, 只有 4 及以上才有透明通道
         /// </summary>
         public int Profile { get => _profile; set => _profile = Math.Clamp(value, -1, 5); }
         private int _profile = 5;
@@ -93,6 +100,7 @@ namespace Spine.Exporters
             {
                 VideoFormat.Gif => SetGifOptions,
                 VideoFormat.Webp => SetWebpOptions,
+                VideoFormat.Apng => SetApngOptions,
                 VideoFormat.Mp4 => SetMp4Options,
                 VideoFormat.Webm => SetWebmOptions,
                 VideoFormat.Mkv => SetMkvOptions,
@@ -129,6 +137,13 @@ namespace Spine.Exporters
         {
             var customArgs = $"-vf unpremultiply=inplace=1 -quality {_quality} -loop {(_loop ? 0 : 1)} -lossless {(_lossless ? 1 : 0)}";
             options.ForceFormat("webp").WithVideoCodec("libwebp_anim").ForcePixelFormat("yuva420p")
+                .WithCustomArgument(customArgs);
+        }
+
+        private void SetApngOptions(FFMpegArgumentOptions options)
+        {
+            var customArgs = $"-vf unpremultiply=inplace=1 -plays {(_loop ? 0 : 1)} -pred {_apngPred}";
+            options.ForceFormat("apng").WithVideoCodec("apng").ForcePixelFormat("rgba")
                 .WithCustomArgument(customArgs);
         }
 
