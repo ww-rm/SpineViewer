@@ -189,6 +189,7 @@ namespace Spine.Interfaces
                         float u = u0 * w0 + u1 * w1 + u2 * w2;
                         float v = v0 * w0 + v1 * w1 + v2 * w2;
 
+                        // XXX: 如果贴图很大则 CopyToImage 比较耗时, 存在明显卡顿
                         SFML.Graphics.Image img = null;
                         if (cache is not null)
                         {
@@ -202,7 +203,7 @@ namespace Spine.Interfaces
                             img = tex.CopyToImage();
                         }
 
-                        var texSize = img.Size;
+                        var texSize = tex.Size;
                         var pixel = img.GetPixel((uint)(u * texSize.X), (uint)(v * texSize.Y));
                         bool hit = pixel.A > 0;
 
