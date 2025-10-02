@@ -327,7 +327,7 @@
 
                                                 <!-- 物理 -->
                                                 <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource Str_Physics}"/>
-                                                <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding Physics}" ItemsSource="{Binding PhysicsOptions}"/>
+                                                <ComboBox Grid.Row="2" Grid.Column="1" SelectedValue="{Binding Physics}" ItemsSource="{x:Static vm:SpineObjectTabViewModel.PhysicsOptions}"/>
 
                                                 <!-- 时间因子 -->
                                                 <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Str_TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
@@ -790,7 +790,7 @@
 
                                     <!-- 背景图案模式 -->
                                     <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource Str_BackgroundImageMode}"/>
-                                    <ComboBox Grid.Row="14" Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{Binding StretchOptions}"/>
+                                    <ComboBox Grid.Row="14" Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static vm:SFMLRendererViewModel.StretchOptions}"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>

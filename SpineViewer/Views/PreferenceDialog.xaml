@@ -51,7 +51,7 @@
                 </Style>
             </Border.Resources>
             <ScrollViewer  VerticalScrollBarVisibility="Auto">
-                <StackPanel Grid.IsSharedSizeScope="True">
+                <StackPanel Grid.IsSharedSizeScope="True" Margin="0 0 0 50">
                     <GroupBox Header="{DynamicResource Str_TextureLoadPreference}">
                         <StackPanel>
                             <Grid>

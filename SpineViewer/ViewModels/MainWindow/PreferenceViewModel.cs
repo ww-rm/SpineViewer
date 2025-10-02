@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using NLog;
 using Spine.Implementations;
+using Spine.Interfaces;
 using SpineViewer.Models;
 using SpineViewer.Natives;
 using SpineViewer.Services;

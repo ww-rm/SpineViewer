@@ -25,7 +25,7 @@ namespace SpineViewer.ViewModels.MainWindow
 {
     public class SFMLRendererViewModel : ObservableObject
     {
-        public ImmutableArray<Stretch> StretchOptions { get; } = Enum.GetValues<Stretch>().ToImmutableArray();
+        public static ImmutableArray<Stretch> StretchOptions { get; } = Enum.GetValues<Stretch>().ToImmutableArray();
 
         /// <summary>
         /// 日志器
