@@ -17,6 +17,14 @@ namespace Spine.Interfaces
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private static readonly SFML.Graphics.RenderTexture _renderTex; // XXX: 在此保留一个静态变量, 并且没有使用 Dispose 进行资源释放
+
+        static SpineExtension()
+        {
+            _renderTex = new(1, 1);
+            _renderTex.SetActive(false);
+        }
+
         /// <summary>
         /// 命中检测精确度等级
         /// </summary>
@@ -189,17 +197,18 @@ namespace Spine.Interfaces
                         var texH = tex.Size.Y;
 
                         // 把要判断的那个像素点渲出来
-                        using var renderTex = new SFML.Graphics.RenderTexture(1, 1);
-                        using var view = renderTex.GetView();
-
+                        using var view = _renderTex.GetView();
                         using var vertexArray = new SFML.Graphics.VertexArray(SFML.Graphics.PrimitiveType.Points, 1);
                         vertexArray[0] = new(view.Center, new SFML.System.Vector2f(u * texW, v * texH));
 
-                        renderTex.Clear(SFML.Graphics.Color.Transparent);
-                        renderTex.Draw(vertexArray, new(tex));
-                        renderTex.Display();
+                        // XXX: 此处 RenderTexture 不能临时用临时释放, 由于未知原因如果短时间快速创建释放 RenderTexture 可能让程序卡死
+                        _renderTex.SetActive(true);
+                        _renderTex.Clear(SFML.Graphics.Color.Transparent);
+                        _renderTex.Draw(vertexArray, new(tex));
+                        _renderTex.Display();
+                        _renderTex.SetActive(false);
 
-                        using var img = renderTex.Texture.CopyToImage();
+                        using var img = _renderTex.Texture.CopyToImage();
                         var pixel = img.GetPixel(0, 0);
                         return pixel.A > 0;
                     }
