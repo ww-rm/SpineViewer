@@ -52,6 +52,7 @@ namespace Spine.Implementations.V37
 
         public Skeleton InnerObject => _o;
 
+        public string Name => _o.Data.Name;
         public float R { get => _o.R; set => _o.R = value; }
         public float G { get => _o.G; set => _o.G = value; }
         public float B { get => _o.B; set => _o.B = value; }

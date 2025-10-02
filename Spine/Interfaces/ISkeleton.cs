@@ -16,6 +16,11 @@ namespace Spine.Interfaces
         public enum Physics { None, Reset, Update, Pose }
 
         /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// R
         /// </summary>
         public float R { get; set; }
