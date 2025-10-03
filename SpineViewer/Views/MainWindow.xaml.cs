@@ -8,6 +8,7 @@ using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using SpineViewer.ViewModels.Exporters;
 using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -249,6 +250,28 @@ public partial class MainWindow : Window
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
 
+    }
+
+    #endregion
+
+    #region ColorPicker 弹窗事件处理
+
+    private void ButtonPickColor_Click(object sender, RoutedEventArgs e)
+    {
+        _colorPopup.IsOpen = !_colorPopup.IsOpen;
+    }
+
+    private void ColorPicker_Confirmed(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+    {
+        _colorPopup.IsOpen = false;
+        var color = e.Info;
+        var vm = ((MainWindowViewModel)DataContext).SFMLRendererViewModel;
+        vm.BackgroundColor = color;
+    }
+
+    private void ColorPicker_Canceled(object sender, EventArgs e)
+    {
+        _colorPopup.IsOpen = false;
     }
 
     #endregion
@@ -709,11 +732,10 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        var a = _rootGrid.ColumnDefinitions[0].Width;
-        var b = _rootGrid.ColumnDefinitions[1].Width;
-        var c = _rootGrid.ColumnDefinitions[2].Width;
-        Debug.WriteLine(a);
-        Debug.WriteLine(_rootGrid.ColumnDefinitions[0].Width.IsStar);
+
+        var res = HandyControl.Controls.Dialog.Show<HandyControl.Controls.ColorPicker>();
+
+        return;
 #endif
     }
 }

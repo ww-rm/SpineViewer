@@ -44,7 +44,20 @@ namespace SpineViewer.Views.ExporterDialogs
 
         private void ButtonPickColor_Click(object sender, RoutedEventArgs e)
         {
+            _colorPopup.IsOpen = !_colorPopup.IsOpen;
+        }
 
+        private void ColorPicker_Confirmed(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+        {
+            _colorPopup.IsOpen = false;
+            var color = e.Info;
+            var vm = (BaseExporterViewModel)DataContext;
+            vm.BackgroundColor = color;
+        }
+
+        private void ColorPicker_Canceled(object sender, EventArgs e)
+        {
+            _colorPopup.IsOpen = false;
         }
     }
 }

@@ -48,11 +48,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly SFML.Graphics.VertexArray _selectedBackgroundVertices = new(SFML.Graphics.PrimitiveType.Quads, 4); // XXX: 暂时未使用 Dispose 释放
 
         /// <summary>
-        /// 预览画面坐标轴颜色
-        /// </summary>
-        private static readonly SFML.Graphics.Color _axisColor = new(220, 220, 220);
-
-        /// <summary>
         /// 坐标轴顶点缓冲区
         /// </summary>
         private readonly SFML.Graphics.VertexArray _axisVertices = new(SFML.Graphics.PrimitiveType.Lines, 2); // XXX: 暂时未使用 Dispose 释放
@@ -178,9 +173,20 @@ namespace SpineViewer.ViewModels.MainWindow
         public Color BackgroundColor
         {
             get => Color.FromRgb(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B);
-            set => SetProperty(BackgroundColor, value, v => _backgroundColor = new(value.R, value.G, value.B));
+            set
+            {
+                if (!SetProperty(BackgroundColor, value, v => _backgroundColor = new(value.R, value.G, value.B)))
+                    return;
+                var b = (0.299 * value.R + 0.587 * value.G + 0.114 * value.B) / 255.0;
+                _axisColor = b < 0.5 ? SFML.Graphics.Color.White : SFML.Graphics.Color.Black;
+            }
         }
         private SFML.Graphics.Color _backgroundColor = new(105, 105, 105);
+
+        /// <summary>
+        /// 预览画面坐标轴颜色
+        /// </summary>
+        private SFML.Graphics.Color _axisColor = SFML.Graphics.Color.White;
 
         public string BackgroundImagePath
         {

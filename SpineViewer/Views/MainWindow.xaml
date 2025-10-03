@@ -37,6 +37,7 @@
             </Style.Triggers>
         </Style>
         <utils:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
+        <utils:BackgroundToForegroundConverter x:Key="Bg2FgCvter"/>
     </Window.Resources>
 
     <Window.TaskbarItemInfo>
@@ -941,7 +942,22 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
-                                        <TextBox Grid.Column="1" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                        <DockPanel Grid.Column="1">
+                                            <Border DockPanel.Dock="Right">
+                                                <Popup x:Name="_colorPopup" Placement="Right">
+                                                    <hc:ColorPicker Confirmed="ColorPicker_Confirmed" Canceled="ColorPicker_Canceled"/>
+                                                </Popup>
+                                            </Border>
+                                            <Button DockPanel.Dock="Right"
+                                                    Content="..."
+                                                    Foreground="{Binding BackgroundColor, Converter={StaticResource Bg2FgCvter}}"
+                                                    Click="ButtonPickColor_Click">
+                                                <Button.Background>
+                                                    <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                                                </Button.Background>
+                                            </Button>
+                                            <TextBox Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                        </DockPanel>
                                     </Grid>
 
                                     <!-- 背景图案 -->

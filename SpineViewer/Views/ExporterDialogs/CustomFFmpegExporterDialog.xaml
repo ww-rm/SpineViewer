@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:SpineViewer.Views.ExporterDialogs"
+        xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:exporters="clr-namespace:SpineViewer.ViewModels.Exporters"
         d:DataContext="{d:DesignInstance Type=exporters:CustomFFmpegExporterViewModel}"
         mc:Ignorable="d"
@@ -13,6 +14,9 @@
         Height="800"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <utils:BackgroundToForegroundConverter x:Key="Bg2FgCvter"/>
+    </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Bottom">
             <WrapPanel HorizontalAlignment="Center">
@@ -105,12 +109,20 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_BackgroundColor}" ToolTip="#AARRGGBB"/>
                                 <DockPanel Grid.Column="1">
-                                    <Button DockPanel.Dock="Right" Content="..." Click="ButtonPickColor_Click">
+                                    <Border DockPanel.Dock="Right">
+                                        <Popup x:Name="_colorPopup" Placement="Right">
+                                            <hc:ColorPicker Confirmed="ColorPicker_Confirmed" Canceled="ColorPicker_Canceled"/>
+                                        </Popup>
+                                    </Border>
+                                    <Button DockPanel.Dock="Right" 
+                                            Content="..." 
+                                            Foreground="{Binding BackgroundColor, Converter={StaticResource Bg2FgCvter}}"
+                                            Click="ButtonPickColor_Click">
                                         <Button.Background>
                                             <SolidColorBrush Color="{Binding BackgroundColor}"/>
                                         </Button.Background>
                                     </Button>
-                                    <TextBox x:Name="_colorTextBox" Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
+                                    <TextBox Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                 </DockPanel>
                             </Grid>
 

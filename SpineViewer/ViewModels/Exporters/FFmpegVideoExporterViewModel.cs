@@ -25,15 +25,14 @@ namespace SpineViewer.ViewModels.Exporters
             get => _format;
             set
             {
-                if (SetProperty(ref _format, value))
-                {
-                    OnPropertyChanged(nameof(EnableParamLoop));
-                    OnPropertyChanged(nameof(EnableParamQuality));
-                    OnPropertyChanged(nameof(EnableParamLossless));
-                    OnPropertyChanged(nameof(EnableParamApngPred));
-                    OnPropertyChanged(nameof(EnableParamCrf));
-                    OnPropertyChanged(nameof(EnableParamProfile));
-                }
+                if (!SetProperty(ref _format, value))
+                    return;
+                OnPropertyChanged(nameof(EnableParamLoop));
+                OnPropertyChanged(nameof(EnableParamQuality));
+                OnPropertyChanged(nameof(EnableParamLossless));
+                OnPropertyChanged(nameof(EnableParamApngPred));
+                OnPropertyChanged(nameof(EnableParamCrf));
+                OnPropertyChanged(nameof(EnableParamProfile));
             }
         }
         protected FFmpegVideoExporter.VideoFormat _format = FFmpegVideoExporter.VideoFormat.Mp4;
