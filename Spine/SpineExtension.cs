@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Spine.Interfaces;
 using Spine.Interfaces.Attachments;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spine.Interfaces
+namespace Spine
 {
     /// <summary>
     /// 命中测试等级枚举值
@@ -136,7 +137,7 @@ namespace Spine.Interfaces
             if (HitTestLevel == HitTestLevel.None || HitTestLevel == HitTestLevel.Bounds)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
-                return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
+                return x >= bx && x <= bx + bw && y >= by && y <= by + bh;
             }
             else if (HitTestLevel == HitTestLevel.Meshes || HitTestLevel == HitTestLevel.Pixels)
             {
@@ -179,7 +180,7 @@ namespace Spine.Interfaces
                     float c2 = Cross(x2, y2, x0, y0);
 
                     // 判断是否全部同号 (或为 0, 点在边上)
-                    if ((c0 >= 0 && c1 >= 0 && c2 >= 0) || (c0 <= 0 && c1 <= 0 && c2 <= 0))
+                    if (c0 >= 0 && c1 >= 0 && c2 >= 0 || c0 <= 0 && c1 <= 0 && c2 <= 0)
                     {
                         if (HitTestLevel == HitTestLevel.Meshes)
                             return true;
@@ -229,7 +230,7 @@ namespace Spine.Interfaces
             if (HitTestLevel == HitTestLevel.None)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
-                return x >= bx && x <= (bx + bw) && y >= by && y <= (by + bh);
+                return x >= bx && x <= bx + bw && y >= by && y <= by + bh;
             }
 
             bool hit = false;

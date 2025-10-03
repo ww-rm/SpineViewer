@@ -7,6 +7,7 @@ using Spine.Exporters;
 using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections;
@@ -73,6 +74,16 @@ namespace SpineViewer.ViewModels.Exporters
         /// </summary>
         public uint MaxResolution { get => _maxResolution; set => SetProperty(ref _maxResolution, value); }
         protected uint _maxResolution = 2048;
+
+        public RelayCommand Cmd_SelectOutputDir => _cmd_SelectOutputDir ??= new(() =>
+        {
+            if (DialogService.ShowOpenFolderDialog(out var selectedPath))
+            {
+                _outputDir = selectedPath;
+                OnPropertyChanged(nameof(OutputDir));
+            }
+        });
+        protected RelayCommand _cmd_SelectOutputDir;
 
         /// <summary>
         /// 使用提供的包围盒设置自动分辨率

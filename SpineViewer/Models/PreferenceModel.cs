@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Spine.Interfaces;
+using Spine;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
@@ -85,6 +85,9 @@ namespace SpineViewer.Models
 
         [ObservableProperty]
         private AppLanguage _appLanguage;
+
+        [ObservableProperty]
+        private AppSkin _appSkin;
 
         [ObservableProperty]
         private bool _renderSelectedOnly;

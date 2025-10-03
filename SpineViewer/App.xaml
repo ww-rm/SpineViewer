@@ -8,28 +8,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 <ResourceDictionary Source="/Resources/Geometries.xaml"/>
                 <ResourceDictionary Source="/Resources/Strings/zh.xaml"/>
+                <ResourceDictionary Source="/Resources/Skins/Light.xaml"/>
+                <ResourceDictionary Source="/Resources/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <Style x:Key="MyToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ToggleButtonSwitch}">
-                <Setter Property="hc:VisualElement.HighlightBrush" Value="{StaticResource DarkSuccessBrush}"/>
-            </Style>
-
-            <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource ListBoxBaseStyle}">
-                <Setter Property="SelectionMode" Value="Extended"/>
-                <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible"/>
-            </Style>
-
-            <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource ListViewBaseStyle}">
-                <Setter Property="SelectionMode" Value="Extended"/>
-                <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

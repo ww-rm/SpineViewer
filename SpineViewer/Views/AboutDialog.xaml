@@ -8,6 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:AboutDialogViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Abount}"
+        Background="{DynamicResource RegionBrush}"
         Height="300"
         Width="500"
         ShowInTaskbar="False"
@@ -26,25 +27,31 @@
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
             </Style>
         </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
-        <!-- 程序版本 -->
-        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_ProgremVersion}"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="{Binding ProgramVersion}"/>
+        <StackPanel Grid.IsSharedSizeScope="True">
+            <!-- 程序版本 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="{DynamicResource Str_ProgremVersion}"/>
+                <Label Grid.Column="1" Content="{Binding ProgramVersion}"/>
+            </Grid>
 
-        <!-- 项目地址 -->
-        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_ProjectUrl}"/>
-        <Label Grid.Row="1" Grid.Column="1">
-           <Hyperlink NavigateUri="{Binding ProjectUrl}" Command="{Binding Cmd_OpenProjectUrl}">
-                <Run Text="{Binding ProjectUrl, Mode=OneWay}"/>
-           </Hyperlink>
-        </Label>
+            <!-- 项目地址 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="{DynamicResource Str_ProjectUrl}"/>
+                <Label Grid.Column="1">
+                    <Hyperlink NavigateUri="{Binding ProjectUrl}" Command="{Binding Cmd_OpenProjectUrl}">
+                        <Run Text="{Binding ProjectUrl, Mode=OneWay}"/>
+                    </Hyperlink>
+                </Label>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,4 +1,6 @@
-﻿using SpineViewer.ViewModels;
+﻿using SpineViewer.Natives;
+using SpineViewer.Resources;
+using SpineViewer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,15 @@ namespace SpineViewer.Views
         public ProgressDialog()
         {
             InitializeComponent();
+            SourceInitialized += ProgressDialog_SourceInitialized;
             Loaded += ProgressWindow_Loaded;
+        }
+
+        private void ProgressDialog_SourceInitialized(object? sender, EventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
+            Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
         }
 
         private void ProgressWindow_Loaded(object sender, RoutedEventArgs e)

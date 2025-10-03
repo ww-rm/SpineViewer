@@ -197,11 +197,13 @@
 
     <s:String x:Key="Str_VideoFormat">ビデオフォーマット</s:String>
     <s:String x:Key="Str_LoopPlay">ループ再生</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;アニメーションをループ再生するかどうか</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp/Apng]&#x0A;アニメーションをループ再生するかどうか</s:String>
     <s:String x:Key="Str_QualityParameter">品質パラメータ</s:String>
     <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;品質パラメータ、範囲は0-100。値が高いほど品質が良い</s:String>
     <s:String x:Key="Str_LosslessParam">無損失圧縮</s:String>
     <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;無損失圧縮、品質パラメータは無視されます</s:String>
+    <s:String x:Key="Str_ApngPred">予測器方式</s:String>
+    <s:String x:Key="Str_ApngPredTooltip" xml:space="preserve">[Apng]&#x0A;Pred パラメータ。値の範囲は 0～5 で、それぞれ none、sub、up、avg、paeth、mixed の異なるエンコード方式に対応します。&#x0A;エンコード時間とファイルサイズに影響します。</s:String>
     <s:String x:Key="Str_CrfParameter">CRF パラメータ</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF パラメータ、範囲0-63。値が小さいほど品質が高い</s:String>
     <s:String x:Key="Str_ProfileParameter">プロファイルパラメータ</s:String>
@@ -242,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
+    <s:String x:Key="Str_AppSkin">スキン</s:String>
     <s:String x:Key="Str_CloseToTray">閉じるときにトレイに最小化する</s:String>
     <s:String x:Key="Str_AutoRun">自動起動</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">起動時にワークスペースファイルを自動読み込み</s:String>

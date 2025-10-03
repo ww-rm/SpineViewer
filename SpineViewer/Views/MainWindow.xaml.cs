@@ -8,12 +8,14 @@ using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using SpineViewer.ViewModels.Exporters;
 using SpineViewer.ViewModels.MainWindow;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,11 +66,11 @@ public partial class MainWindow : Window
         // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
         _notifyIcon.Text = _vm.Title;
 
+        SourceInitialized += MainWindow_SourceInitialized;
         Loaded += MainWindow_Loaded;
         ContentRendered += MainWindow_ContentRendered;
         Closing += MainWindow_Closing;
         Closed += MainWindow_Closed;
-
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
 
@@ -95,7 +97,7 @@ public partial class MainWindow : Window
         rtbTarget.WordColoringRules.Add(new("[I]", "DimGray", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[W]", "DarkOrange", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[E]", "Red", "Empty"));
-        rtbTarget.WordColoringRules.Add(new("[F]", "DarkRed", "Empty"));
+        rtbTarget.WordColoringRules.Add(new("[F]", "White", "DarkRed"));
 
         LogManager.Configuration.AddTarget(rtbTarget);
         LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
@@ -177,6 +179,13 @@ public partial class MainWindow : Window
 
     #region MainWindow 事件处理
 
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
+        Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+    }
+
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
         var vm = _vm.SFMLRendererViewModel;
@@ -249,6 +258,28 @@ public partial class MainWindow : Window
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
 
+    }
+
+    #endregion
+
+    #region ColorPicker 弹窗事件处理
+
+    private void ButtonPickColor_Click(object sender, RoutedEventArgs e)
+    {
+        _colorPopup.IsOpen = !_colorPopup.IsOpen;
+    }
+
+    private void ColorPicker_Confirmed(object sender, HandyControl.Data.FunctionEventArgs<Color> e)
+    {
+        _colorPopup.IsOpen = false;
+        var color = e.Info;
+        var vm = ((MainWindowViewModel)DataContext).SFMLRendererViewModel;
+        vm.BackgroundColor = color;
+    }
+
+    private void ColorPicker_Canceled(object sender, EventArgs e)
+    {
+        _colorPopup.IsOpen = false;
     }
 
     #endregion
@@ -705,15 +736,17 @@ public partial class MainWindow : Window
     }
 
     #endregion
+    
 
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        var a = _rootGrid.ColumnDefinitions[0].Width;
-        var b = _rootGrid.ColumnDefinitions[1].Width;
-        var c = _rootGrid.ColumnDefinitions[2].Width;
-        Debug.WriteLine(a);
-        Debug.WriteLine(_rootGrid.ColumnDefinitions[0].Width.IsStar);
+        _logger.Debug("Debug");
+        _logger.Info("Info");
+        _logger.Warn("Warn");
+        _logger.Error("Error");
+        _logger.Fatal("Fatal");
+        return;
 #endif
     }
 }

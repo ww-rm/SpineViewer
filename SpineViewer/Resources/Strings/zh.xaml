@@ -197,11 +197,13 @@
 
     <s:String x:Key="Str_VideoFormat">视频格式</s:String>
     <s:String x:Key="Str_LoopPlay">循环播放</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;动图是否循环播放</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp/Apng]&#x0A;动图是否循环播放</s:String>
     <s:String x:Key="Str_QualityParameter">质量参数</s:String>
     <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;质量参数，取值范围 0-100，越高质量越好</s:String>
     <s:String x:Key="Str_LosslessParam">无损压缩</s:String>
     <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;无损压缩，会忽略质量参数</s:String>
+    <s:String x:Key="Str_ApngPred">预测器方法</s:String>
+    <s:String x:Key="Str_ApngPredTooltip" xml:space="preserve">[Apng]&#x0A;Pred 参数，取值范围 0-5，分别对应 none、sub、up、avg、paeth、mixed 几种不同的编码策略，&#x0A;影响编码时间和文件大小</s:String>
     <s:String x:Key="Str_CrfParameter">CRF 参数</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF 参数，取值范围 0-63，越小质量越高</s:String>
     <s:String x:Key="Str_ProfileParameter">Profile 参数</s:String>
@@ -242,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
+    <s:String x:Key="Str_AppSkin">皮肤</s:String>
     <s:String x:Key="Str_CloseToTray">关闭时最小化至托盘图标</s:String>
     <s:String x:Key="Str_AutoRun">开机自启</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">自启动加载工作区文件</s:String>

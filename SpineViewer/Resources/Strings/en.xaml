@@ -197,11 +197,13 @@
 
     <s:String x:Key="Str_VideoFormat">Video Format</s:String>
     <s:String x:Key="Str_LoopPlay">Loop Play</s:String>
-    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp]&#x0A;Whether the animation loops</s:String>
+    <s:String x:Key="Str_LoopPlayTooltip" xml:space="preserve">[Gif/Webp/Apng]&#x0A;Whether the animation loops</s:String>
     <s:String x:Key="Str_QualityParameter">Quality Parameter</s:String>
     <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;Quality parameter, range 0-100, higher value means better quality</s:String>
     <s:String x:Key="Str_LosslessParam">Lossless Compression</s:String>
     <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;Lossless compression, quality parameter will be ignored</s:String>
+    <s:String x:Key="Str_ApngPred">Predictor Method</s:String>
+    <s:String x:Key="Str_ApngPredTooltip" xml:space="preserve">[Apng]&#x0A;Pred parameter, value range 0-5, corresponding to different encoding strategies: none, sub, up, avg, paeth, and mixed.&#x0A;It affects encoding time and file size.</s:String>
     <s:String x:Key="Str_CrfParameter">CRF Parameter</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF parameter, range 0-63, lower value means higher quality</s:String>
     <s:String x:Key="Str_ProfileParameter">Profile Parameter</s:String>
@@ -242,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
+    <s:String x:Key="Str_AppSkin">Skin</s:String>
     <s:String x:Key="Str_CloseToTray">Minimize to tray when closing</s:String>
     <s:String x:Key="Str_AutoRun">Auto Start</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">Auto-load Workspace File on Startup</s:String>

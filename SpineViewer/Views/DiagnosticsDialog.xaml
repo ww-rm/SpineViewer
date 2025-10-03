@@ -8,6 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:DiagnosticsDialogViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Diagnostics}"
+        Background="{DynamicResource RegionBrush}"
         Height="450" 
         Width="800"    
         ShowInTaskbar="False"
@@ -21,7 +22,7 @@
             <Button Width="120" Content="{DynamicResource Str_CopyDiagnosticsInfo}" Command="{Binding Cmd_CopyToClipboard}"/>
         </Border>
 
-        <Border Grid.IsSharedSizeScope="True">
+        <Border>
             <Border.Resources>
                 <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -31,8 +32,8 @@
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 </Style>
             </Border.Resources>
-            <ScrollViewer  VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="30 10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Grid.IsSharedSizeScope="True" Margin="30 10">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
@@ -134,7 +135,6 @@
                         <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding HandyControlVersion, Mode=OneWay}"/>
                     </Grid>
                 </StackPanel>
-
             </ScrollViewer>
         </Border>
     </DockPanel>

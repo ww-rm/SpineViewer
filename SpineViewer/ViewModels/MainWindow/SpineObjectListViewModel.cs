@@ -218,8 +218,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
                         _logger.Trace(ex.ToString());
+                        _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
                     }
                 }
             }
@@ -279,8 +279,8 @@ namespace SpineViewer.ViewModels.MainWindow
                         catch (Exception ex)
                         {
                             error++;
-                            _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
                             _logger.Trace(ex.ToString());
+                            _logger.Error("Failed to reload spine {0}, {1}", sp.SkelPath, ex.Message);
                         }
                     }
                 }

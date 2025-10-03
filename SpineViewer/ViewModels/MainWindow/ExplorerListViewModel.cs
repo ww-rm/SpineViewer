@@ -20,7 +20,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
-using Spine.Interfaces;
 
 namespace SpineViewer.ViewModels.MainWindow
 {
