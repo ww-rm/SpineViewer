@@ -41,17 +41,16 @@
                 <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
                     <Setter Property="HorizontalContentAlignment" Value="Right"/>
                 </Style>
-                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButton}">
+                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButtonBaseStyle}">
                     <Setter Property="HorizontalAlignment" Value="Right"/>
                 </Style>
-                <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
+                <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource MyGroupBoxBaseStyle}">
                     <Setter Property="Margin" Value="0 5 0 10"/>
                 </Style>
             </Border.Resources>
-            <ScrollViewer  VerticalScrollBarVisibility="Auto">
-                <StackPanel Grid.IsSharedSizeScope="True" Margin="0 0 0 50">
+
+            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                <StackPanel Grid.IsSharedSizeScope="True">
                     <GroupBox Header="{DynamicResource Str_TextureLoadPreference}">
                         <StackPanel>
                             <Grid>

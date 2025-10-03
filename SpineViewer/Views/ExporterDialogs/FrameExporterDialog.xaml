@@ -15,9 +15,6 @@
         Height="480"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
-    <Window.Resources>
-        <utils:BackgroundToForegroundConverter x:Key="Bg2FgCvter"/>
-    </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Bottom">
             <WrapPanel HorizontalAlignment="Center">
@@ -44,17 +41,15 @@
                 <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
                     <Setter Property="HorizontalContentAlignment" Value="Right"/>
                 </Style>
-                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButton}">
+                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButtonBaseStyle}">
                     <Setter Property="HorizontalAlignment" Value="Right"/>
                 </Style>
-                <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
+                <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource MyGroupBoxBaseStyle}">
                     <Setter Property="Margin" Value="0 5 0 10"/>
                 </Style>
             </Border.Resources>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
                 <StackPanel Grid.IsSharedSizeScope="True">
                     <GroupBox Header="{DynamicResource Str_ExportBaseArgs}">
                         <StackPanel>

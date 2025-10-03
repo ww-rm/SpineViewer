@@ -6,7 +6,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
-        xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         x:Name="_mainWindow"
@@ -19,27 +18,6 @@
         PreviewKeyDown="MainWindow_PreviewKeyDown"
         LocationChanged="MainWindow_LocationChanged"
         SizeChanged="MainWindow_SizeChanged">
-
-    <Window.Resources>
-        <Style TargetType="{x:Type GridSplitter}">
-            <Setter Property="Background" Value="{DynamicResource SecondaryBorderBrush}"/>
-            <Setter Property="ShowsPreview" Value="False"/>
-            <Style.Triggers>
-                <Trigger Property="ResizeDirection" Value="Columns">
-                    <Setter Property="Width" Value="3"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="VerticalAlignment" Value="Stretch"/>
-                </Trigger>
-                <Trigger Property="ResizeDirection" Value="Rows">
-                    <Setter Property="Height" Value="3"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <utils:StringFormatMultiValueConverter x:Key="StrFmtCvter"/>
-        <utils:BackgroundToForegroundConverter x:Key="Bg2FgCvter"/>
-    </Window.Resources>
 
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
@@ -139,10 +117,6 @@
                                                   MouseLeftButtonUp="SpinesListView_MouseLeftButtonUp" 
                                                   DragEnter="SpinesListView_DragEnter" 
                                                   Drop="SpinesListView_Drop">
-                                            <ListView.ItemContainerStyle>
-                                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemBaseStyle.Small}"/>
-                                            </ListView.ItemContainerStyle>
-
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
                                                     <i:InvokeCommandAction Command="{Binding Cmd_ListViewSelectionChanged}"
@@ -254,207 +228,205 @@
                                             <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
                                                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                             </Style>
-                                            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButton}">
+                                            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButtonBaseStyle}">
                                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                                             </Style>
                                         </TabControl.Resources>
 
                                         <!-- 基本属性页 -->
                                         <TabItem Header="{DynamicResource Str_BaseInfo}">
-                                            <StackPanel Grid.IsSharedSizeScope="True">
-                                                <!-- 名称 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_Name}"/>
-                                                    <TextBox Grid.Column="1" 
+                                            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                                                <StackPanel Grid.IsSharedSizeScope="True">
+                                                    <!-- 名称 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_Name}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding Name, Mode=OneWay}" 
                                                              IsReadOnly="True"
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- 运行时版本 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_Version}"/>
-                                                    <TextBox Grid.Column="1" 
+                                                    <!-- 运行时版本 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_Version}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding Version, Mode=OneWay}" 
                                                              IsReadOnly="True" 
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- 文件版本 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_FileVersion}"/>
-                                                    <TextBox Grid.Column="1" 
+                                                    <!-- 文件版本 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_FileVersion}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding FileVersion, Mode=OneWay}" 
                                                              IsReadOnly="True"
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- 资源目录 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_AssetsDir}"/>
-                                                    <TextBox Grid.Column="1" 
+                                                    <!-- 资源目录 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_AssetsDir}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding AssetsDir, Mode=OneWay}" 
                                                              IsReadOnly="True"
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- skel 文件路径 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_SkelPath}"/>
-                                                    <TextBox Grid.Column="1" 
+                                                    <!-- skel 文件路径 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_SkelPath}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding SkelPath, Mode=OneWay}" 
                                                              IsReadOnly="True"
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- atlas 文件路径 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_AtlasPath}"/>
-                                                    <TextBox Grid.Column="1" 
+                                                    <!-- atlas 文件路径 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_AtlasPath}"/>
+                                                        <TextBox Grid.Column="1" 
                                                              Text="{Binding AtlasPath, Mode=OneWay}" 
                                                              IsReadOnly="True"
                                                              ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-                                                </Grid>
-                                            </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </ScrollViewer>
                                         </TabItem>
 
                                         <!-- 渲染属性页 -->
                                         <TabItem Header="{DynamicResource Str_Render}">
-                                            <StackPanel Grid.IsSharedSizeScope="True">
-                                                <!-- 显示 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_IsShown}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding IsShown}"/>
-                                                </Grid>
+                                            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                                                <StackPanel Grid.IsSharedSizeScope="True">
+                                                    <!-- 显示 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_IsShown}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding IsShown}"/>
+                                                    </Grid>
 
-                                                <!-- 预乘通道 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_UsePma}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding UsePma}"/>
-                                                </Grid>
+                                                    <!-- 预乘通道 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_UsePma}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding UsePma}"/>
+                                                    </Grid>
 
-                                                <!-- 物理 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_Physics}"/>
-                                                    <ComboBox Grid.Column="1" 
+                                                    <!-- 物理 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_Physics}"/>
+                                                        <ComboBox Grid.Column="1" 
                                                               SelectedValue="{Binding Physics}" 
                                                               ItemsSource="{x:Static vm:SpineObjectTabViewModel.PhysicsOptions}"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- 时间因子 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
-                                                    <TextBox Grid.Column="1" Text="{Binding TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
-                                                </Grid>
-                                            </StackPanel>
+                                                    <!-- 时间因子 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
+                                                        <TextBox Grid.Column="1" Text="{Binding TimeScale}" ToolTip="{DynamicResource Str_TimeScaleTootltip}"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </ScrollViewer>
                                         </TabItem>
 
                                         <!-- 变换属性页 -->
                                         <TabItem Header="{DynamicResource Str_Transform}">
-                                            <StackPanel Grid.IsSharedSizeScope="True">
-                                                <!-- 缩放 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_Scale}"/>
-                                                    <TextBox Grid.Column="1" Text="{Binding Scale}"/>
-                                                </Grid>
+                                            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                                                <StackPanel Grid.IsSharedSizeScope="True">
+                                                    <!-- 缩放 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_Scale}"/>
+                                                        <TextBox Grid.Column="1" Text="{Binding Scale}"/>
+                                                    </Grid>
 
-                                                <!-- 水平翻转 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_FlipX}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding FlipX}"/>
-                                                </Grid>
+                                                    <!-- 水平翻转 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_FlipX}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding FlipX}"/>
+                                                    </Grid>
 
-                                                <!-- 垂直翻转 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_FlipY}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding FlipY}"/>
-                                                </Grid>
+                                                    <!-- 垂直翻转 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_FlipY}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding FlipY}"/>
+                                                    </Grid>
 
-                                                <!-- 横坐标 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_X}"/>
-                                                    <TextBox Grid.Column="1" Text="{Binding X}"/>
-                                                </Grid>
+                                                    <!-- 横坐标 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_X}"/>
+                                                        <TextBox Grid.Column="1" Text="{Binding X}"/>
+                                                    </Grid>
 
-                                                <!-- 纵坐标 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_Y}"/>
-                                                    <TextBox Grid.Column="1" Text="{Binding Y}"/>
-                                                </Grid>
-                                            </StackPanel>
+                                                    <!-- 纵坐标 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_Y}"/>
+                                                        <TextBox Grid.Column="1" Text="{Binding Y}"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </ScrollViewer>
                                         </TabItem>
 
                                         <!-- 皮肤属性页 -->
                                         <TabItem Header="{DynamicResource Str_Skin}">
                                             <ListBox ItemsSource="{Binding Skins}">
-                                                <ListBox.ItemContainerStyle>
-                                                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource ListBoxItemBaseStyle}">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                        <Setter Property="Padding" Value="0"/>
-                                                        <Setter Property="Margin" Value="0"/>
-                                                    </Style>
-                                                </ListBox.ItemContainerStyle>
-
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="{DynamicResource Str_EnableSkins}" 
@@ -486,14 +458,6 @@
                                         <!-- 插槽属性页 -->
                                         <TabItem Header="{DynamicResource Str_Slot}">
                                             <ListBox ItemsSource="{Binding Slots}" Grid.IsSharedSizeScope="True">
-                                                <ListBox.ItemContainerStyle>
-                                                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource ListBoxItemBaseStyle}">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                        <Setter Property="Padding" Value="0"/>
-                                                        <Setter Property="Margin" Value="0"/>
-                                                    </Style>
-                                                </ListBox.ItemContainerStyle>
-
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="{DynamicResource Str_EnableSlots}" 
@@ -527,14 +491,6 @@
                                         <!-- 动画属性页 -->
                                         <TabItem Header="{DynamicResource Str_Animation}">
                                             <ListBox ItemsSource="{Binding AnimationTracks}" Grid.IsSharedSizeScope="True">
-                                                <ListBox.ItemContainerStyle>
-                                                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource ListBoxItemBaseStyle}">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                        <Setter Property="Padding" Value="0"/>
-                                                        <Setter Property="Margin" Value="0"/>
-                                                    </Style>
-                                                </ListBox.ItemContainerStyle>
-
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="{DynamicResource Str_AppendTrack}" 
@@ -594,80 +550,81 @@
 
                                         <!-- 调试属性页 -->
                                         <TabItem Header="{DynamicResource Str_Debug}">
-                                            <StackPanel Grid.IsSharedSizeScope="True">
-                                                <!-- 调试纹理 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugTexture}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
-                                                </Grid>
+                                            <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                                                <StackPanel Grid.IsSharedSizeScope="True">
+                                                    <!-- 调试纹理 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugTexture}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugTexture}"/>
+                                                    </Grid>
 
-                                                <!-- 调试包围盒 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugBounds}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
-                                                </Grid>
+                                                    <!-- 调试包围盒 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugBounds}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBounds}"/>
+                                                    </Grid>
 
-                                                <!-- 调试骨骼 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugBones}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBones}"/>
-                                                </Grid>
+                                                    <!-- 调试骨骼 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugBones}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBones}"/>
+                                                    </Grid>
 
-                                                <!-- 调试区域 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugRegions}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
-                                                </Grid>
+                                                    <!-- 调试区域 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugRegions}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugRegions}"/>
+                                                    </Grid>
 
-                                                <!-- 调试网格外壳 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugMeshHulls}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
+                                                    <!-- 调试网格外壳 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugMeshHulls}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshHulls}"/>
 
-                                                </Grid>
+                                                    </Grid>
 
-                                                <!-- 调试网格 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugMeshes}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
-                                                </Grid>
+                                                    <!-- 调试网格 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugMeshes}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugMeshes}"/>
+                                                    </Grid>
 
-                                                <!-- 调试裁剪 -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Content="{DynamicResource Str_DebugClippings}"/>
-                                                    <ToggleButton Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
-                                                </Grid>
+                                                    <!-- 调试裁剪 -->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Content="{DynamicResource Str_DebugClippings}"/>
+                                                        <ToggleButton Grid.Column="1" IsChecked="{Binding DebugClippings}"/>
+                                                    </Grid>
 
-                                                <!-- 调试碰撞盒 -->
-                                                <!--<Grid>
+                                                    <!-- 调试碰撞盒 -->
+                                                    <!--<Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                                         <ColumnDefinition Width="*"/>
@@ -676,8 +633,8 @@
                                                     <ToggleButton Grid.Column="1" IsChecked="{Binding DebugBoundingBoxes}"/>
                                                 </Grid>-->
 
-                                                <!-- 调试路径 -->
-                                                <!--<Grid>
+                                                    <!-- 调试路径 -->
+                                                    <!--<Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                                         <ColumnDefinition Width="*"/>
@@ -686,8 +643,8 @@
                                                     <ToggleButton Grid.Column="1" IsChecked="{Binding DebugPaths}"/>
                                                 </Grid>-->
 
-                                                <!-- 调试点 -->
-                                                <!--<Grid>
+                                                    <!-- 调试点 -->
+                                                    <!--<Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                                         <ColumnDefinition Width="*"/>
@@ -695,7 +652,8 @@
                                                     <Label Content="{DynamicResource Str_DebugPoints}"/>
                                                     <ToggleButton Grid.Column="1" IsChecked="{Binding DebugPoints}"/>
                                                 </Grid>-->
-                                            </StackPanel>
+                                                </StackPanel>
+                                            </ScrollViewer>
                                         </TabItem>
                                     </TabControl>
                                 </Grid>
@@ -825,11 +783,12 @@
                                     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
                                         <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                     </Style>
-                                    <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButton}">
+                                    <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButtonBaseStyle}">
                                         <Setter Property="HorizontalAlignment" Value="Right"/>
                                     </Style>
                                 </TabItem.Resources>
-                                <StackPanel Grid.IsSharedSizeScope="True">
+                                <ScrollViewer Style="{StaticResource MyVerticalScrollViewerBaseStyle}">
+                                    <StackPanel Grid.IsSharedSizeScope="True">
                                     <!-- 水平分辨率 -->
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -991,6 +950,7 @@
                                         <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static vm:SFMLRendererViewModel.StretchOptions}"/>
                                     </Grid>
                                 </StackPanel>
+                                </ScrollViewer>
                             </TabItem>
                         </TabControl>
                     </Border>
@@ -1050,12 +1010,7 @@
 
                             <!-- 日志框容器 -->
                             <Border Grid.Row="2" Name="_loggerBoxContainer">
-                                <RichTextBox x:Name="_loggerRichTextBox" 
-                                             Grid.Row="2"
-                                             IsReadOnly="True"
-                                             FontFamily="Consolas" 
-                                             Block.LineHeight="3" 
-                                             VerticalScrollBarVisibility="Visible"/>
+                                <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
                             </Border>
                         </Grid>
                     </Border>
