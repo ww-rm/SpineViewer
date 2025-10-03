@@ -96,7 +96,7 @@ public partial class MainWindow : Window
         rtbTarget.WordColoringRules.Add(new("[I]", "DimGray", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[W]", "DarkOrange", "Empty"));
         rtbTarget.WordColoringRules.Add(new("[E]", "Red", "Empty"));
-        rtbTarget.WordColoringRules.Add(new("[F]", "DarkRed", "Empty"));
+        rtbTarget.WordColoringRules.Add(new("[F]", "White", "DarkRed"));
 
         LogManager.Configuration.AddTarget(rtbTarget);
         LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
@@ -732,8 +732,11 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-
-        var res = HandyControl.Controls.Dialog.Show<HandyControl.Controls.ColorPicker>();
+        _logger.Debug("Debug");
+        _logger.Info("Info");
+        _logger.Warn("Warn");
+        _logger.Error("Error");
+        _logger.Fatal("Fatal");
 
         return;
 #endif
