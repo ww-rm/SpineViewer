@@ -9,6 +9,7 @@
         d:DataContext="{d:DesignInstance Type=vm:ProgressDialogViewModel}"
         mc:Ignorable="d"
         Title="{Binding Title}"
+        Background="{StaticResource RegionBrush}"
         Width="550"
         Height="250"
         ResizeMode="NoResize" 

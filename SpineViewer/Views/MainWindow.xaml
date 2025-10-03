@@ -954,14 +954,15 @@
                                                     <hc:ColorPicker Confirmed="ColorPicker_Confirmed" Canceled="ColorPicker_Canceled"/>
                                                 </Popup>
                                             </Border>
-                                            <Button DockPanel.Dock="Right"
-                                                    Content="..."
+                                            <Border DockPanel.Dock="Right" Background="White" CornerRadius="{DynamicResource DefaultCornerRadius}">
+                                                <Button Content="..."
                                                     Foreground="{Binding BackgroundColor, Converter={StaticResource Bg2FgCvter}}"
                                                     Click="ButtonPickColor_Click">
-                                                <Button.Background>
-                                                    <SolidColorBrush Color="{Binding BackgroundColor}"/>
-                                                </Button.Background>
-                                            </Button>
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                                                    </Button.Background>
+                                                </Button>
+                                            </Border>
                                             <TextBox Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                         </DockPanel>
                                     </Grid>

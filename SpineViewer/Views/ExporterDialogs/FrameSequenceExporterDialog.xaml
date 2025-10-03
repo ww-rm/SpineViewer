@@ -9,7 +9,8 @@
         xmlns:vmexp="clr-namespace:SpineViewer.ViewModels.Exporters"
         d:DataContext="{d:DesignInstance Type=vmexp:FrameSequenceExporterViewModel}"
         mc:Ignorable="d"
-        Title="{DynamicResource Str_FrameSequenceExporterTitle}" 
+        Title="{DynamicResource Str_FrameSequenceExporterTitle}"
+        Background="{StaticResource RegionBrush}"
         Width="450"
         Height="550"
         ShowInTaskbar="False"
@@ -47,7 +48,6 @@
                     <Setter Property="HorizontalAlignment" Value="Right"/>
                 </Style>
                 <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
-                    <Setter Property="BorderBrush" Value="LightGray"/>
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
                     <Setter Property="Margin" Value="0 5 0 10"/>

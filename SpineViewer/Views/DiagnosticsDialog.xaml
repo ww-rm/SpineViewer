@@ -8,6 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:DiagnosticsDialogViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Diagnostics}"
+        Background="{StaticResource RegionBrush}"
         Height="450" 
         Width="800"    
         ShowInTaskbar="False"

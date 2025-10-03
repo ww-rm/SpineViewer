@@ -10,6 +10,7 @@
         d:DataContext="{d:DesignInstance Type=exporters:CustomFFmpegExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_CustomFFmpegExporterTitle}"
+        Background="{StaticResource RegionBrush}"
         Width="450"
         Height="800"
         ShowInTaskbar="False"
@@ -47,7 +48,6 @@
                     <Setter Property="HorizontalAlignment" Value="Right"/>
                 </Style>
                 <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxTab}">
-                    <Setter Property="BorderBrush" Value="LightGray"/>
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="hc:TitleElement.Background" Value="Transparent"/>
                     <Setter Property="Margin" Value="0 5 0 10"/>
