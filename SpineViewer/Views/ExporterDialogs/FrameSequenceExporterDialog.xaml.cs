@@ -1,4 +1,6 @@
-﻿using SpineViewer.Services;
+﻿using SpineViewer.Natives;
+using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.ViewModels.Exporters;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -24,6 +27,14 @@ namespace SpineViewer.Views.ExporterDialogs
         public FrameSequenceExporterDialog()
         {
             InitializeComponent();
+            SourceInitialized += FrameSequenceExporterDialog_SourceInitialized;
+        }
+
+        private void FrameSequenceExporterDialog_SourceInitialized(object? sender, EventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
+            Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
         }
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)

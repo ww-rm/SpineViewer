@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,11 +66,11 @@ public partial class MainWindow : Window
         // XXX: hc 的 NotifyIcon 的 Text 似乎没法双向绑定
         _notifyIcon.Text = _vm.Title;
 
+        SourceInitialized += MainWindow_SourceInitialized;
         Loaded += MainWindow_Loaded;
         ContentRendered += MainWindow_ContentRendered;
         Closing += MainWindow_Closing;
         Closed += MainWindow_Closed;
-
         _vm.SpineObjectListViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
         _vm.SFMLRendererViewModel.RequestSelectionChanging += SpinesListView_RequestSelectionChanging;
 
@@ -177,6 +178,13 @@ public partial class MainWindow : Window
     }
 
     #region MainWindow 事件处理
+
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
+        Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+    }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
@@ -728,6 +736,7 @@ public partial class MainWindow : Window
     }
 
     #endregion
+    
 
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
@@ -737,7 +746,6 @@ public partial class MainWindow : Window
         _logger.Warn("Warn");
         _logger.Error("Error");
         _logger.Fatal("Fatal");
-
         return;
 #endif
     }

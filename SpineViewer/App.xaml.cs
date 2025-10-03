@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using NLog;
 using SpineViewer.Natives;
+using SpineViewer.Resources;
 using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
@@ -12,6 +13,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace SpineViewer
 {
@@ -231,8 +233,8 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Failed to query autorun registry key, {0}", ex.Message);
                     _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to query autorun registry key, {0}", ex.Message);
                     return false;
                 }
             }
@@ -259,8 +261,8 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Failed to set autorun registry key, {0}", ex.Message);
                     _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to set autorun registry key, {0}", ex.Message);
                 }
             }
         }
@@ -343,8 +345,8 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Failed to switch language to {0}, {1}", value, ex.Message);
                     _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to switch language to {0}, {1}", value, ex.Message);
                 }
             }
         }
@@ -360,17 +362,19 @@ namespace SpineViewer
                 {
                     Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
                     Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
+                    var hwnd = new WindowInteropHelper(Current.MainWindow).Handle;
+                    Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
+                    Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
                     _skin = value;
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Failed to switch skin to {0}, {1}", value, ex.Message);
                     _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to switch skin to {0}, {1}", value, ex.Message);
                 }
             }
         }
         private AppSkin _skin = AppSkin.Light;
-
     }
 
     public enum AppLanguage

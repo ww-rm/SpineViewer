@@ -66,8 +66,8 @@ namespace SpineViewer.Utils
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Failed to read json file {0}, {1}", path, ex.Message);
                     _logger.Trace(ex.ToString());
+                    _logger.Error("Failed to read json file {0}, {1}", path, ex.Message);
                     MessagePopupService.Error($"Failed to read json file {path}, {ex.ToString()}");
                 }
             }
@@ -88,8 +88,8 @@ namespace SpineViewer.Utils
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to save json file {0}, {1}", path, ex.Message);
                 _logger.Trace(ex.ToString());
+                _logger.Error("Failed to save json file {0}, {1}", path, ex.Message);
                 MessagePopupService.Error($"Failed to save json file {path}, {ex.ToString()}");
                 return false;
             }
