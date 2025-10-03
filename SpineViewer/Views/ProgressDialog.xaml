@@ -22,7 +22,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ProgressText}" Padding="20" LineHeight="25" TextWrapping="Wrap"/>
+        <TextBlock Text="{Binding ProgressText}"  
+                   Foreground="{DynamicResource PrimaryTextBrush}"
+                   Padding="20" 
+                   LineHeight="25" 
+                   TextWrapping="Wrap"/>
         <ProgressBar Grid.Row="1" 
                      Value="{Binding Done}" 
                      Maximum="{Binding Total}" 
