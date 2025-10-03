@@ -244,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
+    <s:String x:Key="Str_AppSkin">Skin</s:String>
     <s:String x:Key="Str_CloseToTray">Minimize to tray when closing</s:String>
     <s:String x:Key="Str_AutoRun">Auto Start</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">Auto-load Workspace File on Startup</s:String>

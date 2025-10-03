@@ -87,6 +87,9 @@ namespace SpineViewer.Models
         private AppLanguage _appLanguage;
 
         [ObservableProperty]
+        private AppSkin _appSkin;
+
+        [ObservableProperty]
         private bool _renderSelectedOnly;
 
         [ObservableProperty]

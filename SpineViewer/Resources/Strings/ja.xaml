@@ -244,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
+    <s:String x:Key="Str_AppSkin">スキン</s:String>
     <s:String x:Key="Str_CloseToTray">閉じるときにトレイに最小化する</s:String>
     <s:String x:Key="Str_AutoRun">自動起動</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">起動時にワークスペースファイルを自動読み込み</s:String>

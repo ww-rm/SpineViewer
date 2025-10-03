@@ -208,7 +208,18 @@
                                           SelectedItem="{Binding AppLanguage}"
                                           ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
                             </Grid>
-                            
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_Skin}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding AppSkin}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
+                            </Grid>
+
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>

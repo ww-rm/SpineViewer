@@ -109,6 +109,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugClippings = DebugClippings,
 
                     AppLanguage = AppLanguage,
+                    AppSkin = AppSkin,
                     RenderSelectedOnly = RenderSelectedOnly,
                     HitTestLevel = HitTestLevel,
                     LogHitSlots = LogHitSlots,
@@ -140,6 +141,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugClippings = value.DebugClippings;
 
                 AppLanguage = value.AppLanguage;
+                AppSkin = value.AppSkin;
                 RenderSelectedOnly = value.RenderSelectedOnly;
                 HitTestLevel = value.HitTestLevel;
                 LogHitSlots = value.LogHitSlots;
@@ -253,12 +255,20 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
 
+        public static ImmutableArray<AppSkin> AppSkinOptions { get; } = Enum.GetValues<AppSkin>().ToImmutableArray();
+
         public static ImmutableArray<HitTestLevel> HitTestLevelOptions { get; } = Enum.GetValues<HitTestLevel>().ToImmutableArray();
 
         public AppLanguage AppLanguage
         {
             get => ((App)App.Current).Language;
             set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+        }
+
+        public AppSkin AppSkin
+        {
+            get => ((App)App.Current).Skin;
+            set => SetProperty(((App)App.Current).Skin, value, v => ((App)App.Current).Skin = v);
         }
 
         public bool RenderSelectedOnly

@@ -349,6 +349,28 @@ namespace SpineViewer
             }
         }
         private AppLanguage _language = AppLanguage.ZH;
+
+        public AppSkin Skin
+        {
+            get => _skin;
+            set
+            {
+                var uri = $"Resources/Skins/{value.ToString().ToLower()}.xaml";
+                try
+                {
+                    Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
+                    Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
+                    _skin = value;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Failed to switch skin to {0}, {1}", value, ex.Message);
+                    _logger.Trace(ex.ToString());
+                }
+            }
+        }
+        private AppSkin _skin = AppSkin.Light;
+
     }
 
     public enum AppLanguage
@@ -356,5 +378,12 @@ namespace SpineViewer
         ZH,
         EN,
         JA
+    }
+
+    public enum AppSkin
+    {
+        Light,
+        Dark,
+        Violet,
     }
 }

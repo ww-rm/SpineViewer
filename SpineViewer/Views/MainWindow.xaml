@@ -11,6 +11,7 @@
         mc:Ignorable="d"
         x:Name="_mainWindow"
         Title="{Binding Title}"
+        Background="{DynamicResource RegionBrush}"
         Width="1500"
         Height="800"
         WindowStartupLocation="CenterScreen"

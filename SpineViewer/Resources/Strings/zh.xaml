@@ -244,6 +244,7 @@
 
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
+    <s:String x:Key="Str_AppSkin">皮肤</s:String>
     <s:String x:Key="Str_CloseToTray">关闭时最小化至托盘图标</s:String>
     <s:String x:Key="Str_AutoRun">开机自启</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">自启动加载工作区文件</s:String>

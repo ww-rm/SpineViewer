@@ -12,7 +12,102 @@ namespace SpineViewer.Resources
     /// </summary>
     public static class AppResource
     {
-        public static T Get<T>(string key) => (T)App.Current.FindResource(key);
+        private static T Get<T>(string key) => (T)App.Current.FindResource(key);
+
+        #region Colors
+
+        public static Color Color_LightPrimary => Get<Color>("LightPrimaryColor");
+        public static Color Color_Primary => Get<Color>("PrimaryColor");
+        public static Color Color_DarkPrimary => Get<Color>("DarkPrimaryColor");
+
+        public static Color Color_LightDanger => Get<Color>("LightDangerColor");
+        public static Color Color_Danger => Get<Color>("DangerColor");
+        public static Color Color_DarkDanger => Get<Color>("DarkDangerColor");
+
+        public static Color Color_LightWarning => Get<Color>("LightWarningColor");
+        public static Color Color_Warning => Get<Color>("WarningColor");
+        public static Color Color_DarkWarning => Get<Color>("DarkWarningColor");
+
+        public static Color Color_LightInfo => Get<Color>("LightInfoColor");
+        public static Color Color_Info => Get<Color>("InfoColor");
+        public static Color Color_DarkInfo => Get<Color>("DarkInfoColor");
+
+        public static Color Color_LightSuccess => Get<Color>("LightSuccessColor");
+        public static Color Color_Success => Get<Color>("SuccessColor");
+        public static Color Color_DarkSuccess => Get<Color>("DarkSuccessColor");
+
+        public static Color Color_PrimaryText => Get<Color>("PrimaryTextColor");
+        public static Color Color_SecondaryText => Get<Color>("SecondaryTextColor");
+        public static Color Color_ThirdlyText => Get<Color>("ThirdlyTextColor");
+        public static Color Color_ReverseText => Get<Color>("ReverseTextColor");
+        public static Color Color_TextIcon => Get<Color>("TextIconColor");
+
+        public static Color Color_Border => Get<Color>("BorderColor");
+        public static Color Color_SecondaryBorder => Get<Color>("SecondaryBorderColor");
+        public static Color Color_Background => Get<Color>("BackgroundColor");
+        public static Color Color_Region => Get<Color>("RegionColor");
+        public static Color Color_SecondaryRegion => Get<Color>("SecondaryRegionColor");
+        public static Color Color_ThirdlyRegion => Get<Color>("ThirdlyRegionColor");
+        public static Color Color_Title => Get<Color>("TitleColor");
+        public static Color Color_SecondaryTitle => Get<Color>("SecondaryTitleColor");
+
+        public static Color Color_Default => Get<Color>("DefaultColor");
+        public static Color Color_DarkDefault => Get<Color>("DarkDefaultColor");
+
+        public static Color Color_Accent => Get<Color>("AccentColor");
+        public static Color Color_DarkAccent => Get<Color>("DarkAccentColor");
+
+        public static Color Color_DarkMask => Get<Color>("DarkMaskColor");
+        public static Color Color_DarkOpacity => Get<Color>("DarkOpacityColor");
+
+        #endregion
+
+        #region Brushes
+
+        public static SolidColorBrush Brush_LightPrimary => Get<SolidColorBrush>("LightPrimaryBrush");
+        public static LinearGradientBrush Brush_Primary => Get<LinearGradientBrush>("PrimaryBrush");
+        public static SolidColorBrush Brush_DarkPrimary => Get<SolidColorBrush>("DarkPrimaryBrush");
+
+        public static SolidColorBrush Brush_PrimaryText => Get<SolidColorBrush>("PrimaryTextBrush");
+        public static SolidColorBrush Brush_SecondaryText => Get<SolidColorBrush>("SecondaryTextBrush");
+        public static SolidColorBrush Brush_ThirdlyText => Get<SolidColorBrush>("ThirdlyTextBrush");
+        public static SolidColorBrush Brush_ReverseText => Get<SolidColorBrush>("ReverseTextBrush");
+        public static SolidColorBrush Brush_TextIcon => Get<SolidColorBrush>("TextIconBrush");
+
+        public static SolidColorBrush Brush_Border => Get<SolidColorBrush>("BorderBrush");
+        public static SolidColorBrush Brush_SecondaryBorder => Get<SolidColorBrush>("SecondaryBorderBrush");
+        public static SolidColorBrush Brush_Background => Get<SolidColorBrush>("BackgroundBrush");
+        public static SolidColorBrush Brush_Region => Get<SolidColorBrush>("RegionBrush");
+        public static SolidColorBrush Brush_SecondaryRegion => Get<SolidColorBrush>("SecondaryRegionBrush");
+        public static SolidColorBrush Brush_ThirdlyRegion => Get<SolidColorBrush>("ThirdlyRegionBrush");
+        public static LinearGradientBrush Brush_Title => Get<LinearGradientBrush>("TitleBrush");
+
+        public static SolidColorBrush Brush_Default => Get<SolidColorBrush>("DefaultBrush");
+        public static SolidColorBrush Brush_DarkDefault => Get<SolidColorBrush>("DarkDefaultBrush");
+
+        public static SolidColorBrush Brush_LightDanger => Get<SolidColorBrush>("LightDangerBrush");
+        public static LinearGradientBrush Brush_Danger => Get<LinearGradientBrush>("DangerBrush");
+        public static SolidColorBrush Brush_DarkDanger => Get<SolidColorBrush>("DarkDangerBrush");
+
+        public static SolidColorBrush Brush_LightWarning => Get<SolidColorBrush>("LightWarningBrush");
+        public static LinearGradientBrush Brush_Warning => Get<LinearGradientBrush>("WarningBrush");
+        public static SolidColorBrush Brush_DarkWarning => Get<SolidColorBrush>("DarkWarningBrush");
+
+        public static SolidColorBrush Brush_LightInfo => Get<SolidColorBrush>("LightInfoBrush");
+        public static LinearGradientBrush Brush_Info => Get<LinearGradientBrush>("InfoBrush");
+        public static SolidColorBrush Brush_DarkInfo => Get<SolidColorBrush>("DarkInfoBrush");
+
+        public static SolidColorBrush Brush_LightSuccess => Get<SolidColorBrush>("LightSuccessBrush");
+        public static LinearGradientBrush Brush_Success => Get<LinearGradientBrush>("SuccessBrush");
+        public static SolidColorBrush Brush_DarkSuccess => Get<SolidColorBrush>("DarkSuccessBrush");
+
+        public static SolidColorBrush Brush_Accent => Get<SolidColorBrush>("AccentBrush");
+        public static SolidColorBrush Brush_DarkAccent => Get<SolidColorBrush>("DarkAccentBrush");
+
+        public static SolidColorBrush Brush_DarkMask => Get<SolidColorBrush>("DarkMaskBrush");
+        public static SolidColorBrush Brush_DarkOpacity => Get<SolidColorBrush>("DarkOpacityBrush");
+
+        #endregion
 
         #region Strings
 
