@@ -36,12 +36,15 @@
         <Setter Property="SelectionMode" Value="Extended"/>
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible"/>
-    </Style>
-
-    <Style x:Key="MyListBoxItemBaseStyle" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource ListBoxItemBaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="MyListViewBaseStyle" TargetType="{x:Type ListView}" BasedOn="{StaticResource ListViewBaseStyle}">
@@ -76,7 +79,6 @@
     <Style TargetType="{x:Type GridSplitter}" BasedOn="{StaticResource MyGridSplitterBaseStyle}"/>
     <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MyToggleButtonBaseStyle}"/>
     <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MyListBoxBaseStyle}"/>
-    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MyListBoxItemBaseStyle}"/>
     <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource MyListViewBaseStyle}"/>
     <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource MyGroupBoxBaseStyle}"/>
 
