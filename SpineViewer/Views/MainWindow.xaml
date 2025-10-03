@@ -21,7 +21,7 @@
 
     <Window.Resources>
         <Style TargetType="{x:Type GridSplitter}">
-            <Setter Property="Background" Value="{StaticResource SecondaryBorderBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBorderBrush}"/>
             <Setter Property="ShowsPreview" Value="False"/>
             <Style.Triggers>
                 <Trigger Property="ResizeDirection" Value="Columns">
@@ -716,7 +716,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <hc:TextBox hc:InfoElement.Placeholder="{StaticResource Str_Filter}"
+                                            <hc:TextBox hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
                                                         Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
                                             <Button Grid.Column="1" 
                                                     hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
@@ -760,7 +760,7 @@
                                                     <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
                                                               Command="{Binding Cmd_GeneratePreviews}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{StaticResource Str_DeletePreviewsForSelected}"
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviewsForSelected}"
                                                               Command="{Binding Cmd_DeletePreviews}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                 </ContextMenu>
@@ -804,7 +804,7 @@
                                                  IsReadOnly="True"/>
 
                                         <!-- 预览图 -->
-                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#a0a0a0">
+                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource DarkDefaultBrush}">
                                             <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
                                         </Border>
                                     </Grid>
@@ -1011,7 +1011,7 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- 预览画面容器 -->
-                                <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{StaticResource SecondaryRegionBrush}">
+                                <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{DynamicResource SecondaryRegionBrush}">
                                     <SFMLRenderer:SFMLRenderPanel x:Name="_renderPanel"/>
                                 </Border>
 
@@ -1023,7 +1023,7 @@
                                             DataContext="{Binding SFMLRendererViewModel}"
                                             Grid.Row="1" 
                                             Grid.IsSharedSizeScope="True"
-                                            Background="{StaticResource RegionBrush}">
+                                            Background="{DynamicResource RegionBrush}">
                                         <WrapPanel HorizontalAlignment="Center">
                                             <WrapPanel.Resources>
                                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">

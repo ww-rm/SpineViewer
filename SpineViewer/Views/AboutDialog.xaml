@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:AboutDialogViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Abount}"
-        Background="{StaticResource RegionBrush}"
+        Background="{DynamicResource RegionBrush}"
         Height="300"
         Width="500"
         ShowInTaskbar="False"

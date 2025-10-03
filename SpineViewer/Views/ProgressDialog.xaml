@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance Type=vm:ProgressDialogViewModel}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Background="{StaticResource RegionBrush}"
+        Background="{DynamicResource RegionBrush}"
         Width="550"
         Height="250"
         ResizeMode="NoResize" 
@@ -30,7 +30,7 @@
                      VerticalAlignment="Center" 
                      Margin="20 5"/>
         <Button Grid.Row="2" 
-                Content="{StaticResource Str_Cancel}"
+                Content="{DynamicResource Str_Cancel}"
                 Command="{Binding Cmd_Cancel}"
                 Width="100" 
                 Margin="15"/>

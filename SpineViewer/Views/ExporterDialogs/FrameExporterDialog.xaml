@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=vmexp:FrameExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_FrameExporterTitle}" 
-        Background="{StaticResource RegionBrush}"
+        Background="{DynamicResource RegionBrush}"
         Width="450"
         Height="480"
         ShowInTaskbar="False"

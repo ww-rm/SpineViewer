@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=models:PreferenceModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Preference}"
-        Background="{StaticResource RegionBrush}"
+        Background="{DynamicResource RegionBrush}"
         Height="650" 
         Width="600"    
         ShowInTaskbar="False"

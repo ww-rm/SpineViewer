@@ -8,14 +8,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>
+                <ResourceDictionary Source="/Resources/Skins/Light.xaml"/>
+                <ResourceDictionary Source="/Resources/Theme.xaml"/>
                 <ResourceDictionary Source="/Resources/Geometries.xaml"/>
                 <ResourceDictionary Source="/Resources/Strings/zh.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="MyToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ToggleButtonSwitch}">
-                <Setter Property="hc:VisualElement.HighlightBrush" Value="{StaticResource DarkSuccessBrush}"/>
+                <Setter Property="hc:VisualElement.HighlightBrush" Value="{DynamicResource DarkSuccessBrush}"/>
             </Style>
 
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource ListBoxBaseStyle}">

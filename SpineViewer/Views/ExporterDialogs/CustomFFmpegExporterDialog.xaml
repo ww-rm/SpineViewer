@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=exporters:CustomFFmpegExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_CustomFFmpegExporterTitle}"
-        Background="{StaticResource RegionBrush}"
+        Background="{DynamicResource RegionBrush}"
         Width="450"
         Height="800"
         ShowInTaskbar="False"
