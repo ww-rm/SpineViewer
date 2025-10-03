@@ -956,8 +956,8 @@
                                             </Border>
                                             <Border DockPanel.Dock="Right" Background="White" CornerRadius="{DynamicResource DefaultCornerRadius}">
                                                 <Button Content="..."
-                                                    Foreground="{Binding BackgroundColor, Converter={StaticResource Bg2FgCvter}}"
-                                                    Click="ButtonPickColor_Click">
+                                                        Foreground="{Binding BackgroundColor, Converter={StaticResource Bg2FgCvter}}"
+                                                        Click="ButtonPickColor_Click">
                                                     <Button.Background>
                                                         <SolidColorBrush Color="{Binding BackgroundColor}"/>
                                                     </Button.Background>
