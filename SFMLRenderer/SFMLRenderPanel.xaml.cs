@@ -240,8 +240,8 @@ namespace SFMLRenderer
             if (RenderWindow is null) return;
             float parentW = (float)sizeInfo.NewSize.Width;
             float parentH = (float)sizeInfo.NewSize.Height;
-            float renderW = (float)_hwndHost.ActualWidth;
-            float renderH = (float)_hwndHost.ActualHeight;
+            float renderW = _resolution.X;
+            float renderH = _resolution.Y;
             float scale = Math.Min(parentW / renderW, parentH / renderH); // 两方向取较小值, 保证 parent 覆盖 render
             renderW *= scale;
             renderH *= scale;
