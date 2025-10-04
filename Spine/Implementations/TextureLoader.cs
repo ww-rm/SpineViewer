@@ -112,6 +112,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime34.AtlasPage page, string path)
@@ -147,6 +155,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime35.AtlasPage page, string path)
@@ -182,6 +198,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime36.AtlasPage page, string path)
@@ -217,6 +241,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime37.AtlasPage page, string path)
@@ -252,6 +284,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime38.AtlasPage page, string path)
@@ -288,9 +328,13 @@ namespace Spine.Implementations
 
             page.rendererObject = texture;
 
-            // 似乎是不需要设置的, 因为存在某些 png 和 atlas 大小不同的情况, 一般是有一些缩放, 如果设置了反而渲染异常
-            // page.width = (int)texture.Size.X;
-            // page.height = (int)texture.Size.Y;
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime40.AtlasPage page, string path)
@@ -326,6 +370,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime41.AtlasPage page, string path)
@@ -361,6 +413,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Load(SpineRuntime42.AtlasPage page, string path)
@@ -396,6 +456,14 @@ namespace Spine.Implementations
             if (ForceMipmap) texture.GenerateMipmap();
 
             page.rendererObject = texture;
+
+            // 有些旧的 atlas 会省略 size 行, 这时需要在读取纹理时赋值
+            if (page.width <= 0 || page.height <= 0)
+            {
+                var texSize = texture.Size;
+                page.width = (int)texSize.X;
+                page.height = (int)texSize.Y;
+            }
         }
 
         public virtual void Unload(object texture)
