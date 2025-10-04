@@ -69,7 +69,6 @@ namespace SpineViewer
             _instanceMutex = new Mutex(true, MutexName, out var createdNew);
             if (!createdNew)
             {
-                ShowExistedInstance();
                 SendCommandLineArgs();
                 Environment.Exit(0); // 不再启动新实例
                 return;
@@ -98,37 +97,6 @@ namespace SpineViewer
             config.AddTarget(fileTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
             LogManager.Configuration = config;
-        }
-
-        private static void ShowExistedInstance()
-        {
-            try
-            {
-                // 遍历同名进程
-                var processes = Process.GetProcessesByName(ProcessName);
-                foreach (var p in processes)
-                {
-                    // 跳过当前进程
-                    if (p.Id == Process.GetCurrentProcess().Id)
-                        continue;
-
-                    IntPtr hWnd = p.MainWindowHandle;
-                    if (hWnd != IntPtr.Zero)
-                    {
-                        // 3. 显示并置顶窗口
-                        if (User32.IsIconic(hWnd))
-                        {
-                            User32.ShowWindow(hWnd, User32.SW_RESTORE);
-                        }
-                        User32.SetForegroundWindow(hWnd);
-                        break; // 找到一个就可以退出
-                    }
-                }
-            }
-            catch
-            {
-                // 忽略异常，不影响当前进程退出
-            }
         }
 
         private static void SendCommandLineArgs()
@@ -188,11 +156,29 @@ namespace SpineViewer
 
                             if (args.Count > 0)
                             {
-                                Current.Dispatcher.Invoke(() =>
+                                try
                                 {
-                                    var vm = (MainWindowViewModel)((MainWindow)Current.MainWindow).DataContext;
-                                    vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args);
-                                });
+                                    Current.Dispatcher.Invoke(() =>
+                                    {
+                                        // 只要收到参数就可以显示窗口了
+                                        var window = (MainWindow)Current.MainWindow;
+                                        window.Show();
+                                        if (window.WindowState == WindowState.Minimized)
+                                        {
+                                            window.WindowState = WindowState.Normal;
+                                        }
+                                        window.Activate();
+
+                                        // 尝试加载参数内容
+                                        var vm = (MainWindowViewModel)window.DataContext;
+                                        vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args);
+                                    });
+                                }
+                                catch (Exception ex) 
+                                {
+                                    _logger.Trace(ex.ToString());
+                                    _logger.Error("Failed to process arguments, {0}", ex.Message);
+                                }
                             }
                         }
                     }
