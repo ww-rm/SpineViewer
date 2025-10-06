@@ -69,7 +69,7 @@ namespace SpineViewer
             _instanceMutex = new Mutex(true, MutexName, out var createdNew);
             if (!createdNew)
             {
-                SendCommandLineArgs();
+                ConnectAndSendArgs();
                 Environment.Exit(0); // 不再启动新实例
                 return;
             }
@@ -99,24 +99,27 @@ namespace SpineViewer
             LogManager.Configuration = config;
         }
 
-        private static void SendCommandLineArgs()
+        private static void ConnectAndSendArgs()
         {
-            var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
-            if (args.Length <= 0)
-                return;
-
-            _logger.Info("Send command line args to existed instance, \"{0}\"", string.Join(", ", args));
             try
             {
                 // 已有实例在运行，把参数通过命名管道发过去
                 using (var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
                 {
-                    client.Connect(10000); // 10 秒超时
-                    using (var writer = new StreamWriter(client))
+                    // 只要启动了实例就要进行连接, 10 秒超时
+                    client.Connect(10000);
+
+                    // 但是只有有参数的时候才发送参数
+                    var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+                    if (args.Length > 0)
                     {
-                        foreach (var v in args)
+                        _logger.Info("Send command line args to existed instance, \"{0}\"", string.Join(", ", args));
+                        using (var writer = new StreamWriter(client))
                         {
-                            writer.WriteLine(v);
+                            foreach (var v in args)
+                            {
+                                writer.WriteLine(v);
+                            }
                         }
                     }
                 }
@@ -132,6 +135,7 @@ namespace SpineViewer
         {
             var t = new Task(() =>
             {
+                // 防止实例和窗口还没创建好
                 while (Current is null) Thread.Sleep(10);
                 while (true)
                 {
@@ -144,43 +148,47 @@ namespace SpineViewer
                 }
                 while (true)
                 {
-                    using (var server = new NamedPipeServerStream(PipeName, PipeDirection.In))
+                    try
                     {
-                        server.WaitForConnection();
-                        using (var reader = new StreamReader(server))
+                        using (var server = new NamedPipeServerStream(PipeName, PipeDirection.In))
                         {
-                            var args = new List<string>();
-                            string? line;
-                            while ((line = reader.ReadLine()) != null)
-                                args.Add(line);
+                            server.WaitForConnection();
 
-                            if (args.Count > 0)
+                            // 只要收到连接就可以显示窗口了
+                            Current.Dispatcher.Invoke(() =>
                             {
-                                try
+                                var window = (MainWindow)Current.MainWindow;
+                                window.Show();
+                                if (window.WindowState == WindowState.Minimized)
+                                {
+                                    window.WindowState = WindowState.Normal;
+                                }
+                                window.Activate();
+                            });
+                            using (var reader = new StreamReader(server))
+                            {
+                                var args = new List<string>();
+                                string? line;
+                                while ((line = reader.ReadLine()) != null)
+                                    args.Add(line);
+
+                                if (args.Count > 0)
                                 {
                                     Current.Dispatcher.Invoke(() =>
                                     {
-                                        // 只要收到参数就可以显示窗口了
-                                        var window = (MainWindow)Current.MainWindow;
-                                        window.Show();
-                                        if (window.WindowState == WindowState.Minimized)
-                                        {
-                                            window.WindowState = WindowState.Normal;
-                                        }
-                                        window.Activate();
-
                                         // 尝试加载参数内容
+                                        var window = (MainWindow)Current.MainWindow;
                                         var vm = (MainWindowViewModel)window.DataContext;
                                         vm.SpineObjectListViewModel.AddSpineObjectFromFileList(args);
                                     });
                                 }
-                                catch (Exception ex) 
-                                {
-                                    _logger.Trace(ex.ToString());
-                                    _logger.Error("Failed to process arguments, {0}", ex.Message);
-                                }
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Trace(ex.ToString());
+                        _logger.Error("Failed to process arguments, {0}", ex.Message);
                     }
                 }
             }, default, TaskCreationOptions.LongRunning);
