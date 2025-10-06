@@ -7,7 +7,7 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.6</Version>
+        <Version>0.16.7</Version>
     </PropertyGroup>
 
     <PropertyGroup>
