@@ -110,20 +110,42 @@ namespace Spine
                         break;
                 }
 
-                for (int ii = 0; ii + 1 < verticesLength; ii += 2)
+                if (verticesLength > 0)
                 {
-                    float vx = vertices[ii];
-                    float vy = vertices[ii + 1];
-                    minX = Math.Min(minX, vx);
-                    minY = Math.Min(minY, vy);
-                    maxX = Math.Max(maxX, vx);
-                    maxY = Math.Max(maxY, vy);
+                    for (int ii = 0; ii + 1 < verticesLength; ii += 2)
+                    {
+                        float vx = vertices[ii];
+                        float vy = vertices[ii + 1];
+                        minX = Math.Min(minX, vx);
+                        minY = Math.Min(minY, vy);
+                        maxX = Math.Max(maxX, vx);
+                        maxY = Math.Max(maxY, vy);
+                    }
+                }
+                else
+                {
+                    var boneX = slot.Bone.WorldX;
+                    var boneY = slot.Bone.WorldY;
+                    minX = Math.Min(minX, boneX);
+                    minY = Math.Min(minY, boneY);
+                    maxX = Math.Max(maxX, boneX);
+                    maxY = Math.Max(maxY, boneY);
                 }
             }
-            x = minX;
-            y = minY;
-            w = maxX - minX;
-            h = maxY - minY;
+            if (minX >= int.MaxValue || minY >= int.MaxValue || maxX <= int.MinValue || maxY <= int.MinValue)
+            {
+                x = self.X;
+                y = self.Y;
+                w = 0;
+                h = 0;
+            }
+            else
+            {
+                x = minX;
+                y = minY;
+                w = maxX - minX;
+                h = maxY - minY;
+            }
         }
 
         /// <summary>
