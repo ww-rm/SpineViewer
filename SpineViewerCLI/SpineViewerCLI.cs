@@ -10,13 +10,15 @@ namespace SpineViewerCLI
     public class CLI
     {
         const string USAGE = @"
-usage: SpineViewerCLI.exe [--skel PATH] [--atlas PATH] [--output PATH] [--animation STR] [--pma] [--fps INT] [--loop] [--crf INT] [--width INT] [--height INT] [--centerx INT] [--centery INT] [--zoom FLOAT] [--speed FLOAT] [--color HEX] [--quiet]
+usage: SpineViewerCLI.exe [--skel PATH] [--atlas PATH] [--output PATH] [--animation STR] [--skin STR] [--hide-slot STR] [--pma] [--fps INT] [--loop] [--crf INT] [--width INT] [--height INT] [--centerx INT] [--centery INT] [--zoom FLOAT] [--speed FLOAT] [--color HEX] [--quiet]
 
 options:
   --skel PATH           Path to the .skel file
   --atlas PATH          Path to the .atlas file, default searches in the skel file directory
   --output PATH         Output file path
   --animation STR       Animation name
+  --skin STR            Skin name to apply. Can be used multiple times to stack skins.
+  --hide-slot STR       Slot name to hide. Can be used multiple times.
   --pma                 Use premultiplied alpha, default false
   --fps INT             Frames per second, default 24
   --loop                Whether to loop the animation, default false
@@ -37,6 +39,8 @@ options:
             string? atlasPath = null;
             string? output = null;
             string? animation = null;
+            var skins = new List<string>();
+            var hideSlots = new List<string>();
             bool pma = false;
             uint fps = 24;
             bool loop = false;
@@ -69,6 +73,12 @@ options:
                         break;
                     case "--animation":
                         animation = args[++i];
+                        break;
+                    case "--skin":
+                        skins.Add(args[++i]);
+                        break;
+                    case "--hide-slot":
+                        hideSlots.Add(args[++i]);
                         break;
                     case "--pma":
                         pma = true;
@@ -132,6 +142,24 @@ options:
 
             var sp = new SpineObject(skelPath, atlasPath);
             sp.UsePma = pma;
+
+            foreach (var skinName in skins)
+            {
+                if (!sp.SetSkinStatus(skinName, true))
+                {
+                    var availableSkins = string.Join(", ", sp.Data.Skins.Select(s => s.Name));
+                    Console.Error.WriteLine($"Error: Skin '{skinName}' not found. Available skins: {availableSkins}");
+                    Environment.Exit(2);
+                }
+            }
+
+            foreach (var slotName in hideSlots)
+            {
+                if (!sp.SetSlotVisible(slotName, false))
+                {
+                    if (!quiet) Console.WriteLine($"Warning: Slot '{slotName}' not found, cannot hide.");
+                }
+            }
 
             if (string.IsNullOrEmpty(animation))
             {
