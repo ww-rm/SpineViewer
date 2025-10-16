@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.IO;
 using SFML.Graphics;
 using SFML.System;
 using Spine;
@@ -24,7 +23,7 @@ options:
   --fps INT             Frames per second (for video), default 24
   --loop                Whether to loop the animation (for video), default false
   --crf INT             Constant Rate Factor (for video), from 0 (lossless) to 51 (worst), default 23
-  --time FLOAT          Time in seconds to export a single frame, default 0
+  --time FLOAT          Time in seconds to export a single frame. Providing this argument forces frame export mode.
   --quality INT         Quality for lossy image formats (jpg, webp), from 0 to 100, default 80
   --width INT           Output width, default 512
   --height INT          Output height, default 512
@@ -48,7 +47,7 @@ options:
             uint fps = 24;
             bool loop = false;
             int crf = 23;
-            float time = 0f;
+            float? time = null;
             int quality = 80;
             uint? width = null;
             uint? height = null;
@@ -159,6 +158,20 @@ options:
                 }
             }
 
+            if (string.IsNullOrEmpty(animation))
+            {
+                var availableAnimations = string.Join(", ", sp.Data.Animations.Select(a => a.Name));
+                Console.Error.WriteLine($"Missing --animation. Available animations for {sp.Name}: {availableAnimations}");
+                Environment.Exit(2);
+            }
+
+            var trackEntry = sp.AnimationState.SetAnimation(0, animation, loop);
+            if (time.HasValue)
+            {
+                trackEntry.TrackTime = time.Value;
+            }
+            sp.Update(0);
+
             foreach (var slotName in hideSlots)
             {
                 if (!sp.SetSlotVisible(slotName, false))
@@ -167,17 +180,48 @@ options:
                 }
             }
 
-            if (string.IsNullOrEmpty(animation))
+            if (time.HasValue)
             {
-                var availableAnimations = string.Join(", ", sp.Data.Animations.Select(a => a.Name));
-                Console.Error.WriteLine($"Missing --animation. Available animations for {sp.Name}: {availableAnimations}");
-                Environment.Exit(2);
-            }
-            var trackEntry = sp.AnimationState.SetAnimation(0, animation, loop);
-            trackEntry.TrackTime = time;
-            sp.Update(0);
+                if (TryGetImageFormat(outputExtension, out var imageFormat))
+                {
+                    if (!quiet) Console.WriteLine($"Exporting single frame at {time.Value:F2}s to {output}...");
 
-            if (Enum.TryParse<FFmpegVideoExporter.VideoFormat>(outputExtension, true, out var videoFormat))
+                    FrameExporter exporter;
+                    if (width is uint w && height is uint h && centerx is int cx && centery is int cy)
+                    {
+                        exporter = new FrameExporter(w, h)
+                        {
+                            Center = (cx, cy),
+                            Size = (w / zoom, -h / zoom),
+                        };
+                    }
+                    else
+                    {
+                        var frameBounds = GetSpineObjectBounds(sp);
+                        var bounds = GetFloatRectCanvasBounds(frameBounds, new(width ?? 512, height ?? 512));
+                        exporter = new FrameExporter(width ?? (uint)Math.Ceiling(bounds.Width), height ?? (uint)Math.Ceiling(bounds.Height))
+                        {
+                            Center = bounds.Position + bounds.Size / 2,
+                            Size = (bounds.Width, -bounds.Height),
+                        };
+                    }
+                    exporter.Format = imageFormat;
+                    exporter.Quality = quality;
+                    exporter.BackgroundColor = backgroundColor;
+
+                    exporter.Export(output, sp);
+
+                    if (!quiet)
+                        Console.WriteLine("Frame export complete.");
+                }
+                else
+                {
+                    var validImageExtensions = "png, jpg, jpeg, webp, bmp";
+                    Console.Error.WriteLine($"Error: --time argument requires a valid image format extension. Supported formats are: {validImageExtensions}.");
+                    Environment.Exit(2);
+                }
+            }
+            else if (Enum.TryParse<FFmpegVideoExporter.VideoFormat>(outputExtension, true, out var videoFormat))
             {
                 FFmpegVideoExporter exporter;
                 if (width is uint w && height is uint h && centerx is int cx && centery is int cy)
@@ -214,44 +258,11 @@ options:
                 if (!quiet)
                     Console.WriteLine("\nVideo export complete.");
             }
-            else if (TryGetImageFormat(outputExtension, out var imageFormat))
-            {
-                if (!quiet) Console.WriteLine($"Exporting single frame at {time:F2}s to {output}...");
-
-                FrameExporter exporter;
-                if (width is uint w && height is uint h && centerx is int cx && centery is int cy)
-                {
-                    exporter = new FrameExporter(w, h)
-                    {
-                        Center = (cx, cy),
-                        Size = (w / zoom, -h / zoom),
-                    };
-                }
-                else
-                {
-
-                    var frameBounds = GetSpineObjectBounds(sp);
-                    var bounds = GetFloatRectCanvasBounds(frameBounds, new(width ?? 512, height ?? 512));
-                    exporter = new FrameExporter(width ?? (uint)Math.Ceiling(bounds.Width), height ?? (uint)Math.Ceiling(bounds.Height))
-                    {
-                        Center = bounds.Position + bounds.Size / 2,
-                        Size = (bounds.Width, -bounds.Height),
-                    };
-                }
-                exporter.Format = imageFormat;
-                exporter.Quality = quality;
-                exporter.BackgroundColor = backgroundColor;
-
-                exporter.Export(output, sp);
-
-                if (!quiet)
-                    Console.WriteLine("Frame export complete.");
-            }
             else
             {
                 var validVideoExtensions = string.Join(", ", Enum.GetNames(typeof(FFmpegVideoExporter.VideoFormat)));
                 var validImageExtensions = "png, jpg, jpeg, webp, bmp";
-                Console.Error.WriteLine($"Invalid output extension. Supported video formats are: {validVideoExtensions}. Supported image formats are: {validImageExtensions}.");
+                Console.Error.WriteLine($"Invalid output extension or missing --time for image export. Supported video formats are: {validVideoExtensions}. Supported image formats (with --time) are: {validImageExtensions}.");
                 Environment.Exit(2);
             }
 
@@ -280,7 +291,6 @@ options:
                     return false;
             }
         }
-
 
         public static SpineObject CopySpineObject(SpineObject sp)
         {
