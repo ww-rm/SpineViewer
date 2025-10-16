@@ -35,12 +35,12 @@ namespace SpineViewer.ViewModels.MainWindow
         public bool IsShuttingDownFromTray => _isShuttingDownFromTray;
         private bool _isShuttingDownFromTray;
 
-        public bool? CloseToTray
+        public bool CloseToTray
         {
             get => _closeToTray;
             set => SetProperty(ref _closeToTray, value);
         }
-        private bool? _closeToTray = null;
+        private bool _closeToTray;
 
         public string AutoRunWorkspaceConfigPath
         {

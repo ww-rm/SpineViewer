@@ -238,11 +238,6 @@ public partial class MainWindow : Window
     {
         if (!_vm.IsShuttingDownFromTray)
         {
-            if (_vm.CloseToTray is null)
-            {
-                _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
-                _vm.PreferenceViewModel.SavePreference();
-            }
             if (_vm.CloseToTray is true)
             {
                 Hide();

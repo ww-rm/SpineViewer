@@ -102,7 +102,7 @@ namespace SpineViewer.Models
         private bool _wallpaperView;
 
         [ObservableProperty]
-        private bool? _closeToTray = null;
+        private bool _closeToTray;
 
         [ObservableProperty]
         private bool _autoRun;
