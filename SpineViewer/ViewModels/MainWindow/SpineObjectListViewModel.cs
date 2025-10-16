@@ -450,7 +450,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (File.Exists(path))
                 {
-                    var lowerPath = path.ToLower();
+                    var lowerPath = path.ToLowerInvariant();
                     if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
                         validPaths.Add(path);
                 }
@@ -458,7 +458,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
                     {
-                        var lowerPath = file.ToLower();
+                        var lowerPath = file.ToLowerInvariant();
                         if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
                             validPaths.Add(file);
                     }

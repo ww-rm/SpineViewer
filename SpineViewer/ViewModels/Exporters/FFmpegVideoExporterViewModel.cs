@@ -77,7 +77,7 @@ namespace SpineViewer.ViewModels.Exporters
         public bool EnableParamProfile =>
             _format == FFmpegVideoExporter.VideoFormat.Mov;
 
-        private string FormatSuffix => $".{_format.ToString().ToLower()}";
+        private string FormatSuffix => $".{_format.ToString().ToLowerInvariant()}";
 
         protected override void Export(SpineObjectModel[] models)
         {

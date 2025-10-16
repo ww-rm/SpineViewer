@@ -34,7 +34,7 @@ namespace SpineViewer.ViewModels.Exporters
             {
                 if (_format == SKEncodedImageFormat.Heif) return ".jpeg";
                 else if (_format == SKEncodedImageFormat.Jpegxl) return ".jpeg";
-                else return $".{_format.ToString().ToLower()}";
+                else return $".{_format.ToString().ToLowerInvariant()}";
             }
         }
 

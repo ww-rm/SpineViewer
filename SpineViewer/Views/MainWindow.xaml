@@ -73,7 +73,7 @@
             <Border Grid.Row="1">
                 <Grid x:Name="_rootGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
