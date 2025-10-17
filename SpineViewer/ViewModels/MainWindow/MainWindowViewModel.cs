@@ -32,7 +32,11 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 指示是否通过托盘图标进行退出
         /// </summary>
-        public bool IsShuttingDownFromTray => _isShuttingDownFromTray;
+        public bool IsShuttingDownFromTray
+        {
+            get => _isShuttingDownFromTray;
+            private set => SetProperty(ref _isShuttingDownFromTray, value);
+        }
         private bool _isShuttingDownFromTray;
 
         public bool CloseToTray
@@ -109,8 +113,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public RelayCommand Cmd_ExitFromTray => _cmd_ExitFromTray ??= new(() =>
         {
-            _isShuttingDownFromTray = true;
-            OnPropertyChanged(nameof(IsShuttingDownFromTray));
+            IsShuttingDownFromTray = true;
             App.Current.Shutdown();
         });
         private RelayCommand? _cmd_ExitFromTray;

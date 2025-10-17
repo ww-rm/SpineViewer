@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace SpineViewer.Models
 {
-    public class LastStateModel
+    public class UserStateModel
     {
         #region 画面布局状态
 
