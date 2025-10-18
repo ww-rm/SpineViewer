@@ -49,6 +49,37 @@ public partial class MainWindow : Window
     private DispatcherTimer _saveUserStateTimer;
     private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(3);
 
+    public bool RootGridCol0Folded
+    {
+        get => ((ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl)).Visibility != Visibility.Visible;
+        set
+        {
+            var mainTabContentHost = (ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl);
+            if ((mainTabContentHost.Visibility != Visibility.Visible) == value)
+                return;
+            if (value)
+            {
+                // 寄存折叠前的宽度比例
+                _rootGrid.ColumnDefinitions[0].Tag = _rootGrid.ColumnDefinitions[0].Width;
+                _rootGrid.ColumnDefinitions[1].Tag = _rootGrid.ColumnDefinitions[1].Width;
+                _rootGrid.ColumnDefinitions[2].Tag = _rootGrid.ColumnDefinitions[2].Width;
+
+                // 进行折叠
+                mainTabContentHost.Visibility = Visibility.Collapsed;
+                _rootGrid.ColumnDefinitions[0].Width = GridLength.Auto;
+                _rootGrid.ColumnDefinitions[1].Width = new(0);
+            }
+            else
+            {
+                // 解除折叠
+                _rootGrid.ColumnDefinitions[0].Width = (GridLength)_rootGrid.ColumnDefinitions[0].Tag;
+                _rootGrid.ColumnDefinitions[1].Width = (GridLength)_rootGrid.ColumnDefinitions[1].Tag;
+                _rootGrid.ColumnDefinitions[2].Width = (GridLength)_rootGrid.ColumnDefinitions[2].Tag;
+                mainTabContentHost.Visibility = Visibility.Visible;
+            }
+        }
+    }
+
     public MainWindow()
     {
         InitializeComponent();
@@ -231,8 +262,18 @@ public partial class MainWindow : Window
                 WindowState = WindowState.Normal;
             }
 
-            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
-            _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
+            if (m.RootGridCol0Folded)
+            {
+                RootGridCol0Folded = true;
+                _rootGrid.ColumnDefinitions[0].Tag = new GridLength(m.RootGridCol0Width, GridUnitType.Star);
+                _rootGrid.ColumnDefinitions[2].Tag = new GridLength(m.RootGridCol2Width, GridUnitType.Star);
+            }
+            else
+            {
+                RootGridCol0Folded = false;
+                _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
+                _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
+            }
 
             _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
             _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
@@ -263,6 +304,7 @@ public partial class MainWindow : Window
             WindowHeight = rb.Height,
             WindowState = WindowState,
 
+            RootGridCol0Folded = RootGridCol0Folded,
             RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
             RootGridCol2Width = _rootGrid.ColumnDefinitions[2].Width.Value,
 
@@ -283,6 +325,12 @@ public partial class MainWindow : Window
             BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
             BackgroundImageMode = _vm.SFMLRendererViewModel.BackgroundImageMode,
         };
+
+        if (m.RootGridCol0Folded)
+        {
+            m.RootGridCol0Width = ((GridLength)_rootGrid.ColumnDefinitions[0].Tag).Value;
+            m.RootGridCol2Width = ((GridLength)_rootGrid.ColumnDefinitions[2].Tag).Value;
+        }
 
         JsonHelper.Serialize(m, UserStateFilePath);
     }
@@ -382,6 +430,34 @@ public partial class MainWindow : Window
             {
                 wnd.SetVisible(false);
             }
+        }
+    }
+
+    #endregion
+
+    #region _mainTabControl 事件处理
+
+    private void MainTabControlHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        // 全屏状态忽略该功能
+        if (_fullScreenLayout.Visibility == Visibility.Visible)
+            return;
+
+        if (sender is not FrameworkElement fe)
+            return;
+
+        // 找到包含这个 Border 的 TabItem
+        var tabItem = VisualFindParent<TabItem>(fe);
+        if (tabItem is null) 
+            return;
+
+        if (_mainTabControl.SelectedItem == tabItem)
+        {
+            RootGridCol0Folded = !RootGridCol0Folded;
+        }
+        else
+        {
+            RootGridCol0Folded = false;
         }
     }
 
@@ -506,13 +582,6 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private static T? VisualUpwardSearch<T>(DependencyObject? source) where T : DependencyObject
-    {
-        while (source != null && source is not T)
-            source = VisualTreeHelper.GetParent(source);
-        return source as T;
-    }
-
     #endregion
 
     #region _spineFilesListBox 事件
@@ -552,6 +621,8 @@ public partial class MainWindow : Window
         // XXX: 操作系统设置里关闭窗口化游戏优化选项可以避免恰好全屏时的闪烁问题
 
         if (_fullScreenLayout.Visibility == Visibility.Visible) return;
+
+        RootGridCol0Folded = false; // 取消折叠
 
         IntPtr hwnd = new WindowInteropHelper(this).Handle;
         if (User32.GetScreenResolution(hwnd, out var resX, out var resY))
@@ -802,7 +873,16 @@ public partial class MainWindow : Window
     }
 
     #endregion
-    
+
+    private static T? VisualUpwardSearch<T>(DependencyObject? source) where T : DependencyObject
+    {
+        while (source != null && source is not T)
+            source = VisualTreeHelper.GetParent(source);
+        return source as T;
+    }
+
+    public static T? VisualFindParent<T>(DependencyObject child) where T : DependencyObject 
+        => VisualUpwardSearch<T>(VisualTreeHelper.GetParent(child));
 
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
@@ -812,9 +892,8 @@ public partial class MainWindow : Window
         _logger.Warn("Warn");
         _logger.Error("Error");
         _logger.Fatal("Fatal");
-        var _tabContentHost = (ContentPresenter?)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl);
-        _mainTabControl.Visibility = Visibility.Collapsed;
         return;
 #endif
     }
+
 }

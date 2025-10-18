@@ -18,6 +18,7 @@ namespace SpineViewer.Models
         public double WindowHeight { get; set; }
         public WindowState WindowState { get; set; }
         
+        public bool RootGridCol0Folded { get; set; }
         public double RootGridCol0Width { get; set; }
         public double RootGridCol2Width { get; set; }
 
