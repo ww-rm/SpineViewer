@@ -85,7 +85,15 @@
                         <TabControl x:Name="_mainTabControl" TabStripPlacement="Left">
 
                             <!-- 模型列表页 -->
-                            <TabItem Header="{DynamicResource Str_SpineObject}">
+                            <TabItem>
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
+                                            <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <Grid x:Name="_modelListGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -660,7 +668,15 @@
                             </TabItem>
 
                             <!-- 浏览页 -->
-                            <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
+                            <TabItem DataContext="{Binding ExplorerListViewModel}">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                            <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <Grid x:Name="_explorerGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -771,7 +787,15 @@
                             </TabItem>
 
                             <!-- 画面参数页 -->
-                            <TabItem Header="{DynamicResource Str_Canvas}" DataContext="{Binding SFMLRendererViewModel}">
+                            <TabItem DataContext="{Binding SFMLRendererViewModel}">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
+                                            <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <TabItem.Resources>
                                     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
