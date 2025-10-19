@@ -9,12 +9,12 @@
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         x:Name="_mainWindow"
-        Title="{Binding Title}"
-        Background="{DynamicResource RegionBrush}"
-        Width="1500"
-        Height="800"
-        WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}}"
+        Title="{Binding Title}"
+        Width="1280"
+        Height="720"
+        Background="{DynamicResource RegionBrush}"
+        WindowStartupLocation="CenterScreen"
         PreviewKeyDown="MainWindow_PreviewKeyDown"
         LocationChanged="MainWindow_LocationChanged"
         SizeChanged="MainWindow_SizeChanged">
@@ -73,7 +73,7 @@
             <Border Grid.Row="1">
                 <Grid x:Name="_rootGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
@@ -85,7 +85,15 @@
                         <TabControl x:Name="_mainTabControl" TabStripPlacement="Left">
 
                             <!-- 模型列表页 -->
-                            <TabItem Header="{DynamicResource Str_SpineObject}">
+                            <TabItem>
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
+                                            <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <Grid x:Name="_modelListGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -162,21 +170,32 @@
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
+                                                    <MenuItem Header="{DynamicResource Str_SpineObjectConfig}">
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+C"
                                                               Command="{Binding Cmd_CopySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfig}"
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSkinConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSkinConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotAttachmentConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSlotAttachmentConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotVisibilityConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSlotVisibilityConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+V"
                                                               Command="{Binding Cmd_ApplySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
+                                                        <Separator/>
+                                                        <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
                                                               Command="{Binding Cmd_ApplySpineObjectConfigFromFile}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
+                                                        <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
                                                               Command="{Binding Cmd_SaveSpineObjectConfigToFile}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
+                                                    </MenuItem>
                                                     <MenuItem Header="{DynamicResource Str_Export}">
                                                         <MenuItem Header="{DynamicResource Str_ExportFrame}"
                                                                   Command="{Binding FrameExporterViewModel.Cmd_Export}"
@@ -429,12 +448,14 @@
                                             <ListBox ItemsSource="{Binding Skins}">
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="{DynamicResource Str_EnableSkins}" 
+                                                        <MenuItem Header="{DynamicResource Str_Enable}" 
                                                                   Command="{Binding Cmd_EnableSkins}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                        <MenuItem Header="{DynamicResource Str_DisableSkins}" 
+                                                        <MenuItem Header="{DynamicResource Str_Disable}" 
                                                                   Command="{Binding Cmd_DisableSkins}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_EnableAll}" Command="{Binding Cmd_EnableAllSkins}"/>
+                                                        <MenuItem Header="{DynamicResource Str_DisableAll}" Command="{Binding Cmd_DisableAllSkins}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
 
@@ -460,12 +481,14 @@
                                             <ListBox ItemsSource="{Binding Slots}" Grid.IsSharedSizeScope="True">
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="{DynamicResource Str_EnableSlots}" 
+                                                        <MenuItem Header="{DynamicResource Str_Enable}" 
                                                                   Command="{Binding Cmd_EnableSlots}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                        <MenuItem Header="{DynamicResource Str_DisableSlots}" 
+                                                        <MenuItem Header="{DynamicResource Str_Disable}" 
                                                                   Command="{Binding Cmd_DisableSlots}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_EnableAll}" Command="{Binding Cmd_EnableAllSlots}"/>
+                                                        <MenuItem Header="{DynamicResource Str_DisableAll}" Command="{Binding Cmd_DisableAllSlots}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
 
@@ -660,7 +683,15 @@
                             </TabItem>
 
                             <!-- 浏览页 -->
-                            <TabItem Header="{DynamicResource Str_Explorer}" DataContext="{Binding ExplorerListViewModel}">
+                            <TabItem DataContext="{Binding ExplorerListViewModel}">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                            <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <Grid x:Name="_explorerGrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -771,7 +802,15 @@
                             </TabItem>
 
                             <!-- 画面参数页 -->
-                            <TabItem Header="{DynamicResource Str_Canvas}" DataContext="{Binding SFMLRendererViewModel}">
+                            <TabItem DataContext="{Binding SFMLRendererViewModel}">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
+                                            <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
                                 <TabItem.Resources>
                                     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>

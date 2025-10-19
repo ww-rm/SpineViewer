@@ -333,7 +333,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     foreach (var file in Directory.EnumerateFiles(_currentDirectory, "*.*", SearchOption.AllDirectories))
                     {
-                        var lowerPath = file.ToLower();
+                        var lowerPath = file.ToLowerInvariant();
                         if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
                             _items.Add(new(file));
                     }

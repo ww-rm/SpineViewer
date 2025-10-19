@@ -40,7 +40,7 @@ namespace SpineViewer.Extensions
 
         //public static void SaveToFile(this BitmapSource bitmap, string path)
         //{
-        //    var ext = Path.GetExtension(path)?.ToLower();
+        //    var ext = Path.GetExtension(path)?.ToLowerInvariant();
         //    BitmapEncoder encoder = ext switch
         //    {
         //        ".jpg" or ".jpeg" => new JpegBitmapEncoder(),

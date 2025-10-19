@@ -91,6 +91,8 @@ namespace SpineViewer.Models
 
         public event EventHandler<TrackPropertyChangedEventArgs>? TrackPropertyChanged;
 
+        #region 参数面板实现
+
         public SpineVersion Version => _spineObject.Version;
 
         public string AssetsDir => _spineObject.AssetsDir;
@@ -407,6 +409,8 @@ namespace SpineViewer.Models
             set { lock (_lock) SetProperty(_spineObject.DebugClippings, value, v => _spineObject.DebugClippings = v); }
         }
 
+        #endregion
+
         public void Update(float delta)
         {
             lock (_lock) _spineObject.Update(delta);
@@ -493,41 +497,57 @@ namespace SpineViewer.Models
                     return config;
                 }
             }
-            set
+            set => ApplyObjectConfig(value);
+        }
+
+        public void ApplyObjectConfig(SpineObjectConfigModel m, SpineObjectConfigApplyFlag flag = SpineObjectConfigApplyFlag.All)
+        {
+            lock (_lock)
             {
-
-                lock (_lock)
+                if (flag == SpineObjectConfigApplyFlag.All)
                 {
-                    _spineObject.Skeleton.ScaleX = value.Scale;
-                    _spineObject.Skeleton.ScaleY = value.Scale;
+                    _spineObject.Skeleton.ScaleX = m.Scale;
+                    _spineObject.Skeleton.ScaleY = m.Scale;
                     OnPropertyChanged(nameof(Scale));
-                    SetProperty(_spineObject.Skeleton.ScaleX < 0, value.FlipX, v => _spineObject.Skeleton.ScaleX *= -1, nameof(FlipX));
-                    SetProperty(_spineObject.Skeleton.ScaleY < 0, value.FlipY, v => _spineObject.Skeleton.ScaleY *= -1, nameof(FlipY));
-                    SetProperty(_spineObject.Skeleton.X, value.X, v => _spineObject.Skeleton.X = v, nameof(X));
-                    SetProperty(_spineObject.Skeleton.Y, value.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
-                    SetProperty(_spineObject.UsePma, value.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
-                    SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(value.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
-                    SetProperty(_spineObject.AnimationState.TimeScale, value.TimeScale, v => _spineObject.AnimationState.TimeScale = v, nameof(TimeScale));
+                    SetProperty(_spineObject.Skeleton.ScaleX < 0, m.FlipX, v => _spineObject.Skeleton.ScaleX *= -1, nameof(FlipX));
+                    SetProperty(_spineObject.Skeleton.ScaleY < 0, m.FlipY, v => _spineObject.Skeleton.ScaleY *= -1, nameof(FlipY));
+                    SetProperty(_spineObject.Skeleton.X, m.X, v => _spineObject.Skeleton.X = v, nameof(X));
+                    SetProperty(_spineObject.Skeleton.Y, m.Y, v => _spineObject.Skeleton.Y = v, nameof(Y));
+                    SetProperty(_spineObject.UsePma, m.UsePma, v => _spineObject.UsePma = v, nameof(UsePma));
+                    SetProperty(_spineObject.Physics, Enum.Parse<ISkeleton.Physics>(m.Physics ?? "Update", true), v => _spineObject.Physics = v, nameof(Physics));
+                    SetProperty(_spineObject.AnimationState.TimeScale, m.TimeScale, v => _spineObject.AnimationState.TimeScale = v, nameof(TimeScale));
+                }
 
-                    foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(value.LoadedSkins))
+                if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.Skin)
+                {
+                    foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(m.LoadedSkins))
                         if (_spineObject.SetSkinStatus(name, false))
                             SkinStatusChanged?.Invoke(this, new(name, false));
-                    foreach (var name in value.LoadedSkins)
+                    foreach (var name in m.LoadedSkins)
                         if (_spineObject.SetSkinStatus(name, true))
                             SkinStatusChanged?.Invoke(this, new(name, true));
+                }
 
-                    foreach (var (slotName, attachmentName) in value.SlotAttachment)
+                if (flag == SpineObjectConfigApplyFlag.SlotAttachement)
+                {
+                    foreach (var (slotName, attachmentName) in m.SlotAttachment)
                         if (_spineObject.SetAttachment(slotName, attachmentName))
                             SlotAttachmentChanged?.Invoke(this, new(slotName, attachmentName));
+                }
 
-                    foreach (var slotName in value.DisabledSlots)
+                if (flag == SpineObjectConfigApplyFlag.SlotVisibility)
+                {
+                    foreach (var slotName in m.DisabledSlots)
                         if (_spineObject.SetSlotVisible(slotName, false))
                             SlotVisibleChanged?.Invoke(this, new(slotName, false));
+                }
 
+                if (flag == SpineObjectConfigApplyFlag.All)
+                {
                     // XXX: 处理空动画
                     _spineObject.AnimationState.ClearTracks();
                     int trackIndex = 0;
-                    foreach (var trConfig in value.Animations)
+                    foreach (var trConfig in m.Animations)
                     {
                         if (trConfig is not null && !string.IsNullOrEmpty(trConfig.AnimationName))
                         {
@@ -545,16 +565,16 @@ namespace SpineViewer.Models
                         _spineObject.Skeleton.SetSlotsToSetupPose();
                     }
 
-                    SetProperty(_spineObject.DebugTexture, value.DebugTexture, v => _spineObject.DebugTexture = v, nameof(DebugTexture));
-                    SetProperty(_spineObject.DebugBounds, value.DebugBounds, v => _spineObject.DebugBounds = v, nameof(DebugBounds));
-                    SetProperty(_spineObject.DebugBones, value.DebugBones, v => _spineObject.DebugBones = v, nameof(DebugBones));
-                    SetProperty(_spineObject.DebugRegions, value.DebugRegions, v => _spineObject.DebugRegions = v, nameof(DebugRegions));
-                    SetProperty(_spineObject.DebugMeshHulls, value.DebugMeshHulls, v => _spineObject.DebugMeshHulls = v, nameof(DebugMeshHulls));
-                    SetProperty(_spineObject.DebugMeshes, value.DebugMeshes, v => _spineObject.DebugMeshes = v, nameof(DebugMeshes));
-                    SetProperty(_spineObject.DebugBoundingBoxes, value.DebugBoundingBoxes, v => _spineObject.DebugBoundingBoxes = v, nameof(DebugBoundingBoxes));
-                    SetProperty(_spineObject.DebugPaths, value.DebugPaths, v => _spineObject.DebugPaths = v, nameof(DebugPaths));
-                    SetProperty(_spineObject.DebugPoints, value.DebugPoints, v => _spineObject.DebugPoints = v, nameof(DebugPoints));
-                    SetProperty(_spineObject.DebugClippings, value.DebugClippings, v => _spineObject.DebugClippings = v, nameof(DebugClippings));
+                    SetProperty(_spineObject.DebugTexture, m.DebugTexture, v => _spineObject.DebugTexture = v, nameof(DebugTexture));
+                    SetProperty(_spineObject.DebugBounds, m.DebugBounds, v => _spineObject.DebugBounds = v, nameof(DebugBounds));
+                    SetProperty(_spineObject.DebugBones, m.DebugBones, v => _spineObject.DebugBones = v, nameof(DebugBones));
+                    SetProperty(_spineObject.DebugRegions, m.DebugRegions, v => _spineObject.DebugRegions = v, nameof(DebugRegions));
+                    SetProperty(_spineObject.DebugMeshHulls, m.DebugMeshHulls, v => _spineObject.DebugMeshHulls = v, nameof(DebugMeshHulls));
+                    SetProperty(_spineObject.DebugMeshes, m.DebugMeshes, v => _spineObject.DebugMeshes = v, nameof(DebugMeshes));
+                    SetProperty(_spineObject.DebugBoundingBoxes, m.DebugBoundingBoxes, v => _spineObject.DebugBoundingBoxes = v, nameof(DebugBoundingBoxes));
+                    SetProperty(_spineObject.DebugPaths, m.DebugPaths, v => _spineObject.DebugPaths = v, nameof(DebugPaths));
+                    SetProperty(_spineObject.DebugPoints, m.DebugPoints, v => _spineObject.DebugPoints = v, nameof(DebugPoints));
+                    SetProperty(_spineObject.DebugClippings, m.DebugClippings, v => _spineObject.DebugClippings = v, nameof(DebugClippings));
                 }
             }
         }
@@ -611,6 +631,17 @@ namespace SpineViewer.Models
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// 可选的应用部分模型参数项
+    /// </summary>
+    public enum SpineObjectConfigApplyFlag
+    {
+        All,
+        Skin,
+        SlotAttachement,
+        SlotVisibility,
     }
 
     public class SkinStatusChangedEventArgs(string name, bool status) : EventArgs

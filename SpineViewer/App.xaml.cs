@@ -331,7 +331,7 @@ namespace SpineViewer
             get => _language;
             set
             {
-                var uri = $"Resources/Strings/{value.ToString().ToLower()}.xaml";
+                var uri = $"Resources/Strings/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
                     Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
@@ -351,7 +351,7 @@ namespace SpineViewer
             get => _skin;
             set
             {
-                var uri = $"Resources/Skins/{value.ToString().ToLower()}.xaml";
+                var uri = $"Resources/Skins/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
                     Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });

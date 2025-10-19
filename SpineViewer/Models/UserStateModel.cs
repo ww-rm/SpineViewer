@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace SpineViewer.Models
 {
-    public class LastStateModel
+    public class UserStateModel
     {
         #region 画面布局状态
 
@@ -18,6 +18,7 @@ namespace SpineViewer.Models
         public double WindowHeight { get; set; }
         public WindowState WindowState { get; set; }
         
+        public bool RootGridCol0Folded { get; set; }
         public double RootGridCol0Width { get; set; }
         public double RootGridCol2Width { get; set; }
 

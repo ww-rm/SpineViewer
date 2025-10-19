@@ -36,7 +36,7 @@ namespace SpineViewer.ViewModels.Exporters
         public string? CustomArgs { get => _customArgs; set => SetProperty(ref _customArgs, value); }
         protected string? _customArgs;
 
-        private string FormatSuffix => $".{_format.ToString().ToLower()}";
+        private string FormatSuffix => $".{_format.ToString().ToLowerInvariant()}";
 
         public override string? Validate()
         {

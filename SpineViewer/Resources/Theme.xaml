@@ -34,7 +34,7 @@
 
     <Style x:Key="MyListBoxBaseStyle" TargetType="{x:Type ListBox}" BasedOn="{StaticResource ListBoxBaseStyle}">
         <Setter Property="SelectionMode" Value="Extended"/>
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>
+        <!--<Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>-->
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
@@ -49,7 +49,7 @@
 
     <Style x:Key="MyListViewBaseStyle" TargetType="{x:Type ListView}" BasedOn="{StaticResource ListViewBaseStyle}">
         <Setter Property="SelectionMode" Value="Extended"/>
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>
+        <!--<Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>-->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListViewItemBaseStyle.Small}"/>
     </Style>
@@ -72,6 +72,29 @@
         <Style.Triggers>
             <Trigger Property="ComputedVerticalScrollBarVisibility" Value="Visible">
                 <Setter Property="Padding" Value="0 0 5 0"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MyTabItemHeaderPathStyle" TargetType="Path">
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Stroke" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="StrokeThickness" Value="20"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TabItem}, Path=IsSelected}" Value="True">
+                <Setter Property="Stroke" Value="{DynamicResource PrimaryBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MyTabItemHeaderContainerStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource RegionBrush}"/>
+        <Setter Property="Margin" Value="-10 -5 -8 -5"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

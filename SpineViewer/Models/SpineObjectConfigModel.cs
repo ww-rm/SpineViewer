@@ -1,4 +1,5 @@
 ﻿using Spine.Interfaces;
+using SpineViewer.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,15 @@ namespace SpineViewer.Models
 {
     public class SpineObjectConfigModel
     {
+        public class TrackConfigModel
+        {
+            public string AnimationName { get; set; } = "";
+
+            public float TimeScale { get; set; } = 1f;
+
+            public float Alpha { get; set; } = 1f;
+        }
+
         public bool UsePma { get; set; }
 
         public string Physics { get; set; } = ISkeleton.Physics.Update.ToString();
@@ -57,14 +67,6 @@ namespace SpineViewer.Models
 
         public bool DebugClippings { get; set; }
 
-    }
-
-    public class TrackConfigModel
-    {
-        public string AnimationName { get; set; } = "";
-
-        public float TimeScale { get; set; } = 1f;
-
-        public float Alpha { get; set; } = 1f;
+        public override string ToString() => JsonHelper.Serialize(this);
     }
 }

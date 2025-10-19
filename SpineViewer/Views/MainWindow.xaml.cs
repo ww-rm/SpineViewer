@@ -1,6 +1,4 @@
 ﻿using NLog;
-using NLog.Layouts;
-using NLog.Targets;
 using SFMLRenderer;
 using Spine;
 using SpineViewer.Models;
@@ -25,6 +23,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace SpineViewer.Views;
 
@@ -36,7 +35,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 上一次状态文件保存路径
     /// </summary>
-    public static readonly string LastStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "laststate.json");
+    public static readonly string UserStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "userstate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -45,6 +44,41 @@ public partial class MainWindow : Window
 
     private readonly SFMLRenderWindow _wallpaperRenderWindow;
     private readonly MainWindowViewModel _vm;
+
+    private readonly List<IDisposable> _userStateWatchers = [];
+    private DispatcherTimer _saveUserStateTimer;
+    private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(3);
+
+    public bool RootGridCol0Folded
+    {
+        get => ((ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl)).Visibility != Visibility.Visible;
+        set
+        {
+            var mainTabContentHost = (ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl);
+            if ((mainTabContentHost.Visibility != Visibility.Visible) == value)
+                return;
+            if (value)
+            {
+                // 寄存折叠前的宽度比例
+                _rootGrid.ColumnDefinitions[0].Tag = _rootGrid.ColumnDefinitions[0].Width;
+                _rootGrid.ColumnDefinitions[1].Tag = _rootGrid.ColumnDefinitions[1].Width;
+                _rootGrid.ColumnDefinitions[2].Tag = _rootGrid.ColumnDefinitions[2].Width;
+
+                // 进行折叠
+                mainTabContentHost.Visibility = Visibility.Collapsed;
+                _rootGrid.ColumnDefinitions[0].Width = GridLength.Auto;
+                _rootGrid.ColumnDefinitions[1].Width = new(0);
+            }
+            else
+            {
+                // 解除折叠
+                _rootGrid.ColumnDefinitions[0].Width = (GridLength)_rootGrid.ColumnDefinitions[0].Tag;
+                _rootGrid.ColumnDefinitions[1].Width = (GridLength)_rootGrid.ColumnDefinitions[1].Tag;
+                _rootGrid.ColumnDefinitions[2].Width = (GridLength)_rootGrid.ColumnDefinitions[2].Tag;
+                mainTabContentHost.Visibility = Visibility.Visible;
+            }
+        }
+    }
 
     public MainWindow()
     {
@@ -104,79 +138,6 @@ public partial class MainWindow : Window
         LogManager.ReconfigExistingLoggers();
     }
 
-    private void LoadLastState()
-    {
-        if (JsonHelper.Deserialize<LastStateModel>(LastStateFilePath, out var m, true))
-        {
-            Left = m.WindowLeft;
-            Top = m.WindowTop;
-            Width = m.WindowWidth;
-            Height = m.WindowHeight;
-            if (m.WindowState == WindowState.Maximized)
-            {
-                WindowState = WindowState.Maximized;
-            }
-            else
-            {
-                WindowState = WindowState.Normal;
-            }
-
-            _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
-            _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
-
-            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
-            _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
-
-            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height, GridUnitType.Star);
-            _explorerGrid.RowDefinitions[2].Height = new(m.ExplorerGridRow2Height, GridUnitType.Star);
-
-            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
-            _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
-
-            _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
-            _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
-            _vm.SFMLRendererViewModel.Speed = m.Speed;
-            _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
-            _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
-            _vm.SFMLRendererViewModel.BackgroundImageMode = m.BackgroundImageMode;
-        }
-    }
-
-    private void SaveLastState()
-    {
-        var rb = RestoreBounds;
-        var m = new LastStateModel()
-        {
-            WindowLeft = rb.Left,
-            WindowTop = rb.Top,
-            WindowWidth = rb.Width,
-            WindowHeight = rb.Height,
-            WindowState = WindowState,
-
-            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
-            RootGridCol2Width = _rootGrid.ColumnDefinitions[2].Width.Value,
-
-            ModelListRow0Height = _modelListGrid.RowDefinitions[0].Height.Value,
-            ModelListRow2Height = _modelListGrid.RowDefinitions[2].Height.Value,
-
-            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].Height.Value,
-            ExplorerGridRow2Height = _explorerGrid.RowDefinitions[2].Height.Value,
-
-            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
-            RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
-
-            ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
-            ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
-            MaxFps = _vm.SFMLRendererViewModel.MaxFps,
-            Speed = _vm.SFMLRendererViewModel.Speed,
-            ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
-            BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
-            BackgroundImageMode = _vm.SFMLRendererViewModel.BackgroundImageMode,
-        };
-
-        JsonHelper.Serialize(m, LastStateFilePath);
-    }
-
     #region MainWindow 事件处理
 
     private void MainWindow_SourceInitialized(object? sender, EventArgs e)
@@ -206,7 +167,29 @@ public partial class MainWindow : Window
         // 加载首选项
         _vm.PreferenceViewModel.LoadPreference();
 
-        LoadLastState();
+        // 还原上一次用户历史状态
+        LoadUserState();
+
+        // 添加用户状态监听器
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WidthProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.LeftProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.TopProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WindowStateProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[0], ColumnDefinition.WidthProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[2], ColumnDefinition.WidthProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
     }
 
     private void MainWindow_ContentRendered(object? sender, EventArgs e)
@@ -238,11 +221,6 @@ public partial class MainWindow : Window
     {
         if (!_vm.IsShuttingDownFromTray)
         {
-            if (_vm.CloseToTray is null)
-            {
-                _vm.PreferenceViewModel.CloseToTray = MessagePopupService.YesNo(AppResource.Str_CloseToTrayQuest);
-                _vm.PreferenceViewModel.SavePreference();
-            }
             if (_vm.CloseToTray is true)
             {
                 Hide();
@@ -251,13 +229,149 @@ public partial class MainWindow : Window
             }
         }
 
-        SaveLastState();
+        // 保存当前用户状态
+        SaveUserState();
+
+        // 撤除所有状态监听器
+        _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
+        foreach (var w in _userStateWatchers) w.Dispose();
+        _userStateWatchers.Clear();
+
         _vm.SFMLRendererViewModel.StopRender();
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
 
+    }
+
+    private void LoadUserState()
+    {
+        if (JsonHelper.Deserialize<UserStateModel>(UserStateFilePath, out var m, true))
+        {
+            Left = m.WindowLeft;
+            Top = m.WindowTop;
+            Width = m.WindowWidth;
+            Height = m.WindowHeight;
+            if (m.WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+            }
+
+            if (m.RootGridCol0Folded)
+            {
+                RootGridCol0Folded = true;
+                _rootGrid.ColumnDefinitions[0].Tag = new GridLength(m.RootGridCol0Width, GridUnitType.Star);
+                _rootGrid.ColumnDefinitions[2].Tag = new GridLength(m.RootGridCol2Width, GridUnitType.Star);
+            }
+            else
+            {
+                RootGridCol0Folded = false;
+                _rootGrid.ColumnDefinitions[0].Width = new(m.RootGridCol0Width, GridUnitType.Star);
+                _rootGrid.ColumnDefinitions[2].Width = new(m.RootGridCol2Width, GridUnitType.Star);
+            }
+
+            _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
+            _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
+
+            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height, GridUnitType.Star);
+            _explorerGrid.RowDefinitions[2].Height = new(m.ExplorerGridRow2Height, GridUnitType.Star);
+
+            _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
+            _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
+
+            _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
+            _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
+            _vm.SFMLRendererViewModel.Speed = m.Speed;
+            _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
+            _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
+            _vm.SFMLRendererViewModel.BackgroundImageMode = m.BackgroundImageMode;
+        }
+    }
+
+    private void SaveUserState()
+    {
+        var rb = RestoreBounds;
+        var m = new UserStateModel()
+        {
+            WindowLeft = rb.Left,
+            WindowTop = rb.Top,
+            WindowWidth = rb.Width,
+            WindowHeight = rb.Height,
+            WindowState = WindowState,
+
+            RootGridCol0Folded = RootGridCol0Folded,
+            RootGridCol0Width = _rootGrid.ColumnDefinitions[0].Width.Value,
+            RootGridCol2Width = _rootGrid.ColumnDefinitions[2].Width.Value,
+
+            ModelListRow0Height = _modelListGrid.RowDefinitions[0].Height.Value,
+            ModelListRow2Height = _modelListGrid.RowDefinitions[2].Height.Value,
+
+            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].Height.Value,
+            ExplorerGridRow2Height = _explorerGrid.RowDefinitions[2].Height.Value,
+
+            RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
+            RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
+
+            ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
+            ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
+            MaxFps = _vm.SFMLRendererViewModel.MaxFps,
+            Speed = _vm.SFMLRendererViewModel.Speed,
+            ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
+            BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
+            BackgroundImageMode = _vm.SFMLRendererViewModel.BackgroundImageMode,
+        };
+
+        if (m.RootGridCol0Folded)
+        {
+            m.RootGridCol0Width = ((GridLength)_rootGrid.ColumnDefinitions[0].Tag).Value;
+            m.RootGridCol2Width = ((GridLength)_rootGrid.ColumnDefinitions[2].Tag).Value;
+        }
+
+        JsonHelper.Serialize(m, UserStateFilePath);
+    }
+
+    /// <summary>
+    /// <see cref="SaveUserState"/> 的延时版本, 避免一次性大量执行
+    /// </summary>
+    private void DelayedSaveUserState()
+    {
+        // 第一次调用时创建定时器
+        if (_saveUserStateTimer == null)
+        {
+            _saveUserStateTimer = new() { Interval = _saveTimerDelay };
+            _saveUserStateTimer.Tick += (s, e) =>
+            {
+                _saveUserStateTimer.Stop();
+                SaveUserState();
+            };
+        }
+
+        // 每次触发都重置间隔和计时
+        _saveUserStateTimer.Stop();
+        _saveUserStateTimer.Start();
+    }
+
+    private void SFMLRendererUserStateChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof(SFMLRendererViewModel.ResolutionX):
+            case nameof(SFMLRendererViewModel.ResolutionY):
+            case nameof(SFMLRendererViewModel.MaxFps):
+            case nameof(SFMLRendererViewModel.Speed):
+            case nameof(SFMLRendererViewModel.ShowAxis):
+            case nameof(SFMLRendererViewModel.BackgroundColor):
+            case nameof(SFMLRendererViewModel.BackgroundImageMode):
+                DelayedSaveUserState();
+                break;
+            default:
+                break;
+        }
     }
 
     #endregion
@@ -316,6 +430,34 @@ public partial class MainWindow : Window
             {
                 wnd.SetVisible(false);
             }
+        }
+    }
+
+    #endregion
+
+    #region _mainTabControl 事件处理
+
+    private void MainTabControlHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        // 全屏状态忽略该功能
+        if (_fullScreenLayout.Visibility == Visibility.Visible)
+            return;
+
+        if (sender is not FrameworkElement fe)
+            return;
+
+        // 找到包含这个 Border 的 TabItem
+        var tabItem = VisualFindParent<TabItem>(fe);
+        if (tabItem is null) 
+            return;
+
+        if (_mainTabControl.SelectedItem == tabItem)
+        {
+            RootGridCol0Folded = !RootGridCol0Folded;
+        }
+        else
+        {
+            RootGridCol0Folded = false;
         }
     }
 
@@ -440,13 +582,6 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private static T? VisualUpwardSearch<T>(DependencyObject? source) where T : DependencyObject
-    {
-        while (source != null && source is not T)
-            source = VisualTreeHelper.GetParent(source);
-        return source as T;
-    }
-
     #endregion
 
     #region _spineFilesListBox 事件
@@ -486,6 +621,8 @@ public partial class MainWindow : Window
         // XXX: 操作系统设置里关闭窗口化游戏优化选项可以避免恰好全屏时的闪烁问题
 
         if (_fullScreenLayout.Visibility == Visibility.Visible) return;
+
+        RootGridCol0Folded = false; // 取消折叠
 
         IntPtr hwnd = new WindowInteropHelper(this).Handle;
         if (User32.GetScreenResolution(hwnd, out var resX, out var resY))
@@ -736,7 +873,16 @@ public partial class MainWindow : Window
     }
 
     #endregion
-    
+
+    private static T? VisualUpwardSearch<T>(DependencyObject? source) where T : DependencyObject
+    {
+        while (source != null && source is not T)
+            source = VisualTreeHelper.GetParent(source);
+        return source as T;
+    }
+
+    public static T? VisualFindParent<T>(DependencyObject child) where T : DependencyObject 
+        => VisualUpwardSearch<T>(VisualTreeHelper.GetParent(child));
 
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
@@ -749,4 +895,5 @@ public partial class MainWindow : Window
         return;
 #endif
     }
+
 }

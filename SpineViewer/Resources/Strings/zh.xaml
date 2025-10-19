@@ -45,7 +45,11 @@
     <s:String x:Key="Str_Reload">重新加载</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
+    <s:String x:Key="Str_SpineObjectConfig">模型参数</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">复制参数</s:String>
+    <s:String x:Key="Str_CopySpineObjectSkinConfig">复制参数（仅皮肤）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotAttachmentConfig">复制参数（仅插槽附件）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotVisibilityConfig">复制参数（仅插槽可见性）</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">应用参数</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">保存参数文件...</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">应用参数文件...</s:String>
@@ -78,13 +82,13 @@
     <s:String x:Key="Str_Y">纵坐标</s:String>
 
     <s:String x:Key="Str_Skin">皮肤</s:String>
-    <s:String x:Key="Str_EnableSkins">启用</s:String>
-    <s:String x:Key="Str_DisableSkins">禁用</s:String>
+    <s:String x:Key="Str_Enable">启用</s:String>
+    <s:String x:Key="Str_Disable">禁用</s:String>
+    <s:String x:Key="Str_EnableAll">全部启用</s:String>
+    <s:String x:Key="Str_DisableAll">全部禁用</s:String>
 
     <s:String x:Key="Str_Slot">插槽</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">清除附件</s:String>
-    <s:String x:Key="Str_EnableSlots">启用</s:String>
-    <s:String x:Key="Str_DisableSlots">禁用</s:String>
 
     <s:String x:Key="Str_Animation">动画</s:String>
     <s:String x:Key="Str_AppendTrack">添加</s:String>

@@ -45,7 +45,11 @@
     <s:String x:Key="Str_Reload">Reload</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
+    <s:String x:Key="Str_SpineObjectConfig">Model Config</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">Copy Config</s:String>
+    <s:String x:Key="Str_CopySpineObjectSkinConfig">Copy Parameters (Skin Only)</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotAttachmentConfig">Copy Parameters (Slot Attachments Only)</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotVisibilityConfig">Copy Parameters (Slot Visibility Only)</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">Apply Config</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">Save Config to File...</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">Apply Config from File...</s:String>
@@ -78,13 +82,13 @@
     <s:String x:Key="Str_Y">Y</s:String>
 
     <s:String x:Key="Str_Skin">Skin</s:String>
-    <s:String x:Key="Str_EnableSkins">Enable Skins</s:String>
-    <s:String x:Key="Str_DisableSkins">Disable Skins</s:String>
+    <s:String x:Key="Str_Enable">Enable</s:String>
+    <s:String x:Key="Str_Disable">Disable</s:String>
+    <s:String x:Key="Str_EnableAll">Enable All</s:String>
+    <s:String x:Key="Str_DisableAll">Disable All</s:String>
 
     <s:String x:Key="Str_Slot">Slot</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">Clear Slots Attachment</s:String>
-    <s:String x:Key="Str_EnableSlots">Enable Slots</s:String>
-    <s:String x:Key="Str_DisableSlots">Disable Slots</s:String>
 
     <s:String x:Key="Str_Animation">Animation</s:String>
     <s:String x:Key="Str_AppendTrack">Add</s:String>

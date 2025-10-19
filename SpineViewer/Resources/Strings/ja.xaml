@@ -45,7 +45,11 @@
     <s:String x:Key="Str_Reload">再読み込み</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
+    <s:String x:Key="Str_SpineObjectConfig">モデル設定</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
+    <s:String x:Key="Str_CopySpineObjectSkinConfig">パラメーターをコピー（スキンのみ）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotAttachmentConfig">パラメーターをコピー（スロットのアタッチメントのみ）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotVisibilityConfig">パラメーターをコピー（スロットの表示状態のみ）</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">パラメーターを適用</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">パラメータファイルを保存...</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">パラメータファイルを適用...</s:String>
@@ -78,13 +82,13 @@
     <s:String x:Key="Str_Y">Y座標</s:String>
 
     <s:String x:Key="Str_Skin">スキン</s:String>
-    <s:String x:Key="Str_EnableSkins">有効</s:String>
-    <s:String x:Key="Str_DisableSkins">無効</s:String>
+    <s:String x:Key="Str_Enable">有効にする</s:String>
+    <s:String x:Key="Str_Disable">無効にする</s:String>
+    <s:String x:Key="Str_EnableAll">すべて有効にする</s:String>
+    <s:String x:Key="Str_DisableAll">すべて無効にする</s:String>
 
     <s:String x:Key="Str_Slot">スロット</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">アタッチメントをクリア</s:String>
-    <s:String x:Key="Str_EnableSlots">有効</s:String>
-    <s:String x:Key="Str_DisableSlots">無効</s:String>
 
     <s:String x:Key="Str_Animation">アニメーション</s:String>
     <s:String x:Key="Str_AppendTrack">追加</s:String>

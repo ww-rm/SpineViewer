@@ -295,7 +295,7 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
         }
 
-        public bool? CloseToTray
+        public bool CloseToTray
         {
             get => _vmMain.CloseToTray;
             set => SetProperty(_vmMain.CloseToTray, value, v => _vmMain.CloseToTray = v);
