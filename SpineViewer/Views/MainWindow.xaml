@@ -170,21 +170,32 @@
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
+                                                    <MenuItem Header="{DynamicResource Str_SpineObjectConfig}">
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+C"
                                                               Command="{Binding Cmd_CopySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfig}"
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSkinConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSkinConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotAttachmentConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSlotAttachmentConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotVisibilityConfig}"
+                                                              Command="{Binding Cmd_CopySpineObjectSlotVisibilityConfig}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfig}"
                                                               InputGestureText="Ctrl+Shift+V"
                                                               Command="{Binding Cmd_ApplySpineObjectConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
+                                                        <Separator/>
+                                                        <MenuItem Header="{DynamicResource Str_ApplySpineObjectConfigFromFile}"
                                                               Command="{Binding Cmd_ApplySpineObjectConfigFromFile}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
+                                                        <MenuItem Header="{DynamicResource Str_SaveSpineObjectConfigToFile}"
                                                               Command="{Binding Cmd_SaveSpineObjectConfigToFile}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
+                                                    </MenuItem>
                                                     <MenuItem Header="{DynamicResource Str_Export}">
                                                         <MenuItem Header="{DynamicResource Str_ExportFrame}"
                                                                   Command="{Binding FrameExporterViewModel.Cmd_Export}"

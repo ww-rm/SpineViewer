@@ -32,6 +32,7 @@ namespace SpineViewer.Utils
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
             WriteIndented = true,
+            IndentSize = 4,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             AllowTrailingCommas = true,
             ReadCommentHandling = JsonCommentHandling.Skip
@@ -47,7 +48,6 @@ namespace SpineViewer.Utils
                 if (!quietForNotExist)
                 {
                     _logger.Error("Json file {0} not found", path);
-                    MessagePopupService.Error($"Json file {path} not found");
                 }
             }
             else
@@ -62,13 +62,11 @@ namespace SpineViewer.Utils
                         return true;
                     }
                     _logger.Error("Null data in file {0}", path);
-                    MessagePopupService.Error($"Null data in file {path}");
                 }
                 catch (Exception ex)
                 {
                     _logger.Trace(ex.ToString());
                     _logger.Error("Failed to read json file {0}, {1}", path, ex.Message);
-                    MessagePopupService.Error($"Failed to read json file {path}, {ex.ToString()}");
                 }
             }
             obj = default;
@@ -90,10 +88,23 @@ namespace SpineViewer.Utils
             {
                 _logger.Trace(ex.ToString());
                 _logger.Error("Failed to save json file {0}, {1}", path, ex.Message);
-                MessagePopupService.Error($"Failed to save json file {path}, {ex.ToString()}");
                 return false;
             }
             return true;
+        }
+
+        public static string Serialize<T>(T obj)
+        {
+            try
+            {
+                return JsonSerializer.Serialize(obj, _jsonOptions);
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Error("Failed to serialize json object {0}", ex.Message);
+                return string.Empty;
+            }
         }
     }
 

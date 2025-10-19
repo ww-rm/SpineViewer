@@ -45,7 +45,11 @@
     <s:String x:Key="Str_Reload">再読み込み</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
+    <s:String x:Key="Str_SpineObjectConfig">モデル設定</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
+    <s:String x:Key="Str_CopySpineObjectSkinConfig">パラメーターをコピー（スキンのみ）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotAttachmentConfig">パラメーターをコピー（スロットのアタッチメントのみ）</s:String>
+    <s:String x:Key="Str_CopySpineObjectSlotVisibilityConfig">パラメーターをコピー（スロットの表示状態のみ）</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfig">パラメーターを適用</s:String>
     <s:String x:Key="Str_SaveSpineObjectConfigToFile">パラメータファイルを保存...</s:String>
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">パラメータファイルを適用...</s:String>

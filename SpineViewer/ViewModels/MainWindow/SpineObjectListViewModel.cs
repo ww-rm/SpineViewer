@@ -34,6 +34,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 临时对象, 存储复制的模型参数
         /// </summary>
         private SpineObjectConfigModel? _copiedSpineObjectConfigModel = null;
+        private SpineObjectConfigApplyFlag _copiedConfigFlag = SpineObjectConfigApplyFlag.All;
 
         public SpineObjectListViewModel(MainWindowViewModel mainViewModel)
         {
@@ -98,6 +99,127 @@ namespace SpineViewer.ViewModels.MainWindow
                 _vmMain.SpineObjectTabViewModel.SelectedObjects = selectedItems;
             }
         }
+
+        /// <summary>
+        /// 从路径列表添加对象
+        /// </summary>
+        /// <param name="paths">可以是文件和文件夹</param>
+        public void AddSpineObjectFromFileList(IEnumerable<string> paths)
+        {
+            List<string> validPaths = [];
+            foreach (var path in paths)
+            {
+                if (File.Exists(path))
+                {
+                    var lowerPath = path.ToLowerInvariant();
+                    if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
+                        validPaths.Add(path);
+                }
+                else if (Directory.Exists(path))
+                {
+                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
+                    {
+                        var lowerPath = file.ToLowerInvariant();
+                        if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
+                            validPaths.Add(file);
+                    }
+                }
+            }
+
+            if (validPaths.Count > 1)
+            {
+                if (validPaths.Count > 100)
+                {
+                    if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_TooManyItemsToAddQuest, validPaths.Count)))
+                        return;
+                }
+                ProgressService.RunAsync((pr, ct) => AddSpineObjectsTask(
+                    validPaths.ToArray(), pr, ct),
+                    AppResource.Str_AddSpineObjectsTitle
+                );
+            }
+            else if (validPaths.Count > 0)
+            {
+                InsertSpineObject(validPaths[0]);
+                _logger.LogCurrentProcessMemoryUsage();
+            }
+        }
+
+        /// <summary>
+        /// 用于后台添加模型的任务方法
+        /// </summary>
+        private void AddSpineObjectsTask(string[] paths, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = paths.Length;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var skelPath = paths[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
+
+                if (InsertSpineObject(skelPath))
+                    success++;
+                else
+                    error++;
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {skelPath}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Batch load {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} skel loaded successfully", success);
+
+            _logger.LogCurrentProcessMemoryUsage();
+        }
+
+        /// <summary>
+        /// 安全地在列表头添加一个模型, 发生错误会输出日志
+        /// </summary>
+        /// <returns>是否添加成功</returns>
+        private bool InsertSpineObject(string skelPath, string? atlasPath = null)
+        {
+            try
+            {
+                var sp = new SpineObjectModel(skelPath, atlasPath);
+                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
+                    });
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
+            }
+            return false;
+        }
+
+        #region 模型列表管理菜单项实现
 
         /// <summary>
         /// 弹窗添加单模型命令
@@ -349,18 +471,53 @@ namespace SpineViewer.ViewModels.MainWindow
             return true;
         }
 
+        #endregion
+
+        #region 模型参数管理菜单项实现
+
         /// <summary>
         /// 复制模型参数
         /// </summary>
-        public RelayCommand<IList?> Cmd_CopySpineObjectConfig => _cmd_CopySpineObjectConfig ??= new(CopySpineObjectConfig_Execute, CopySpineObjectConfig_CanExecute);
+        public RelayCommand<IList?> Cmd_CopySpineObjectConfig => _cmd_CopySpineObjectConfig ??= new(
+            args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.All), 
+            CopySpineObjectConfig_CanExecute
+        );
         private RelayCommand<IList?>? _cmd_CopySpineObjectConfig;
 
-        private void CopySpineObjectConfig_Execute(IList? args)
+        /// <summary>
+        /// 复制模型参数 (仅皮肤)
+        /// </summary>
+        public RelayCommand<IList?> Cmd_CopySpineObjectSkinConfig => _cmd_CopySpineObjectSkinConfig ??= new(
+            args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.Skin), 
+            CopySpineObjectConfig_CanExecute
+        );
+        private RelayCommand<IList?>? _cmd_CopySpineObjectSkinConfig;
+
+        /// <summary>
+        /// 复制模型参数 (仅插槽附件)
+        /// </summary>
+        public RelayCommand<IList?> Cmd_CopySpineObjectSlotAttachmentConfig => _cmd_CopySpineObjectSlotAttachmentConfig ??= new(
+            args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.SlotAttachement), 
+            CopySpineObjectConfig_CanExecute
+        );
+        private RelayCommand<IList?>? _cmd_CopySpineObjectSlotAttachmentConfig;
+
+        /// <summary>
+        /// 复制模型参数 (仅插槽可见性)
+        /// </summary>
+        public RelayCommand<IList?> Cmd_CopySpineObjectSlotVisibilityConfig => _cmd_CopySpineObjectSlotVisibilityConfig ??= new(
+            args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.SlotVisibility), 
+            CopySpineObjectConfig_CanExecute
+        );
+        private RelayCommand<IList?>? _cmd_CopySpineObjectSlotVisibilityConfig;
+
+        private void CopySpineObjectConfig_Execute(IList? args, SpineObjectConfigApplyFlag flag)
         {
             if (!CopySpineObjectConfig_CanExecute(args)) return;
             var sp = (SpineObjectModel)args[0];
             _copiedSpineObjectConfigModel = sp.ObjectConfig;
-            _logger.Info("Copy config from model: {0}", sp.Name);
+            _copiedConfigFlag = flag;
+            _logger.Info("Copy config[{0}] from model: {1}", flag, sp.Name);
         }
 
         private bool CopySpineObjectConfig_CanExecute(IList? args)
@@ -381,8 +538,8 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!ApplySpineObjectConfig_CanExecute(args)) return;
             foreach (SpineObjectModel sp in args)
             {
-                sp.ObjectConfig = _copiedSpineObjectConfigModel;
-                _logger.Info("Apply config to model: {0}", sp.Name);
+                sp.ApplyObjectConfig(_copiedSpineObjectConfigModel, _copiedConfigFlag);
+                _logger.Info("Apply config[{0}] to model: {1}", _copiedConfigFlag, sp.Name);
             }
         }
 
@@ -439,124 +596,9 @@ namespace SpineViewer.ViewModels.MainWindow
             return true;
         }
 
-        /// <summary>
-        /// 从路径列表添加对象
-        /// </summary>
-        /// <param name="paths">可以是文件和文件夹</param>
-        public void AddSpineObjectFromFileList(IEnumerable<string> paths)
-        {
-            List<string> validPaths = [];
-            foreach (var path in paths)
-            {
-                if (File.Exists(path))
-                {
-                    var lowerPath = path.ToLowerInvariant();
-                    if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
-                        validPaths.Add(path);
-                }
-                else if (Directory.Exists(path))
-                {
-                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
-                    {
-                        var lowerPath = file.ToLowerInvariant();
-                        if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
-                            validPaths.Add(file);
-                    }
-                }
-            }
+        #endregion
 
-            if (validPaths.Count > 1)
-            {
-                if (validPaths.Count > 100)
-                {
-                    if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_TooManyItemsToAddQuest, validPaths.Count)))
-                        return;
-                }
-                ProgressService.RunAsync((pr, ct) => AddSpineObjectsTask(
-                    validPaths.ToArray(), pr, ct),
-                    AppResource.Str_AddSpineObjectsTitle
-                );
-            }
-            else if (validPaths.Count > 0)
-            {
-                InsertSpineObject(validPaths[0]);
-                _logger.LogCurrentProcessMemoryUsage();
-            }
-        }
-
-        /// <summary>
-        /// 用于后台添加模型的任务方法
-        /// </summary>
-        private void AddSpineObjectsTask(string[] paths, IProgressReporter reporter, CancellationToken ct)
-        {
-            int totalCount = paths.Length;
-            int success = 0;
-            int error = 0;
-
-            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
-            _vmMain.ProgressValue = 0;
-
-            reporter.Total = totalCount;
-            reporter.Done = 0;
-            reporter.ProgressText = $"[0/{totalCount}]";
-            for (int i = 0; i < totalCount; i++)
-            {
-                if (ct.IsCancellationRequested) break;
-
-                var skelPath = paths[i];
-                reporter.ProgressText = $"[{i}/{totalCount}] {skelPath}";
-
-                if (InsertSpineObject(skelPath))
-                    success++;
-                else
-                    error++;
-
-                reporter.Done = i + 1;
-                reporter.ProgressText = $"[{i + 1}/{totalCount}] {skelPath}";
-                _vmMain.ProgressValue = (i + 1f) / totalCount;
-            }
-            _vmMain.ProgressState = TaskbarItemProgressState.None;
-
-            if (error > 0)
-                _logger.Warn("Batch load {0} successfully, {1} failed", success, error);
-            else
-                _logger.Info("{0} skel loaded successfully", success);
-
-            _logger.LogCurrentProcessMemoryUsage();
-        }
-
-        /// <summary>
-        /// 安全地在列表头添加一个模型, 发生错误会输出日志
-        /// </summary>
-        /// <returns>是否添加成功</returns>
-        private bool InsertSpineObject(string skelPath, string? atlasPath = null)
-        {
-            try
-            {
-                var sp = new SpineObjectModel(skelPath, atlasPath);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
-                if (Application.Current.Dispatcher.CheckAccess())
-                {
-                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                    RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
-                        RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Add, sp));
-                    });
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Trace(ex.ToString());
-                _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
-            }
-            return false;
-        }
+        #region 工作区参数实现
 
         public List<SpineObjectWorkspaceConfigModel> LoadedSpineObjects
         {
@@ -681,5 +723,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             return false;
         }
+
+        #endregion
     }
 }
