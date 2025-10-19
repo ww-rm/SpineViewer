@@ -437,12 +437,14 @@
                                             <ListBox ItemsSource="{Binding Skins}">
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="{DynamicResource Str_EnableSkins}" 
+                                                        <MenuItem Header="{DynamicResource Str_Enable}" 
                                                                   Command="{Binding Cmd_EnableSkins}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                        <MenuItem Header="{DynamicResource Str_DisableSkins}" 
+                                                        <MenuItem Header="{DynamicResource Str_Disable}" 
                                                                   Command="{Binding Cmd_DisableSkins}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_EnableAll}" Command="{Binding Cmd_EnableAllSkins}"/>
+                                                        <MenuItem Header="{DynamicResource Str_DisableAll}" Command="{Binding Cmd_DisableAllSkins}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
 
@@ -468,12 +470,14 @@
                                             <ListBox ItemsSource="{Binding Slots}" Grid.IsSharedSizeScope="True">
                                                 <ListBox.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="{DynamicResource Str_EnableSlots}" 
+                                                        <MenuItem Header="{DynamicResource Str_Enable}" 
                                                                   Command="{Binding Cmd_EnableSlots}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                        <MenuItem Header="{DynamicResource Str_DisableSlots}" 
+                                                        <MenuItem Header="{DynamicResource Str_Disable}" 
                                                                   Command="{Binding Cmd_DisableSlots}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_EnableAll}" Command="{Binding Cmd_EnableAllSlots}"/>
+                                                        <MenuItem Header="{DynamicResource Str_DisableAll}" Command="{Binding Cmd_DisableAllSlots}"/>
                                                     </ContextMenu>
                                                 </ListBox.ContextMenu>
 

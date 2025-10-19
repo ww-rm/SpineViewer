@@ -346,6 +346,18 @@ namespace SpineViewer.ViewModels.MainWindow
         );
         private RelayCommand<IList?> _cmd_DisableSkins;
 
+        public RelayCommand Cmd_EnableAllSkins => _cmd_EnableAllSkins ??= new(
+            () => { if (_skins.Count <= 0) return; foreach (var s in _skins) s.Status = true; },
+            () => { return _skins.Count > 0; }
+        );
+        private RelayCommand _cmd_EnableAllSkins;
+
+        public RelayCommand Cmd_DisableAllSkins => _cmd_DisableAllSkins ??= new(
+            () => { if (_skins.Count <= 0) return; foreach (var s in _skins) s.Status = false; },
+            () => { return _skins.Count > 0; }
+        );
+        private RelayCommand _cmd_DisableAllSkins;
+
         public ObservableCollection<SlotViewModel> Slots => _slots;
 
         public RelayCommand<IList?> Cmd_EnableSlots => _cmd_EnableSlots ??= new (
@@ -359,6 +371,18 @@ namespace SpineViewer.ViewModels.MainWindow
             args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
         private RelayCommand<IList?> _cmd_DisableSlots;
+
+        public RelayCommand Cmd_EnableAllSlots => _cmd_EnableAllSlots ??= new(
+            () => { if (_slots.Count <= 0) return; foreach (var s in _slots) s.Visible = true; },
+            () => { return _slots.Count > 0; }
+        );
+        private RelayCommand _cmd_EnableAllSlots;
+
+        public RelayCommand Cmd_DisableAllSlots => _cmd_DisableAllSlots ??= new(
+            () => { if (_slots.Count <= 0) return; foreach (var s in _slots) s.Visible = false; },
+            () => { return _slots.Count > 0; }
+        );
+        private RelayCommand _cmd_DisableAllSlots;
 
         public ObservableCollection<AnimationTrackViewModel> AnimationTracks => _animationTracks;
 

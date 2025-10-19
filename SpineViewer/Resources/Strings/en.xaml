@@ -78,13 +78,13 @@
     <s:String x:Key="Str_Y">Y</s:String>
 
     <s:String x:Key="Str_Skin">Skin</s:String>
-    <s:String x:Key="Str_EnableSkins">Enable Skins</s:String>
-    <s:String x:Key="Str_DisableSkins">Disable Skins</s:String>
+    <s:String x:Key="Str_Enable">Enable</s:String>
+    <s:String x:Key="Str_Disable">Disable</s:String>
+    <s:String x:Key="Str_EnableAll">Enable All</s:String>
+    <s:String x:Key="Str_DisableAll">Disable All</s:String>
 
     <s:String x:Key="Str_Slot">Slot</s:String>
     <s:String x:Key="Str_ClearSlotsAttachment">Clear Slots Attachment</s:String>
-    <s:String x:Key="Str_EnableSlots">Enable Slots</s:String>
-    <s:String x:Key="Str_DisableSlots">Disable Slots</s:String>
 
     <s:String x:Key="Str_Animation">Animation</s:String>
     <s:String x:Key="Str_AppendTrack">Add</s:String>
