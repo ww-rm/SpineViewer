@@ -181,16 +181,7 @@ options:
 
             if (warmup)
             {
-                float delta = 1f / fps;
-                for (int i = 0; i < warmUpLoops; i++)
-                {
-                    float t = 0;
-                    while (t < trackEntry.Animation.Duration)
-                    {
-                        sp.Update(delta);
-                        t += delta;
-                    }
-                }
+                sp.Update(trackEntry.Animation.Duration * warmUpLoops);
             }
 
             foreach (var slotName in hideSlots)
