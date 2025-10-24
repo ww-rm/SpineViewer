@@ -33,6 +33,7 @@ options:
   --speed FLOAT         Speed of animation (for video), default 1.0
   --color HEX           Background color as a hex RGBA color, default 000000ff (opaque black)
   --quiet               Removes console progress log, default false
+  --warmup INT          Warm Up Physics, default 2 loops before export
 ";
 
         public static void Main(string[] args)
@@ -57,6 +58,8 @@ options:
             float speed = 1;
             Color backgroundColor = Color.Black;
             bool quiet = false;
+            bool warmup = false;
+            int warmUpLoops = 2;
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -126,6 +129,10 @@ options:
                     case "--quiet":
                         quiet = true;
                         break;
+                    case "--warmup":
+                        warmUpLoops = int.Parse(args[++i]);
+                        warmup = true;
+                        break;
                     default:
                         Console.Error.WriteLine($"Unknown argument: {args[i]}");
                         Environment.Exit(2);
@@ -171,6 +178,11 @@ options:
                 trackEntry.TrackTime = time.Value;
             }
             sp.Update(0);
+
+            if (warmup)
+            {
+                sp.Update(trackEntry.Animation.Duration * warmUpLoops);
+            }
 
             foreach (var slotName in hideSlots)
             {
