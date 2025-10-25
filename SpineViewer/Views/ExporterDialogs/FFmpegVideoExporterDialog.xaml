@@ -247,8 +247,8 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_ApngPred}" ToolTip="{DynamicResource Str_ApngPredTooltip}"/>
-                                <TextBox Grid.Column="1" Text="{Binding ApngPred}" ToolTip="{DynamicResource Str_ApngPredTooltip}"/>
+                                <Label Content="{DynamicResource Str_PredMethod}" ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
+                                <TextBox Grid.Column="1" Text="{Binding PredMethod}" ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
                             </Grid>
 
                             <!-- CRF 参数 -->

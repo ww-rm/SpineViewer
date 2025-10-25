@@ -62,8 +62,8 @@ namespace Spine.Exporters
         /// <summary>
         /// [Apng] 预测器算法, 取值范围 0-5, 分别对应 none, sub, up, avg, paeth, mixed
         /// </summary>
-        public int ApngPred { get => _apngPred; set => _apngPred = Math.Clamp(value, 0, 5); }
-        private int _apngPred = 5;
+        public int PredMethod { get => _predMethod; set => _predMethod = Math.Clamp(value, 0, 5); }
+        private int _predMethod = 5;
 
         /// <summary>
         /// [Mp4/Webm/Mkv] CRF
@@ -142,7 +142,7 @@ namespace Spine.Exporters
 
         private void SetApngOptions(FFMpegArgumentOptions options)
         {
-            var customArgs = $"-vf unpremultiply=inplace=1 -plays {(_loop ? 0 : 1)} -pred {_apngPred}";
+            var customArgs = $"-vf unpremultiply=inplace=1 -plays {(_loop ? 0 : 1)} -pred {_predMethod}";
             options.ForceFormat("apng").WithVideoCodec("apng").ForcePixelFormat("rgba")
                 .WithCustomArgument(customArgs);
         }

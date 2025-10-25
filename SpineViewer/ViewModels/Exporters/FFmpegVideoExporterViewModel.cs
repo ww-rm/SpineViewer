@@ -57,8 +57,8 @@ namespace SpineViewer.ViewModels.Exporters
         public bool EnableParamLossless =>
             _format == FFmpegVideoExporter.VideoFormat.Webp;
 
-        public int ApngPred { get => _apngPred; set => SetProperty(ref _apngPred, Math.Clamp(value, 0, 5)); }
-        protected int _apngPred = 5;
+        public int PredMethod { get => _predMethod; set => SetProperty(ref _predMethod, Math.Clamp(value, 0, 5)); }
+        protected int _predMethod = 5;
 
         public bool EnableParamApngPred =>
             _format == FFmpegVideoExporter.VideoFormat.Apng;
@@ -102,7 +102,7 @@ namespace SpineViewer.ViewModels.Exporters
                 Loop = _loop,
                 Quality = _quality,
                 Lossless = _lossless,
-                ApngPred = _apngPred,
+                PredMethod = _predMethod,
                 Crf = _crf,
                 Profile = _profile,
             };
