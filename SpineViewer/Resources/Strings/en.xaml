@@ -211,7 +211,7 @@
     <s:String x:Key="Str_CrfParameter">CRF Parameter</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF parameter, range 0-63, lower value means higher quality</s:String>
     <s:String x:Key="Str_ProfileParameter">Profile Parameter</s:String>
-    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile parameter, integer between -1 and 5,&#x0A;-1 means automatic, higher values indicate higher quality,&#x0A;Alpha channel encoding is only available when value is 4 or higher</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile parameter, an integer between -1 and 5,&#x0A;corresponding to: auto, proxy, lt, standard, hq, 4444, and 4444xq.&#x0A;Alpha channel encoding is available only when the value is 4 or higher.</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">Export Format</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg export format (equivalent to "-f"), e.g. "mp4", "webm"</s:String>

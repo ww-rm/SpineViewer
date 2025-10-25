@@ -211,7 +211,7 @@
     <s:String x:Key="Str_CrfParameter">CRF パラメータ</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF パラメータ、範囲0-63。値が小さいほど品質が高い</s:String>
     <s:String x:Key="Str_ProfileParameter">プロファイルパラメータ</s:String>
-    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;プロファイルパラメータ、-1から5の整数、&#x0A;-1は自動、値が大きいほど品質が高い、&#x0A;値が4以上の場合のみアルファチャンネルをエンコード可能</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile パラメータ。値は -1 ～ 5 の整数で、&#x0A;それぞれ auto、proxy、lt、standard、hq、4444、4444xq に対応します。&#x0A;値が 4 以上の場合のみアルファチャンネルのエンコードが可能です。</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">エクスポートフォーマット</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpegエクスポートフォーマット。パラメーター“-f”に相当します。例: “mp4”、“webm”</s:String>
