@@ -16,6 +16,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
         <ProjectReference Include="..\Spine\Spine.csproj" />
     </ItemGroup>
