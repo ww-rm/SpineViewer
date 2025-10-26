@@ -128,7 +128,7 @@ namespace Spine.Exporters
             int frameCount = GetFrameCount();
             int frameIdx = 0;
 
-            _progressReporter?.Invoke(frameCount, 0, $"[{frameIdx}/{frameCount}] {output}");
+            _progressReporter?.Invoke(frameCount, 0, $"[0/{frameCount}] {output}");
             foreach (var frame in GetFrames(spines))
             {
                 if (ct.IsCancellationRequested)
@@ -138,7 +138,7 @@ namespace Spine.Exporters
                     break;
                 }
 
-                _progressReporter?.Invoke(frameCount, frameIdx, $"[{frameIdx + 1}/{frameCount}] {output}");
+                _progressReporter?.Invoke(frameCount, frameIdx + 1, $"[{frameIdx + 1}/{frameCount}] {output}");
                 yield return frame;
                 frameIdx++;
             }
