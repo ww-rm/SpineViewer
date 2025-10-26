@@ -316,9 +316,9 @@ namespace SpineViewerCLI
             // TODO: 设置要启用的插槽
 
             // 时间轴处理
-            spine.Update(result.GetValue(OptTime));
             var warmup = result.GetValue(OptWarmUp);
             spine.Update(warmup < 0 ? spine.GetAnimationMaxDuration() : warmup);
+            spine.Update(result.GetValue(OptTime));
 
             var exporter = GetExporterFilledWithArgs(result, spine);
 
