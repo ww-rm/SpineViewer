@@ -92,7 +92,7 @@ namespace Spine.Exporters
         }
 
         /// <summary>
-        /// 生成帧序列
+        /// 生成帧序列, 用于导出帧序列
         /// </summary>
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spines)
         {
@@ -121,7 +121,7 @@ namespace Spine.Exporters
         }
 
         /// <summary>
-        /// 生成帧序列, 支持中途取消和进度输出
+        /// 生成帧序列, 支持中途取消和进度输出, 用于动图视频等单个文件输出
         /// </summary>
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spines, string output, CancellationToken ct)
         {

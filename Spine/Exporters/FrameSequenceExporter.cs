@@ -24,7 +24,7 @@ namespace Spine.Exporters
             int frameCount = GetFrameCount();
             int frameIdx = 0;
 
-            _progressReporter?.Invoke(frameCount, 0, $"[{frameIdx}/{frameCount}] {output}");
+            _progressReporter?.Invoke(frameCount, 0, $"[{frameIdx}/{frameCount}] {output}"); // 导出帧序列单独在此处调用进度报告
             foreach (var frame in GetFrames(spines))
             {
                 if (ct.IsCancellationRequested)
