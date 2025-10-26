@@ -1,7 +1,6 @@
 using NLog;
-using SFML.Graphics;
-using SFML.System;
 using SkiaSharp;
+using Spectre.Console;
 using Spine;
 using Spine.Exporters;
 using System.CommandLine;
@@ -21,14 +20,12 @@ namespace SpineViewerCLI
         {
             InitializeFileLog();
 
-            var cmdQuery = new QueryCommand();
-            var cmdExport = new ExportCommand();
-
             var cmdRoot = new RootCommand("Root Command")
             {
                 OptQuiet,
-                cmdQuery,
-                cmdExport,
+                new QueryCommand(),
+                new PreviewCommand(),
+                new ExportCommand(),
             };
 
             var result = cmdRoot.Parse(args);
