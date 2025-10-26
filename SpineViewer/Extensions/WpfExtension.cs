@@ -1,19 +1,41 @@
-﻿using SkiaSharp;
+﻿using SFML.Graphics;
+using SFML.System;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Runtime.InteropServices;
 
 namespace SpineViewer.Extensions
 {
     public static class WpfExtension
     {
+        public static FloatRect ToFloatRect(this Rect self)
+        {
+            return new((float)self.X, (float)self.Y, (float)self.Width, (float)self.Height);
+        }
+
+        public static Vector2f ToVector2f(this Size self)
+        {
+            return new((float)self.Width, (float)self.Height);
+        }
+
+        public static Vector2u ToVector2u(this Size self)
+        {
+            return new((uint)self.Width, (uint)self.Height);
+        }
+
+        public static Vector2i ToVector2i(this Size self)
+        {
+            return new((int)self.Width, (int)self.Height);
+        }
+
         /// <summary>
         /// 从本地 WebP 文件读取，并保留透明度，返回一个可以直接用于 WPF Image.Source 的 BitmapSource。
         /// </summary>
