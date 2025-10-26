@@ -347,6 +347,8 @@ namespace SpineViewerCLI
             {
                 exporter.Export(output, spine);
             }
+
+            _logger.Info($"{spine.SkelPath} export completed");
         }
 
         private BaseExporter GetExporterFilledWithArgs(ParseResult result, SpineObject spine)
