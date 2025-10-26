@@ -53,7 +53,7 @@ namespace Spine.Exporters
         /// <summary>
         /// 获取帧图像, 结果是预乘的
         /// </summary>
-        public SKImage Export(params SpineObject[] spines)
+        public SKImage ExportMemoryImage(params SpineObject[] spines)
         {
             using var frame = GetFrame(spines);
             var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
