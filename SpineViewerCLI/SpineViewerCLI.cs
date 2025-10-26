@@ -21,11 +21,13 @@ namespace SpineViewerCLI
         {
             InitializeFileLog();
 
+            var cmdQuery = new QueryCommand();
             var cmdExport = new ExportCommand();
 
             var cmdRoot = new RootCommand("Root Command")
             {
                 OptQuiet,
+                cmdQuery,
                 cmdExport,
             };
 
