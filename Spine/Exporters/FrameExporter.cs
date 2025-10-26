@@ -18,7 +18,23 @@ namespace Spine.Exporters
         public FrameExporter(uint width = 100, uint height = 100) : base(width, height) { }
         public FrameExporter(Vector2u resolution) : base(resolution) { }
 
-        public SKEncodedImageFormat Format { get => _format; set => _format = value; }
+        public SKEncodedImageFormat Format 
+        { 
+            get => _format; 
+            set {
+                switch (value)
+                {
+                    case SKEncodedImageFormat.Jpeg:
+                    case SKEncodedImageFormat.Png:
+                    case SKEncodedImageFormat.Webp:
+                        _format = value;
+                        break;
+                    default:
+                        _logger.Warn("Omit unsupported exporter format: {0}", value);
+                        break;
+                }
+            }
+        }
         protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;
 
         public int Quality { get => _quality; set => _quality = Math.Clamp(value, 0, 100); }
@@ -32,6 +48,17 @@ namespace Spine.Exporters
             using var data = skImage.Encode(_format, _quality);
             using var stream = File.OpenWrite(output);
             data.SaveTo(stream);
+        }
+
+        /// <summary>
+        /// 获取画面数据, 正常像素, 非预乘
+        /// </summary>
+        public SKData Export(params SpineObject[] spines)
+        {
+            using var frame = GetFrame(spines);
+            var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
+            using var skImage = SKImage.FromPixelCopy(info, frame.Image.Pixels);
+            return skImage.Encode(SKEncodedImageFormat.Png, 100);
         }
     }
 }
