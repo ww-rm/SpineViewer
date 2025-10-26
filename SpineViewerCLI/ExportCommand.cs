@@ -269,14 +269,7 @@ namespace SpineViewerCLI
                     r.AddError($"{OptSpeed.Name} must be non-negative.");
             });
 
-            // 用反射查找自己所有的公开属性是 Argument 或者 Option 的
-            foreach (var prop in GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                var value = prop.GetValue(this);
-                if (value is Argument arg) Add(arg);
-                else if (value is Option opt) Add(opt);
-            }
-
+            this.AddArgsAndOpts();
             SetAction(ExportAction);
         }
 

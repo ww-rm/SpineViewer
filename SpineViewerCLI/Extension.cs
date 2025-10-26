@@ -3,7 +3,9 @@ using SFML.System;
 using Spine;
 using System;
 using System.Collections.Generic;
+using System.CommandLine;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,6 +85,21 @@ namespace SpineViewerCLI
                 copy.Update(delta);
             }
             return bounds;
+        }
+
+        /// <summary>
+        /// 自动添加所有能找到的类型是 <see cref="Argument"/> 或者 <see cref="Option"/> 的公开属性
+        /// </summary>
+        /// <param name="self"></param>
+        public static void AddArgsAndOpts(this Command self)
+        {
+            // 用反射查找自己所有的公开属性是 Argument 或者 Option 的
+            foreach (var prop in self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var value = prop.GetValue(self);
+                if (value is Argument arg) self.Add(arg);
+                else if (value is Option opt) self.Add(opt);
+            }
         }
     }
 }
