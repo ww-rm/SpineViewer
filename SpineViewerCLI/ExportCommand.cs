@@ -255,13 +255,18 @@ namespace SpineViewerCLI
             };
             OptScale.Validators.Add(r =>
             {
-                if (r.Tokens.Count > 0 && float.TryParse(r.Tokens[0].Value, out var val) && val < 0)
+                if (r.Tokens.Count > 0 && float.TryParse(r.Tokens[0].Value, out var v) && v < 0)
                     r.AddError($"{OptScale.Name} must be non-negative.");
             });
             OptTime.Validators.Add(r =>
             {
-                if (r.Tokens.Count > 0 && float.TryParse(r.Tokens[0].Value, out var val) && val < 0)
+                if (r.Tokens.Count > 0 && float.TryParse(r.Tokens[0].Value, out var v) && v < 0)
                     r.AddError($"{OptTime.Name} must be non-negative.");
+            });
+            OptSpeed.Validators.Add(r =>
+            {
+                if (r.Tokens.Count > 0 && float.TryParse(r.Tokens[0].Value, out var v) && v < 0)
+                    r.AddError($"{OptSpeed.Name} must be non-negative.");
             });
 
             // 用反射查找自己所有的公开属性是 Argument 或者 Option 的
