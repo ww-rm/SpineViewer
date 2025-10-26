@@ -38,7 +38,7 @@ namespace Spine.Exporters
         protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;
 
         public int Quality { get => _quality; set => _quality = Math.Clamp(value, 0, 100); }
-        protected int _quality = 80;
+        protected int _quality = 100;
 
         public override void Export(string output, params SpineObject[] spines)
         {
@@ -51,14 +51,13 @@ namespace Spine.Exporters
         }
 
         /// <summary>
-        /// 获取画面数据, 正常像素, 非预乘
+        /// 获取帧图像, 结果是预乘的
         /// </summary>
-        public SKData Export(params SpineObject[] spines)
+        public SKImage Export(params SpineObject[] spines)
         {
             using var frame = GetFrame(spines);
             var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            using var skImage = SKImage.FromPixelCopy(info, frame.Image.Pixels);
-            return skImage.Encode(SKEncodedImageFormat.Png, 100);
+            return SKImage.FromPixelCopy(info, frame.Image.Pixels);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace SpineViewer.ViewModels.Exporters
         protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;
 
         public int Quality { get => _quality; set => SetProperty(ref _quality, Math.Clamp(value, 0, 100)); }
-        protected int _quality = 80;
+        protected int _quality = 100;
 
         private string FormatSuffix
         {
