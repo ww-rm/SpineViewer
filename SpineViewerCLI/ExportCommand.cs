@@ -320,7 +320,7 @@ namespace SpineViewerCLI
             spine.Update(warmup < 0 ? spine.GetAnimationMaxDuration() : warmup);
             spine.Update(result.GetValue(OptTime));
 
-            var exporter = GetExporterFilledWithArgs(result, spine);
+            using var exporter = GetExporterFilledWithArgs(result, spine);
 
             // 创建输出目录
             string output = result.GetValue(OptOutput);
