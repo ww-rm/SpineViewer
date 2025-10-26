@@ -57,7 +57,7 @@ namespace SpineViewerCLI
 
         public Option<string[]> OptAnimations { get; } = new("--animations", "-a")
         {
-            Description = "Animations to export. Supports multiple entries, placed in order on tracks starting from 0。",
+            Description = "Animations to export. Supports multiple entries, placed in order on tracks starting from 0.",
             Required = true,
             Arity = ArgumentArity.OneOrMore,
             AllowMultipleArgumentsPerToken = true,
