@@ -18,7 +18,6 @@ namespace SpineViewerCLI
         Png = 0x0100,
         Jpg = 0x0101,
         Webp = 0x0102,
-        Bmp = 0x0103,
         Frames = 0x0200,
         Gif = 0x0300,
         Webpa = 0x0301,
