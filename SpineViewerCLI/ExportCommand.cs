@@ -1,5 +1,5 @@
 ﻿using NLog;
-using SFML.Graphics;
+using Spectre.Console;
 using Spine;
 using Spine.Exporters;
 using System;
@@ -107,7 +107,7 @@ namespace SpineViewerCLI
 
         #region >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 基本导出参数 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        public Option<Color> OptColor { get; } = new("--color")
+        public Option<SFML.Graphics.Color> OptColor { get; } = new("--color")
         {
             Description = "Background color of content.",
             //DefaultValueFactory = ...
@@ -233,7 +233,7 @@ namespace SpineViewerCLI
         {
             OptColor.DefaultValueFactory = r =>
             {
-                var defVal = Color.Black;
+                var defVal = SFML.Graphics.Color.Black;
                 try
                 {
                     switch (r.GetValue(OptFormat))
@@ -245,7 +245,7 @@ namespace SpineViewerCLI
                         case ExportFormat.Webpa:
                         case ExportFormat.Apng:
                         case ExportFormat.Webm:
-                            defVal = Color.Transparent;
+                            defVal = SFML.Graphics.Color.Transparent;
                             break;
                     }
                 }
@@ -326,17 +326,27 @@ namespace SpineViewerCLI
             Directory.CreateDirectory(exporter is FrameSequenceExporter ? output : Path.GetDirectoryName(output));
 
             // 挂载进度报告函数
-            if (!result.GetValue(OptNoProgress))
+            if (exporter is VideoExporter ve && !result.GetValue(OptNoProgress))
             {
-                exporter.ProgressReporter = (total, done, text) =>
+                AnsiConsole.Progress().Columns(
+                [
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new PercentageColumn(),
+                    new RemainingTimeColumn(),
+                    new SpinnerColumn(),
+                ]).Start(ctx =>
                 {
-                    Console.Write($"\r{text}");
-                    if (total == done) Console.WriteLine("");
-                };
+                    var task = ctx.AddTask($"Exporting '{spine.Name}'");
+                    task.MaxValue = ve.GetFrameCount();
+                    ve.ProgressReporter = (total, done, text) => task.Value = done;
+                    ve.Export(output, spine);
+                });
             }
-
-            // 导出
-            exporter.Export(output, spine);
+            else
+            {
+                exporter.Export(output, spine);
+            }
         }
 
         private BaseExporter GetExporterFilledWithArgs(ParseResult result, SpineObject spine)
@@ -374,7 +384,6 @@ namespace SpineViewerCLI
                         ExportFormat.Png => SkiaSharp.SKEncodedImageFormat.Png,
                         ExportFormat.Jpg => SkiaSharp.SKEncodedImageFormat.Jpeg,
                         ExportFormat.Webp => SkiaSharp.SKEncodedImageFormat.Webp,
-                        ExportFormat.Bmp => SkiaSharp.SKEncodedImageFormat.Bmp,
                         var v => throw new InvalidOperationException($"{v}"),
                     },
                     Quality = (int)result.GetValue(OptQuality),
