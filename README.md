@@ -142,6 +142,7 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 - [HandyControl](https://github.com/HandyOrg/HandyControl)
 - [NLog](https://github.com/NLog/NLog)
 - [SkiaSharp](https://github.com/mono/SkiaSharp)
+- [Spectre.Console](https://github.com/spectreconsole/spectre.console)
 
 ---
 
