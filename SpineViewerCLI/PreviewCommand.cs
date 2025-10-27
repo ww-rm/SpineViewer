@@ -99,8 +99,7 @@ namespace SpineViewerCLI
 
             using var exporter = GetExporterFilledWithArgs(result, spine);
             using var skImage = exporter.ExportMemoryImage(spine);
-            using var skData = skImage.Encode();
-            var img = new CanvasImage(skData.AsSpan());
+            var img = new CanvasImageAscii(skImage);
             AnsiConsole.Write(img);
         }
 
