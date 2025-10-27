@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -7,7 +7,7 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.0.1</Version>
+        <Version>0.16.9</Version>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
