@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using SkiaSharp;
+using Spectre.Console;
 using Spectre.Console.Rendering;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace SpineViewerCLI
 {
     public class CanvasAscii : Renderable
     {
-        private readonly Color?[,] _pixels;
+        private readonly SKColor?[,] _pixels;
 
         /// <summary>
         /// Gets the width of the canvas.
@@ -39,9 +40,14 @@ namespace SpineViewerCLI
         public int PixelWidth { get; set; } = 2;
 
         /// <summary>
-        /// Gets or sets the pixel lettters, ordered by transparency.
+        /// Gets or sets the pixel characters, ordered by transparency.
         /// </summary>
-        public string PixelLetters { get; set; } = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,^`'."; // ".:-=+*#%@" ... "@%#*+=-:."
+        public string PixelCharacters { get; set; } = ".,:;-=+*?oSXBGWM$&%#@";
+
+        /// <summary>
+        /// Whether to use pixel characters instead of spaces.
+        /// </summary>
+        public bool UsePixelCharacters { get; set; } = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasAscii"/> class.
@@ -63,7 +69,7 @@ namespace SpineViewerCLI
             Width = width;
             Height = height;
 
-            _pixels = new Color?[Width, Height];
+            _pixels = new SKColor?[Width, Height];
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace SpineViewerCLI
         /// <param name="y">The Y coordinate for the pixel.</param>
         /// <param name="color">The pixel color.</param>
         /// <returns>The same <see cref="CanvasAscii"/> instance so that multiple calls can be chained.</returns>
-        public CanvasAscii SetPixel(int x, int y, Color color)
+        public CanvasAscii SetPixel(int x, int y, SKColor color)
         {
             _pixels[x, y] = color;
             return this;
@@ -105,7 +111,7 @@ namespace SpineViewerCLI
                 throw new InvalidOperationException("Pixel width must be greater than zero.");
             }
 
-            if (PixelLetters.Length <= 0)
+            if (UsePixelCharacters && PixelCharacters.Length <= 0)
             {
                 throw new InvalidOperationException("Pixel letters can't be empty.");
             }
@@ -141,28 +147,53 @@ namespace SpineViewerCLI
                 pixels = ScaleDown(width, height);
             }
 
-            for (var y = 0; y < height; y++)
+            if (UsePixelCharacters)
             {
-                for (var x = 0; x < width; x++)
+                for (var y = 0; y < height; y++)
                 {
-                    var color = pixels[x, y];
-                    if (color.HasValue)
+                    for (var x = 0; x < width; x++)
                     {
-                        yield return new Segment(emptyPixel, new Style(background: color));
+                        var color = pixels[x, y];
+                        if (color.HasValue)
+                        {
+                            var c = color.Value;
+                            yield return new Segment(GetPixelChar(c), new Style(foreground: new(c.Red, c.Green, c.Blue)));
+                        }
+                        else
+                        {
+                            yield return new Segment(emptyPixel);
+                        }
                     }
-                    else
-                    {
-                        yield return new Segment(emptyPixel);
-                    }
-                }
 
-                yield return Segment.LineBreak;
+                    yield return Segment.LineBreak;
+                }
+            }
+            else
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    for (var x = 0; x < width; x++)
+                    {
+                        var color = pixels[x, y];
+                        if (color.HasValue)
+                        {
+                            var c = color.Value;
+                            yield return new Segment(emptyPixel, new Style(background: new(c.Red, c.Green, c.Blue)));
+                        }
+                        else
+                        {
+                            yield return new Segment(emptyPixel);
+                        }
+                    }
+
+                    yield return Segment.LineBreak;
+                }
             }
         }
 
-        private Color?[,] ScaleDown(int newWidth, int newHeight)
+        private SKColor?[,] ScaleDown(int newWidth, int newHeight)
         {
-            var buffer = new Color?[newWidth, newHeight];
+            var buffer = new SKColor?[newWidth, newHeight];
             var xRatio = ((Width << 16) / newWidth) + 1;
             var yRatio = ((Height << 16) / newHeight) + 1;
 
@@ -177,12 +208,10 @@ namespace SpineViewerCLI
             return buffer;
         }
 
-        private static float GetBrightness(Color c) => (0.299f * c.R + 0.587f * c.G + 0.114f * c.B) / 255f;
-
-        private string GetPixelLetter(Color c)
+        private string GetPixelChar(SKColor c)
         {
-            var index = Math.Min((int)(GetBrightness(c) * PixelLetters.Length), PixelLetters.Length - 1);
-            return new(PixelLetters[index], PixelWidth);
+            var index = Math.Min((int)(c.Alpha / 255f * PixelCharacters.Length), PixelCharacters.Length - 1);
+            return new(PixelCharacters[index], PixelWidth);
         }
     }
 }

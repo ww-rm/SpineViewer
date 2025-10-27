@@ -53,6 +53,11 @@ namespace SpineViewerCLI
             DefaultValueFactory = _ => 0f,
         };
 
+        public Option<bool> OptUseChars { get; } = new("--use-chars")
+        {
+            Description = "Whether to use characters instead of colored spaces for pixels",
+        };
+
         public PreviewCommand() : base(_name, _desc)
         {
             OptTime.Validators.Add(r =>
@@ -99,7 +104,7 @@ namespace SpineViewerCLI
 
             using var exporter = GetExporterFilledWithArgs(result, spine);
             using var skImage = exporter.ExportMemoryImage(spine);
-            var img = new CanvasImageAscii(skImage);
+            var img = new CanvasImageAscii(skImage) { UsePixelCharacters = result.GetValue(OptUseChars) };
             AnsiConsole.Write(img);
         }
 

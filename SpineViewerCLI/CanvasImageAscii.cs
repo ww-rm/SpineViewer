@@ -34,6 +34,16 @@ namespace SpineViewerCLI
         public int PixelWidth { get; set; } = 2;
 
         /// <summary>
+        /// Gets or sets the pixel characters, ordered by transparency.
+        /// </summary>
+        public string PixelCharacters { get; set; } = ".,:;-=+*?oSXBGWM$&%#@";
+
+        /// <summary>
+        /// Whether to use pixel characters instead of spaces.
+        /// </summary>
+        public bool UsePixelCharacters { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the <see cref="SKSamplingOptions"/> that should
         /// be used when scaling the image. Defaults to bicubic sampling.
         /// </summary>
@@ -127,13 +137,15 @@ namespace SpineViewerCLI
             {
                 MaxWidth = MaxWidth,
                 PixelWidth = PixelWidth,
+                PixelCharacters = PixelCharacters,
+                UsePixelCharacters = UsePixelCharacters,
                 Scale = false,
             };
 
             // XXX: 也许是 SkiaSharp@3.119.0 的 bug, 此处像素值一定是非预乘的格式
-            for (var x = 0; x < image.Width; x++)
+            for (var y = 0; y < image.Height; y++)
             {
-                for (var y = 0; y < image.Height; y++)
+                for (var x = 0; x < image.Width; x++)
                 {
                     var p = image.GetPixel(x, y);
                     if (p.Alpha == 0) continue;
@@ -141,7 +153,7 @@ namespace SpineViewerCLI
                     byte r = (byte)(p.Red * a);
                     byte g = (byte)(p.Green * a);
                     byte b = (byte)(p.Blue * a);
-                    canvas.SetPixel(x, y, new(r, g, b));
+                    canvas.SetPixel(x, y, new(r, g, b, p.Alpha));
                 }
             }
 
