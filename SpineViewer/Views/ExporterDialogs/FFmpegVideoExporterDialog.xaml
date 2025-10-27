@@ -247,8 +247,11 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_ApngPred}" ToolTip="{DynamicResource Str_ApngPredTooltip}"/>
-                                <TextBox Grid.Column="1" Text="{Binding ApngPred}" ToolTip="{DynamicResource Str_ApngPredTooltip}"/>
+                                <Label Content="{DynamicResource Str_PredMethod}" ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding PredMethod}" 
+                                          ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.ApngPredMethodOptions}" 
+                                          ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
                             </Grid>
 
                             <!-- CRF 参数 -->
@@ -268,7 +271,10 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_ProfileParameter}" ToolTip="{DynamicResource Str_ProfileParameterTooltip}"/>
-                                <TextBox Grid.Column="1" Text="{Binding Profile}" ToolTip="{DynamicResource Str_ProfileParameterTooltip}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding Profile}" 
+                                          ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.MovProfileOptions}" 
+                                          ToolTip="{DynamicResource Str_ProfileParameterTooltip}"/>
                             </Grid>
                         </StackPanel>
                     </GroupBox>

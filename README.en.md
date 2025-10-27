@@ -143,6 +143,7 @@ For detailed usage and documentation, see the [Wiki](https://github.com/ww-rm/Sp
 - [HandyControl](https://github.com/HandyOrg/HandyControl)
 - [NLog](https://github.com/NLog/NLog)
 - [SkiaSharp](https://github.com/mono/SkiaSharp)
+- [Spectre.Console](https://github.com/spectreconsole/spectre.console)
 
 ---
 

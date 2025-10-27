@@ -206,12 +206,12 @@
     <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;Quality parameter, range 0-100, higher value means better quality</s:String>
     <s:String x:Key="Str_LosslessParam">Lossless Compression</s:String>
     <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;Lossless compression, quality parameter will be ignored</s:String>
-    <s:String x:Key="Str_ApngPred">Predictor Method</s:String>
-    <s:String x:Key="Str_ApngPredTooltip" xml:space="preserve">[Apng]&#x0A;Pred parameter, value range 0-5, corresponding to different encoding strategies: none, sub, up, avg, paeth, and mixed.&#x0A;It affects encoding time and file size.</s:String>
+    <s:String x:Key="Str_PredMethod">Predictor Method</s:String>
+    <s:String x:Key="Str_PredMethodTooltip" xml:space="preserve">[Apng]&#x0A;Pred parameter, value range 0-5, corresponding to different encoding strategies: none, sub, up, avg, paeth, and mixed.&#x0A;It affects encoding time and file size.</s:String>
     <s:String x:Key="Str_CrfParameter">CRF Parameter</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF parameter, range 0-63, lower value means higher quality</s:String>
     <s:String x:Key="Str_ProfileParameter">Profile Parameter</s:String>
-    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile parameter, integer between -1 and 5,&#x0A;-1 means automatic, higher values indicate higher quality,&#x0A;Alpha channel encoding is only available when value is 4 or higher</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile parameter, an integer between -1 and 5,&#x0A;corresponding to: auto, proxy, lt, standard, hq, 4444, and 4444xq.&#x0A;Alpha channel encoding is available only when the value is 4 or higher.</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">Export Format</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg export format (equivalent to "-f"), e.g. "mp4", "webm"</s:String>

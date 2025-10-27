@@ -92,7 +92,7 @@ namespace Spine.Exporters
         }
 
         /// <summary>
-        /// 生成帧序列
+        /// 生成帧序列, 用于导出帧序列
         /// </summary>
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spines)
         {
@@ -121,14 +121,14 @@ namespace Spine.Exporters
         }
 
         /// <summary>
-        /// 生成帧序列, 支持中途取消和进度输出
+        /// 生成帧序列, 支持中途取消和进度输出, 用于动图视频等单个文件输出
         /// </summary>
         protected IEnumerable<SFMLImageVideoFrame> GetFrames(SpineObject[] spines, string output, CancellationToken ct)
         {
             int frameCount = GetFrameCount();
             int frameIdx = 0;
 
-            _progressReporter?.Invoke(frameCount, 0, $"[{frameIdx}/{frameCount}] {output}");
+            _progressReporter?.Invoke(frameCount, 0, $"[0/{frameCount}] {output}");
             foreach (var frame in GetFrames(spines))
             {
                 if (ct.IsCancellationRequested)
@@ -138,7 +138,7 @@ namespace Spine.Exporters
                     break;
                 }
 
-                _progressReporter?.Invoke(frameCount, frameIdx, $"[{frameIdx + 1}/{frameCount}] {output}");
+                _progressReporter?.Invoke(frameCount, frameIdx + 1, $"[{frameIdx + 1}/{frameCount}] {output}");
                 yield return frame;
                 frameIdx++;
             }

@@ -120,11 +120,11 @@ public partial class MainWindow : Window
         var rtbTarget = new NLog.Windows.Wpf.RichTextBoxTarget
         {
             Name = "rtbTarget",
+            Layout = "[${level:format=OneLetter}]${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${message}",
             WindowName = _mainWindow.Name,
             ControlName = _loggerRichTextBox.Name,
             AutoScroll = true,
             MaxLines = 3000,
-            Layout = "[${level:format=OneLetter}]${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${message}",
         };
 
         rtbTarget.WordColoringRules.Add(new("[D]", "Gray", "Empty"));

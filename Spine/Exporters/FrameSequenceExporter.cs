@@ -24,7 +24,7 @@ namespace Spine.Exporters
             int frameCount = GetFrameCount();
             int frameIdx = 0;
 
-            _progressReporter?.Invoke(frameCount, 0, $"[{frameIdx}/{frameCount}] {output}");
+            _progressReporter?.Invoke(frameCount, 0, $"[0/{frameCount}] {output}"); // 导出帧序列单独在此处调用进度报告
             foreach (var frame in GetFrames(spines))
             {
                 if (ct.IsCancellationRequested)
@@ -37,7 +37,7 @@ namespace Spine.Exporters
                 var savePath = Path.Combine(output, $"frame_{_fps}_{frameIdx:d6}.png");
                 var info = new SKImageInfo(frame.Width, frame.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
 
-                _progressReporter?.Invoke(frameCount, frameIdx, $"[{frameIdx + 1}/{frameCount}] {savePath}");
+                _progressReporter?.Invoke(frameCount, frameIdx + 1, $"[{frameIdx + 1}/{frameCount}] {savePath}");
                 try
                 {
                     using var skImage = SKImage.FromPixelCopy(info, frame.Image.Pixels);

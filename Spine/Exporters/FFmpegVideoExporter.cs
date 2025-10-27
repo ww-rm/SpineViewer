@@ -36,6 +36,33 @@ namespace Spine.Exporters
         }
 
         /// <summary>
+        /// Apng 格式预测器算法
+        /// </summary>
+        public enum ApngPredMethod
+        {
+            None = 0,
+            Sub = 1,
+            Up = 2,
+            Avg = 3,
+            Paeth = 4,
+            Mixed = 5,
+        }
+
+        /// <summary>
+        /// Mov prores_ks 编码器 profile 参数
+        /// </summary>
+        public enum MovProfile
+        {
+            Auto = -1,
+            Proxy = 0,
+            Light = 1,
+            Standard = 2,
+            High = 3,
+            Yuv4444 = 4,
+            Yuv4444Extreme = 5,
+        }
+
+        /// <summary>
         /// 视频格式
         /// </summary>
         public VideoFormat Format { get => _format; set => _format = value; }
@@ -60,10 +87,10 @@ namespace Spine.Exporters
         private bool _lossless = false;
 
         /// <summary>
-        /// [Apng] 预测器算法, 取值范围 0-5, 分别对应 none, sub, up, avg, paeth, mixed
+        /// [Apng] 预测器算法
         /// </summary>
-        public int ApngPred { get => _apngPred; set => _apngPred = Math.Clamp(value, 0, 5); }
-        private int _apngPred = 5;
+        public ApngPredMethod PredMethod { get => _predMethod; set => _predMethod = value; }
+        private ApngPredMethod _predMethod = ApngPredMethod.Mixed;
 
         /// <summary>
         /// [Mp4/Webm/Mkv] CRF
@@ -72,10 +99,10 @@ namespace Spine.Exporters
         private int _crf = 23;
 
         /// <summary>
-        /// [Mov] prores_ks 编码器的配置等级, -1 是自动, 越高质量越好, 只有 4 及以上才有透明通道
+        /// [Mov] prores_ks 编码器的配置等级, 越高质量越好, 只有 <see cref="MovProfile.Yuv4444"> 及以上才有透明通道
         /// </summary>
-        public int Profile { get => _profile; set => _profile = Math.Clamp(value, -1, 5); }
-        private int _profile = 5;
+        public MovProfile Profile { get => _profile; set => _profile = value; }
+        private MovProfile _profile = MovProfile.Yuv4444Extreme;
 
         /// <summary>
         /// 获取的一帧, 结果是预乘的
@@ -142,7 +169,7 @@ namespace Spine.Exporters
 
         private void SetApngOptions(FFMpegArgumentOptions options)
         {
-            var customArgs = $"-vf unpremultiply=inplace=1 -plays {(_loop ? 0 : 1)} -pred {_apngPred}";
+            var customArgs = $"-vf unpremultiply=inplace=1 -plays {(_loop ? 0 : 1)} -pred {(int)_predMethod}";
             options.ForceFormat("apng").WithVideoCodec("apng").ForcePixelFormat("rgba")
                 .WithCustomArgument(customArgs);
         }
@@ -179,7 +206,7 @@ namespace Spine.Exporters
             var customArgs = "-vf unpremultiply=inplace=1";
             options.ForceFormat("mov").WithVideoCodec("prores_ks").ForcePixelFormat("yuva444p10le")
                 .WithFastStart()
-                .WithCustomArgument($"-profile {_profile}")
+                .WithCustomArgument($"-profile {(int)_profile}")
                 .WithCustomArgument(customArgs);
         }
     }

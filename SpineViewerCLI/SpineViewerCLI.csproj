@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -7,13 +7,19 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.0.1</Version>
+        <Version>0.16.9</Version>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <PropertyGroup>
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NLog" Version="5.4.0" />
+      <PackageReference Include="Spectre.Console" Version="0.52.0" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />

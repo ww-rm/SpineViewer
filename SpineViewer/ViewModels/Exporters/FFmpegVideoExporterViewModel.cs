@@ -19,6 +19,8 @@ namespace SpineViewer.ViewModels.Exporters
     public class FFmpegVideoExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
         public static ImmutableArray<FFmpegVideoExporter.VideoFormat> VideoFormatOptions { get; } = Enum.GetValues<FFmpegVideoExporter.VideoFormat>().ToImmutableArray();
+        public static ImmutableArray<FFmpegVideoExporter.ApngPredMethod> ApngPredMethodOptions { get; } = Enum.GetValues<FFmpegVideoExporter.ApngPredMethod>().ToImmutableArray();
+        public static ImmutableArray<FFmpegVideoExporter.MovProfile> MovProfileOptions { get; } = Enum.GetValues<FFmpegVideoExporter.MovProfile>().ToImmutableArray();
 
         public FFmpegVideoExporter.VideoFormat Format 
         { 
@@ -57,8 +59,8 @@ namespace SpineViewer.ViewModels.Exporters
         public bool EnableParamLossless =>
             _format == FFmpegVideoExporter.VideoFormat.Webp;
 
-        public int ApngPred { get => _apngPred; set => SetProperty(ref _apngPred, Math.Clamp(value, 0, 5)); }
-        protected int _apngPred = 5;
+        public FFmpegVideoExporter.ApngPredMethod PredMethod { get => _predMethod; set => SetProperty(ref _predMethod, value); }
+        protected FFmpegVideoExporter.ApngPredMethod _predMethod = FFmpegVideoExporter.ApngPredMethod.Mixed;
 
         public bool EnableParamApngPred =>
             _format == FFmpegVideoExporter.VideoFormat.Apng;
@@ -71,8 +73,8 @@ namespace SpineViewer.ViewModels.Exporters
             _format == FFmpegVideoExporter.VideoFormat.Webm ||
             _format == FFmpegVideoExporter.VideoFormat.Mkv;
 
-        public int Profile { get => _profile; set => SetProperty(ref _profile, Math.Clamp(value, -1, 5)); }
-        protected int _profile = 5;
+        public FFmpegVideoExporter.MovProfile Profile { get => _profile; set => SetProperty(ref _profile, value); }
+        protected FFmpegVideoExporter.MovProfile _profile = FFmpegVideoExporter.MovProfile.Yuv4444Extreme;
 
         public bool EnableParamProfile =>
             _format == FFmpegVideoExporter.VideoFormat.Mov;
@@ -102,7 +104,7 @@ namespace SpineViewer.ViewModels.Exporters
                 Loop = _loop,
                 Quality = _quality,
                 Lossless = _lossless,
-                ApngPred = _apngPred,
+                PredMethod = _predMethod,
                 Crf = _crf,
                 Profile = _profile,
             };

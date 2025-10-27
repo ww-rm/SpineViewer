@@ -84,12 +84,13 @@ namespace SpineViewer
             var fileTarget = new NLog.Targets.FileTarget("fileTarget")
             {
                 Encoding = System.Text.Encoding.UTF8,
+                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${level:uppercase=true} - ${processid} - ${callsite-filename:includeSourcePath=false}:${callsite-linenumber} - ${message}",
+                AutoFlush = true,
                 FileName = "${basedir}/logs/app.log",
                 ArchiveFileName = "${basedir}/logs/app.{#}.log",
                 ArchiveNumbering = NLog.Targets.ArchiveNumberingMode.Rolling,
                 ArchiveAboveSize = 1048576,
                 MaxArchiveFiles = 5,
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${level:uppercase=true} - ${processid} - ${callsite-filename:includeSourcePath=false}:${callsite-linenumber} - ${message}",
                 ConcurrentWrites = true,
                 KeepFileOpen = false,
             };

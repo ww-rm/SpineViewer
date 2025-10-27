@@ -206,12 +206,12 @@
     <s:String x:Key="Str_QualityParameterTooltip" xml:space="preserve">[Webp]&#x0A;质量参数，取值范围 0-100，越高质量越好</s:String>
     <s:String x:Key="Str_LosslessParam">无损压缩</s:String>
     <s:String x:Key="Str_LosslessParamTooltip" xml:space="preserve">[Webp]&#x0A;无损压缩，会忽略质量参数</s:String>
-    <s:String x:Key="Str_ApngPred">预测器方法</s:String>
-    <s:String x:Key="Str_ApngPredTooltip" xml:space="preserve">[Apng]&#x0A;Pred 参数，取值范围 0-5，分别对应 none、sub、up、avg、paeth、mixed 几种不同的编码策略，&#x0A;影响编码时间和文件大小</s:String>
+    <s:String x:Key="Str_PredMethod">预测器方法</s:String>
+    <s:String x:Key="Str_PredMethodTooltip" xml:space="preserve">[Apng]&#x0A;Pred 参数，取值范围 0-5，分别对应 none、sub、up、avg、paeth、mixed 几种不同的编码策略，&#x0A;影响编码时间和文件大小</s:String>
     <s:String x:Key="Str_CrfParameter">CRF 参数</s:String>
     <s:String x:Key="Str_CrfParameterTooltip" xml:space="preserve">[Mp4/Webm/Mkv]&#x0A;CRF 参数，取值范围 0-63，越小质量越高</s:String>
     <s:String x:Key="Str_ProfileParameter">Profile 参数</s:String>
-    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile 参数，取值集合为 -1 到 5 之间的整数，&#x0A;-1 表示自动，0-5 取值越高质量越高，&#x0A;仅在取值大于等于 4 时可以编码透明度通道</s:String>
+    <s:String x:Key="Str_ProfileParameterTooltip" xml:space="preserve">[Mov]&#x0A;Profile 参数，取值范围为 -1 到 5 之间的整数，&#x0A;分别对应 auto、proxy、lt、standard、hq、4444、4444xq 几种配置，&#x0A;仅在取值大于等于 4 时可以编码透明度通道</s:String>
 
     <s:String x:Key="Str_FFmpegFormat">导出格式</s:String>
     <s:String x:Key="Str_FFmpegFormatTooltip">FFmpeg 导出格式，等价于参数 “-f”，例如 “mp4”、“webm”</s:String>

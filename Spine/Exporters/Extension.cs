@@ -1,18 +1,14 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace SpineViewer.Extensions
+namespace Spine.Exporters
 {
-    public static class SFMLExtension
+    public static class Extension
     {
         /// <summary>
         /// 获取适合指定画布参数下能够覆盖包围盒的画布视区包围盒
@@ -53,31 +49,11 @@ namespace SpineViewer.Extensions
         public static FloatRect GetBounds(this View self)
         {
             return new(
-                self.Center.X - self.Size.X / 2, 
-                self.Center.Y - self.Size.Y / 2, 
-                self.Size.X, 
+                self.Center.X - self.Size.X / 2,
+                self.Center.Y - self.Size.Y / 2,
+                self.Size.X,
                 self.Size.Y
             );
-        }
-
-        public static FloatRect ToFloatRect(this Rect self)
-        {
-            return new((float)self.X, (float)self.Y, (float)self.Width, (float)self.Height);
-        }
-
-        public static Vector2f ToVector2f(this Size self)
-        {
-            return new((float)self.Width, (float)self.Height);
-        }
-
-        public static Vector2u ToVector2u(this Size self)
-        {
-            return new((uint)self.Width, (uint)self.Height);
-        }
-
-        public static Vector2i ToVector2i(this Size self)
-        {
-            return new((int)self.Width, (int)self.Height);
         }
     }
 }
