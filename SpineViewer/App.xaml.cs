@@ -86,6 +86,7 @@ namespace SpineViewer
                 Encoding = System.Text.Encoding.UTF8,
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${level:uppercase=true} - ${processid} - ${callsite-filename:includeSourcePath=false}:${callsite-linenumber} - ${message}",
                 AutoFlush = true,
+                CreateDirs = true,
                 FileName = "${basedir}/logs/app.log",
                 ArchiveFileName = "${basedir}/logs/app.{#}.log",
                 ArchiveNumbering = NLog.Targets.ArchiveNumberingMode.Rolling,

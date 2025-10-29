@@ -44,6 +44,7 @@ namespace SpineViewerCLI
                 Encoding = System.Text.Encoding.UTF8,
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss} - ${level:uppercase=true} - ${processid} - ${callsite-filename:includeSourcePath=false}:${callsite-linenumber} - ${message}",
                 AutoFlush = true,
+                CreateDirs = true,
                 FileName = "${basedir}/logs/cli.log",
                 ArchiveFileName = "${basedir}/logs/cli.{#}.log",
                 ArchiveNumbering = NLog.Targets.ArchiveNumberingMode.Rolling,
