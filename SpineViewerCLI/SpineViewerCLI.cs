@@ -5,11 +5,14 @@ using Spine;
 using Spine.Exporters;
 using System.CommandLine;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace SpineViewerCLI
 {
     public static class SpineViewerCLI
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public static Option<bool> OptQuiet { get; } = new("--quiet", "-q")
         {
             Description = "Suppress console logging (quiet mode).",
@@ -33,11 +36,21 @@ namespace SpineViewerCLI
             if (!result.GetValue(OptQuiet))
                 InitializeConsoleLog();
 
-            return result.Invoke();
+            try
+            {
+                return result.Invoke();
+            }
+            catch (Exception ex)
+            {
+                _logger.Trace(ex.ToString());
+                _logger.Fatal("Failed to execute, {0}", ex.Message);
+                return -1;
+            }
         }
 
         private static void InitializeFileLog()
         {
+            // XXX: 未知原因 linux 平台上无法正常生成日志文件
             var config = new NLog.Config.LoggingConfiguration();
             var fileTarget = new NLog.Targets.FileTarget("fileTarget")
             {
@@ -72,13 +85,15 @@ namespace SpineViewerCLI
                 DetectOutputRedirected = true,
             };
 
+            consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Trace", NLog.Targets.ConsoleOutputColor.DarkGray, NLog.Targets.ConsoleOutputColor.NoChange));
+            consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Debug", NLog.Targets.ConsoleOutputColor.DarkGray, NLog.Targets.ConsoleOutputColor.NoChange));
             consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Info", NLog.Targets.ConsoleOutputColor.DarkGray, NLog.Targets.ConsoleOutputColor.NoChange));
             consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Warn", NLog.Targets.ConsoleOutputColor.DarkYellow, NLog.Targets.ConsoleOutputColor.NoChange));
             consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Error", NLog.Targets.ConsoleOutputColor.Red, NLog.Targets.ConsoleOutputColor.NoChange));
             consoleTarget.RowHighlightingRules.Add(new("level == LogLevel.Fatal", NLog.Targets.ConsoleOutputColor.White, NLog.Targets.ConsoleOutputColor.DarkRed));
 
             config.AddTarget(consoleTarget);
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
             LogManager.Configuration = config;
         }
     }
