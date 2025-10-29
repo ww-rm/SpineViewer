@@ -49,9 +49,9 @@ Exporting GIF/MP4 or other animated/video formats requires **ffmpeg** installed 
 
 Currently, the program supports the following interface languages:
 
-* `ZH` (Chinese)
-* `EN` (English)
-* `JA` (Japanese)
+- `ZH` (Chinese)
+- `EN` (English)
+- `JA` (Japanese)
 
 Change the language via the menu: **File → Preferences… → Language**, then confirm.
 
@@ -65,9 +65,9 @@ The program uses a left-right layout: the left panel contains controls, the righ
 
 The left panel contains three sub-panels:
 
-* **Models**: Lists imported and rendered models. Set model parameters, rendering order, and other model-related functions here.
-* **Browser**: Preview files in a folder without actually importing them. Generate WebP previews or import selected models.
-* **Canvas**: Set parameters for the right-side preview display.
+- **Models**: Lists imported and rendered models. Set model parameters, rendering order, and other model-related functions here.
+- **Browser**: Preview files in a folder without actually importing them. Generate WebP previews or import selected models.
+- **Canvas**: Set parameters for the right-side preview display.
 
 Most buttons, labels, or input fields show help text on hover.
 
@@ -87,10 +87,10 @@ The **Models** panel supports right-click menus, some hotkeys, and batch editing
 
 Mouse interactions in the preview panel:
 
-* **Left click**: select and drag models. Hold `Ctrl` for multi-selection (synchronized with the model list).
-* **Right click**: drag the entire canvas.
-* **Mouse wheel**: zoom in/out. Hold `Ctrl` to scale selected models together.
-* **Render selected only**: preview only the selected models, selection can only be changed via the left panel.
+- **Left click**: select and drag models. Hold `Ctrl` for multi-selection (synchronized with the model list).
+- **Right click**: drag the entire canvas.
+- **Mouse wheel**: zoom in/out. Hold `Ctrl` to scale selected models together.
+- **Render selected only**: preview only the selected models, selection can only be changed via the left panel.
 
 Playback controls below the preview allow time adjustment, acting as a simple player.
 
@@ -102,9 +102,9 @@ Right-click on models in the list to access export options.
 
 Key export parameters:
 
-* **Output folder**: Optional. If not provided, outputs go to each model’s folder. Otherwise, all outputs go to the specified folder.
-* **Single export**: Default exports each model separately. If enabled, all selected models are rendered together in one output.
-* **Auto resolution**: Ignores preview canvas resolution; exported resolution matches the actual size of content. For animations or videos, ensures full display of the animation.
+- **Output folder**: Optional. If not provided, outputs go to each model’s folder. Otherwise, all outputs go to the specified folder.
+- **Single export**: Default exports each model separately. If enabled, all selected models are rendered together in one output.
+- **Auto resolution**: Ignores preview canvas resolution; exported resolution matches the actual size of content. For animations or videos, ensures full display of the animation.
 
 ---
 
@@ -152,13 +152,13 @@ Report issues or bugs via [GitHub Issues](https://github.com/ww-rm/SpineViewer/i
 
 ## Acknowledgements
 
-* [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes)
-* [SFML.Net](https://github.com/SFML/SFML.Net)
-* [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
-* [HandyControl](https://github.com/HandyOrg/HandyControl)
-* [NLog](https://github.com/NLog/NLog)
-* [SkiaSharp](https://github.com/mono/SkiaSharp)
-* [Spectre.Console](https://github.com/spectreconsole/spectre.console)
+- [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes)
+- [SFML.Net](https://github.com/SFML/SFML.Net)
+- [FFMpegCore](https://github.com/rosenbjerg/FFMpegCore)
+- [HandyControl](https://github.com/HandyOrg/HandyControl)
+- [NLog](https://github.com/NLog/NLog)
+- [SkiaSharp](https://github.com/mono/SkiaSharp)
+- [Spectre.Console](https://github.com/spectreconsole/spectre.console)
 
 ---
 
