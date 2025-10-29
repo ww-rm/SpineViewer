@@ -16,52 +16,18 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ## 功能
 
-- 支持多版本 spine 文件
-- 支持拖拽/复制粘贴批量打开文件
-- 支持批量预览
+- 支持多版本 spine 文件 (`2.1.x; 3.4.x - 4.2.x`)
 - 支持列表式多骨骼查看和渲染层级管理
-- 支持列表多选批量设置骨骼参数
-- 支持多轨道动画设置
-- 支持皮肤/自定义插槽附件设置
-- 支持自定义插槽可见性
+- 支持多轨道动画
+- 支持皮肤/插槽/附件设置
 - 支持调试渲染
 - 支持画面/模型/轨道时间倍速设置
 - 支持设置轨道 Alpha 混合参数
-- 支持全屏预览
 - 支持单帧/动图/视频文件导出
-- 支持自动分辨率批量导出
 - 支持 FFmpeg 自定义导出
-- 支持程序参数保存
-- 支持文件后缀关联
-- 支持非 png 格式的纹理图片格式
+- 支持非 PNG 格式的纹理图片格式
 - 支持开机自启常驻动态壁纸
 - ......
-
-### Spine 版本支持
-
-| 版本 | 查看&导出 |
-| :---: | :---: |
-| `2.1.x` | :white_check_mark: |
-| `3.4.x` | :white_check_mark: |
-| `3.5.x` | :white_check_mark: |
-| `3.6.x` | :white_check_mark: |
-| `3.7.x` | :white_check_mark: |
-| `3.8.x` | :white_check_mark: |
-| `4.0.x` | :white_check_mark: |
-| `4.1.x` | :white_check_mark: |
-| `4.2.x` | :white_check_mark: |
-| `4.3.x` |  |
-
-更多版本正在施工 :rocket: :rocket: :rocket:
-
-### 导出格式支持
-
-| 导出格式 | 适用场景 |
-| --- | --- |
-| 单帧画面 | 支持生成高清模型画面图像, 可手动调节需要的一帧. |
-| 帧序列 | 支持 PNG 格式帧序列, 可保留透明通道且无损压缩. |
-| 动图/视频 | 可以生成预览动图或者常见格式视频. |
-| 自定义导出 | 除上述预设方案, 支持提供任意 FFmpeg 参数进行导出, 满足自定义复杂需求. |
 
 ## 安装
 
@@ -73,11 +39,17 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 导出 GIF/MP4 等动图/视频格式需要在本地安装 ffmpeg 命令行, 并且添加至环境变量, [点击前往 FFmpeg-Windows 下载页面](https://ffmpeg.org/download.html#build-windows), 也可以点这个下载最新版本 [ffmpeg-release-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z).
 
+## 修改显示语言
+
+本项目目前支持以下界面显示语言:
+
+- `ZH` (中文)
+- `EN` (English)
+- `JA` (日本語)
+
+可以通过窗口菜单的 "文件" -> "首选项..." -> "语言", 选择你需要的语言并确认修改.
+
 ## 使用方法
-
-### 如何修改显示语言
-
-窗口菜单的 "文件" -> "首选项..." -> "语言", 选择你需要的语言并确认修改.
 
 ### 基本介绍
 
@@ -85,8 +57,8 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 左侧有三个子面板, 分别是:
 
-- **浏览**. 该面板用于预览指定文件夹的内容, 并没有真正导入文件到程序. 在该面板可以为模型生成 webp 格式的预览图, 或者导入选中的模型.
 - **模型**. 该面板记录导入并进行渲染的模型列表, 可以在这个面板设置与模型渲染相关的参数和渲染顺序, 以及一些与模型有关的功能.
+- **浏览**. 该面板用于预览指定文件夹的内容, 并没有真正导入文件到程序. 在该面板可以为模型生成 webp 格式的预览图, 或者导入选中的模型.
 - **画面**. 该面板用于设置右侧预览画面的参数.
 
 绝大部分按钮或者标签或者输入框都可以通过鼠标指针悬停来获取帮助文本.
@@ -112,9 +84,7 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ### 内容导出
 
-导出遵循 "所见即所得" 原则, 即实时预览的画面就是你导出的画面.
-
-在模型面板里, 右键菜单可以对选中项进行导出操作.
+在模型列表里, 右键单击选中的模型, 弹出菜单里可以对选中项执行导出操作.
 
 导出有以下几个关键参数:
 
@@ -129,6 +99,29 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 在程序首选项或者托盘图标右键菜单中可以进行桌面投影的启用与否, 模型和画面参数调整完成后, 可以将当前参数保存为工作区文件, 方便之后恢复该配置.
 
 如果希望开机自启常驻壁纸, 也可以在首选项中启用开机自启, 并且设置启动后需要加载的工作区文件.
+
+### 命令行工具
+
+项目附带一个纯命令行工具 `SpineViewerCLI`, 目前支持对单个模型执行一些简单操作, 例如参数值查询以及导出等, 并且 Release 界面提供 Windows 和 Linux 多平台二进制文件.
+
+```bash
+$ SpineViewerCLI -h
+Description:
+  Root Command
+
+Usage:
+  SpineViewerCLI [command] [options]
+
+Options:
+  -q, --quiet     Suppress console logging (quiet mode).
+  -?, -h, --help  Show help and usage information
+  --version       Show version information
+
+Commands:
+  query <skel>    Query information of single model
+  preview <skel>  Preview a model
+  export <skel>   Export single model
+```
 
 ### 更多
 
@@ -146,6 +139,6 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ---
 
-*如果你觉得这个项目不错请给个 :star:, 并分享给更多人知道! :)*
+*如果你觉得这个项目不错请给个 :star:, 并分享给更多人知道! :\)*
 
 [![Stargazers over time](https://starchart.cc/ww-rm/SpineViewer.svg?variant=adaptive)](https://starchart.cc/ww-rm/SpineViewer)
