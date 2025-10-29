@@ -126,7 +126,8 @@ jobs:
       - name: Compress Linux build
         run: |
           mkdir -p release
-          zip -r "release/${PROJ_CLI_NAME}-${VERSION}-Linux-SelfContained.zip" "publish/${PROJ_CLI_NAME}-${VERSION}-Linux-SelfContained"
+          cd publish
+          zip -r "../release/${PROJ_CLI_NAME}-${VERSION}-Linux-SelfContained.zip" "${PROJ_CLI_NAME}-${VERSION}-Linux-SelfContained"
 
       - name: Upload Linux zip to GitHub Release
         uses: actions/upload-release-asset@v1
