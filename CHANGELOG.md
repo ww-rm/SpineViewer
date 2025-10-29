@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.16.10
+
+- 增加 Linux 平台 CLI 工具构建
+
 ## v0.16.9
 
 - 重构 CLI 工具
