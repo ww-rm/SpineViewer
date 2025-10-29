@@ -14,7 +14,7 @@ namespace Spine.Utils
         /// </summary>
         private const string FRAGMENT_VertexAlpha = 
             "uniform sampler2D t;" +
-            "void main() { vec4 p = texture(t, gl_TexCoord[0].xy);" +
+            "void main() { vec4 p = texture2D(t, gl_TexCoord[0].xy);" +
             "p.rgb *= p.a * gl_Color.a;" +
             "gl_FragColor = gl_Color * p; }"
         ;
@@ -24,7 +24,7 @@ namespace Spine.Utils
         /// </summary>
         private const string FRAGMENT_VertexAlphaPma = 
             "uniform sampler2D t;" +
-            "void main() { vec4 p = texture(t, gl_TexCoord[0].xy);" +
+            "void main() { vec4 p = texture2D(t, gl_TexCoord[0].xy);" +
             "p.rgb *= gl_Color.a;" +
             "gl_FragColor = gl_Color * p; }"
         ;
@@ -34,8 +34,8 @@ namespace Spine.Utils
         /// </summary>
         private const string FRAGMENT_InvPma = 
             "uniform sampler2D t;" +
-            "void main() { vec4 p = texture(t, gl_TexCoord[0].xy);" +
-            "if (p.a > 0) p.rgb /= max(max(max(p.r, p.g), p.b), p.a);" +
+            "void main() { vec4 p = texture2D(t, gl_TexCoord[0].xy);" +
+            "if (p.a > 0.0) p.rgb /= max(max(max(p.r, p.g), p.b), p.a);" +
             "gl_FragColor = p; }"
         ;
 
