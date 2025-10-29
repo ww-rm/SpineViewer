@@ -4,10 +4,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <TargetFramework>net8.0</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.9</Version>
+        <Version>0.16.10</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -19,6 +20,10 @@
         <PackageReference Include="NLog" Version="5.4.0" />
         <PackageReference Include="SFML.Net" Version="2.6.1" />
         <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64' Or '$(RuntimeIdentifier)' == 'linux-arm64'">
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
     </ItemGroup>
 
     <ItemGroup>

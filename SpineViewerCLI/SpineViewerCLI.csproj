@@ -4,10 +4,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <TargetFramework>net8.0</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.9</Version>
+        <Version>0.16.10</Version>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
@@ -22,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
         <ProjectReference Include="..\Spine\Spine.csproj" />
     </ItemGroup>
 
