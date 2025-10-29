@@ -22,6 +22,10 @@
         <PackageReference Include="SkiaSharp" Version="3.119.0" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64' Or '$(RuntimeIdentifier)' == 'linux-arm64'">
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+    </ItemGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime21\SpineRuntime21.csproj" />
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime34\SpineRuntime34.csproj" />
