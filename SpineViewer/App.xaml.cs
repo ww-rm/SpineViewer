@@ -23,9 +23,11 @@ namespace SpineViewer
     public partial class App : Application
     {
 #if DEBUG
+        public const bool IsDebug = true;
         public const string AppName = "SpineViewer_D";
         public const string ProgId = "SpineViewer_D.skel";
 #else
+        public const bool IsDebug = false;
         public const string AppName = "SpineViewer";
         public const string ProgId = "SpineViewer.skel";
 #endif

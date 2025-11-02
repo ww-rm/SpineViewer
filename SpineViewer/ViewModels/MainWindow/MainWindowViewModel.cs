@@ -27,6 +27,8 @@ namespace SpineViewer.ViewModels.MainWindow
             _preferenceViewModel = new(this);
         }
 
+        public bool IsDebug => App.IsDebug;
+
         public string Title => $"SpineViewer - v{App.Version}";
 
         /// <summary>

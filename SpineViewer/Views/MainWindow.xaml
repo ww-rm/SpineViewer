@@ -31,6 +31,7 @@
                        MouseDoubleClick="_notifyIcon_MouseDoubleClick">
             <hc:NotifyIcon.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click" Visibility="{Binding IsDebug, Mode=OneWay, Converter={StaticResource Boolean2VisibilityConverter}}"/>
                     <MenuItem Header="{DynamicResource Str_WallpaperView}" Command="{Binding Cmd_SwitchWallpaperView}" IsChecked="{Binding PreferenceViewModel.WallpaperView}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Str_Exit}" Command="{Binding Cmd_ExitFromTray}"/>
@@ -63,7 +64,7 @@
                         <MenuItem Header="{DynamicResource Str_Diagnostics}" Command="{Binding Cmd_ShowDiagnosticsDialog}"/>
                         <Separator/>
                         <MenuItem Header="{DynamicResource Str_Abount}" Command="{Binding Cmd_ShowAboutDialog}"/>
-                        <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click"/>
+                        <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click" Visibility="{Binding IsDebug, Mode=OneWay, Converter={StaticResource Boolean2VisibilityConverter}}"/>
                     </MenuItem>
                     <!--<MenuItem Header="{DynamicResource Str_Experiment}"/>-->
                 </Menu>
