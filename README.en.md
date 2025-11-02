@@ -89,7 +89,7 @@ Mouse interactions in the preview panel:
 
 - **Left click**: select and drag models. Hold `Ctrl` for multi-selection (synchronized with the model list).
 - **Right click**: drag the entire canvas.
-- **Mouse wheel**: zoom in/out. Hold `Ctrl` to scale selected models together.
+- **Mouse wheel**: zoom in/out. Hold `Ctrl` to scale selected models together, use `Shift` to switch zoom factor.
 - **Render selected only**: preview only the selected models, selection can only be changed via the left panel.
 
 Playback controls below the preview allow time adjustment, acting as a simple player.
