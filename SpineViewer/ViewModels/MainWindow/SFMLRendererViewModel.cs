@@ -320,7 +320,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
-            float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.01f : 0.1f;
+            float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;
             var factor = e.Delta > 0 ? (1f + delta) : (1f - delta);
             if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
             {
