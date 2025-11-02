@@ -320,7 +320,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
-            var factor = e.Delta > 0 ? 1.01f : 0.99f;
+            float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.01f : 0.1f;
+            var factor = e.Delta > 0 ? (1f + delta) : (1f - delta);
             if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
             {
                 Zoom = Math.Clamp(Zoom * factor, 0.001f, 1000f); // 滚轮缩放限制一下缩放范围
