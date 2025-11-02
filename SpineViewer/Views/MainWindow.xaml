@@ -15,6 +15,7 @@
         Height="720"
         Background="{DynamicResource RegionBrush}"
         WindowStartupLocation="CenterScreen"
+        Visibility="{Binding Visibility, Mode=OneWayToSource}"
         PreviewKeyDown="MainWindow_PreviewKeyDown"
         LocationChanged="MainWindow_LocationChanged"
         SizeChanged="MainWindow_SizeChanged">

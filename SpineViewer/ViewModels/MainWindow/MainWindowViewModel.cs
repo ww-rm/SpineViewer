@@ -31,6 +31,21 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public string Title => $"SpineViewer - v{App.Version}";
 
+        public Visibility Visibility
+        {
+            get => _visibility;
+            set
+            {
+                if (SetProperty(ref _visibility, value))
+                {
+                    OnPropertyChanged(nameof(IsVisible));
+                }
+            }
+        }
+        private Visibility _visibility = Visibility.Visible;
+
+        public bool IsVisible => _visibility == Visibility.Visible;
+
         /// <summary>
         /// 指示是否通过托盘图标进行退出
         /// </summary>
