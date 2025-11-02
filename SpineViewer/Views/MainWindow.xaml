@@ -721,7 +721,7 @@
                                         </Grid>
 
                                         <StatusBar DockPanel.Dock="Bottom">
-                                            <TextBlock>
+                                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                 <TextBlock.Text>
                                                     <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
                                                         <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
