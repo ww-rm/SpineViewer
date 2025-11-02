@@ -153,7 +153,7 @@ namespace SpineViewer.ViewModels.MainWindow
         public uint MaxFps
         {
             get => _renderer.MaxFps;
-            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = value);
+            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = _wallpaperRenderer.MaxFps = value);
         }
 
         public float Speed
@@ -320,7 +320,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
-            var factor = e.Delta > 0 ? 1.1f : 0.9f;
+            float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;
+            var factor = e.Delta > 0 ? (1f + delta) : (1f - delta);
             if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
             {
                 Zoom = Math.Clamp(Zoom * factor, 0.001f, 1000f); // 滚轮缩放限制一下缩放范围
@@ -484,21 +485,17 @@ namespace SpineViewer.ViewModels.MainWindow
                         _forwardDelta = 0;
                     }
 
-                    using var v = _renderer.GetView();
-                    _renderer.Clear(_backgroundColor);
+                    using var view = _renderer.GetView();
+                    _wallpaperRenderer.SetView(view);
 
-                    if (_wallpaperView)
-                    {
-                        _wallpaperRenderer.SetView(v);
-                        _wallpaperRenderer.Clear(_backgroundColor);
-                    }
+                    if (_vmMain.IsVisible) _renderer.Clear(_backgroundColor);
+                    if (_wallpaperView) _wallpaperRenderer.Clear(_backgroundColor);
 
                     // 渲染背景
                     lock (_bgLock)
                     {
                         if (_backgroundImageSprite is not null)
                         {
-                            using var view = _renderer.GetView();
                             var bg = _backgroundImageSprite;
                             var viewSize = view.Size;
                             var bgSize = bg.Texture.Size;
@@ -521,16 +518,13 @@ namespace SpineViewer.ViewModels.MainWindow
                             bg.Scale = new(signX * scaleX, signY * scaleY);
                             bg.Position = view.Center;
                             bg.Rotation = view.Rotation;
-                            _renderer.Draw(bg);
 
-                            if (_wallpaperView)
-                            {
-                                _wallpaperRenderer.Draw(bg);
-                            }
+                            if (_vmMain.IsVisible) _renderer.Draw(bg);
+                            if (_wallpaperView) _wallpaperRenderer.Draw(bg);
                         }
                     }
 
-                    if (_showAxis)
+                    if (_showAxis && _vmMain.IsVisible)
                     {
                         // 画一个很长的坐标轴, 用 1e9 比较合适
                         _axisVertices[0] = new(new(-1e9f, 0), _axisColor);
@@ -551,35 +545,30 @@ namespace SpineViewer.ViewModels.MainWindow
                             sp.Update(0); // 避免物理效果出现问题
                             sp.Update(delta * _speed);
 
-                            // 为选中对象绘制一个半透明背景
-                            if (sp.IsSelected)
+                            if (_vmMain.IsVisible)
                             {
-                                var rc = sp.GetCurrentBounds().ToFloatRect();
-                                _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
-                                _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
-                                _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
-                                _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
-                                _renderer.Draw(_selectedBackgroundVertices);
-                            }
+                                // 为选中对象绘制一个半透明背景
+                                if (sp.IsSelected)
+                                {
+                                    var rc = sp.GetCurrentBounds().ToFloatRect();
+                                    _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
+                                    _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
+                                    _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
+                                    _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
+                                    _renderer.Draw(_selectedBackgroundVertices);
+                                }
 
-                            // 仅在预览画面临时启用调试模式
-                            sp.EnableDebug = true;
-                            _renderer.Draw(sp);
-                            sp.EnableDebug = false;
-
-                            if (_wallpaperView)
-                            {
-                                _wallpaperRenderer.Draw(sp);
+                                // 仅在预览画面临时启用调试模式
+                                sp.EnableDebug = true;
+                                _renderer.Draw(sp);
+                                sp.EnableDebug = false;
                             }
+                            if (_wallpaperView) _wallpaperRenderer.Draw(sp);
                         }
                     }
 
-                    _renderer.Display();
-
-                    if (_wallpaperView)
-                    {
-                        _wallpaperRenderer.Display();
-                    }
+                    if (_vmMain.IsVisible) _renderer.Display();
+                    if (_wallpaperView) _wallpaperRenderer.Display();
                 }
             }
             catch (Exception ex)

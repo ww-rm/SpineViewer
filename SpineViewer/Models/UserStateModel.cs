@@ -33,6 +33,12 @@ namespace SpineViewer.Models
 
         #endregion
 
+        #region 浏览页面状态
+
+        public string? ExploringDirectory { get; set; }
+
+        #endregion
+
         #region 预览画面状态
 
         public uint ResolutionX { get; set; } = 1500;

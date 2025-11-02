@@ -189,6 +189,7 @@ public partial class MainWindow : Window
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
 
+        _vm.ExplorerListViewModel.PropertyChanged += ExplorerListUserStateChanged;
         _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
     }
 
@@ -234,6 +235,7 @@ public partial class MainWindow : Window
 
         // 撤除所有状态监听器
         _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
+        _vm.ExplorerListViewModel.PropertyChanged -= ExplorerListUserStateChanged;
         foreach (var w in _userStateWatchers) w.Dispose();
         _userStateWatchers.Clear();
 
@@ -284,6 +286,8 @@ public partial class MainWindow : Window
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
             _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
 
+            _vm.ExplorerListViewModel.CurrentDirectory = m.ExploringDirectory;
+
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
             _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
             _vm.SFMLRendererViewModel.Speed = m.Speed;
@@ -316,6 +320,8 @@ public partial class MainWindow : Window
 
             RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
             RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
+
+            ExploringDirectory = _vm.ExplorerListViewModel.CurrentDirectory,
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
@@ -354,6 +360,18 @@ public partial class MainWindow : Window
         // 每次触发都重置间隔和计时
         _saveUserStateTimer.Stop();
         _saveUserStateTimer.Start();
+    }
+
+    private void ExplorerListUserStateChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof(ExplorerListViewModel.CurrentDirectory):
+                DelayedSaveUserState();
+                break;
+            default:
+                break;
+        }
     }
 
     private void SFMLRendererUserStateChanged(object? sender, PropertyChangedEventArgs e)

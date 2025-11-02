@@ -12,7 +12,6 @@ namespace SpineViewer.Models
 {
     public class WorkspaceModel
     {
-        public string? ExploringDirectory { get; set; }
         public RendererWorkspaceConfigModel RendererConfig { get; set; } = new();
         public List<SpineObjectWorkspaceConfigModel> LoadedSpineObjects { get; set; } = [];
     }
