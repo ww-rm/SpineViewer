@@ -55,8 +55,19 @@ public partial class MainWindow : Window
         set
         {
             var mainTabContentHost = (ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl);
+            if (mainTabContentHost is null)
+            {
+                _mainTabControl.ApplyTemplate();
+                mainTabContentHost = (ContentPresenter)_mainTabControl.Template.FindName("PART_SelectedContentHost", _mainTabControl);
+            }
+            if (mainTabContentHost is null)
+            {
+                _logger.Warn("Failed to set property {0}", nameof(RootGridCol0Folded));
+                return;
+            }
             if ((mainTabContentHost.Visibility != Visibility.Visible) == value)
                 return;
+
             if (value)
             {
                 // 寄存折叠前的宽度比例
@@ -167,30 +178,9 @@ public partial class MainWindow : Window
         // 加载首选项
         _vm.PreferenceViewModel.LoadPreference();
 
-        // 还原上一次用户历史状态
+        // 还原上一次用户历史状态并开启监听器
         LoadUserState();
-
-        // 添加用户状态监听器
-        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WidthProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.HeightProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.LeftProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.TopProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WindowStateProperty, DelayedSaveUserState));
-
-        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[0], ColumnDefinition.WidthProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[2], ColumnDefinition.WidthProperty, DelayedSaveUserState));
-
-        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
-
-        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
-
-        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
-
-        _vm.ExplorerListViewModel.PropertyChanged += ExplorerListUserStateChanged;
-        _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
+        AddUserStateListeners();
     }
 
     private void MainWindow_ContentRendered(object? sender, EventArgs e)
@@ -230,14 +220,9 @@ public partial class MainWindow : Window
             }
         }
 
-        // 保存当前用户状态
+        // 移除监听器并保存当前用户状态
+        RemoveUserStateListensers();
         SaveUserState();
-
-        // 撤除所有状态监听器
-        _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
-        _vm.ExplorerListViewModel.PropertyChanged -= ExplorerListUserStateChanged;
-        foreach (var w in _userStateWatchers) w.Dispose();
-        _userStateWatchers.Clear();
 
         _vm.SFMLRendererViewModel.StopRender();
     }
@@ -360,6 +345,41 @@ public partial class MainWindow : Window
         // 每次触发都重置间隔和计时
         _saveUserStateTimer.Stop();
         _saveUserStateTimer.Start();
+    }
+
+    private void AddUserStateListeners()
+    {
+        // 添加用户状态监听器
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WidthProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.LeftProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.TopProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(this, MainWindow.WindowStateProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[0], ColumnDefinition.WidthProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rootGrid.ColumnDefinitions[2], ColumnDefinition.WidthProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+
+        _vm.ExplorerListViewModel.PropertyChanged += ExplorerListUserStateChanged;
+        _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
+    }
+
+    private void RemoveUserStateListensers()
+    {
+        // 撤除所有状态监听器
+        _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
+        _vm.ExplorerListViewModel.PropertyChanged -= ExplorerListUserStateChanged;
+        foreach (var w in _userStateWatchers) w.Dispose();
+        _userStateWatchers.Clear();
+
     }
 
     private void ExplorerListUserStateChanged(object? sender, PropertyChangedEventArgs e)
