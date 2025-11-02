@@ -684,125 +684,6 @@
                                 </Grid>
                             </TabItem>
 
-                            <!-- 浏览页 -->
-                            <TabItem DataContext="{Binding ExplorerListViewModel}">
-                                <TabItem.Header>
-                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
-                                            <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
-                                        </Viewbox>
-                                    </Border>
-                                </TabItem.Header>
-                                <Grid x:Name="_explorerGrid">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <DockPanel>
-                                        <Grid DockPanel.Dock="Top">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <hc:TextBox hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
-                                                        Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Button Grid.Column="1" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
-                                                    Command="{Binding Cmd_ChangeCurrentDirectory}"
-                                                    ToolTip="{DynamicResource Str_ChangeCurrentDirectoryTooltip}"/>
-                                            <Button Grid.Column="2" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" 
-                                                    Command="{Binding Cmd_RefreshItems}"
-                                                    ToolTip="{DynamicResource Str_RefreshItemsTooltip}"/>
-                                        </Grid>
-
-                                        <StatusBar DockPanel.Dock="Bottom">
-                                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
-                                                <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
-                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
-                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </StatusBar>
-
-                                        <ListBox x:Name="_spineFilesListBox"
-                                                 VirtualizingPanel.IsVirtualizing="True"
-                                                 ItemsSource="{Binding ShownItems}"
-                                                 DisplayMemberPath="FileName"
-                                                 MouseLeftButtonDown="SpineFilesListBox_MouseLeftButtonDown">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="SelectionChanged">
-                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
-                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spineFilesListBox}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-
-                                            <ListBox.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddSelectedItems}"
-                                                              Command="{Binding Cmd_AddSelectedItems}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
-                                                              Command="{Binding Cmd_GeneratePreviews}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_DeletePreviewsForSelected}"
-                                                              Command="{Binding Cmd_DeletePreviews}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                </ContextMenu>
-                                            </ListBox.ContextMenu>
-                                        </ListBox>
-                                    </DockPanel>
-
-                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
-
-                                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
-                                        <Grid.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
-                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                                            </Style>
-                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                                            </Style>
-                                        </Grid.Resources>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <!-- 文件目录 -->
-                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_FileDirectory}"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1"
-                                                 Text="{Binding FileDirectory, Mode=OneWay}"
-                                                 IsReadOnly="True"
-                                                 ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
-
-                                        <!-- 文件名 -->
-                                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_FileName}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1"
-                                                 Text="{Binding FileName, Mode=OneWay}"
-                                                 IsReadOnly="True"/>
-
-                                        <!-- 预览图 -->
-                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource DarkDefaultBrush}">
-                                            <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
-                                        </Border>
-                                    </Grid>
-                                </Grid>
-                            </TabItem>
-
                             <!-- 画面参数页 -->
                             <TabItem DataContext="{Binding SFMLRendererViewModel}">
                                 <TabItem.Header>
@@ -993,6 +874,126 @@
                                 </StackPanel>
                                 </ScrollViewer>
                             </TabItem>
+                            
+                            <!-- 浏览页 -->
+                            <TabItem DataContext="{Binding ExplorerListViewModel}">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
+                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                            <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
+                                <Grid x:Name="_explorerGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <DockPanel>
+                                        <Grid DockPanel.Dock="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <hc:TextBox hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
+                                                        Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Grid.Column="1" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_Folder}" 
+                                                    Command="{Binding Cmd_ChangeCurrentDirectory}"
+                                                    ToolTip="{DynamicResource Str_ChangeCurrentDirectoryTooltip}"/>
+                                            <Button Grid.Column="2" 
+                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowRotateRight}" 
+                                                    Command="{Binding Cmd_RefreshItems}"
+                                                    ToolTip="{DynamicResource Str_RefreshItemsTooltip}"/>
+                                        </Grid>
+
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
+                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </StatusBar>
+
+                                        <ListBox x:Name="_spineFilesListBox"
+                                                 VirtualizingPanel.IsVirtualizing="True"
+                                                 ItemsSource="{Binding ShownItems}"
+                                                 DisplayMemberPath="FileName"
+                                                 MouseLeftButtonDown="SpineFilesListBox_MouseLeftButtonDown">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spineFilesListBox}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_AddSelectedItems}"
+                                                              Command="{Binding Cmd_AddSelectedItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviewsForSelected}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
+                                        </ListBox>
+                                    </DockPanel>
+
+                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
+                                        <Grid.Resources>
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                            </Style>
+                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- 文件目录 -->
+                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_FileDirectory}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1"
+                                                 Text="{Binding FileDirectory, Mode=OneWay}"
+                                                 IsReadOnly="True"
+                                                 ToolTip="{Binding Text, RelativeSource={RelativeSource Mode=Self}}"/>
+
+                                        <!-- 文件名 -->
+                                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_FileName}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1"
+                                                 Text="{Binding FileName, Mode=OneWay}"
+                                                 IsReadOnly="True"/>
+
+                                        <!-- 预览图 -->
+                                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource DarkDefaultBrush}">
+                                            <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+
                         </TabControl>
                     </Border>
 
