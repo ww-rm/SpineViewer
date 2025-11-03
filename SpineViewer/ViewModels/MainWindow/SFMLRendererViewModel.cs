@@ -573,7 +573,7 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Fatal("Render task stopped, {0}", ex.Message);
                 MessagePopupService.Error(ex.ToString());
             }

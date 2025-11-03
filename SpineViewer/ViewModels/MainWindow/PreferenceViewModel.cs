@@ -76,7 +76,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 catch (Exception ex)
                 {
 
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to load some prefereneces, {0}", ex.Message);
                 }
             }

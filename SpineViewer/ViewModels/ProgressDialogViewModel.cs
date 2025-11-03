@@ -35,7 +35,7 @@ namespace SpineViewer.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to finish work: {0}, {1}", _title, ex.Message);
                     WorkFinished?.Invoke(this, false);
                 }

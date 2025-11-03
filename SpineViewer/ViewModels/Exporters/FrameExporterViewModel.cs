@@ -85,7 +85,7 @@ namespace SpineViewer.ViewModels.Exporters
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to export {0}, {1}", output, ex.Message);
                 }
             }
@@ -121,7 +121,7 @@ namespace SpineViewer.ViewModels.Exporters
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _logger.Error("Failed to export {0}, {1}", output, ex.Message);
                     }
                     done++;

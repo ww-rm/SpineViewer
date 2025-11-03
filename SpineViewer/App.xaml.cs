@@ -33,8 +33,8 @@ namespace SpineViewer
 #endif
 
         public const string AutoRunFlag = "--autorun";
-        private const string MutexName = "__SpineViewerInstance__";
-        private const string PipeName = "__SpineViewerPipe__";
+        private const string MutexName = $"__{AppName}_Instance__";
+        private const string PipeName = $"_{AppName}_Pipe__";
 
         public static readonly string ProcessPath = Environment.ProcessPath;
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
@@ -62,7 +62,7 @@ namespace SpineViewer
             };
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                _logger.Trace(e.Exception.ToString());
+                _logger.Debug(e.Exception.ToString());
                 _logger.Error("Unobserved task exception: {0}", e.Exception.Message);
                 e.SetObserved();
             };
@@ -130,7 +130,7 @@ namespace SpineViewer
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Error("Failed to pass command line args to existed instance, {0}", ex.Message);
             }
         }
@@ -191,7 +191,7 @@ namespace SpineViewer
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _logger.Error("Failed to process arguments, {0}", ex.Message);
                     }
                 }
@@ -212,7 +212,7 @@ namespace SpineViewer
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            _logger.Trace(e.Exception.ToString());
+            _logger.Debug(e.Exception.ToString());
             _logger.Error("Dispatcher unhandled exception: {0}", e.Exception.Message);
             e.Handled = true;
         }
@@ -231,7 +231,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to query autorun registry key, {0}", ex.Message);
                     return false;
                 }
@@ -259,7 +259,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to set autorun registry key, {0}", ex.Message);
                 }
             }
@@ -343,7 +343,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to switch language to {0}, {1}", value, ex.Message);
                 }
             }
@@ -367,7 +367,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to switch skin to {0}, {1}", value, ex.Message);
                 }
             }
