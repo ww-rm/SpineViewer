@@ -2,6 +2,7 @@
 using NLog;
 using SpineViewer.Natives;
 using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
@@ -58,13 +59,16 @@ namespace SpineViewer
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
+                _logger.Debug(e.ExceptionObject.ToString());
                 _logger.Fatal("Unhandled exception: {0}", e.ExceptionObject);
+                MessagePopupService.Error(e.ExceptionObject.ToString());
             };
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
                 _logger.Debug(e.Exception.ToString());
-                _logger.Error("Unobserved task exception: {0}", e.Exception.Message);
+                _logger.Fatal("Unobserved task exception: {0}", e.Exception.Message);
                 e.SetObserved();
+                MessagePopupService.Error(e.Exception.ToString());
             };
 
             // 单例模式加 IPC 通信
@@ -213,8 +217,9 @@ namespace SpineViewer
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             _logger.Debug(e.Exception.ToString());
-            _logger.Error("Dispatcher unhandled exception: {0}", e.Exception.Message);
+            _logger.Fatal("Dispatcher unhandled exception: {0}", e.Exception.Message);
             e.Handled = true;
+            MessagePopupService.Error(e.Exception.ToString());
         }
 
         public bool AutoRun
