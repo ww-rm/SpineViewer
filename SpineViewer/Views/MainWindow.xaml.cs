@@ -47,7 +47,7 @@ public partial class MainWindow : Window
 
     private readonly List<IDisposable> _userStateWatchers = [];
     private DispatcherTimer _saveUserStateTimer;
-    private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(3);
+    private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(1);
 
     public bool RootGridCol0Folded
     {
