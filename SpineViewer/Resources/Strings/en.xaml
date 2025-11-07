@@ -140,6 +140,9 @@
     <s:String x:Key="Str_ForwardFastTooltip">Forward 10 Frames</s:String>
     <s:String x:Key="Str_FullScreenTooltip">Window/Fullscreen; F11</s:String>
 
+    <!-- 日志框下方附加信息 -->
+    <s:String x:Key="Str_RealTimeFps">Real-time FPS: {0:F1}</s:String>
+
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">OK</s:String>
     <s:String x:Key="Str_Cancel">Cancel</s:String>

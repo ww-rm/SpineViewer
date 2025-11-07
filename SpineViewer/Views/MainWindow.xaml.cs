@@ -695,7 +695,7 @@ public partial class MainWindow : Window
         _renderPanelButtonsPopupContainer.Child = _renderPanelButtonsPanel;
 
         _loggerBoxContainer.Child = null;
-        _loggerBoxPopupContainer.Child = _loggerRichTextBox;
+        _loggerBoxPopupContainer.Child = _loggerBoxPanel;
     }
 
     private void SwitchToNormalLayout()
@@ -705,7 +705,7 @@ public partial class MainWindow : Window
         HandyControl.Controls.IconElement.SetGeometry(_fullScreenButton, AppResource.Geo_ArrowsMaximize);
 
         _loggerBoxPopupContainer.Child = null;
-        _loggerBoxContainer.Child = _loggerRichTextBox;
+        _loggerBoxContainer.Child = _loggerBoxPanel;
 
         _renderPanelButtonsPopupContainer.Child = null;
         _renderPanelButtonsContainer.Child = _renderPanelButtonsPanel;

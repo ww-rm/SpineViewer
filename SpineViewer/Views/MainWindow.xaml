@@ -912,14 +912,16 @@
                                         </Grid>
 
                                         <StatusBar DockPanel.Dock="Bottom">
-                                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
-                                                <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
-                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
-                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
                                         </StatusBar>
 
                                         <ListBox x:Name="_spineFilesListBox"
@@ -1052,7 +1054,22 @@
 
                             <!-- 日志框容器 -->
                             <Border Grid.Row="2" Name="_loggerBoxContainer">
-                                <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                <Border x:Name="_loggerBoxPanel" DataContext="{Binding SFMLRendererViewModel}">
+                                    <DockPanel>
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_RealTimeFps">
+                                                            <Binding Path="RealTimeFps"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                    </DockPanel>
+                                </Border>
                             </Border>
                         </Grid>
                     </Border>

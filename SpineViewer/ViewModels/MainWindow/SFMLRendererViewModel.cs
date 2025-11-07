@@ -156,6 +156,12 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = _wallpaperRenderer.MaxFps = value);
         }
 
+        public float RealTimeFps => _realTimeFps;
+        private float _realTimeFps;
+
+        private float _accumFpsTime;
+        private int _accumFpsCount;
+
         public float Speed
         {
             get => _speed;
@@ -469,19 +475,31 @@ namespace SpineViewer.ViewModels.MainWindow
                 _wallpaperRenderer.SetActive(true);
                 _renderer.SetActive(true);
 
-                float delta;
+                float frameDelta;
+                float updateDelta;
                 while (!_cancelToken?.IsCancellationRequested ?? false)
                 {
-                    delta = _clock.ElapsedTime.AsSeconds();
+                    updateDelta = frameDelta = _clock.ElapsedTime.AsSeconds();
                     _clock.Restart();
 
+                    // 计算实时帧率, 1 秒刷新一次
+                    _accumFpsCount++;
+                    _accumFpsTime += frameDelta;
+                    if (_accumFpsTime > 1f)
+                    {
+                        _realTimeFps = _accumFpsCount / _accumFpsTime;
+                        _accumFpsTime = 0f;
+                        _accumFpsCount = 0;
+                        OnPropertyChanged(nameof(RealTimeFps));
+                    }
+
                     // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
-                    if (!_isUpdating) delta = 0;
+                    if (!_isUpdating) updateDelta = 0;
 
                     // 加上要快进的量
                     lock (_forwardDeltaLock)
                     {
-                        delta += _forwardDelta;
+                        updateDelta += _forwardDelta;
                         _forwardDelta = 0;
                     }
 
@@ -543,7 +561,7 @@ namespace SpineViewer.ViewModels.MainWindow
                             if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
 
                             sp.Update(0); // 避免物理效果出现问题
-                            sp.Update(delta * _speed);
+                            sp.Update(updateDelta * _speed);
 
                             if (_vmMain.IsVisible)
                             {
