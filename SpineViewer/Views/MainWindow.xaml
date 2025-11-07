@@ -239,7 +239,7 @@
                                                 TabStripPlacement="Bottom"
                                                 DataContext="{Binding SpineObjectTabViewModel}">
                                         <TabControl.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                             </Style>
@@ -695,7 +695,7 @@
                                     </Border>
                                 </TabItem.Header>
                                 <TabItem.Resources>
-                                    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                         <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                     </Style>
@@ -955,7 +955,7 @@
 
                                     <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
                                         <Grid.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                             </Style>
