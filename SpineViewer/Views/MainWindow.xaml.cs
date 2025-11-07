@@ -440,6 +440,7 @@ public partial class MainWindow : Window
 
     private void SFMLRendererViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        // XXX: 资源管理器重启后窗口会有问题无法重新显示, 需要重启应用, 否则要重新创建窗口
         if (e.PropertyName == nameof(SFMLRendererViewModel.WallpaperView))
         {
             var wnd = _wallpaperRenderWindow;
