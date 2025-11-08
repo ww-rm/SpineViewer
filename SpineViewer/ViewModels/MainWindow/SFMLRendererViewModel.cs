@@ -175,6 +175,12 @@ namespace SpineViewer.ViewModels.MainWindow
         private float _accumFpsTime;
         private int _accumFpsCount;
 
+        public float WallpaperRealTimeFps => _wallpaperRealTimeFps;
+        private float _wallpaperRealTimeFps;
+
+        private int _accumWallpaperFpsCount;
+        private readonly object _accumWallpaperFpsCountLock = new();
+
         public float Speed
         {
             get => _speed;
@@ -516,14 +522,21 @@ namespace SpineViewer.ViewModels.MainWindow
         private void UpdateLogicFrame(float delta)
         {
             // 计算实时帧率, 1 秒刷新一次
-            _accumFpsCount++;
             _accumFpsTime += delta;
             if (_accumFpsTime > 1f)
             {
                 _realTimeFps = _accumFpsCount / _accumFpsTime;
-                _accumFpsTime = 0f;
                 _accumFpsCount = 0;
+
+                lock (_accumWallpaperFpsCountLock)
+                {
+                    _wallpaperRealTimeFps = _accumWallpaperFpsCount / _accumFpsTime;
+                    _accumWallpaperFpsCount = 0;
+                }
+
+                _accumFpsTime = 0f;
                 OnPropertyChanged(nameof(RealTimeFps));
+                OnPropertyChanged(nameof(WallpaperRealTimeFps));
             }
 
             // 停止更新的时候只是时间不前进, 但是坐标变换还是要更新, 否则无法移动对象
@@ -634,6 +647,9 @@ namespace SpineViewer.ViewModels.MainWindow
 
             // 显示内容
             _renderer.Display();
+
+            // 帧数加一
+            _accumFpsCount++;
         }
 
         private void WallpaperRenderTask()
@@ -679,6 +695,9 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     // 显示渲染
                     _wallpaperRenderer.Display();
+
+                    // 帧数加一
+                    lock (_accumWallpaperFpsCountLock) _accumWallpaperFpsCount++;
                 }
             }
             catch (Exception ex)
@@ -707,7 +726,6 @@ namespace SpineViewer.ViewModels.MainWindow
                     Rotation = Rotation,
                     FlipX = FlipX,
                     FlipY = FlipY,
-                    MaxFps = MaxFps,
                     Speed = Speed,
                     ShowAxis = ShowAxis,
                     BackgroundColor = BackgroundColor,
@@ -724,7 +742,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 Rotation = value.Rotation;
                 FlipX = value.FlipX;
                 FlipY = value.FlipY;
-                MaxFps = value.MaxFps;
                 Speed = value.Speed;
                 ShowAxis = value.ShowAxis;
                 BackgroundColor = value.BackgroundColor;

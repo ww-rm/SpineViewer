@@ -1052,6 +1052,7 @@
                                                     <TextBlock.Text>
                                                         <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_RealTimeFps">
                                                             <Binding Path="RealTimeFps"/>
+                                                            <Binding Path="WallpaperRealTimeFps"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
