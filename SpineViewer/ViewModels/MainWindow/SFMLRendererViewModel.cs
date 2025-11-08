@@ -577,7 +577,11 @@ namespace SpineViewer.ViewModels.MainWindow
         private void UpdateRenderFrame()
         {
             if (!_vmMain.IsVisible)
+            {
+                // 必须休眠一会, 否则会空转影响整体渲染循环
+                Thread.Sleep(1);
                 return;
+            }
 
             // 清除背景
             _renderer.Clear(_backgroundColor);
