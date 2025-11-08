@@ -20,4 +20,8 @@
       <PackageReference Include="SFML.Net" Version="2.6.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Win32Natives\Win32Natives.csproj" />
+    </ItemGroup>
+
 </Project>
