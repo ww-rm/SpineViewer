@@ -1,6 +1,4 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using SkiaSharp;
+﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,29 +7,31 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Win32Natives;
 
 namespace SpineViewer.Extensions
 {
     public static class WpfExtension
     {
-        public static FloatRect ToFloatRect(this Rect self)
+        public static SFML.Graphics.FloatRect ToFloatRect(this Rect self)
         {
             return new((float)self.X, (float)self.Y, (float)self.Width, (float)self.Height);
         }
 
-        public static Vector2f ToVector2f(this Size self)
+        public static SFML.System.Vector2f ToVector2f(this Size self)
         {
             return new((float)self.Width, (float)self.Height);
         }
 
-        public static Vector2u ToVector2u(this Size self)
+        public static SFML.System.Vector2u ToVector2u(this Size self)
         {
             return new((uint)self.Width, (uint)self.Height);
         }
 
-        public static Vector2i ToVector2i(this Size self)
+        public static SFML.System.Vector2i ToVector2i(this Size self)
         {
             return new((int)self.Width, (int)self.Height);
         }
@@ -58,6 +58,18 @@ namespace SpineViewer.Extensions
             wb.WritePixels(new(0, 0, info.Width, info.Height), pixelData, info.Width * 4, 0);
             wb.Freeze();
             return wb;
+        }
+
+        public static void SetWindowTextColor(this Window self, Color color)
+        {
+            var hwnd = new WindowInteropHelper(self).Handle;
+            Dwmapi.SetWindowTextColor(hwnd, color.R, color.G, color.B);
+        }
+
+        public static void SetWindowCaptionColor(this Window self, Color color)
+        {
+            var hwnd = new WindowInteropHelper(self).Handle;
+            Dwmapi.SetWindowCaptionColor(hwnd, color.R, color.G, color.B);
         }
 
         //public static void SaveToFile(this BitmapSource bitmap, string path)

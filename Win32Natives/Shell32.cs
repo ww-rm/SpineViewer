@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SpineViewer.Natives
+namespace Win32Natives
 {
     /// <summary>
     /// shell32.dll 包装类

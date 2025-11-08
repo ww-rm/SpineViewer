@@ -1,4 +1,4 @@
-﻿using SpineViewer.Natives;
+﻿using SpineViewer.Extensions;
 using SpineViewer.Resources;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Win32Natives;
 
 namespace SpineViewer.Views
 {
@@ -30,9 +31,8 @@ namespace SpineViewer.Views
 
         private void AboutDialog_SourceInitialized(object? sender, EventArgs e)
         {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-            Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+            this.SetWindowTextColor(AppResource.Color_PrimaryText);
+            this.SetWindowCaptionColor(AppResource.Color_Region);
         }
     }
 }

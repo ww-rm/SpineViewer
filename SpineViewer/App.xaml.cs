@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using NLog;
-using SpineViewer.Natives;
+using Win32Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
@@ -15,6 +15,7 @@ using System.IO.Pipes;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
+using SpineViewer.Extensions;
 
 namespace SpineViewer
 {
@@ -365,9 +366,8 @@ namespace SpineViewer
                 {
                     Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
                     Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
-                    var hwnd = new WindowInteropHelper(Current.MainWindow).Handle;
-                    Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-                    Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+                    Current.MainWindow.SetWindowTextColor(AppResource.Color_PrimaryText);
+                    Current.MainWindow.SetWindowCaptionColor(AppResource.Color_Region);
                     _skin = value;
                 }
                 catch (Exception ex)

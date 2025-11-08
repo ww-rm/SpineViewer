@@ -1,8 +1,8 @@
 ﻿using NLog;
 using SFMLRenderer;
 using Spine;
+using SpineViewer.Extensions;
 using SpineViewer.Models;
-using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Win32Natives;
 
 namespace SpineViewer.Views;
 
@@ -98,13 +99,13 @@ public partial class MainWindow : Window
 
         // Initialize Wallpaper RenderWindow
         _wallpaperRenderWindow = new(new(1, 1), "SpineViewerWallpaper", SFML.Window.Styles.None);
-        _wallpaperRenderWindow.SetVisible(false);
+        _wallpaperRenderWindow.MaxFps = 30;
+
         var handle = _wallpaperRenderWindow.SystemHandle;
         var style = User32.GetWindowLong(handle, User32.GWL_STYLE) | User32.WS_POPUP;
-        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED | User32.WS_EX_TOOLWINDOW;
+        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_TOOLWINDOW;
         User32.SetWindowLong(handle, User32.GWL_STYLE, style);
         User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
-        User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
         DataContext = _vm = new(_renderPanel, _wallpaperRenderWindow);
 
@@ -153,9 +154,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_SourceInitialized(object? sender, EventArgs e)
     {
-        var hwnd = new WindowInteropHelper(this).Handle;
-        Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-        Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+        this.SetWindowTextColor(AppResource.Color_PrimaryText);
+        this.SetWindowCaptionColor(AppResource.Color_Region);
     }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)

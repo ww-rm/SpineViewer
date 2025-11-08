@@ -4,9 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 
-namespace SpineViewer.Natives
+namespace Win32Natives
 {
     /// <summary>
     /// dwmapi.dll 包装类
@@ -24,15 +23,15 @@ namespace SpineViewer.Natives
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref uint pvAttribute, int cbAttribute);
 
-        public static bool SetWindowCaptionColor(IntPtr hwnd, Color color)
+        public static bool SetWindowCaptionColor(IntPtr hwnd, byte r, byte g, byte b)
         {
-            int c = color.R | (color.G << 8) | (color.B << 16);
+            int c = r | (g << 8) | (b << 16);
             return 0 == DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref c, sizeof(uint));
         }
 
-        public static bool SetWindowTextColor(IntPtr hwnd, Color color)
+        public static bool SetWindowTextColor(IntPtr hwnd, byte r, byte g, byte b)
         {
-            int c = color.R | (color.G << 8) | (color.B << 16);
+            int c = r | (g << 8) | (b << 16);
             return 0 == DwmSetWindowAttribute(hwnd, DWMWA_TEXT_COLOR, ref c, sizeof(uint));
         }
 

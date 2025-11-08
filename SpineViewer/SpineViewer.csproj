@@ -41,5 +41,6 @@
       <ProjectReference Include="..\NLog.Windows.Wpf\NLog.Windows.Wpf.csproj" />
       <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
       <ProjectReference Include="..\Spine\Spine.csproj" />
+      <ProjectReference Include="..\Win32Natives\Win32Natives.csproj" />
     </ItemGroup>
 </Project>
