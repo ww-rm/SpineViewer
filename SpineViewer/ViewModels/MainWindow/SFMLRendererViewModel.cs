@@ -61,6 +61,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 渲染任务
         /// </summary>
         private Task? _renderTask = null;
+        private Task? _wallpaperRenderTask = null;
         private CancellationTokenSource? _cancelToken = null;
 
         /// <summary>
@@ -459,26 +460,29 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (_renderTask is not null) return;
             _cancelToken = new();
-            _renderTask = new Task(RenderTask, _cancelToken.Token, TaskCreationOptions.LongRunning);
+            _renderTask = new(RenderTask, _cancelToken.Token, TaskCreationOptions.LongRunning);
+            _wallpaperRenderTask = new(WallpaperRenderTask, _cancelToken.Token, TaskCreationOptions.LongRunning);
             _renderTask.Start();
+            _wallpaperRenderTask.Start();
             IsUpdating = true;
         }
 
         public void StopRender()
         {
             IsUpdating = false;
-            if (_renderTask is null || _cancelToken is null) return;
+            if (_cancelToken is null || _renderTask is null || _wallpaperRenderTask is null) return;
             _cancelToken.Cancel();
+            _wallpaperRenderTask.Wait();
             _renderTask.Wait();
-            _cancelToken = null;
+            _wallpaperRenderTask = null;
             _renderTask = null;
+            _cancelToken = null;
         }
 
         private void RenderTask()
         {
             try
             {
-                _wallpaperRenderer.SetActive(true);
                 _renderer.SetActive(true);
 
                 float delta;
@@ -500,7 +504,6 @@ namespace SpineViewer.ViewModels.MainWindow
             finally
             {
                 _renderer.SetActive(false);
-                _wallpaperRenderer.SetActive(false);
             }
         }
 
@@ -538,16 +541,6 @@ namespace SpineViewer.ViewModels.MainWindow
                     sp.Update(delta * _speed);
                 }
             }
-        }
-
-        private void UpdateRenderFrame()
-        {
-            // 同步视图
-            if (_wallpaperView)
-            {
-                using var view = _renderer.GetView();
-                _wallpaperRenderer.SetView(view);
-            }
 
             // 更新背景图位置和缩放
             lock (_bgLock)
@@ -579,23 +572,27 @@ namespace SpineViewer.ViewModels.MainWindow
                     bg.Rotation = view.Rotation;
                 }
             }
+        }
+
+        private void UpdateRenderFrame()
+        {
+            if (!_vmMain.IsVisible)
+                return;
 
             // 清除背景
-            if (_vmMain.IsVisible) _renderer.Clear(_backgroundColor);
-            if (_wallpaperView) _wallpaperRenderer.Clear(_backgroundColor);
+            _renderer.Clear(_backgroundColor);
 
             // 渲染背景
             lock (_bgLock)
             {
                 if (_backgroundImageSprite is not null)
                 {
-                    if (_vmMain.IsVisible) _renderer.Draw(_backgroundImageSprite);
-                    if (_wallpaperView) _wallpaperRenderer.Draw(_backgroundImageSprite);
+                    _renderer.Draw(_backgroundImageSprite);
                 }
             }
 
             // 渲染坐标轴
-            if (_showAxis && _vmMain.IsVisible)
+            if (_showAxis)
             {
                 _renderer.Draw(_axisVertices);
             }
@@ -607,31 +604,83 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
 
-                    if (_vmMain.IsVisible)
+                    // 为选中对象绘制一个半透明背景
+                    if (sp.IsSelected)
                     {
-                        // 为选中对象绘制一个半透明背景
-                        if (sp.IsSelected)
-                        {
-                            var rc = sp.GetCurrentBounds().ToFloatRect();
-                            _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
-                            _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
-                            _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
-                            _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
-                            _renderer.Draw(_selectedBackgroundVertices);
-                        }
-
-                        // 仅在预览画面临时启用调试模式
-                        sp.EnableDebug = true;
-                        _renderer.Draw(sp);
-                        sp.EnableDebug = false;
+                        var rc = sp.GetCurrentBounds().ToFloatRect();
+                        _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);
+                        _selectedBackgroundVertices[1] = new(new(rc.Left + rc.Width, rc.Top), _selectedBackgroundColor);
+                        _selectedBackgroundVertices[2] = new(new(rc.Left + rc.Width, rc.Top + rc.Height), _selectedBackgroundColor);
+                        _selectedBackgroundVertices[3] = new(new(rc.Left, rc.Top + rc.Height), _selectedBackgroundColor);
+                        _renderer.Draw(_selectedBackgroundVertices);
                     }
-                    if (_wallpaperView) _wallpaperRenderer.Draw(sp);
+
+                    // 仅在预览画面临时启用调试模式
+                    sp.EnableDebug = true;
+                    _renderer.Draw(sp);
+                    sp.EnableDebug = false;
                 }
             }
 
             // 显示内容
-            if (_vmMain.IsVisible) _renderer.Display();
-            if (_wallpaperView) _wallpaperRenderer.Display();
+            _renderer.Display();
+        }
+
+        private void WallpaperRenderTask()
+        {
+            try
+            {
+                _wallpaperRenderer.SetActive(true);
+                while (!_cancelToken?.IsCancellationRequested ?? false)
+                {
+                    if (!_wallpaperView)
+                    {
+                        Thread.Sleep(10);
+                        continue;
+                    }
+
+                    // 同步视图
+                    using var view = _renderer.GetView();
+                    _wallpaperRenderer.SetView(view);
+
+                    // 清除背景
+                    _wallpaperRenderer.Clear(_backgroundColor);
+
+                    // 渲染背景
+                    lock (_bgLock)
+                    {
+                        if (_backgroundImageSprite is not null)
+                        {
+                            _wallpaperRenderer.Draw(_backgroundImageSprite);
+                        }
+                    }
+
+                    // 渲染 Spine
+                    lock (_models.Lock)
+                    {
+                        foreach (var sp in _models.Where(sp => sp.IsShown && (!_renderSelectedOnly || sp.IsSelected)).Reverse())
+                        {
+                            if (_cancelToken?.IsCancellationRequested ?? true)
+                                break; // 提前中止
+
+                            _wallpaperRenderer.Draw(sp);
+                        }
+                    }
+
+                    // 显示渲染
+                    _wallpaperRenderer.Display();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex.ToString());
+                _logger.Fatal("Wallpaper render task stopped, {0}", ex.Message);
+                MessagePopupService.Error(ex.ToString());
+            }
+            finally
+            {
+                _wallpaperRenderer.SetActive(false);
+            }
         }
 
         public RendererWorkspaceConfigModel WorkspaceConfig
