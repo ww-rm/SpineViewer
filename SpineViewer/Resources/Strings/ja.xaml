@@ -123,6 +123,8 @@
     <s:String x:Key="Str_MaxFpsTooltip">プレビュー画面の最大フレームレート。0 に設定すると制限なし。</s:String>
     <s:String x:Key="Str_PlaySpeed">再生速度</s:String>
     <s:String x:Key="Str_WallpaperView">壁紙表示</s:String>
+    <s:String x:Key="Str_WallpaperMaxFps">壁紙ビューの最大FPS</s:String>
+    <s:String x:Key="Str_WallpaperMaxFpsTooltip">壁紙ビューの最大フレームレート。0に設定すると制限がなし。</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
     <s:String x:Key="Str_HitTestLevel">ヒットテスト精度レベル</s:String>
     <s:String x:Key="Str_LogHitSlots">ヒットテスト結果のスロット名を出力</s:String>

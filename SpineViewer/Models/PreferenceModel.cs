@@ -73,6 +73,22 @@ namespace SpineViewer.Models
 
         #endregion
 
+        #region 预览画面首选项
+
+        [ObservableProperty]
+        private bool _renderSelectedOnly;
+
+        [ObservableProperty]
+        private HitTestLevel _hitTestLevel;
+
+        [ObservableProperty]
+        private bool _logHitSlots;
+
+        [ObservableProperty]
+        private uint _maxFps = 30;
+
+        #endregion
+
         #region 程序选项
 
         public RelayCommand Cmd_SelectAutoRunWorkspaceConfigPath => _cmd_SelectAutoRunWorkspaceConfigPath ??= new(() =>
@@ -90,16 +106,10 @@ namespace SpineViewer.Models
         private AppSkin _appSkin;
 
         [ObservableProperty]
-        private bool _renderSelectedOnly;
-
-        [ObservableProperty]
-        private HitTestLevel _hitTestLevel;
-
-        [ObservableProperty]
-        private bool _logHitSlots;
-
-        [ObservableProperty]
         private bool _wallpaperView;
+
+        [ObservableProperty]
+        private uint _wallpaperMaxFps = 30;
 
         [ObservableProperty]
         private bool _closeToTray;

@@ -160,7 +160,13 @@ namespace SpineViewer.ViewModels.MainWindow
         public uint MaxFps
         {
             get => _renderer.MaxFps;
-            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = _wallpaperRenderer.MaxFps = value);
+            set => SetProperty(_renderer.MaxFps, value, v => _renderer.MaxFps = value);
+        }
+
+        public uint WallpaperMaxFps
+        {
+            get => _wallpaperRenderer.MaxFps;
+            set => SetProperty(_wallpaperRenderer.MaxFps, value, v => _wallpaperRenderer.MaxFps = value);
         }
 
         public float RealTimeFps => _realTimeFps;

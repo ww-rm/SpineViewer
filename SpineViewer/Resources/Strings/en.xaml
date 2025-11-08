@@ -123,6 +123,8 @@
     <s:String x:Key="Str_MaxFpsTooltip">Maximum frame rate of the preview. Set to 0 for no limit.</s:String>
     <s:String x:Key="Str_PlaySpeed">Playback Speed</s:String>
     <s:String x:Key="Str_WallpaperView">Wallpaper View</s:String>
+    <s:String x:Key="Str_WallpaperMaxFps">Max FPS of Wallpaper View</s:String>
+    <s:String x:Key="Str_WallpaperMaxFpsTooltip">Maximum frame rate of the wallpaper view. Set to 0 for no limit.</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
     <s:String x:Key="Str_HitTestLevel">Hit Test Accuracy Level</s:String>
     <s:String x:Key="Str_LogHitSlots">Output Hit Test Slot Names</s:String>

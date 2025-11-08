@@ -123,6 +123,8 @@
     <s:String x:Key="Str_MaxFpsTooltip">预览画面的最大帧率，设置为 0 时则无帧率限制</s:String>
     <s:String x:Key="Str_PlaySpeed">播放速度</s:String>
     <s:String x:Key="Str_WallpaperView">桌面投影</s:String>
+    <s:String x:Key="Str_WallpaperMaxFps">桌面投影最大帧率</s:String>
+    <s:String x:Key="Str_WallpaperMaxFpsTooltip">桌面投影的最大帧率，设置为 0 时则无帧率限制</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">仅渲染选中</s:String>
     <s:String x:Key="Str_HitTestLevel">命中检测准确度等级</s:String>
     <s:String x:Key="Str_LogHitSlots">输出命中检测结果的插槽名称</s:String>

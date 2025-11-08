@@ -274,7 +274,6 @@ public partial class MainWindow : Window
             _vm.ExplorerListViewModel.CurrentDirectory = m.ExploringDirectory;
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
-            _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
             _vm.SFMLRendererViewModel.Speed = m.Speed;
             _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
             _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
@@ -310,7 +309,6 @@ public partial class MainWindow : Window
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
-            MaxFps = _vm.SFMLRendererViewModel.MaxFps,
             Speed = _vm.SFMLRendererViewModel.Speed,
             ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
             BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
@@ -400,7 +398,6 @@ public partial class MainWindow : Window
         {
             case nameof(SFMLRendererViewModel.ResolutionX):
             case nameof(SFMLRendererViewModel.ResolutionY):
-            case nameof(SFMLRendererViewModel.MaxFps):
             case nameof(SFMLRendererViewModel.Speed):
             case nameof(SFMLRendererViewModel.ShowAxis):
             case nameof(SFMLRendererViewModel.BackgroundColor):
