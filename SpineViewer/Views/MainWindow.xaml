@@ -239,7 +239,7 @@
                                                 TabStripPlacement="Bottom"
                                                 DataContext="{Binding SpineObjectTabViewModel}">
                                         <TabControl.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                             </Style>
@@ -695,7 +695,7 @@
                                     </Border>
                                 </TabItem.Header>
                                 <TabItem.Resources>
-                                    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                         <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                     </Style>
@@ -792,16 +792,6 @@
                                     </Grid>
 
                                     <Separator Margin="0 5"/>
-
-                                    <!-- 最大帧率 -->
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="{DynamicResource Str_MaxFps}" ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
-                                        <TextBox Grid.Column="1" Text="{Binding MaxFps}"  ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
-                                    </Grid>
 
                                     <!-- 播放速度 -->
                                     <Grid>
@@ -912,14 +902,16 @@
                                         </Grid>
 
                                         <StatusBar DockPanel.Dock="Bottom">
-                                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
-                                                <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
-                                                        <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
-                                                        <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
                                         </StatusBar>
 
                                         <ListBox x:Name="_spineFilesListBox"
@@ -955,7 +947,7 @@
 
                                     <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
                                         <Grid.Resources>
-                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                             </Style>
@@ -1052,7 +1044,23 @@
 
                             <!-- 日志框容器 -->
                             <Border Grid.Row="2" Name="_loggerBoxContainer">
-                                <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                <Border x:Name="_loggerBoxPanel" DataContext="{Binding SFMLRendererViewModel}">
+                                    <DockPanel>
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_RealTimeFps">
+                                                            <Binding Path="RealTimeFps"/>
+                                                            <Binding Path="WallpaperRealTimeFps"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                    </DockPanel>
+                                </Border>
                             </Border>
                         </Grid>
                     </Border>

@@ -1,4 +1,4 @@
-﻿using SpineViewer.Natives;
+﻿using SpineViewer.Extensions;
 using SpineViewer.Resources;
 using SpineViewer.ViewModels;
 using System;
@@ -16,6 +16,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Win32Natives;
 
 namespace SpineViewer.Views
 {
@@ -33,9 +34,8 @@ namespace SpineViewer.Views
 
         private void ProgressDialog_SourceInitialized(object? sender, EventArgs e)
         {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-            Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+            this.SetWindowTextColor(AppResource.Color_PrimaryText);
+            this.SetWindowCaptionColor(AppResource.Color_Region);
         }
 
         private void ProgressWindow_Loaded(object sender, RoutedEventArgs e)

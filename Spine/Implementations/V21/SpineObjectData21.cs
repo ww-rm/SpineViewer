@@ -36,7 +36,7 @@ namespace Spine.Implementations.V21
             }
             catch (Exception ex) 
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 throw new InvalidDataException($"Failed to load atlas '{atlasPath}'"); 
             }
 
@@ -50,7 +50,7 @@ namespace Spine.Implementations.V21
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
                     }
                 }
@@ -62,7 +62,7 @@ namespace Spine.Implementations.V21
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
                     }
                 }
@@ -70,7 +70,7 @@ namespace Spine.Implementations.V21
             catch (Exception ex)
             {
                 _atlas.Dispose();
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 throw new InvalidDataException($"Failed to load skeleton file {skelPath}");
             }
 

@@ -5,7 +5,6 @@ using NLog;
 using Spine;
 using Spine.Implementations;
 using SpineViewer.Models;
-using SpineViewer.Natives;
 using SpineViewer.Services;
 using SpineViewer.Utils;
 using System;
@@ -76,7 +75,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 catch (Exception ex)
                 {
 
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to load some prefereneces, {0}", ex.Message);
                 }
             }
@@ -108,12 +107,15 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugPoints = DebugPoints,
                     DebugClippings = DebugClippings,
 
-                    AppLanguage = AppLanguage,
-                    AppSkin = AppSkin,
                     RenderSelectedOnly = RenderSelectedOnly,
                     HitTestLevel = HitTestLevel,
                     LogHitSlots = LogHitSlots,
+                    MaxFps = MaxFps,
+
+                    AppLanguage = AppLanguage,
+                    AppSkin = AppSkin,
                     WallpaperView = WallpaperView,
+                    WallpaperMaxFps = WallpaperMaxFps,
                     CloseToTray = CloseToTray,
                     AutoRun = AutoRun,
                     AutoRunWorkspaceConfigPath = AutoRunWorkspaceConfigPath,
@@ -140,12 +142,15 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugPoints = value.DebugPoints;
                 DebugClippings = value.DebugClippings;
 
-                AppLanguage = value.AppLanguage;
-                AppSkin = value.AppSkin;
                 RenderSelectedOnly = value.RenderSelectedOnly;
                 HitTestLevel = value.HitTestLevel;
                 LogHitSlots = value.LogHitSlots;
+                MaxFps = value.MaxFps;
+
+                AppLanguage = value.AppLanguage;
+                AppSkin = value.AppSkin;
                 WallpaperView = value.WallpaperView;
+                WallpaperMaxFps = value.WallpaperMaxFps;
                 CloseToTray = value.CloseToTray;
                 AutoRun = value.AutoRun;
                 AutoRunWorkspaceConfigPath = value.AutoRunWorkspaceConfigPath;
@@ -251,25 +256,9 @@ namespace SpineViewer.ViewModels.MainWindow
 
         #endregion
 
-        #region 程序选项
-
-        public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
-
-        public static ImmutableArray<AppSkin> AppSkinOptions { get; } = Enum.GetValues<AppSkin>().ToImmutableArray();
+        #region 预览画面首选项
 
         public static ImmutableArray<HitTestLevel> HitTestLevelOptions { get; } = Enum.GetValues<HitTestLevel>().ToImmutableArray();
-
-        public AppLanguage AppLanguage
-        {
-            get => ((App)App.Current).Language;
-            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
-        }
-
-        public AppSkin AppSkin
-        {
-            get => ((App)App.Current).Skin;
-            set => SetProperty(((App)App.Current).Skin, value, v => ((App)App.Current).Skin = v);
-        }
 
         public bool RenderSelectedOnly
         {
@@ -289,10 +278,42 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(SpineExtension.LogHitSlots, value, v => SpineExtension.LogHitSlots = v);
         }
 
+        public uint MaxFps
+        {
+            get => _vmMain.SFMLRendererViewModel.MaxFps;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.MaxFps, value, v => _vmMain.SFMLRendererViewModel.MaxFps = v);
+        }
+
+        #endregion
+
+        #region 程序选项
+
+        public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
+
+        public static ImmutableArray<AppSkin> AppSkinOptions { get; } = Enum.GetValues<AppSkin>().ToImmutableArray();
+
+        public AppLanguage AppLanguage
+        {
+            get => ((App)App.Current).Language;
+            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+        }
+
+        public AppSkin AppSkin
+        {
+            get => ((App)App.Current).Skin;
+            set => SetProperty(((App)App.Current).Skin, value, v => ((App)App.Current).Skin = v);
+        }
+
         public bool WallpaperView
         {
             get => _vmMain.SFMLRendererViewModel.WallpaperView;
             set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperView, value, v => _vmMain.SFMLRendererViewModel.WallpaperView = v);
+        }
+
+        public uint WallpaperMaxFps
+        {
+            get => _vmMain.SFMLRendererViewModel.WallpaperMaxFps;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.WallpaperMaxFps, value, v => _vmMain.SFMLRendererViewModel.WallpaperMaxFps = v);
         }
 
         public bool CloseToTray

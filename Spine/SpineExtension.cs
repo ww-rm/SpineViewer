@@ -269,7 +269,7 @@ namespace Spine
 
             if (hit && LogHitSlots)
             {
-                _logger.Debug("Hit ({0}): [{1}]", self.Name, hitSlotName);
+                _logger.Info("Hit ({0}): [{1}]", self.Name, hitSlotName);
             }
             return hit;
         }

@@ -65,7 +65,7 @@ namespace SpineViewer.Utils
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to read json file {0}, {1}", path, ex.Message);
                 }
             }
@@ -86,7 +86,7 @@ namespace SpineViewer.Utils
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Error("Failed to save json file {0}, {1}", path, ex.Message);
                 return false;
             }
@@ -101,7 +101,7 @@ namespace SpineViewer.Utils
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Error("Failed to serialize json object {0}", ex.Message);
                 return string.Empty;
             }

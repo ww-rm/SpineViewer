@@ -1,7 +1,8 @@
 ﻿using Microsoft.Win32;
 using NLog;
-using SpineViewer.Natives;
+using Win32Natives;
 using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
@@ -14,6 +15,7 @@ using System.IO.Pipes;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
+using SpineViewer.Extensions;
 
 namespace SpineViewer
 {
@@ -33,8 +35,8 @@ namespace SpineViewer
 #endif
 
         public const string AutoRunFlag = "--autorun";
-        private const string MutexName = "__SpineViewerInstance__";
-        private const string PipeName = "__SpineViewerPipe__";
+        private const string MutexName = $"__{AppName}_Instance__";
+        private const string PipeName = $"_{AppName}_Pipe__";
 
         public static readonly string ProcessPath = Environment.ProcessPath;
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
@@ -58,13 +60,16 @@ namespace SpineViewer
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
+                _logger.Debug(e.ExceptionObject.ToString());
                 _logger.Fatal("Unhandled exception: {0}", e.ExceptionObject);
+                MessagePopupService.Error(e.ExceptionObject.ToString());
             };
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                _logger.Trace(e.Exception.ToString());
-                _logger.Error("Unobserved task exception: {0}", e.Exception.Message);
+                _logger.Debug(e.Exception.ToString());
+                _logger.Fatal("Unobserved task exception: {0}", e.Exception.Message);
                 e.SetObserved();
+                MessagePopupService.Error(e.Exception.ToString());
             };
 
             // 单例模式加 IPC 通信
@@ -130,7 +135,7 @@ namespace SpineViewer
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Error("Failed to pass command line args to existed instance, {0}", ex.Message);
             }
         }
@@ -191,7 +196,7 @@ namespace SpineViewer
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _logger.Error("Failed to process arguments, {0}", ex.Message);
                     }
                 }
@@ -212,9 +217,10 @@ namespace SpineViewer
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            _logger.Trace(e.Exception.ToString());
-            _logger.Error("Dispatcher unhandled exception: {0}", e.Exception.Message);
+            _logger.Debug(e.Exception.ToString());
+            _logger.Fatal("Dispatcher unhandled exception: {0}", e.Exception.Message);
             e.Handled = true;
+            MessagePopupService.Error(e.Exception.ToString());
         }
 
         public bool AutoRun
@@ -231,7 +237,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to query autorun registry key, {0}", ex.Message);
                     return false;
                 }
@@ -259,7 +265,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to set autorun registry key, {0}", ex.Message);
                 }
             }
@@ -343,7 +349,7 @@ namespace SpineViewer
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to switch language to {0}, {1}", value, ex.Message);
                 }
             }
@@ -360,14 +366,13 @@ namespace SpineViewer
                 {
                     Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
                     Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
-                    var hwnd = new WindowInteropHelper(Current.MainWindow).Handle;
-                    Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-                    Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+                    Current.MainWindow.SetWindowTextColor(AppResource.Color_PrimaryText);
+                    Current.MainWindow.SetWindowCaptionColor(AppResource.Color_Region);
                     _skin = value;
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to switch skin to {0}, {1}", value, ex.Message);
                 }
             }

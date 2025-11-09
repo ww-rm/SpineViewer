@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SpineViewer.Natives
+namespace Win32Natives
 {
     /// <summary>
     /// user32.dll 包装类
@@ -316,7 +316,7 @@ namespace SpineViewer.Natives
                 workerw = FindWindowEx(progman, IntPtr.Zero, "WorkerW", null);
             }
 
-            Debug.WriteLine($"HWND(WorkerW): {workerw:x8}");
+            Debug.WriteLine($"HWND(WorkerW): 0x{workerw:x8}");
             return workerw;
         }
 

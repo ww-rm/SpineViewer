@@ -1,8 +1,8 @@
 ﻿using NLog;
 using SFMLRenderer;
 using Spine;
+using SpineViewer.Extensions;
 using SpineViewer.Models;
-using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Win32Natives;
 
 namespace SpineViewer.Views;
 
@@ -47,7 +48,7 @@ public partial class MainWindow : Window
 
     private readonly List<IDisposable> _userStateWatchers = [];
     private DispatcherTimer _saveUserStateTimer;
-    private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(3);
+    private readonly TimeSpan _saveTimerDelay = TimeSpan.FromSeconds(1);
 
     public bool RootGridCol0Folded
     {
@@ -98,13 +99,13 @@ public partial class MainWindow : Window
 
         // Initialize Wallpaper RenderWindow
         _wallpaperRenderWindow = new(new(1, 1), "SpineViewerWallpaper", SFML.Window.Styles.None);
-        _wallpaperRenderWindow.SetVisible(false);
+        _wallpaperRenderWindow.MaxFps = 30;
+
         var handle = _wallpaperRenderWindow.SystemHandle;
         var style = User32.GetWindowLong(handle, User32.GWL_STYLE) | User32.WS_POPUP;
-        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED | User32.WS_EX_TOOLWINDOW;
+        var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_TOOLWINDOW;
         User32.SetWindowLong(handle, User32.GWL_STYLE, style);
         User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
-        User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
         DataContext = _vm = new(_renderPanel, _wallpaperRenderWindow);
 
@@ -153,9 +154,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_SourceInitialized(object? sender, EventArgs e)
     {
-        var hwnd = new WindowInteropHelper(this).Handle;
-        Dwmapi.SetWindowTextColor(hwnd, AppResource.Color_PrimaryText);
-        Dwmapi.SetWindowCaptionColor(hwnd, AppResource.Color_Region);
+        this.SetWindowTextColor(AppResource.Color_PrimaryText);
+        this.SetWindowCaptionColor(AppResource.Color_Region);
     }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -274,7 +274,6 @@ public partial class MainWindow : Window
             _vm.ExplorerListViewModel.CurrentDirectory = m.ExploringDirectory;
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
-            _vm.SFMLRendererViewModel.MaxFps = m.MaxFps;
             _vm.SFMLRendererViewModel.Speed = m.Speed;
             _vm.SFMLRendererViewModel.ShowAxis = m.ShowAxis;
             _vm.SFMLRendererViewModel.BackgroundColor = m.BackgroundColor;
@@ -310,7 +309,6 @@ public partial class MainWindow : Window
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
-            MaxFps = _vm.SFMLRendererViewModel.MaxFps,
             Speed = _vm.SFMLRendererViewModel.Speed,
             ShowAxis = _vm.SFMLRendererViewModel.ShowAxis,
             BackgroundColor = _vm.SFMLRendererViewModel.BackgroundColor,
@@ -400,7 +398,6 @@ public partial class MainWindow : Window
         {
             case nameof(SFMLRendererViewModel.ResolutionX):
             case nameof(SFMLRendererViewModel.ResolutionY):
-            case nameof(SFMLRendererViewModel.MaxFps):
             case nameof(SFMLRendererViewModel.Speed):
             case nameof(SFMLRendererViewModel.ShowAxis):
             case nameof(SFMLRendererViewModel.BackgroundColor):
@@ -440,6 +437,7 @@ public partial class MainWindow : Window
 
     private void SFMLRendererViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        // XXX: 资源管理器重启后窗口会有问题无法重新显示, 需要重启应用, 否则要重新创建窗口
         if (e.PropertyName == nameof(SFMLRendererViewModel.WallpaperView))
         {
             var wnd = _wallpaperRenderWindow;
@@ -451,17 +449,25 @@ public partial class MainWindow : Window
                     _logger.Error("Failed to enable wallpaper view, WorkerW not found");
                     return;
                 }
-                var handle = wnd.SystemHandle;
 
                 User32.GetPrimaryScreenResolution(out var sw, out var sh);
+                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
 
-                User32.SetParent(handle, workerw);
+                var handle = wnd.SystemHandle;
+
+                // 每次都进行设置, 确保会成为顶层子窗口
+                var lastParent = User32.SetParent(handle, workerw);
+                Debug.WriteLine($"0x{lastParent:x8} = SetParent(0x{handle:x8}, 0x{workerw:x8})");
                 User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
-                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
+                // XXX: 每次新设置成桌面子窗口之后, 要确保窗口 Size 发生一次变化来触发 SFML 内部的渲染视图更新
+                var ssize = new SFML.System.Vector2u(sw, sh);
+                if (lastParent != workerw && ssize == wnd.Size)
+                {
+                    wnd.Size = new(sw + 1, sh);
+                }
                 wnd.Position = new(0, 0);
-                wnd.Size = new(sw + 1, sh);
-                wnd.Size = new(sw, sh);
+                wnd.Size = ssize;
                 wnd.SetVisible(true);
             }
             else
@@ -694,7 +700,7 @@ public partial class MainWindow : Window
         _renderPanelButtonsPopupContainer.Child = _renderPanelButtonsPanel;
 
         _loggerBoxContainer.Child = null;
-        _loggerBoxPopupContainer.Child = _loggerRichTextBox;
+        _loggerBoxPopupContainer.Child = _loggerBoxPanel;
     }
 
     private void SwitchToNormalLayout()
@@ -704,7 +710,7 @@ public partial class MainWindow : Window
         HandyControl.Controls.IconElement.SetGeometry(_fullScreenButton, AppResource.Geo_ArrowsMaximize);
 
         _loggerBoxPopupContainer.Child = null;
-        _loggerBoxContainer.Child = _loggerRichTextBox;
+        _loggerBoxContainer.Child = _loggerBoxPanel;
 
         _renderPanelButtonsPopupContainer.Child = null;
         _renderPanelButtonsContainer.Child = _renderPanelButtonsPanel;

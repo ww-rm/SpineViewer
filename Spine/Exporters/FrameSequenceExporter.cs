@@ -47,7 +47,7 @@ namespace Spine.Exporters
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to save frame {0}, {1}", savePath, ex.Message);
                 }
                 finally

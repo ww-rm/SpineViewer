@@ -169,7 +169,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to generate preview: {0}, {1}", m.PreviewFilePath, ex.Message);
                 }
                 _logger.LogCurrentProcessMemoryUsage();
@@ -221,7 +221,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to generate preview: {0}, {1}", m.PreviewFilePath, ex.Message);
                     error++;
                 }
@@ -261,7 +261,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     }
                     catch (Exception ex)
                     {
-                        _logger.Trace(ex.ToString());
+                        _logger.Debug(ex.ToString());
                         _logger.Error("Failed to delete preview: {0}, {1}", m.PreviewFilePath, ex.Message);
                     }
                 }
@@ -302,7 +302,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to delete preview: {0}, {1}", m.PreviewFilePath, ex.Message);
                     error++;
                 }
@@ -340,7 +340,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Error("Failed to enumerate files in dir: {0}, {1}", _currentDirectory, ex.Message);
                 }
             }
@@ -408,7 +408,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Warn("Failed to load preview image for {0}, {1}", FullPath, ex.Message);
                     return null;
                 }

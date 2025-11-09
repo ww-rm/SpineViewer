@@ -82,7 +82,7 @@ namespace Spine
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     _logger.Warn("Failed to detect version for skel {0}, try all available versions", skelPath);
                 }
             }
@@ -118,7 +118,7 @@ namespace Spine
                 }
                 catch (Exception ex)
                 {
-                    _logger.Trace(ex.ToString());
+                    _logger.Debug(ex.ToString());
                     throw new InvalidDataException($"Failed to load spine with version '{version}'");
                 }
             }

@@ -19,7 +19,7 @@
 
     <Grid Margin="30">
         <Grid.Resources>
-            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
             </Style>

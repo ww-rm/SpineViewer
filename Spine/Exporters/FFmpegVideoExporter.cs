@@ -144,7 +144,7 @@ namespace Spine.Exporters
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Error("Failed to export {0} {1}, {2}", _format, output, ex.Message);
             }
         }

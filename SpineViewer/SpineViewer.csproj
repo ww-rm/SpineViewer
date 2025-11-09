@@ -8,7 +8,7 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.11</Version>
+        <Version>0.16.12</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
@@ -41,5 +41,6 @@
       <ProjectReference Include="..\NLog.Windows.Wpf\NLog.Windows.Wpf.csproj" />
       <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
       <ProjectReference Include="..\Spine\Spine.csproj" />
+      <ProjectReference Include="..\Win32Natives\Win32Natives.csproj" />
     </ItemGroup>
 </Project>

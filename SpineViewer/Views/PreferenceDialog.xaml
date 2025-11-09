@@ -31,7 +31,7 @@
 
         <Border>
             <Border.Resources>
-                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LabelDefault}">
+                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MyLabelStyle}">
                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     <Setter Property="HorizontalContentAlignment" Value="Right"/>
                 </Style>
@@ -195,30 +195,8 @@
                         </StackPanel>
                     </GroupBox>
 
-                    <GroupBox Header="{DynamicResource Str_AppPreference}">
+                    <GroupBox Header="{DynamicResource Str_RendererPreference}">
                         <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_Language}"/>
-                                <ComboBox Grid.Column="1" 
-                                          SelectedItem="{Binding AppLanguage}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
-                            </Grid>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_Skin}"/>
-                                <ComboBox Grid.Column="1" 
-                                          SelectedItem="{Binding AppSkin}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
-                            </Grid>
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
@@ -253,8 +231,52 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_MaxFps}" ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxFps}"  ToolTip="{DynamicResource Str_MaxFpsTooltip}"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource Str_AppPreference}">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_Language}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding AppLanguage}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_Skin}"/>
+                                <ComboBox Grid.Column="1" 
+                                          SelectedItem="{Binding AppSkin}"
+                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_WallpaperView}"/>
                                 <ToggleButton Grid.Column="1" IsChecked="{Binding WallpaperView}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_WallpaperMaxFps}" ToolTip="{DynamicResource Str_WallpaperMaxFpsTooltip}"/>
+                                <TextBox Grid.Column="1" Text="{Binding WallpaperMaxFps}"  ToolTip="{DynamicResource Str_WallpaperMaxFpsTooltip}"/>
                             </Grid>
 
                             <Grid>

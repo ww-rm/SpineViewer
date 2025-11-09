@@ -42,7 +42,7 @@ namespace SpineViewerCLI
             }
             catch (Exception ex)
             {
-                _logger.Trace(ex.ToString());
+                _logger.Debug(ex.ToString());
                 _logger.Fatal("Failed to execute, {0}", ex.Message);
                 return -1;
             }

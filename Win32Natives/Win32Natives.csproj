@@ -8,20 +8,7 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.6</Version>
-        <UseWPF>true</UseWPF>
+        <Version>0.16.0</Version>
     </PropertyGroup>
-
-    <PropertyGroup>
-        <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="SFML.Net" Version="2.6.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Win32Natives\Win32Natives.csproj" />
-    </ItemGroup>
 
 </Project>

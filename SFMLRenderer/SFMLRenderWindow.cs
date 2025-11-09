@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Win32Natives;
 
 namespace SFMLRenderer
 {
@@ -19,6 +20,14 @@ namespace SFMLRenderer
             SetActive(false);
             _timer.Tick += (s, e) => DispatchEvents();
             _timer.Start();
+
+            SetVisible(false);
+
+            var handle = SystemHandle;
+            var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED;
+            User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
+            User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
+
             RendererCreated?.Invoke(this, EventArgs.Empty);
         }
 
