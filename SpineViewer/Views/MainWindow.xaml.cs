@@ -449,17 +449,25 @@ public partial class MainWindow : Window
                     _logger.Error("Failed to enable wallpaper view, WorkerW not found");
                     return;
                 }
-                var handle = wnd.SystemHandle;
 
                 User32.GetPrimaryScreenResolution(out var sw, out var sh);
+                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
 
-                User32.SetParent(handle, workerw);
+                var handle = wnd.SystemHandle;
+
+                // 每次都进行设置, 确保会成为顶层子窗口
+                var lastParent = User32.SetParent(handle, workerw);
+                Debug.WriteLine($"0x{lastParent:x8} = SetParent(0x{handle:x8}, 0x{workerw:x8})");
                 User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
 
-                _vm.SFMLRendererViewModel.SetResolution(sw, sh);
+                // XXX: 每次新设置成桌面子窗口之后, 要确保窗口 Size 发生一次变化来触发 SFML 内部的渲染视图更新
+                var ssize = new SFML.System.Vector2u(sw, sh);
+                if (lastParent != workerw && ssize == wnd.Size)
+                {
+                    wnd.Size = new(sw + 1, sh);
+                }
                 wnd.Position = new(0, 0);
-                wnd.Size = new(sw + 1, sh);
-                wnd.Size = new(sw, sh);
+                wnd.Size = ssize;
                 wnd.SetVisible(true);
             }
             else

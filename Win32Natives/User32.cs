@@ -316,7 +316,7 @@ namespace Win32Natives
                 workerw = FindWindowEx(progman, IntPtr.Zero, "WorkerW", null);
             }
 
-            Debug.WriteLine($"HWND(WorkerW): {workerw:x8}");
+            Debug.WriteLine($"HWND(WorkerW): 0x{workerw:x8}");
             return workerw;
         }
 
