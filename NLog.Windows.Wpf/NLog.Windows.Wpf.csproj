@@ -6,7 +6,10 @@
         <Platforms>x64</Platforms>
         <PlatformTarget>x64</PlatformTarget>
         <TargetFramework>net8.0-windows</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
+        <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <Version>0.16.0</Version>
         <UseWPF>true</UseWPF>
