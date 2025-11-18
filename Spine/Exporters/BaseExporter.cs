@@ -15,6 +15,14 @@ namespace Spine.Exporters
     public abstract class BaseExporter : IDisposable
     {
         /// <summary>
+        /// 进度回调函数
+        /// </summary>
+        /// <param name="total">任务总量</param>
+        /// <param name="done">已完成量</param>
+        /// <param name="promptText">需要设置的进度提示文本</param>
+        public delegate void ProgressReporterHandler(float total, float done, string promptText);
+
+        /// <summary>
         /// 日志器
         /// </summary>
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -56,14 +64,9 @@ namespace Spine.Exporters
 
         /// <summary>
         /// 可选的进度回调函数
-        /// <list type="number">
-        /// <item><c>total</c>: 任务总量</item>
-        /// <item><c>done</c>: 已完成量</item>
-        /// <item><c>progressText</c>: 需要设置的进度提示文本</item>
-        /// </list>
         /// </summary>
-        public Action<float, float, string>? ProgressReporter { get => _progressReporter; set => _progressReporter = value; }
-        protected Action<float, float, string>? _progressReporter;
+        public ProgressReporterHandler? ProgressReporter { get => _progressReporter; set => _progressReporter = value; }
+        protected ProgressReporterHandler? _progressReporter;
 
         /// <summary>
         /// 背景颜色
