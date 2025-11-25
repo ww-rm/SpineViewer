@@ -5,6 +5,7 @@ using SFMLRenderer;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Shell;
 
@@ -162,6 +163,12 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!DialogService.ShowSaveJsonDialog(ref fileName)) return;
             JsonHelper.Serialize(Workspace, fileName);
         }
+
+        /// <summary>
+        /// 打开 FFmpeg 下载页面
+        /// </summary>
+        public RelayCommand Cmd_DownloadFFmpeg => _cmd_DownloadFFmpeg ??= new(() => Process.Start(new ProcessStartInfo("https://ffmpeg.org/download.html") { UseShellExecute = true }));
+        private RelayCommand? _cmd_DownloadFFmpeg;
 
         /// <summary>
         /// 显示诊断信息对话框
