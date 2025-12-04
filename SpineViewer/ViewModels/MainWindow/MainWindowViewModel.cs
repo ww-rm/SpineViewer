@@ -181,6 +181,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             WorkerWDebugger.LogWorkerWWindowTree();
             WorkerWDebugger.LogWorkerWSearchInfo();
+            WorkerWDebugger.LogWorkerWWindowTree();
         });
         private RelayCommand? _cmd_OutputWorkerWDebugInfo;
 
