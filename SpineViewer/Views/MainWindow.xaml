@@ -63,7 +63,10 @@
                     <!--<MenuItem Header="{DynamicResource Str_Download}"/>-->
                     <MenuItem Header="{DynamicResource Str_Help}">
                         <MenuItem Header="{DynamicResource Str_DownloadFFmpeg}" Command="{Binding Cmd_DownloadFFmpeg}"/>
-                        <MenuItem Header="{DynamicResource Str_Diagnostics}" Command="{Binding Cmd_ShowDiagnosticsDialog}"/>
+                        <MenuItem Header="{DynamicResource Str_DiagnosticsTools}">
+                            <MenuItem Header="{DynamicResource Str_SystemInfo}" Command="{Binding Cmd_ShowSystemInfoDialog}"/>
+                            <MenuItem Header="{DynamicResource Str_DebugWorkerW}" Command="{Binding Cmd_OutputWorkerWDebugInfo}"/>
+                        </MenuItem>
                         <MenuItem Header="{DynamicResource Str_Abount}" Command="{Binding Cmd_ShowAboutDialog}"/>
                         <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click" Visibility="{Binding IsDebug, Mode=OneWay, Converter={StaticResource Boolean2VisibilityConverter}}"/>
                     </MenuItem>

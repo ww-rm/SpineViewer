@@ -7,7 +7,9 @@
     <s:String x:Key="Str_Download">Download</s:String>
     <s:String x:Key="Str_Help">Help</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">Go to download FFmpeg</s:String>
-    <s:String x:Key="Str_Diagnostics">Diagnostics Info</s:String>
+    <s:String x:Key="Str_DiagnosticsTools">Diagnostics Tools</s:String>
+    <s:String x:Key="Str_SystemInfo">System Information</s:String>
+    <s:String x:Key="Str_DebugWorkerW">WorkerW debug information</s:String>
     <s:String x:Key="Str_Abount">About</s:String>
     <s:String x:Key="Str_Experiment">Experimental Features</s:String>
 

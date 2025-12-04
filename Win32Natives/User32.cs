@@ -108,7 +108,9 @@ namespace Win32Natives
 
         public const uint GA_PARENT = 1;
 
+        public const uint GW_HWNDNEXT = 2;
         public const uint GW_OWNER = 4;
+        public const uint GW_CHILD = 5;
 
         public const int SW_HIDE = 0;
         public const int SW_SHOWNORMAL = 1;
@@ -250,6 +252,19 @@ namespace Win32Natives
         [DllImport("user32.dll")]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        [DllImport("user32.dll")]
+        public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        public static string GetWindowClassName(IntPtr hWnd)
+        {
+            var sb = new StringBuilder(256);
+            GetClassName(hWnd, sb, sb.Capacity);
+            return sb.ToString();
+        }
+
         public static TimeSpan GetLastInputElapsedTime()
         {
             LASTINPUTINFO lastInputInfo = new();
@@ -352,6 +367,16 @@ namespace Win32Natives
             }
             width = height = 0;
             return false;
+        }
+
+        public static IEnumerable<IntPtr> EnumDirectChildWindow(IntPtr parent)
+        {
+            IntPtr child = GetWindow(parent, GW_CHILD);
+            while (child != IntPtr.Zero)
+            {
+                yield return child;
+                child = GetWindow(child, GW_HWNDNEXT);
+            }
         }
     }
 }

@@ -7,7 +7,9 @@
     <s:String x:Key="Str_Download">ダウンロード</s:String>
     <s:String x:Key="Str_Help">ヘルプ</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">FFmpeg をダウンロードしに行く</s:String>
-    <s:String x:Key="Str_Diagnostics">診断情報</s:String>
+    <s:String x:Key="Str_DiagnosticsTools">診断ツール</s:String>
+    <s:String x:Key="Str_SystemInfo">システム情報</s:String>
+    <s:String x:Key="Str_DebugWorkerW">WorkerW のデバッグ情報</s:String>
     <s:String x:Key="Str_Abount">バージョン情報</s:String>
     <s:String x:Key="Str_Experiment">実験機能</s:String>
 
