@@ -19,17 +19,17 @@ using Win32Natives;
 namespace SpineViewer.Views
 {
     /// <summary>
-    /// DiagnosticsDialog.xaml 的交互逻辑
+    /// SystemInfoDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class DiagnosticsDialog : Window
+    public partial class SystemInfoDialog : Window
     {
-        public DiagnosticsDialog()
+        public SystemInfoDialog()
         {
             InitializeComponent();
-            SourceInitialized += DiagnosticsDialog_SourceInitialized;
+            SourceInitialized += SystemInfoDialog_SourceInitialized;
         }
 
-        private void DiagnosticsDialog_SourceInitialized(object? sender, EventArgs e)
+        private void SystemInfoDialog_SourceInitialized(object? sender, EventArgs e)
         {
             this.SetWindowTextColor(AppResource.Color_PrimaryText);
             this.SetWindowCaptionColor(AppResource.Color_Region);

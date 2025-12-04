@@ -16,9 +16,9 @@ namespace SpineViewer.Services
     /// </summary>
     public static class DialogService
     {
-        public static bool ShowDiagnosticsDialog()
+        public static bool ShowSystemInfoDialog()
         {
-            var dialog = new DiagnosticsDialog() { Owner = App.Current.MainWindow };
+            var dialog = new SystemInfoDialog() { Owner = App.Current.MainWindow };
             return dialog.ShowDialog() ?? false;
         }
 

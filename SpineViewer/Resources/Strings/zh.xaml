@@ -6,7 +6,10 @@
     <s:String x:Key="Str_Tool">工具</s:String>
     <s:String x:Key="Str_Download">下载</s:String>
     <s:String x:Key="Str_Help">帮助</s:String>
-    <s:String x:Key="Str_Diagnostics">诊断信息</s:String>
+    <s:String x:Key="Str_DownloadFFmpeg">前往下载 FFmpeg</s:String>
+    <s:String x:Key="Str_DiagnosticsTools">诊断工具</s:String>
+    <s:String x:Key="Str_SystemInfo">系统信息</s:String>
+    <s:String x:Key="Str_DebugWorkerW">WorkerW 调试信息</s:String>
     <s:String x:Key="Str_Abount">关于</s:String>
     <s:String x:Key="Str_Experiment">实验性功能</s:String>
 

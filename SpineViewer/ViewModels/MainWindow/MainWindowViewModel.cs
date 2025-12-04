@@ -5,8 +5,10 @@ using SFMLRenderer;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Shell;
+using Win32Natives;
 
 namespace SpineViewer.ViewModels.MainWindow
 {
@@ -164,10 +166,23 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 打开 FFmpeg 下载页面
+        /// </summary>
+        public RelayCommand Cmd_DownloadFFmpeg => _cmd_DownloadFFmpeg ??= new(() => Process.Start(new ProcessStartInfo("https://ffmpeg.org/download.html") { UseShellExecute = true }));
+        private RelayCommand? _cmd_DownloadFFmpeg;
+
+        /// <summary>
         /// 显示诊断信息对话框
         /// </summary>
-        public RelayCommand Cmd_ShowDiagnosticsDialog => _cmd_ShowDiagnosticsDialog ??= new(() => { DialogService.ShowDiagnosticsDialog(); });
-        private RelayCommand? _cmd_ShowDiagnosticsDialog;
+        public RelayCommand Cmd_ShowSystemInfoDialog => _cmd_ShowSystemInfoDialog ??= new(() => { DialogService.ShowSystemInfoDialog(); });
+        private RelayCommand? _cmd_ShowSystemInfoDialog;
+
+        public RelayCommand Cmd_OutputWorkerWDebugInfo => _cmd_OutputWorkerWDebugInfo ??= new(() =>
+        {
+            WorkerWDebugger.LogWorkerWWindowTree();
+            WorkerWDebugger.LogWorkerWSearchInfo();
+        });
+        private RelayCommand? _cmd_OutputWorkerWDebugInfo;
 
         /// <summary>
         /// 显示关于对话框
@@ -183,7 +198,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     RendererConfig = _sfmlRendererViewModel.WorkspaceConfig,
                     LoadedSpineObjects = _spineObjectListViewModel.LoadedSpineObjects
-                }; 
+                };
             }
             set
             {
@@ -191,6 +206,5 @@ namespace SpineViewer.ViewModels.MainWindow
                 _spineObjectListViewModel.LoadedSpineObjects = value.LoadedSpineObjects;
             }
         }
-
     }
 }

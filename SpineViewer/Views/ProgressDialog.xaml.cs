@@ -41,21 +41,12 @@ namespace SpineViewer.Views
         private void ProgressWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
-            int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
-            SetWindowLong(hwnd, GWL_STYLE, currentStyle & ~WS_SYSMENU);
+            int currentStyle = User32.GetWindowLong(hwnd, User32.GWL_STYLE);
+            User32.SetWindowLong(hwnd, User32.GWL_STYLE, currentStyle & ~User32.WS_SYSMENU);
 
             var vm = (ProgressDialogViewModel)DataContext;
             vm.WorkFinished += (s, e) => Dispatcher.Invoke(() => { DialogResult = e; });
             vm.Start();
         }
-
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
     }
 }
