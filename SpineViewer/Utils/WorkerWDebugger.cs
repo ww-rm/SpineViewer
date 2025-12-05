@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Win32Natives;
@@ -42,8 +43,13 @@ namespace SpineViewer.Utils
             // Send 0x052C to Progman. This message directs Progman to spawn a 
             // WorkerW behind the desktop icons. If it is already there, nothing 
             // happens.
+            Marshal.SetLastPInvokeError(0);
             var ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0, 0, User32.SMTO_NORMAL, 1000, out _);
+            var lastErr = Marshal.GetLastWin32Error();
+            var lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
+
             _logger.Debug("SendMessageTimeout returned 0x{0:x8}", ret);
+            _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
             // Spy++ output
             // .....
