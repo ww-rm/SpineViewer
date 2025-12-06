@@ -124,7 +124,6 @@
                                         <ListView x:Name="_spinesListView"
                                                   ItemsSource="{Binding SpineObjects}"
                                                   AllowDrop="True"
-                                                  MouseLeftButtonDown="SpinesListView_MouseLeftButtonDown"
                                                   PreviewMouseLeftButtonDown="SpinesListView_PreviewMouseLeftButtonDown"
                                                   MouseMove="SpinesListView_MouseMove"
                                                   MouseLeftButtonUp="SpinesListView_MouseLeftButtonUp" 
@@ -535,41 +534,48 @@
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <Border Padding="2">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ColTrackIdx"/>
-                                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ColAniTime"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-
-                                                                <Label Grid.Column="0" Content="{Binding TrackIndex}" HorizontalContentAlignment="Left" VerticalAlignment="Top"/>
-                                                                <Label Grid.Column="1" Content="{Binding AnimationDuration}" VerticalAlignment="Top" ContentStringFormat="{}{0:F3} s"/>
-
-                                                                <Expander Grid.Column="2" HorizontalContentAlignment="Stretch">
-                                                                    <Expander.Header>
-                                                                        <!-- hc 的模板自带左侧 10 的 padding, 此处用 -10 的 margin 来抵消去除 -->
-                                                                        <ComboBox Margin="-10 0 0 0" Grid.Column="2" SelectedValue="{Binding AnimationName}" ItemsSource="{Binding AnimationNames}"/>
-                                                                    </Expander.Header>
-                                                                    <Grid Margin="1 0 0 0">
+                                                            <Expander Grid.Column="2" HorizontalContentAlignment="Stretch">
+                                                                <Expander.Header>
+                                                                    <!-- hc 的 Expander 模板自带左侧 10 的 padding, 此处用 -10 的 margin 来抵消去除 -->
+                                                                    <Grid Margin="-10 0 0 0" MouseLeftButtonDown="AnimationExpanderHeaderGrid_MouseLeftButtonDown">
                                                                         <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                            <ColumnDefinition Width="*" />
+                                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ColTrackIdx"/>
+                                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="ColAniTime"/>
+                                                                            <ColumnDefinition Width="*"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="Auto"/>
-                                                                            <RowDefinition Height="Auto"/>
-                                                                        </Grid.RowDefinitions>
-
-                                                                        <!-- 时间因子 -->
-                                                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_TrackTimeScale}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
-                                                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TrackTimeScale, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
-
-                                                                        <!-- Alpha 混合 -->
-                                                                        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_TrackAlpha}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
-                                                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrackAlpha, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                        <Label Grid.Column="0" 
+                                                                               Content="{Binding TrackIndex}" 
+                                                                               HorizontalContentAlignment="Left" 
+                                                                               VerticalAlignment="Top"/>
+                                                                        <Label Grid.Column="1" 
+                                                                               Content="{Binding AnimationDuration}" 
+                                                                               VerticalAlignment="Top" 
+                                                                               ContentStringFormat="{}{0:F3} s"/>
+                                                                        <ComboBox Grid.Column="2" 
+                                                                                  Focusable="True" 
+                                                                                  SelectedValue="{Binding AnimationName}" 
+                                                                                  ItemsSource="{Binding AnimationNames}"/>
                                                                     </Grid>
-                                                                </Expander>
-                                                            </Grid>
+                                                                </Expander.Header>
+                                                                <Grid Margin="1 0 0 0">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <!-- 时间因子 -->
+                                                                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource Str_TrackTimeScale}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+                                                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TrackTimeScale, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackTimeScaleTooltip}"/>
+
+                                                                    <!-- Alpha 混合 -->
+                                                                    <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource Str_TrackAlpha}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrackAlpha, StringFormat='{}{0:F3}'}" ToolTip="{DynamicResource Str_TrackAlphaTooltip}"/>
+                                                                </Grid>
+                                                            </Expander>
                                                         </Border>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -920,8 +926,7 @@
                                         <ListBox x:Name="_spineFilesListBox"
                                                  VirtualizingPanel.IsVirtualizing="True"
                                                  ItemsSource="{Binding ShownItems}"
-                                                 DisplayMemberPath="FileName"
-                                                 MouseLeftButtonDown="SpineFilesListBox_MouseLeftButtonDown">
+                                                 DisplayMemberPath="FileName">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
                                                     <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"

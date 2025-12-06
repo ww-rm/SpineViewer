@@ -83,14 +83,6 @@ namespace SpineViewer.Models
             _isShown = cfg.IsShown;
         }
 
-        public event EventHandler<SkinStatusChangedEventArgs>? SkinStatusChanged;
-
-        public event EventHandler<SlotVisibleChangedEventArgs>? SlotVisibleChanged;
-
-        public event EventHandler<SlotAttachmentChangedEventArgs>? SlotAttachmentChanged;
-
-        public event EventHandler<TrackPropertyChangedEventArgs>? TrackPropertyChanged;
-
         #region 参数面板实现
 
         public SpineVersion Version => _spineObject.Version;
@@ -202,10 +194,7 @@ namespace SpineViewer.Models
 
         public bool SetSkinStatus(string skinName, bool status)
         {
-            bool changed = false;
-            lock (_lock) changed = _spineObject.SetSkinStatus(skinName, status);
-            if (changed) SkinStatusChanged?.Invoke(this, new(skinName, status));
-            return changed;
+            lock (_lock) return _spineObject.SetSkinStatus(skinName, status);
         }
 
         public FrozenDictionary<string, ImmutableArray<string>> SlotAttachments => _slotAttachments;
@@ -217,10 +206,7 @@ namespace SpineViewer.Models
 
         public bool SetSlotVisible(string slotName, bool visible)
         {
-            bool changed = false;
-            lock (_lock) changed = _spineObject.SetSlotVisible(slotName, visible);
-            if (changed) SlotVisibleChanged?.Invoke(this, new(slotName, visible));
-            return changed;
+            lock (_lock) return _spineObject.SetSlotVisible(slotName, visible);
         }
 
         public string? GetAttachment(string slotName)
@@ -230,10 +216,7 @@ namespace SpineViewer.Models
 
         public bool SetAttachment(string slotName, string? attachmentName)
         {
-            bool changed = false;
-            lock (_lock) changed = _spineObject.SetAttachment(slotName, attachmentName);
-            if (changed) SlotAttachmentChanged?.Invoke(this, new(slotName, attachmentName));
-            return changed;
+            lock (_lock) return _spineObject.SetAttachment(slotName, attachmentName);
         }
 
         public ImmutableArray<string> Animations => _animations;
@@ -255,7 +238,6 @@ namespace SpineViewer.Models
         /// </summary>
         public void SetAnimation(int index, string name)
         {
-            bool changed = false;
             float lastTimeScale = 1f;
             float lastAlpha = 1f;
             lock (_lock)
@@ -277,10 +259,8 @@ namespace SpineViewer.Models
                     {
                         _spineObject.Skeleton.SetSlotsToSetupPose();
                     }
-                    changed = true;
                 }
             }
-            if (changed) TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.AnimationName)));
         }
 
         public float GetTrackTimeScale(int index)
@@ -295,7 +275,6 @@ namespace SpineViewer.Models
                 if (_spineObject.AnimationState.GetCurrent(index) is ITrackEntry entry)
                 {
                     entry.TimeScale = Math.Clamp(scale, 0.01f, 100f);
-                    TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.TimeScale)));
                 }
             }
         }
@@ -312,7 +291,6 @@ namespace SpineViewer.Models
                 if (_spineObject.AnimationState.GetCurrent(index) is ITrackEntry entry)
                 {
                     entry.Alpha = Math.Clamp(alpha, 0f, 1f);
-                    TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.Alpha)));
                 }
             }
         }
@@ -335,7 +313,6 @@ namespace SpineViewer.Models
         public void ClearTrack(int index)
         {
             lock (_lock) _spineObject.AnimationState.ClearTrack(index);
-            TrackPropertyChanged?.Invoke(this, new(index, nameof(TrackPropertyChangedEventArgs.AnimationName)));
         }
 
         public void ResetAnimationsTime()
@@ -521,25 +498,21 @@ namespace SpineViewer.Models
                 if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.Skin)
                 {
                     foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(m.LoadedSkins))
-                        if (_spineObject.SetSkinStatus(name, false))
-                            SkinStatusChanged?.Invoke(this, new(name, false));
+                        _spineObject.SetSkinStatus(name, false);
                     foreach (var name in m.LoadedSkins)
-                        if (_spineObject.SetSkinStatus(name, true))
-                            SkinStatusChanged?.Invoke(this, new(name, true));
+                        _spineObject.SetSkinStatus(name, true);
                 }
 
                 if (flag == SpineObjectConfigApplyFlag.SlotAttachement)
                 {
                     foreach (var (slotName, attachmentName) in m.SlotAttachment)
-                        if (_spineObject.SetAttachment(slotName, attachmentName))
-                            SlotAttachmentChanged?.Invoke(this, new(slotName, attachmentName));
+                        _spineObject.SetAttachment(slotName, attachmentName);
                 }
 
                 if (flag == SpineObjectConfigApplyFlag.SlotVisibility)
                 {
                     foreach (var slotName in m.DisabledSlots)
-                        if (_spineObject.SetSlotVisible(slotName, false))
-                            SlotVisibleChanged?.Invoke(this, new(slotName, false));
+                        _spineObject.SetSlotVisible(slotName, false);
                 }
 
                 if (flag == SpineObjectConfigApplyFlag.All)
@@ -554,7 +527,6 @@ namespace SpineViewer.Models
                             var tr = _spineObject.AnimationState.SetAnimation(trackIndex, trConfig.AnimationName, true);
                             tr.TimeScale = trConfig.TimeScale;
                             tr.Alpha = trConfig.Alpha;
-                            TrackPropertyChanged?.Invoke(this, new(trackIndex, nameof(TrackPropertyChangedEventArgs.AnimationName)));
                         }
                         trackIndex++;
                     }
@@ -642,43 +614,6 @@ namespace SpineViewer.Models
         Skin,
         SlotAttachement,
         SlotVisibility,
-    }
-
-    public class SkinStatusChangedEventArgs(string name, bool status) : EventArgs
-    {
-        public string Name { get; } = name;
-        public bool Status { get; } = status;
-    }
-
-    public class SlotVisibleChangedEventArgs(string slotName, bool visible) : EventArgs
-    {
-        public string SlotName { get; } = slotName;
-        public bool Visible { get; } = visible;
-    }
-
-    public class SlotAttachmentChangedEventArgs(string slotName, string? attachmentName) : EventArgs
-    {
-        public string SlotName { get; } = slotName;
-        public string? AttachmentName { get; } = attachmentName;
-    }
-
-    /// <summary>
-    /// 模型动画轨道属性变化事件参数, 需要检索 <c><see cref="PropertyName"/></c> 来确定发生变化的属性是什么
-    /// </summary>
-    /// <param name="trackIndex">发生属性变化的轨道索引</param>
-    /// <param name="propertyName">使用 <c>nameof</c> 设置发生改变的属性名</param>
-    public class TrackPropertyChangedEventArgs(int trackIndex, string propertyName) : EventArgs
-    {
-        public int TrackIndex { get; } = trackIndex;
-
-        /// <summary>
-        /// 发生变化的属性名, 将会使用 <c>nameof</c> 设置为属性名称字符串
-        /// </summary>
-        public string PropertyName { get; } = propertyName;
-
-        public string? AnimationName { get; }
-        public float TimeScale { get; } = 1f;
-        public float Alpha { get; } = 1f;
     }
 
     public class SpineObjectLoadOptions

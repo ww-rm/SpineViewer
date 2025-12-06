@@ -17,10 +17,10 @@ namespace Win32Natives
         private const uint DWMWA_TEXT_COLOR = 36;
         private const uint DWMWA_COLOR_DEFAULT = 0xFFFFFFFF;
 
-        [DllImport("dwmapi.dll")]
+        [DllImport("dwmapi.dll", SetLastError = true)]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref int pvAttribute, int cbAttribute);
 
-        [DllImport("dwmapi.dll")]
+        [DllImport("dwmapi.dll", SetLastError = true)]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref uint pvAttribute, int cbAttribute);
 
         public static bool SetWindowCaptionColor(IntPtr hwnd, byte r, byte g, byte b)
