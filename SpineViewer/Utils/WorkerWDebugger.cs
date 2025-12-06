@@ -45,7 +45,7 @@ namespace SpineViewer.Utils
             // happens.
             Marshal.SetLastPInvokeError(0);
             var ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0, 0, User32.SMTO_NORMAL, 1000, out _);
-            var lastErr = Marshal.GetLastWin32Error();
+            var lastErr = Marshal.GetLastPInvokeError();
             var lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
 
             _logger.Debug("SendMessageTimeout returned 0x{0:x8}", ret);
