@@ -491,7 +491,7 @@ public partial class MainWindow : Window
             return;
 
         // 找到包含这个 Border 的 TabItem
-        var tabItem = VisualFindParent<TabItem>(fe);
+        var tabItem = fe?.GetParent<ListBoxItem>();
         if (tabItem is null) 
             return;
 
@@ -537,13 +537,6 @@ public partial class MainWindow : Window
         _spinesListView.Focus();
     }
 
-    private void SpinesListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        var list = (ListView)sender;
-        if (VisualUpwardSearch<ListViewItem>(e.OriginalSource as DependencyObject) is null)
-            list.SelectedItems.Clear();
-    }
-
     private void SpinesListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var list = (ListView)sender;
@@ -551,7 +544,7 @@ public partial class MainWindow : Window
         if (list.SelectedItems.Count > 1) return;
 
         // 找到鼠标当前所在的 ListViewItem
-        _listViewDragSourceItem = VisualUpwardSearch<ListViewItem>(e.OriginalSource as DependencyObject);
+        _listViewDragSourceItem = ((DependencyObject)e.OriginalSource)?.GetParent<ListViewItem>(true);
         _listViewDragSourcePoint = e.GetPosition(null);
 
         // 如果点到的是空白也让其获取焦点
@@ -607,7 +600,7 @@ public partial class MainWindow : Window
             Point pt = e.GetPosition(list);
             var obj = list.InputHitTest(pt) as DependencyObject;
             // 找到当前鼠标下的 ListViewItem
-            var dstListViewItem = VisualUpwardSearch<ListViewItem>(obj);
+            var dstListViewItem = obj?.GetParent<ListBoxItem>(true);
             int dstIdx = -1;
             if (dstListViewItem != null)
             {
@@ -628,13 +621,16 @@ public partial class MainWindow : Window
 
     #endregion
 
-    #region _spineFilesListBox 事件
+    #region Spine 属性面板事件
 
-    private void SpineFilesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void AnimationExpanderHeaderGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var list = (ListBox)sender;
-        if (VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject) is null)
-            list.SelectedItems.Clear();
+        // 直接引发 ListBoxItem 的点击事件
+        var item = ((DependencyObject)sender)?.GetParent<ListBoxItem>();
+        item?.RaiseEvent(e);
+
+        // 跳过 Expander 事件处理
+        e.Handled = true;
     }
 
     #endregion
@@ -918,15 +914,6 @@ public partial class MainWindow : Window
 
     #endregion
 
-    private static T? VisualUpwardSearch<T>(DependencyObject? source) where T : DependencyObject
-    {
-        while (source != null && source is not T)
-            source = VisualTreeHelper.GetParent(source);
-        return source as T;
-    }
-
-    public static T? VisualFindParent<T>(DependencyObject child) where T : DependencyObject 
-        => VisualUpwardSearch<T>(VisualTreeHelper.GetParent(child));
 
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
@@ -939,5 +926,4 @@ public partial class MainWindow : Window
         return;
 #endif
     }
-
 }

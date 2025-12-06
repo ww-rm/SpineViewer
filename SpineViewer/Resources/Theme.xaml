@@ -1,4 +1,5 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary x:Class="SpineViewer.Resources.Theme" 
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:o="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
@@ -45,6 +46,7 @@
                 </Style>
             </Setter.Value>
         </Setter>
+        <EventSetter Event="MouseLeftButtonDown" Handler="ListBox_MouseLeftButtonDown"/>
     </Style>
 
     <Style x:Key="MyListViewBaseStyle" TargetType="ListView" BasedOn="{StaticResource ListViewBaseStyle}">
@@ -52,6 +54,7 @@
         <!--<Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>-->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListViewItemBaseStyle.Small}"/>
+        <EventSetter Event="MouseLeftButtonDown" Handler="ListView_MouseLeftButtonDown"/>
     </Style>
 
     <Style x:Key="MyGroupBoxBaseStyle" TargetType="GroupBox" BasedOn="{StaticResource GroupBoxTab}">
