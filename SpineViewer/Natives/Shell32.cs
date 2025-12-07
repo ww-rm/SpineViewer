@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Win32Natives
+namespace SpineViewer.Natives
 {
     /// <summary>
     /// shell32.dll 包装类
@@ -18,11 +18,11 @@ namespace Win32Natives
         private const uint SHCNF_IDLIST = 0x0000;
 
         [DllImport("shell32.dll", SetLastError = true)]
-        private static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        private static extern void SHChangeNotify(uint wEventId, uint uFlags, nint dwItem1, nint dwItem2);
 
         public static void NotifyAssociationChanged()
         {
-            SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+            SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nint.Zero, nint.Zero);
         }
     }
 }

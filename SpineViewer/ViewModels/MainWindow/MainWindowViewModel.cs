@@ -8,7 +8,6 @@ using SpineViewer.Utils;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Shell;
-using Win32Natives;
 
 namespace SpineViewer.ViewModels.MainWindow
 {
@@ -65,12 +64,12 @@ namespace SpineViewer.ViewModels.MainWindow
         }
         private bool _closeToTray;
 
-        public string AutoRunWorkspaceConfigPath
+        public string? AutoRunWorkspaceConfigPath
         {
             get => _autoRunWorkspaceConfigPath;
             set => SetProperty(ref _autoRunWorkspaceConfigPath, value);
         }
-        private string _autoRunWorkspaceConfigPath;
+        private string? _autoRunWorkspaceConfigPath;
 
         /// <summary>
         /// SFML 渲染对象
@@ -128,7 +127,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _preferenceViewModel.WallpaperView = !_preferenceViewModel.WallpaperView;
             _preferenceViewModel.SavePreference();
         });
-        private RelayCommand _cmd_SwitchWallpaperView;
+        private RelayCommand? _cmd_SwitchWallpaperView;
 
         public RelayCommand Cmd_ExitFromTray => _cmd_ExitFromTray ??= new(() =>
         {
