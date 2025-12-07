@@ -54,8 +54,9 @@ namespace SpineViewer.ViewModels
                 var registryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion";
                 var productName = Registry.GetValue(registryKeyPath, "ProductName", "Unknown") as string;
                 var editionId = Registry.GetValue(registryKeyPath, "EditionID", "Unknown") as string;
-                var osVersion = Environment.OSVersion.ToString();
-                return $"{productName}, {editionId}, {osVersion}";
+                var displayEdition = Registry.GetValue(registryKeyPath, "DisplayVersion", "Unknown") as string;
+                var lcuVersion = Registry.GetValue(registryKeyPath, "LCUVer", "Unknown") as string;
+                return $"{productName}, {editionId}, {displayEdition}, {lcuVersion}";
             }
         }
 
