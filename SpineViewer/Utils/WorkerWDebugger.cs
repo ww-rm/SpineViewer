@@ -44,11 +44,17 @@ namespace SpineViewer.Utils
             // WorkerW behind the desktop icons. If it is already there, nothing 
             // happens.
             Marshal.SetLastPInvokeError(0);
-            var ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0, 0, User32.SMTO_NORMAL, 1000, out _);
+            var ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x1, User32.SMTO_NORMAL, 1000, out _);
             var lastErr = Marshal.GetLastPInvokeError();
             var lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
+            _logger.Debug("SendMessageTimeout(lParam=1) returned 0x{0:x8}", ret);
+            _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
-            _logger.Debug("SendMessageTimeout returned 0x{0:x8}", ret);
+            Marshal.SetLastPInvokeError(0);
+            ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x0, User32.SMTO_NORMAL, 1000, out _);
+            lastErr = Marshal.GetLastPInvokeError();
+            lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
+            _logger.Debug("SendMessageTimeout(lParam=0) returned 0x{0:x8}", ret);
             _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
             // Spy++ output
