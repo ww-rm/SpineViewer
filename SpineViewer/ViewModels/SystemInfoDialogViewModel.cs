@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace SpineViewer.ViewModels
 {
-    public class DiagnosticsDialogViewModel : ObservableObject
+    public class SystemInfoDialogViewModel : ObservableObject
     {
         public string CPU => Registry.GetValue(
             @"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", 

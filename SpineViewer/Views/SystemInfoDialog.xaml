@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpineViewer.Views" 
         xmlns:viewmodels="clr-namespace:SpineViewer.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:DiagnosticsDialogViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewmodels:SystemInfoDialogViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Diagnostics}"
         Background="{DynamicResource RegionBrush}"
@@ -14,7 +14,7 @@
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <Window.DataContext>
-        <viewmodels:DiagnosticsDialogViewModel/>
+        <viewmodels:SystemInfoDialogViewModel/>
     </Window.DataContext>
 
     <DockPanel>
