@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Win32Natives
+namespace SpineViewer.Natives
 {
     /// <summary>
     /// gdi32.dll 包装类
@@ -15,15 +15,15 @@ namespace Win32Natives
     public static class Gdi32
     {
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        public static extern nint CreateCompatibleDC(nint hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteDC(IntPtr hdc);
+        public static extern bool DeleteDC(nint hdc);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+        public static extern nint SelectObject(nint hdc, nint hgdiobj);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        public static extern bool DeleteObject(IntPtr hObject);
+        public static extern bool DeleteObject(nint hObject);
     }
 }

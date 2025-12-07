@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using NLog;
-using Win32Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
@@ -16,6 +15,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
 using SpineViewer.Extensions;
+using SpineViewer.Natives;
 
 namespace SpineViewer
 {

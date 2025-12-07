@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Win32Natives
+namespace SpineViewer.Natives
 {
     /// <summary>
     /// dwmapi.dll 包装类
@@ -18,24 +18,24 @@ namespace Win32Natives
         private const uint DWMWA_COLOR_DEFAULT = 0xFFFFFFFF;
 
         [DllImport("dwmapi.dll", SetLastError = true)]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref int pvAttribute, int cbAttribute);
+        private static extern int DwmSetWindowAttribute(nint hwnd, uint dwAttribute, ref int pvAttribute, int cbAttribute);
 
         [DllImport("dwmapi.dll", SetLastError = true)]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, uint dwAttribute, ref uint pvAttribute, int cbAttribute);
+        private static extern int DwmSetWindowAttribute(nint hwnd, uint dwAttribute, ref uint pvAttribute, int cbAttribute);
 
-        public static bool SetWindowCaptionColor(IntPtr hwnd, byte r, byte g, byte b)
+        public static bool SetWindowCaptionColor(nint hwnd, byte r, byte g, byte b)
         {
-            int c = r | (g << 8) | (b << 16);
+            int c = r | g << 8 | b << 16;
             return 0 == DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref c, sizeof(uint));
         }
 
-        public static bool SetWindowTextColor(IntPtr hwnd, byte r, byte g, byte b)
+        public static bool SetWindowTextColor(nint hwnd, byte r, byte g, byte b)
         {
-            int c = r | (g << 8) | (b << 16);
+            int c = r | g << 8 | b << 16;
             return 0 == DwmSetWindowAttribute(hwnd, DWMWA_TEXT_COLOR, ref c, sizeof(uint));
         }
 
-        public static bool SetWindowDarkMode(IntPtr hwnd, bool darkMode)
+        public static bool SetWindowDarkMode(nint hwnd, bool darkMode)
         {
             int b = darkMode ? 1 : 0;
             uint c = DWMWA_COLOR_DEFAULT;

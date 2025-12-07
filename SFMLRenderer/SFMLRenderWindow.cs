@@ -4,10 +4,10 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using Win32Natives;
 
 namespace SFMLRenderer
 {
@@ -24,9 +24,9 @@ namespace SFMLRenderer
             SetVisible(false);
 
             var handle = SystemHandle;
-            var exStyle = User32.GetWindowLong(handle, User32.GWL_EXSTYLE) | User32.WS_EX_LAYERED;
-            User32.SetWindowLong(handle, User32.GWL_EXSTYLE, exStyle);
-            User32.SetLayeredWindowAttributes(handle, 0, byte.MaxValue, User32.LWA_ALPHA);
+            var exStyle = GetWindowLong(handle, GWL_EXSTYLE) | WS_EX_LAYERED;
+            SetWindowLong(handle, GWL_EXSTYLE, exStyle);
+            SetLayeredWindowAttributes(handle, 0, byte.MaxValue, LWA_ALPHA);
 
             RendererCreated?.Invoke(this, EventArgs.Empty);
         }
@@ -176,5 +176,22 @@ namespace SFMLRenderer
             }
         }
         private bool _verticalSync = false;
+
+        #region Win32 Native APIs
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_LAYERED = 0x00080000;
+        private const uint LWA_ALPHA = 0x2;
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint pcrKey, byte pbAlpha, uint pdwFlags);
+
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using SFMLRenderer;
 using Spine;
 using SpineViewer.Extensions;
 using SpineViewer.Models;
+using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
@@ -24,7 +25,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Win32Natives;
 
 namespace SpineViewer.Views;
 

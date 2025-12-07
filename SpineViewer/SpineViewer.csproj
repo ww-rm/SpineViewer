@@ -11,7 +11,7 @@
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.13</Version>
+        <Version>0.16.14-beta</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
@@ -44,6 +44,5 @@
       <ProjectReference Include="..\NLog.Windows.Wpf\NLog.Windows.Wpf.csproj" />
       <ProjectReference Include="..\SFMLRenderer\SFMLRenderer.csproj" />
       <ProjectReference Include="..\Spine\Spine.csproj" />
-      <ProjectReference Include="..\Win32Natives\Win32Natives.csproj" />
     </ItemGroup>
 </Project>

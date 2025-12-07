@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Win32Natives
+namespace SpineViewer.Natives
 {
     /// <summary>
     /// user32.dll 包装类
@@ -81,7 +81,7 @@ namespace Win32Natives
         public const int ULW_ALPHA = 0x00000002;
         public const int ULW_OPAQUE = 0x00000004;
 
-        public const IntPtr HWND_TOPMOST = -1;
+        public const nint HWND_TOPMOST = -1;
 
         public const uint SWP_ASYNCWINDOWPOS = 0x4000;
         public const uint SWP_DEFERERASE = 0x2000;
@@ -178,25 +178,25 @@ namespace Win32Natives
             public string szDevice;
         }
 
-        public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+        public delegate bool EnumWindowsProc(nint hWnd, nint lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetDC(IntPtr hWnd);
+        public static extern nint GetDC(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        public static extern int ReleaseDC(nint hWnd, nint hDC);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetLayeredWindowAttributes(IntPtr hWnd, ref uint crKey, ref byte bAlpha, ref uint dwFlags);
+        public static extern bool GetLayeredWindowAttributes(nint hWnd, ref uint crKey, ref byte bAlpha, ref uint dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint pcrKey, byte pbAlpha, uint pdwFlags);
+        public static extern bool SetLayeredWindowAttributes(nint hWnd, uint pcrKey, byte pbAlpha, uint pdwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool UpdateLayeredWindow(IntPtr hWnd, IntPtr hdcDst, IntPtr pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+        public static extern bool UpdateLayeredWindow(nint hWnd, nint hdcDst, nint pptDst, ref SIZE psize, nint hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        public static extern bool SetWindowPos(nint hWnd, nint hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetDoubleClickTime();
@@ -205,60 +205,60 @@ namespace Win32Natives
         private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        public static extern nint FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
+        public static extern nint FindWindowEx(nint parentHandle, nint childAfter, string className, string windowTitle);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam, uint fuFlags, uint uTimeout, out IntPtr lpdwResult);
+        public static extern nint SendMessageTimeout(nint hWnd, uint Msg, nint wParam, nint lParam, uint fuFlags, uint uTimeout, out nint lpdwResult);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        public static extern nint SetParent(nint hWndChild, nint hWndNewParent);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetParent(IntPtr hWnd);
+        public static extern nint GetParent(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
+        public static extern nint GetAncestor(nint hWnd, uint gaFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+        public static extern nint GetWindow(nint hWnd, uint uCmd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        public static extern bool ShowWindow(nint hWnd, int nCmdShow);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+        public static extern bool EnumWindows(EnumWindowsProc enumProc, nint lParam);
 
         [DllImport("User32.dll", SetLastError = true)]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int SendMessage(nint hWnd, int Msg, nint wParam, nint lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool IsIconic(IntPtr hWnd);
+        public static extern bool IsIconic(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        public static extern bool SetForegroundWindow(nint hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+        private static extern nint MonitorFromWindow(nint hwnd, uint dwFlags);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+        private static extern bool GetMonitorInfo(nint hMonitor, ref MONITORINFOEX lpmi);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern int SetWindowLong(nint hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        public static extern int GetWindowLong(nint hWnd, int nIndex);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+        public static extern bool EnumChildWindows(nint hWnd, EnumWindowsProc lpEnumFunc, nint lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+        private static extern int GetClassName(nint hWnd, StringBuilder lpClassName, int nMaxCount);
 
-        public static string GetWindowClassName(IntPtr hWnd)
+        public static string GetWindowClassName(nint hWnd)
         {
             var sb = new StringBuilder(256);
             GetClassName(hWnd, sb, sb.Capacity);
@@ -280,13 +280,13 @@ namespace Win32Natives
             return TimeSpan.FromMilliseconds(idleTimeMillis);
         }
 
-        public static IntPtr GetWorkerW()
+        public static nint GetWorkerW()
         {
             // NOTE: Codes borrowed from @rocksdanister/lively
 
             var progman = FindWindow("Progman", null);
-            if (progman == IntPtr.Zero)
-                return IntPtr.Zero;
+            if (progman == nint.Zero)
+                return nint.Zero;
 
             // Send 0x052C to Progman. This message directs Progman to spawn a 
             // WorkerW behind the desktop icons. If it is already there, nothing 
@@ -301,23 +301,23 @@ namespace Win32Natives
             //     0x000100F0 "FolderView" SysListView32
             // 0x00100B8A "" WorkerW       <-- This is the WorkerW instance we are after!
             // 0x000100EC "Program Manager" Progman
-            var workerw = IntPtr.Zero;
+            var workerw = nint.Zero;
 
             // We enumerate all Windows, until we find one, that has the SHELLDLL_DefView 
             // as a child. 
             // If we found that window, we take its next sibling and assign it to workerw.
             EnumWindows(new EnumWindowsProc((tophandle, topparamhandle) =>
             {
-                IntPtr p = FindWindowEx(tophandle, IntPtr.Zero, "SHELLDLL_DefView", null);
+                nint p = FindWindowEx(tophandle, nint.Zero, "SHELLDLL_DefView", null);
 
-                if (p != IntPtr.Zero)
+                if (p != nint.Zero)
                 {
                     // Gets the WorkerW Window after the current one.
-                    workerw = FindWindowEx(IntPtr.Zero, tophandle, "WorkerW", null);
+                    workerw = FindWindowEx(nint.Zero, tophandle, "WorkerW", null);
                 }
 
                 return true;
-            }), IntPtr.Zero);
+            }), nint.Zero);
 
             // Some Windows 11 builds have a different Progman window layout.
             // If the above code failed to find WorkerW, we should try this.
@@ -326,18 +326,18 @@ namespace Win32Natives
             //   0x000100EE "" SHELLDLL_DefView
             //     0x000100F0 "FolderView" SysListView32
             //   0x00100B8A "" WorkerW       <-- This is the WorkerW instance we are after!
-            if (workerw == IntPtr.Zero)
+            if (workerw == nint.Zero)
             {
-                workerw = FindWindowEx(progman, IntPtr.Zero, "WorkerW", null);
+                workerw = FindWindowEx(progman, nint.Zero, "WorkerW", null);
             }
 
             Debug.WriteLine($"HWND(WorkerW): 0x{workerw:x8}");
             return workerw;
         }
 
-        public static bool GetScreenResolution(IntPtr hwnd, out uint width, out uint height)
+        public static bool GetScreenResolution(nint hwnd, out uint width, out uint height)
         {
-            IntPtr hMon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+            nint hMon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
 
             var mi = new MONITORINFOEX { cbSize = (uint)Marshal.SizeOf<MONITORINFOEX>() };
             if (GetMonitorInfo(hMon, ref mi))
@@ -354,7 +354,7 @@ namespace Win32Natives
 
         public static bool GetPrimaryScreenResolution(out uint width, out uint height)
         {
-            IntPtr hMon = MonitorFromWindow(IntPtr.Zero, MONITOR_DEFAULTTOPRIMARY);
+            nint hMon = MonitorFromWindow(nint.Zero, MONITOR_DEFAULTTOPRIMARY);
 
             var mi = new MONITORINFOEX { cbSize = (uint)Marshal.SizeOf<MONITORINFOEX>() };
             if (GetMonitorInfo(hMon, ref mi))
@@ -369,10 +369,10 @@ namespace Win32Natives
             return false;
         }
 
-        public static IEnumerable<IntPtr> EnumDirectChildWindow(IntPtr parent)
+        public static IEnumerable<nint> EnumDirectChildWindow(nint parent)
         {
-            IntPtr child = GetWindow(parent, GW_CHILD);
-            while (child != IntPtr.Zero)
+            nint child = GetWindow(parent, GW_CHILD);
+            while (child != nint.Zero)
             {
                 yield return child;
                 child = GetWindow(child, GW_HWNDNEXT);

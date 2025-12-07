@@ -1,4 +1,5 @@
 ﻿using SpineViewer.Extensions;
+using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.ViewModels;
 using System;
@@ -16,7 +17,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Win32Natives;
 
 namespace SpineViewer.Views
 {
