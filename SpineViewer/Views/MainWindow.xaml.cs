@@ -163,7 +163,7 @@ public partial class MainWindow : Window
         var vm = _vm.SFMLRendererViewModel;
         _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
         _renderPanel.CanvasMouseButtonPressed += (s, e) => { vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
-        _renderPanel.CanvasMouseMove += vm.CanvasMouseMove;
+        _renderPanel.CanvasMouseMoved += vm.CanvasMouseMove;
         _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
 
         // 设置默认参数并启动渲染

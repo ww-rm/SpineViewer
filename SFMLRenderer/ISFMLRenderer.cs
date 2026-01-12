@@ -25,7 +25,7 @@ namespace SFMLRenderer
         /// </summary>
         public event EventHandler? RendererDisposing;
 
-        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMove;
+        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMoved;
         public event EventHandler<MouseButtonEventArgs>? CanvasMouseButtonPressed;
         public event EventHandler<MouseButtonEventArgs>? CanvasMouseButtonReleased;
         public event EventHandler<MouseWheelScrollEventArgs>? CanvasMouseWheelScrolled;
