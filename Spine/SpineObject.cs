@@ -854,6 +854,10 @@ namespace Spine
             if (disposing)
             {
                 _data.Dispose();
+                _triangleVertices.Dispose();
+                _lineVertices.Dispose();
+                _rectLineVertices.Dispose();
+                _circlePointShape.Dispose();
             }
             _disposed = true;
         }
