@@ -39,7 +39,7 @@ namespace SFMLRenderer
             remove => throw new NotImplementedException();
         }
 
-        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMove
+        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMoved
         {
             add { MouseMoved += value; }
             remove { MouseMoved -= value; }

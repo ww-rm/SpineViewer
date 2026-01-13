@@ -12,7 +12,13 @@ namespace Spine
     /// <summary>
     /// 命中测试等级枚举值
     /// </summary>
-    public enum HitTestLevel { None, Bounds, Meshes, Pixels }
+    public enum HitTestLevel 
+    { 
+        None = 0, 
+        Bounds = 1, 
+        Meshes = 2, 
+        Pixels = 3,
+    }
 
     public static class SpineExtension
     {
@@ -156,12 +162,12 @@ namespace Spine
             if (self.A <= 0 || !self.Bone.Active || self.Disabled)
                 return false;
 
-            if (HitTestLevel == HitTestLevel.None || HitTestLevel == HitTestLevel.Bounds)
+            if (HitTestLevel <= HitTestLevel.Bounds)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
                 return x >= bx && x <= bx + bw && y >= by && y <= by + bh;
             }
-            else if (HitTestLevel == HitTestLevel.Meshes || HitTestLevel == HitTestLevel.Pixels)
+            else if (HitTestLevel <= HitTestLevel.Pixels)
             {
                 float[] vertices = new float[8];
                 int[] triangles;
@@ -204,7 +210,7 @@ namespace Spine
                     // 判断是否全部同号 (或为 0, 点在边上)
                     if (c0 >= 0 && c1 >= 0 && c2 >= 0 || c0 <= 0 && c1 <= 0 && c2 <= 0)
                     {
-                        if (HitTestLevel == HitTestLevel.Meshes)
+                        if (HitTestLevel <= HitTestLevel.Meshes)
                             return true;
 
                         float u0 = uvs[idx0], v0 = uvs[idx0 + 1];
@@ -249,7 +255,7 @@ namespace Spine
         /// </summary>
         public static bool HitTest(this ISkeleton self, float x, float y)
         {
-            if (HitTestLevel == HitTestLevel.None)
+            if (HitTestLevel <= HitTestLevel.None)
             {
                 self.GetBounds(out var bx, out var by, out var bw, out var bh);
                 return x >= bx && x <= bx + bw && y >= by && y <= by + bh;

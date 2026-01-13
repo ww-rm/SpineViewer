@@ -33,7 +33,7 @@ namespace SFMLRenderer
             remove => _hwndHost.RenderWindowDestroying -= value;
         }
 
-        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMove 
+        public event EventHandler<MouseMoveEventArgs>? CanvasMouseMoved 
         {
             add { if (RenderWindow is RenderWindow w) w.MouseMoved += value; }
             remove { if (RenderWindow is RenderWindow w) w.MouseMoved -= value; }

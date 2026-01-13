@@ -700,7 +700,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
             }
 
-            public ReadOnlyCollection<string> AttachmentNames => _attachmentNames.AsReadOnly();
+            public IReadOnlyList<string> AttachmentNames => _attachmentNames;
 
             public string SlotName => _slotName;
 
@@ -764,7 +764,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
             }
 
-            public ReadOnlyCollection<string> AnimationNames => _animationNames.AsReadOnly();
+            public IReadOnlyList<string> AnimationNames => _animationNames;
 
             public int TrackIndex => _trackIndex;
 
