@@ -16,6 +16,9 @@ namespace Spine.Exporters
     /// </summary>
     public abstract class VideoExporter : BaseExporter
     {
+        private readonly object _frameOutputLock = new();
+        private SFMLImageVideoFrame? _frameOutput;
+
         public VideoExporter(uint width, uint height) : base(width, height) { }
         public VideoExporter(Vector2u resolution) : base(resolution) { }
 
@@ -83,11 +86,10 @@ namespace Spine.Exporters
         {
             var delta = 1f / _fps;
             var total = (int)(_duration * _fps); // 完整帧的数量
-
             var deltaFinal = _duration - delta * total; // 最后一帧时长
-            var final = _keepLast && deltaFinal > 1e-3 ? 1 : 0;
+            bool hasFinal = _keepLast && deltaFinal > 1e-3;
 
-            var frameCount = 1 + total + final; // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
+            var frameCount = 1 + total + (hasFinal ? 1 : 0); // 所有帧的数量 = 起始帧 + 完整帧 + 最后一帧
             return frameCount;
         }
 
@@ -98,7 +100,8 @@ namespace Spine.Exporters
         {
             float delta = 1f / _fps;
             int total = (int)(_duration * _fps); // 完整帧的数量
-            bool hasFinal = _keepLast && (_duration - delta * total) > 1e-3;
+            var deltaFinal = _duration - delta * total; // 最后一帧时长
+            bool hasFinal = _keepLast && deltaFinal > 1e-3;
 
             // 导出首帧
             var firstFrame = GetFrame(spines);
@@ -114,9 +117,36 @@ namespace Spine.Exporters
             // 导出最后一帧
             if (hasFinal)
             {
-                // XXX: 此处还是按照完整的一帧时长进行更新, 也许可以只更新准确的最后一帧时长
-                foreach (var spine in spines) spine.Update(delta * _speed); 
+                foreach (var spine in spines) spine.Update(deltaFinal * _speed); 
                 yield return GetFrame(spines);
+            }
+        }
+
+        /// <summary>
+        /// 帧渲染任务, 用于保证每一帧的渲染都在同一个线程里完成
+        /// </summary>
+        private void GetFramesTask(SpineObject[] spines, CancellationToken ct)
+        {
+            // XXX: 也许和 SFML 多线程或者 FFmpeg 调用有关, GetFrame 无法在异步调用中连续使用, 会导致画面帧丢失或者卡死等异常现象
+            // 因此把帧生成包在一个子线程中连续调用, 通过成员变量和锁来输出帧数据
+            foreach (var frame in GetFrames(spines))
+            {
+                while (!ct.IsCancellationRequested)
+                {
+                    // 等待之前的数据被取走
+                    lock (_frameOutputLock)
+                    {
+                        if (_frameOutput is null)
+                            break;
+                    }
+                    Thread.Sleep(10);
+                }
+                if (ct.IsCancellationRequested)
+                {
+                    frame.Dispose();
+                    break;
+                }
+                _frameOutput = frame;
             }
         }
 
@@ -127,21 +157,43 @@ namespace Spine.Exporters
         {
             int frameCount = GetFrameCount();
             int frameIdx = 0;
+            SFMLImageVideoFrame frame = null;
+            
+            using var getFramesTask = Task.Run(() => GetFramesTask(spines, ct), ct);
 
             _progressReporter?.Invoke(frameCount, 0, $"[0/{frameCount}] {output}");
-            foreach (var frame in GetFrames(spines))
+            while (frameIdx < frameCount)
             {
+                while (!ct.IsCancellationRequested)
+                {
+                    // 等待新帧的生成
+                    lock (_frameOutputLock)
+                    {
+                        if (_frameOutput is not null)
+                        {
+                            frame = _frameOutput;
+                            _frameOutput = null;
+                            break;
+                        }
+                    }
+
+                    Thread.Sleep(10);
+                }
+
                 if (ct.IsCancellationRequested)
                 {
                     _logger.Info("Export cancelled");
-                    frame.Dispose();
+                    frame?.Dispose();
                     break;
                 }
 
                 _progressReporter?.Invoke(frameCount, frameIdx + 1, $"[{frameIdx + 1}/{frameCount}] {output}");
                 yield return frame;
+                frame = null;
                 frameIdx++;
             }
+
+            getFramesTask.Wait(CancellationToken.None); // 等待结束 (正常结束或者被取消)
         }
 
         public sealed override void Export(string output, params SpineObject[] spines) => Export(output, default, spines);

@@ -65,22 +65,6 @@ namespace Spine.Exporters
             if (!string.IsNullOrEmpty(_customArgs)) options.WithCustomArgument($"{_customArgs}");
         }
 
-        /// <summary>
-        /// 获取的一帧, 结果是预乘的
-        /// </summary>
-        protected override SFMLImageVideoFrame GetFrame(SpineObject[] spines)
-        {
-            // BUG: 也许和 SFML 多线程或者 FFmpeg 调用有关, 当渲染线程也在运行的时候此处并行渲染会导致和 SFML 有关的内容都卡死
-            // 不知道为什么用 FFmpeg 必须临时创建 RenderTexture, 否则无法正常渲染, 会导致画面帧丢失
-            using var tex = new RenderTexture(_renderTexture.Size.X, _renderTexture.Size.Y);
-            using var view = _renderTexture.GetView();
-            tex.SetView(view);
-            tex.Clear(_backgroundColorPma);
-            foreach (var sp in spines.Reverse()) tex.Draw(sp);
-            tex.Display();
-            return new(tex.Texture.CopyToImage());
-        }
-
         public override void Export(string output, CancellationToken ct, params SpineObject[] spines)
         {
             var videoFramesSource = new RawVideoPipeSource(GetFrames(spines, output, ct)) { FrameRate = _fps };
