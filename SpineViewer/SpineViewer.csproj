@@ -11,7 +11,7 @@
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.14-beta</Version>
+        <Version>0.16.14</Version>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
     </PropertyGroup>

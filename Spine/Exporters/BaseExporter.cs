@@ -160,14 +160,15 @@ namespace Spine.Exporters
         /// <summary>
         /// 获取的一帧, 结果是预乘的
         /// </summary>
-        protected virtual SFMLImageVideoFrame GetFrame(SpineObject[] spines)
+        protected SFMLImageVideoFrame GetFrame(SpineObject[] spines)
         {
             _renderTexture.SetActive(true);
             _renderTexture.Clear(_backgroundColorPma);
             foreach (var sp in spines.Reverse()) _renderTexture.Draw(sp);
             _renderTexture.Display();
+            var frame = new SFMLImageVideoFrame(_renderTexture.Texture.CopyToImage());
             _renderTexture.SetActive(false);
-            return new(_renderTexture.Texture.CopyToImage());
+            return frame;
         }
 
         /// <summary>
