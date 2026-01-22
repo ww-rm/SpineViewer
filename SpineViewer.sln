@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime35", "SpineRunt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime34", "SpineRuntimes\SpineRuntime34\SpineRuntime34.csproj", "{348605F7-3FF4-1DE0-4B91-7AEFE7BC5C55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSDWriter", "PSDWriter\PSDWriter.csproj", "{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -105,6 +107,10 @@ Global
 		{348605F7-3FF4-1DE0-4B91-7AEFE7BC5C55}.Debug|x64.Build.0 = Debug|x64
 		{348605F7-3FF4-1DE0-4B91-7AEFE7BC5C55}.Release|x64.ActiveCfg = Release|x64
 		{348605F7-3FF4-1DE0-4B91-7AEFE7BC5C55}.Release|x64.Build.0 = Release|x64
+		{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}.Debug|x64.ActiveCfg = Debug|x64
+		{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}.Debug|x64.Build.0 = Debug|x64
+		{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}.Release|x64.ActiveCfg = Release|x64
+		{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
