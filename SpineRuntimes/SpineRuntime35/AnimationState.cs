@@ -43,7 +43,7 @@ namespace SpineRuntime35 {
 		private bool animationsChanged;
 		private float timeScale = 1;
 
-		Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
+		private readonly Pool<TrackEntry> trackEntryPool = new Pool<TrackEntry>();
 
 		public AnimationStateData Data { get { return data; } }
 		/// <summary>A list of tracks that have animations, which may contain nulls.</summary>
