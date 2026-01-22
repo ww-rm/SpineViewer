@@ -146,20 +146,12 @@ namespace SpineRuntime35 {
 						data.b = ToColor(color, 2);
 						data.a = ToColor(color, 3);
 					}
-
-					if (slotMap.ContainsKey("dark")) {
-						var color2 = (String)slotMap["dark"];
-						data.r2 = ToColor(color2, 0, 6); // expectedLength = 6. ie. "RRGGBB"
-						data.g2 = ToColor(color2, 1, 6);
-						data.b2 = ToColor(color2, 2, 6);
-						data.hasSecondColor = true;
-					}
 						
 					data.attachmentName = GetString(slotMap, "attachment", null);
 					if (slotMap.ContainsKey("blend"))
-						data.blendMode = (BlendMode)Enum.Parse(typeof(BlendMode), (String)slotMap["blend"], true);
+						data.blendMode = (BlendMode)Enum.Parse(typeof(BlendMode), (String)slotMap["blend"], false);
 					else
-						data.blendMode = BlendMode.Normal;
+						data.blendMode = BlendMode.normal;
 					skeletonData.slots.Add(data);
 				}
 			}
@@ -202,9 +194,6 @@ namespace SpineRuntime35 {
 					String targetName = (String)constraintMap["target"];
 					data.target = skeletonData.FindBone(targetName);
 					if (data.target == null) throw new Exception("Target bone not found: " + targetName);
-
-					data.local = GetBoolean(constraintMap, "local", false);
-					data.relative = GetBoolean(constraintMap, "relative", false);
 
 					data.offsetRotation = GetFloat(constraintMap, "rotation", 0);
 					data.offsetX = GetFloat(constraintMap, "x", 0) * scale;
@@ -261,7 +250,7 @@ namespace SpineRuntime35 {
 						int slotIndex = skeletonData.FindSlotIndex(slotEntry.Key);
 						foreach (KeyValuePair<String, Object> entry in ((Dictionary<String, Object>)slotEntry.Value)) {
 							try {
-								Attachment attachment = ReadAttachment((Dictionary<String, Object>)entry.Value, skin, slotIndex, entry.Key, skeletonData);
+								Attachment attachment = ReadAttachment((Dictionary<String, Object>)entry.Value, skin, slotIndex, entry.Key);
 								if (attachment != null) skin.AddAttachment(slotIndex, entry.Key, attachment);
 							} catch (Exception e) {
 								throw new Exception("Error reading attachment: " + entry.Key + ", skin: " + skin, e);
@@ -317,7 +306,7 @@ namespace SpineRuntime35 {
 			return skeletonData;
 		}
 
-		private Attachment ReadAttachment (Dictionary<String, Object> map, Skin skin, int slotIndex, String name, SkeletonData skeletonData) {
+		private Attachment ReadAttachment (Dictionary<String, Object> map, Skin skin, int slotIndex, String name) {
 			var scale = this.Scale;
 			name = GetString(map, "name", name);
 
@@ -405,27 +394,6 @@ namespace SpineRuntime35 {
 					pathAttachment.lengths = GetFloatArray(map, "lengths", scale);
 					return pathAttachment;
 				}
-			case AttachmentType.Point: {
-					PointAttachment point = attachmentLoader.NewPointAttachment(skin, name);
-					if (point == null) return null;
-					point.x = GetFloat(map, "x", 0) * scale;
-					point.y = GetFloat(map, "y", 0) * scale;
-					point.rotation = GetFloat(map, "rotation", 0);
-
-					//string color = GetString(map, "color", null);
-					//if (color != null) point.color = color;
-					return point;
-				}
-			case AttachmentType.Clipping: {
-					ClippingAttachment clip = attachmentLoader.NewClippingAttachment(skin, name);
-					if (clip == null) return null;
-
-					SlotData slot = skeletonData.FindSlot(GetString(map, "end", null));
-					if (slot == null) throw new Exception("Clipping end slot not found: " + GetString(map, "end", null));
-					clip.endSlot = slot;
-					ReadVertices(map, clip, GetInt(map, "vertexCount", 0) << 1);
-					return clip;
-				}
 			}
 			return null;
 		}
@@ -473,7 +441,22 @@ namespace SpineRuntime35 {
 					foreach (KeyValuePair<String, Object> timelineEntry in timelineMap) {
 						var values = (List<Object>)timelineEntry.Value;
 						var timelineName = (String)timelineEntry.Key;
-						if (timelineName == "attachment") {
+						if (timelineName == "color") {
+							var timeline = new ColorTimeline(values.Count);
+							timeline.slotIndex = slotIndex;
+
+							int frameIndex = 0;
+							foreach (Dictionary<String, Object> valueMap in values) {
+								float time = (float)valueMap["time"];
+								String c = (String)valueMap["color"];
+								timeline.SetFrame(frameIndex, time, ToColor(c, 0), ToColor(c, 1), ToColor(c, 2), ToColor(c, 3));
+								ReadCurve(valueMap, timeline, frameIndex);
+								frameIndex++;
+							}
+							timelines.Add(timeline);
+							duration = Math.Max(duration, timeline.frames[(timeline.FrameCount - 1) * ColorTimeline.ENTRIES]);
+
+						} else if (timelineName == "attachment") {
 							var timeline = new AttachmentTimeline(values.Count);
 							timeline.slotIndex = slotIndex;
 
@@ -484,38 +467,6 @@ namespace SpineRuntime35 {
 							}
 							timelines.Add(timeline);
 							duration = Math.Max(duration, timeline.frames[timeline.FrameCount - 1]);
-
-						} else if (timelineName == "color") {
-							var timeline = new ColorTimeline(values.Count);
-							timeline.slotIndex = slotIndex;
-
-							int frameIndex = 0;
-							foreach (Dictionary<string, Object> valueMap in values) {
-								float time = (float)valueMap["time"];
-								string c = (string)valueMap["color"];
-								timeline.SetFrame(frameIndex, time, ToColor(c, 0), ToColor(c, 1), ToColor(c, 2), ToColor(c, 3));
-								ReadCurve(valueMap, timeline, frameIndex);
-								frameIndex++;
-							}
-							timelines.Add(timeline);
-							duration = Math.Max(duration, timeline.frames[(timeline.FrameCount - 1) * ColorTimeline.ENTRIES]);
-
-						} else if (timelineName == "twoColor") {
-							var timeline = new TwoColorTimeline(values.Count);
-							timeline.slotIndex = slotIndex;
-
-							int frameIndex = 0;
-							foreach (Dictionary<string, Object> valueMap in values) {
-								float time = (float)valueMap["time"];
-								string light = (string)valueMap["light"];
-								string dark = (string)valueMap["dark"];
-								timeline.SetFrame(frameIndex, time, ToColor(light, 0), ToColor(light, 1), ToColor(light, 2), ToColor(light, 3),
-									ToColor(dark, 0, 6), ToColor(dark, 1, 6), ToColor(dark, 2, 6));
-								ReadCurve(valueMap, timeline, frameIndex);
-								frameIndex++;
-							}
-							timelines.Add(timeline);
-							duration = Math.Max(duration, timeline.frames[(timeline.FrameCount - 1) * TwoColorTimeline.ENTRIES]);
 
 						} else
 							throw new Exception("Invalid timeline type for a slot: " + timelineName + " (" + slotName + ")");
@@ -850,9 +801,9 @@ namespace SpineRuntime35 {
 			return (String)map[name];
 		}
 
-		static float ToColor(String hexString, int colorIndex, int expectedLength = 8) {
-			if (hexString.Length != expectedLength)
-				throw new ArgumentException("Color hexidecimal length must be " + expectedLength + ", recieved: " + hexString, "hexString");
+		static float ToColor(String hexString, int colorIndex) {
+			if (hexString.Length != 8)
+				throw new ArgumentException("Color hexidecimal length must be 8, received: " + hexString, "hexString");
 			return Convert.ToInt32(hexString.Substring(colorIndex * 2, 2), 16) / (float)255;
 		}
 	}

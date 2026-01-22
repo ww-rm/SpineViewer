@@ -50,7 +50,6 @@ namespace SpineRuntime35 {
 
 		public const int SLOT_ATTACHMENT = 0;
 		public const int SLOT_COLOR = 1;
-		public const int SLOT_TWO_COLOR = 2;
 
 		public const int PATH_POSITION = 0;
 		public const int PATH_SPACING = 1;
@@ -183,15 +182,6 @@ namespace SpineRuntime35 {
 				slotData.g = ((color & 0x00ff0000) >> 16) / 255f;
 				slotData.b = ((color & 0x0000ff00) >> 8) / 255f;
 				slotData.a = ((color & 0x000000ff)) / 255f;
-
-				int darkColor = ReadInt(input); // 0x00rrggbb
-				if (darkColor != -1) {
-					slotData.hasSecondColor = true;
-					slotData.r2 = ((darkColor & 0x00ff0000) >> 16) / 255f;
-					slotData.g2 = ((darkColor & 0x0000ff00) >> 8) / 255f;
-					slotData.b2 = ((darkColor & 0x000000ff)) / 255f;
-				}
-
 				slotData.attachmentName = ReadString(input);
 				slotData.blendMode = (BlendMode)ReadVarint(input, true);
 				skeletonData.slots.Add(slotData);
@@ -216,8 +206,6 @@ namespace SpineRuntime35 {
 				for (int ii = 0, nn = ReadVarint(input, true); ii < nn; ii++)
 				    data.bones.Add(skeletonData.bones.Items[ReadVarint(input, true)]);
 				data.target = skeletonData.bones.Items[ReadVarint(input, true)];
-				data.local = ReadBoolean(input);
-				data.relative = ReadBoolean(input);
 				data.offsetRotation = ReadFloat(input);
 				data.offsetX = ReadFloat(input) * scale;
 				data.offsetY = ReadFloat(input) * scale;
@@ -252,7 +240,7 @@ namespace SpineRuntime35 {
 			}
 
 			// Default skin.
-			Skin defaultSkin = ReadSkin(input, skeletonData, "default", nonessential);
+			Skin defaultSkin = ReadSkin(input, "default", nonessential);
 			if (defaultSkin != null) {
 				skeletonData.defaultSkin = defaultSkin;
 				skeletonData.skins.Add(defaultSkin);
@@ -260,7 +248,7 @@ namespace SpineRuntime35 {
 
 			// Skins.
 			for (int i = 0, n = ReadVarint(input, true); i < n; i++)
-				skeletonData.skins.Add(ReadSkin(input, skeletonData, ReadString(input), nonessential));
+				skeletonData.skins.Add(ReadSkin(input, ReadString(input), nonessential));
 
 			// Linked meshes.
 			for (int i = 0, n = linkedMeshes.Count; i < n; i++) {
@@ -299,7 +287,7 @@ namespace SpineRuntime35 {
 
 
 		/// <returns>May be null.</returns>
-		private Skin ReadSkin (Stream input, SkeletonData skeletonData, String skinName, bool nonessential) {
+		private Skin ReadSkin (Stream input, String skinName, bool nonessential) {
 			int slotCount = ReadVarint(input, true);
 			if (slotCount == 0) return null;
 			Skin skin = new Skin(skinName);
@@ -307,14 +295,14 @@ namespace SpineRuntime35 {
 				int slotIndex = ReadVarint(input, true);
 				for (int ii = 0, nn = ReadVarint(input, true); ii < nn; ii++) {
 					String name = ReadString(input);
-					Attachment attachment = ReadAttachment(input, skeletonData, skin, slotIndex, name, nonessential);
+					Attachment attachment = ReadAttachment(input, skin, slotIndex, name, nonessential);
 					if (attachment != null) skin.AddAttachment(slotIndex, name, attachment);
 				}
 			}
 			return skin;
 		}
 
-		private Attachment ReadAttachment (Stream input, SkeletonData skeletonData, Skin skin, int slotIndex, String attachmentName, bool nonessential) {
+		private Attachment ReadAttachment (Stream input, Skin skin, int slotIndex, String attachmentName, bool nonessential) {
 			float scale = Scale;
 
 			String name = ReadString(input);
@@ -437,7 +425,7 @@ namespace SpineRuntime35 {
 					float[] lengths = new float[vertexCount / 3];
 					for (int i = 0, n = lengths.Length; i < n; i++)
 						lengths[i] = ReadFloat(input) * scale;
-					if (nonessential) ReadInt(input); //int color = nonessential ? ReadInt(input) : 0;
+					if (nonessential) ReadInt(input); //int color = nonessential ? ReadInt(input) : 0; // Avoid unused local warning.
 
 					PathAttachment path = attachmentLoader.NewPathAttachment(skin, name);
 					if (path == null) return null;
@@ -448,35 +436,7 @@ namespace SpineRuntime35 {
 					path.bones = vertices.bones;
 					path.lengths = lengths;
 					return path;                    
-				}
-			case AttachmentType.Point: {
-					float rotation = ReadFloat(input);
-					float x = ReadFloat(input);
-					float y = ReadFloat(input);
-					if (nonessential) ReadInt(input); //int color = nonessential ? ReadInt(input) : 0;
-
-					PointAttachment point = attachmentLoader.NewPointAttachment(skin, name);
-					if (point == null) return null;
-					point.x = x * scale;
-					point.y = y * scale;
-					point.rotation = rotation;
-					//if (nonessential) point.color = color;
-					return point;
-				}
-			case AttachmentType.Clipping: {
-					int endSlotIndex = ReadVarint(input, true);
-					int vertexCount = ReadVarint(input, true);
-					Vertices vertices = ReadVertices(input, vertexCount);
-					if (nonessential) ReadInt(input);
-
-					ClippingAttachment clip = attachmentLoader.NewClippingAttachment(skin, name);
-					if (clip == null) return null;
-					clip.EndSlot = skeletonData.slots.Items[endSlotIndex];
-					clip.worldVerticesLength = vertexCount << 1;
-					clip.vertices = vertices.vertices;
-					clip.bones = vertices.bones;
-					return clip;
-				}
+				}			
 			}
 			return null;
 		}
@@ -539,15 +499,6 @@ namespace SpineRuntime35 {
 					int timelineType = input.ReadByte();
 					int frameCount = ReadVarint(input, true);
 					switch (timelineType) {
-					case SLOT_ATTACHMENT: {
-							AttachmentTimeline timeline = new AttachmentTimeline(frameCount);
-							timeline.slotIndex = slotIndex;
-							for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
-								timeline.SetFrame(frameIndex, ReadFloat(input), ReadString(input));
-							timelines.Add(timeline);
-							duration = Math.Max(duration, timeline.frames[frameCount - 1]);
-							break;
-						}
 					case SLOT_COLOR: {
 							ColorTimeline timeline = new ColorTimeline(frameCount);
 							timeline.slotIndex = slotIndex;
@@ -565,26 +516,13 @@ namespace SpineRuntime35 {
 							duration = Math.Max(duration, timeline.frames[(timeline.FrameCount - 1) * ColorTimeline.ENTRIES]);
 							break;
 						}
-					case SLOT_TWO_COLOR: {
-							TwoColorTimeline timeline = new TwoColorTimeline(frameCount);
+					case SLOT_ATTACHMENT: {
+							AttachmentTimeline timeline = new AttachmentTimeline(frameCount);
 							timeline.slotIndex = slotIndex;
-							for (int frameIndex = 0; frameIndex < frameCount; frameIndex++) {
-								float time = ReadFloat(input);
-								int color = ReadInt(input);
-								float r = ((color & 0xff000000) >> 24) / 255f;
-								float g = ((color & 0x00ff0000) >> 16) / 255f;
-								float b = ((color & 0x0000ff00) >> 8) / 255f;
-								float a = ((color & 0x000000ff)) / 255f;
-								int color2 = ReadInt(input); // 0x00rrggbb
-								float r2 = ((color2 & 0x00ff0000) >> 16) / 255f;
-								float g2 = ((color2 & 0x0000ff00) >> 8) / 255f;
-								float b2 = ((color2 & 0x000000ff)) / 255f;
-
-								timeline.SetFrame(frameIndex, time, r, g, b, a, r2, g2, b2);
-								if (frameIndex < frameCount - 1) ReadCurve(input, frameIndex, timeline);
-							}
+							for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
+								timeline.SetFrame(frameIndex, ReadFloat(input), ReadString(input));
 							timelines.Add(timeline);
-							duration = Math.Max(duration, timeline.frames[(timeline.FrameCount - 1) * TwoColorTimeline.ENTRIES]);
+							duration = Math.Max(duration, timeline.frames[frameCount - 1]);
 							break;
 						}
 					}

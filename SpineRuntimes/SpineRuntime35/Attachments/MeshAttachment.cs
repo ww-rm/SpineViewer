@@ -34,16 +34,15 @@ namespace SpineRuntime35 {
 	/// <summary>Attachment that displays a texture region using a mesh.</summary>
 	public class MeshAttachment : VertexAttachment {
 		internal float regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;
-		private MeshAttachment parentMesh;
 		internal float[] uvs, regionUVs;
 		internal int[] triangles;
 		internal float r = 1, g = 1, b = 1, a = 1;
 		internal int hulllength;
+		internal MeshAttachment parentMesh;
 		internal bool inheritDeform;
 
 		public int HullLength { get { return hulllength; } set { hulllength = value; } }
 		public float[] RegionUVs { get { return regionUVs; } set { regionUVs = value; } }
-		/// <summary>The UV pair for each vertex, normalized within the entire texture. <seealso cref="MeshAttachment.UpdateUVs"/></summary>
 		public float[] UVs { get { return uvs; } set { uvs = value; } }
 		public int[] Triangles { get { return triangles; } set { triangles = value; } }
 
@@ -52,8 +51,8 @@ namespace SpineRuntime35 {
 		public float B { get { return b; } set { b = value; } }
 		public float A { get { return a; } set { a = value; } }
 
-		public string Path { get; set; }
-		public object RendererObject; //public Object RendererObject { get; set; }
+		public String Path { get; set; }
+		public Object RendererObject { get; set; }
 		public float RegionU { get; set; }
 		public float RegionV { get; set; }
 		public float RegionU2 { get; set; }

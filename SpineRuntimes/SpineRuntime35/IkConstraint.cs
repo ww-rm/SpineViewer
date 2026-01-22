@@ -58,12 +58,11 @@ namespace SpineRuntime35 {
 			target = skeleton.FindBone(data.target.name);
 		}
 
-		/// <summary>Applies the constraint to the constrained bones.</summary>
-		public void Apply () {
-			Update();
+		public void Update () {
+			Apply();
 		}
 
-		public void Update () {
+		public void Apply () {
 			Bone target = this.target;
 			ExposedList<Bone> bones = this.bones;
 			switch (bones.Count) {
@@ -76,7 +75,7 @@ namespace SpineRuntime35 {
 			}
 		}
 
-		override public string ToString () {
+		override public String ToString () {
 			return data.name;
 		}
 
@@ -93,7 +92,7 @@ namespace SpineRuntime35 {
 			if (rotationIK > 180)
 				rotationIK -= 360;
 			else if (rotationIK < -180) rotationIK += 360;
-			bone.UpdateWorldTransform(bone.ax, bone.ay, bone.arotation + rotationIK * alpha, bone.ascaleX, bone.ascaleY, bone.ashearX,
+			bone.UpdateWorldTransform(bone.ax, bone.ay, bone.arotation + rotationIK * alpha, bone.ascaleX, bone.ascaleY, bone.ashearX, 
 				bone.ashearY);
 		}
 
@@ -176,29 +175,40 @@ namespace SpineRuntime35 {
 						y = (float)Math.Sqrt(dd - r * r) * bendDir;
 						a1 = ta - (float)Math.Atan2(y, r);
 						a2 = (float)Math.Atan2(y / psy, (r - l1) / psx);
-						goto outer; // break outer;
+						goto outer;
 					}
 				}
-				float minAngle = MathUtils.PI, minX = l1 - a, minDist = minX * minX, minY = 0;
-				float maxAngle = 0, maxX = l1 + a, maxDist = maxX * maxX, maxY = 0;
-				c = -a * l1 / (aa - bb);
-				if (c >= -1 && c <= 1) {
-					c = (float)Math.Acos(c);
-					x = a * (float)Math.Cos(c) + l1;
-					y = b * (float)Math.Sin(c);
-					d = x * x + y * y;
-					if (d < minDist) {
-						minAngle = c;
-						minDist = d;
-						minX = x;
-						minY = y;
-					}
-					if (d > maxDist) {
-						maxAngle = c;
-						maxDist = d;
-						maxX = x;
-						maxY = y;
-					}
+				float minAngle = 0, minDist = float.MaxValue, minX = 0, minY = 0;
+				float maxAngle = 0, maxDist = 0, maxX = 0, maxY = 0;
+				x = l1 + a;
+				d = x * x;
+				if (d > maxDist) {
+					maxAngle = 0;
+					maxDist = d;
+					maxX = x;
+				}
+				x = l1 - a;
+				d = x * x;
+				if (d < minDist) {
+					minAngle = (float)Math.PI;
+					minDist = d;
+					minX = x;
+				}
+				float angle = (float)Math.Acos(-a * l1 / (aa - bb));
+				x = a * (float)Math.Cos(angle) + l1;
+				y = b * (float)Math.Sin(angle);
+				d = x * x + y * y;
+				if (d < minDist) {
+					minAngle = angle;
+					minDist = d;
+					minX = x;
+					minY = y;
+				}
+				if (d > maxDist) {
+					maxAngle = angle;
+					maxDist = d;
+					maxX = x;
+					maxY = y;
 				}
 				if (dd <= (minDist + maxDist) / 2) {
 					a1 = ta - (float)Math.Atan2(minY * bendDir, minX);

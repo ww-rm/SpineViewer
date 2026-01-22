@@ -23,7 +23,7 @@ namespace Spine.Implementations.V35.Attachments
             if (slot is Slot35 st)
             {
                 if (worldVertices.Length < 8) worldVertices = new float[8];
-                _o.ComputeWorldVertices(st.InnerObject.Bone, worldVertices, 0);
+                _o.ComputeWorldVertices(st.InnerObject.Bone, worldVertices);
                 return 8;
             }
             throw new ArgumentException($"Invalid slot type. Expected {nameof(Slot35)}, but received {slot.GetType().Name}", nameof(slot));
