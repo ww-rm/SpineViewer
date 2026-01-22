@@ -27,10 +27,10 @@ namespace Spine.Implementations.V35
             _bone = bone;
             _blendMode = _o.Data.BlendMode switch
             {
-                BlendMode.Normal => SFMLBlendMode.NormalPma,
-                BlendMode.Additive => SFMLBlendMode.AdditivePma,
-                BlendMode.Multiply => SFMLBlendMode.MultiplyPma,
-                BlendMode.Screen => SFMLBlendMode.ScreenPma,
+                BlendMode.normal => SFMLBlendMode.NormalPma,
+                BlendMode.additive => SFMLBlendMode.AdditivePma,
+                BlendMode.multiply => SFMLBlendMode.MultiplyPma,
+                BlendMode.screen => SFMLBlendMode.ScreenPma,
                 _ => throw new NotImplementedException($"{_o.Data.BlendMode}"),
             };
         }

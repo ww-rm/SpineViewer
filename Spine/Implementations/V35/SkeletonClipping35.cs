@@ -12,45 +12,31 @@ namespace Spine.Implementations.V35
 {
     internal sealed class SkeletonClipping35 : ISkeletonClipping
     {
-        private readonly SkeletonClipping _o = new();
+        public bool IsClipping => false;
 
-        public bool IsClipping => _o.IsClipping();
+        public float[] ClippedVertices { get; private set; } = [];
 
-        public float[] ClippedVertices => _o.ClippedVertices.Items;
+        public int ClippedVerticesLength { get; private set; } = 0;
 
-        public int ClippedVerticesLength => _o.ClippedVertices.Count;
+        public int[] ClippedTriangles { get; private set; } = [];
 
-        public int[] ClippedTriangles => _o.ClippedTriangles.Items;
+        public int ClippedTrianglesLength { get; private set; } = 0;
 
-        public int ClippedTrianglesLength => _o.ClippedTriangles.Count;
+        public float[] ClippedUVs { get; private set; } = [];
 
-        public float[] ClippedUVs => _o.ClippedUVs.Items;
+        public void ClipEnd(ISlot slot) { }
+
+        public void ClipEnd() { }
+
+        public void ClipStart(ISlot slot, IClippingAttachment clippingAttachment) { }
 
         public void ClipTriangles(float[] vertices, int verticesLength, int[] triangles, int trianglesLength, float[] uvs)
-            => _o.ClipTriangles(vertices, verticesLength, triangles, trianglesLength, uvs);
-
-        public void ClipStart(ISlot slot, IClippingAttachment clippingAttachment)
         {
-            if (slot is Slot35 st && clippingAttachment is Attachments.ClippingAttachment35 att)
-            {
-                _o.ClipStart(st.InnerObject, att.InnerObject);
-                return;
-            }
-            throw new ArgumentException($"Received {slot.GetType().Name} {clippingAttachment.GetType().Name}");
+            ClippedVertices = vertices.ToArray();
+            ClippedVerticesLength = verticesLength;
+            ClippedTriangles = triangles.ToArray();
+            ClippedTrianglesLength = trianglesLength;
+            ClippedUVs = uvs.ToArray();
         }
-
-        public void ClipEnd(ISlot slot)
-        {
-            if (slot is Slot35 st)
-            {
-                _o.ClipEnd(st.InnerObject);
-                return;
-            }
-            throw new ArgumentException($"Received {slot.GetType().Name}", nameof(slot));
-        }
-
-        public void ClipEnd() => _o.ClipEnd();
-
-        public override string ToString() => _o.ToString();
     }
 }

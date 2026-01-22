@@ -31,14 +31,6 @@
 using System;
 
 namespace SpineRuntime35 {
-	/// <summary>
-	/// Stores a bone's current pose.
-	/// <para>
-	/// A bone has a local transform which is used to compute its world transform. A bone also has an applied transform, which is a
-	/// local transform that can be applied to compute the world transform. The local transform and applied transform may differ if a
-	/// constraint or application code modifies the world transform after it was computed from the local transform.
-	/// </para>
-	/// </summary>
 	public class Bone : IUpdatable {
 		static public bool yDown;
 
@@ -63,51 +55,20 @@ namespace SpineRuntime35 {
 		public Skeleton Skeleton { get { return skeleton; } }
 		public Bone Parent { get { return parent; } }
 		public ExposedList<Bone> Children { get { return children; } }
-		/// <summary>The local X translation.</summary>
 		public float X { get { return x; } set { x = value; } }
-		/// <summary>The local Y translation.</summary>
 		public float Y { get { return y; } set { y = value; } }
-		/// <summary>The local rotation.</summary>
 		public float Rotation { get { return rotation; } set { rotation = value; } }
-
-		/// <summary>The local scaleX.</summary>
-		public float ScaleX { get { return scaleX; } set { scaleX = value; } }
-
-		/// <summary>The local scaleY.</summary>
-		public float ScaleY { get { return scaleY; } set { scaleY = value; } }
-
-		/// <summary>The local shearX.</summary>
-		public float ShearX { get { return shearX; } set { shearX = value; } }
-
-		/// <summary>The local shearY.</summary>
-		public float ShearY { get { return shearY; } set { shearY = value; } }
-
 		/// <summary>The rotation, as calculated by any constraints.</summary>
 		public float AppliedRotation { get { return arotation; } set { arotation = value; } }
-
-		/// <summary>The applied local x translation.</summary>
-		public float AX { get { return ax; } set { ax = value; } }
-
-		/// <summary>The applied local y translation.</summary>
-		public float AY { get { return ay; } set { ay = value; } }
-
-		/// <summary>The applied local scaleX.</summary>
-		public float AScaleX { get { return ascaleX; } set { ascaleX = value; } }
-
-		/// <summary>The applied local scaleY.</summary>
-		public float AScaleY { get { return ascaleY; } set { ascaleY = value; } }
-
-		/// <summary>The applied local shearX.</summary>
-		public float AShearX { get { return ashearX; } set { ashearX = value; } }
-
-		/// <summary>The applied local shearY.</summary>
-		public float AShearY { get { return ashearY; } set { ashearY = value; } }
+		public float ScaleX { get { return scaleX; } set { scaleX = value; } }
+		public float ScaleY { get { return scaleY; } set { scaleY = value; } }
+		public float ShearX { get { return shearX; } set { shearX = value; } }
+		public float ShearY { get { return shearY; } set { shearY = value; } }
 
 		public float A { get { return a; } }
 		public float B { get { return b; } }
 		public float C { get { return c; } }
 		public float D { get { return d; } }
-
 		public float WorldX { get { return worldX; } }
 		public float WorldY { get { return worldY; } }
 		public float WorldRotationX { get { return MathUtils.Atan2(c, a) * MathUtils.RadDeg; } }
@@ -152,14 +113,14 @@ namespace SpineRuntime35 {
 
 			Bone parent = this.parent;
 			if (parent == null) { // Root bone.
-				float rotationY = rotation + 90 + shearY, sx = skeleton.scaleX, sy = skeleton.scaleY;
-				a = MathUtils.CosDeg(rotation + shearX) * scaleX * sx;
-				b = MathUtils.CosDeg(rotationY) * scaleY * sx;
-				c = MathUtils.SinDeg(rotation + shearX) * scaleX * sy;
-				d = MathUtils.SinDeg(rotationY) * scaleY * sy;
-				worldX = x * sx + skeleton.x;
-				worldY = y * sy + skeleton.y;
-				return;
+                float rotationY = rotation + 90 + shearY, sx = skeleton.scaleX, sy = skeleton.scaleY;
+                a = MathUtils.CosDeg(rotation + shearX) * scaleX * sx;
+                b = MathUtils.CosDeg(rotationY) * scaleY * sx;
+                c = MathUtils.SinDeg(rotation + shearX) * scaleX * sy;
+                d = MathUtils.SinDeg(rotationY) * scaleY * sy;
+                worldX = x * sx + skeleton.x;
+                worldY = y * sy + skeleton.y;
+                return;
 			}
 
 			float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
@@ -239,10 +200,10 @@ namespace SpineRuntime35 {
 				}
 			}
 
-			a *= skeleton.scaleX;
-			b *= skeleton.scaleX;
-			c *= skeleton.scaleY;
-			d *= skeleton.scaleY;
+            a *= skeleton.scaleX;
+            b *= skeleton.scaleX;
+            c *= skeleton.scaleY;
+            d *= skeleton.scaleY;
         }
 
 		public void SetToSetupPose () {
@@ -254,6 +215,34 @@ namespace SpineRuntime35 {
 			scaleY = data.scaleY;
 			shearX = data.shearX;
 			shearY = data.shearY;
+		}
+
+		public float WorldToLocalRotationX {
+			get {
+				Bone parent = this.parent;
+				if (parent == null) return arotation;
+				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, a = this.a, c = this.c;
+				return MathUtils.Atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.RadDeg;
+			}
+		}
+
+		public float WorldToLocalRotationY {
+			get {
+				Bone parent = this.parent;
+				if (parent == null) return arotation;
+				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, b = this.b, d = this.d;
+				return MathUtils.Atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.RadDeg;
+			}
+		}
+
+		public void RotateWorld (float degrees) {
+			float a = this.a, b = this.b, c = this.c, d = this.d;
+			float cos = MathUtils.CosDeg(degrees), sin = MathUtils.SinDeg(degrees);
+			this.a = cos * a - sin * c;
+			this.b = cos * b - sin * d;
+			this.c = sin * a + cos * c;
+			this.d = sin * b + cos * d;
+			appliedValid = false;
 		}
 
 		/// <summary>
@@ -316,49 +305,7 @@ namespace SpineRuntime35 {
 			worldY = localX * c + localY * d + this.worldY;
 		}
 
-		public float WorldToLocalRotationX {
-			get {
-				Bone parent = this.parent;
-				if (parent == null) return arotation;
-				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, a = this.a, c = this.c;
-				return MathUtils.Atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.RadDeg;
-			}
-		}
-
-		public float WorldToLocalRotationY {
-			get {
-				Bone parent = this.parent;
-				if (parent == null) return arotation;
-				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, b = this.b, d = this.d;
-				return MathUtils.Atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.RadDeg;
-			}
-		}
-
-		public float WorldToLocalRotation (float worldRotation) {
-			float sin = MathUtils.SinDeg(worldRotation), cos = MathUtils.CosDeg(worldRotation);
-			return MathUtils.Atan2(a * sin - c * cos, d * cos - b * sin) * MathUtils.RadDeg;
-		}
-
-		public float LocalToWorldRotation (float localRotation) {
-			float sin = MathUtils.SinDeg(localRotation), cos = MathUtils.CosDeg(localRotation);
-			return MathUtils.Atan2(cos * c + sin * d, cos * a + sin * b) * MathUtils.RadDeg;
-		}
-
-		/// <summary>
-		/// Rotates the world transform the specified amount and sets isAppliedValid to false.
-		/// </summary>
-		/// <param name="degrees">Degrees.</param>
-		public void RotateWorld (float degrees) {
-			float a = this.a, b = this.b, c = this.c, d = this.d;
-			float cos = MathUtils.CosDeg(degrees), sin = MathUtils.SinDeg(degrees);
-			this.a = cos * a - sin * c;
-			this.b = cos * b - sin * d;
-			this.c = sin * a + cos * c;
-			this.d = sin * b + cos * d;
-			appliedValid = false;
-		}
-
-		override public string ToString () {
+		override public String ToString () {
 			return data.name;
 		}
 	}

@@ -32,7 +32,7 @@ using System;
 
 namespace SpineRuntime35 {
 	public class PathConstraint : IConstraint {
-		const int NONE = -1, BEFORE = -2, AFTER = -3;
+		private const int NONE = -1, BEFORE = -2, AFTER = -3;
 
 		internal PathConstraintData data;
 		internal ExposedList<Bone> bones;
@@ -84,17 +84,17 @@ namespace SpineRuntime35 {
 			RotateMode rotateMode = data.rotateMode;
 			bool tangents = rotateMode == RotateMode.Tangent, scale = rotateMode == RotateMode.ChainScale;
 			int boneCount = this.bones.Count, spacesCount = tangents ? boneCount : boneCount + 1;
-			Bone[] bonesItems = this.bones.Items;
+			Bone[] bones = this.bones.Items;
 			ExposedList<float> spaces = this.spaces.Resize(spacesCount), lengths = null;
 			float spacing = this.spacing;
 			if (scale || lengthSpacing) {
 				if (scale) lengths = this.lengths.Resize(boneCount);
 				for (int i = 0, n = spacesCount - 1; i < n;) {
-					Bone bone = bonesItems[i];
-					float setupLength = bone.data.length, x = setupLength * bone.a, y = setupLength * bone.c;
-					float length = (float)Math.Sqrt(x * x + y * y);
-					if (scale) lengths.Items[i] = setupLength;
-					spaces.Items[++i] = (lengthSpacing ? Math.Max(0, setupLength + spacing) : spacing) * length / setupLength;
+					Bone bone = bones[i];
+					float length = bone.data.length, x = length * bone.a, y = length * bone.c;
+					length = (float)Math.Sqrt(x * x + y * y);
+					if (scale) lengths.Items[i] = length;
+					spaces.Items[++i] = lengthSpacing ? Math.Max(0, length + spacing) : spacing;
 				}
 			} else {
 				for (int i = 1; i < spacesCount; i++)
@@ -113,7 +113,7 @@ namespace SpineRuntime35 {
 				offsetRotation *= p.a * p.d - p.b * p.c > 0 ? MathUtils.DegRad : -MathUtils.DegRad;
 			}
 			for (int i = 0, p = 3; i < boneCount; i++, p += 3) {
-				Bone bone = bonesItems[i];
+				Bone bone = (Bone)bones[i];
 				bone.worldX += (boneX - bone.worldX) * translateMix;
 				bone.worldY += (boneY - bone.worldY) * translateMix;
 				float x = positions[p], y = positions[p + 1], dx = x - boneX, dy = y - boneY;
@@ -166,7 +166,7 @@ namespace SpineRuntime35 {
 
 			Slot target = this.target;
 			float position = this.position;
-			float[] spacesItems = this.spaces.Items, output = this.positions.Resize(spacesCount * 3 + 2).Items, world;
+			float[] spaces = this.spaces.Items, output = this.positions.Resize(spacesCount * 3 + 2).Items, world;
 			bool closed = path.Closed;
 			int verticesLength = path.WorldVerticesLength, curveCount = verticesLength / 6, prevCurve = NONE;
 
@@ -178,11 +178,11 @@ namespace SpineRuntime35 {
 				if (percentPosition) position *= pathLength;
 				if (percentSpacing) {
 					for (int i = 0; i < spacesCount; i++)
-						spacesItems[i] *= pathLength;
+						spaces[i] *= pathLength;
 				}
 				world = this.world.Resize(8).Items;
 				for (int i = 0, o = 0, curve = 0; i < spacesCount; i++, o += 3) {
-					float space = spacesItems[i];
+					float space = spaces[i];
 					position += space;
 					float p = position;
 
@@ -286,13 +286,13 @@ namespace SpineRuntime35 {
 			if (percentPosition) position *= pathLength;
 			if (percentSpacing) {
 				for (int i = 0; i < spacesCount; i++)
-					spacesItems[i] *= pathLength;
+					spaces[i] *= pathLength;
 			}
 
 			float[] segments = this.segments;
 			float curveLength = 0;
 			for (int i = 0, o = 0, curve = 0, segment = 0; i < spacesCount; i++, o += 3) {
-				float space = spacesItems[i];
+				float space = spaces[i];
 				position += space;
 				float p = position;
 
@@ -380,21 +380,21 @@ namespace SpineRuntime35 {
 			return output;
 		}
 
-		static void AddBeforePosition (float p, float[] temp, int i, float[] output, int o) {
+		private void AddBeforePosition (float p, float[] temp, int i, float[] output, int o) {
 			float x1 = temp[i], y1 = temp[i + 1], dx = temp[i + 2] - x1, dy = temp[i + 3] - y1, r = MathUtils.Atan2(dy, dx);
 			output[o] = x1 + p * MathUtils.Cos(r);
 			output[o + 1] = y1 + p * MathUtils.Sin(r);
 			output[o + 2] = r;
 		}
 
-		static void AddAfterPosition (float p, float[] temp, int i, float[] output, int o) {
+		private void AddAfterPosition (float p, float[] temp, int i, float[] output, int o) {
 			float x1 = temp[i + 2], y1 = temp[i + 3], dx = x1 - temp[i], dy = y1 - temp[i + 1], r = MathUtils.Atan2(dy, dx);
 			output[o] = x1 + p * MathUtils.Cos(r);
 			output[o + 1] = y1 + p * MathUtils.Sin(r);
 			output[o + 2] = r;
 		}
 
-		static void AddCurvePosition (float p, float x1, float y1, float cx1, float cy1, float cx2, float cy2, float x2, float y2,
+		private void AddCurvePosition (float p, float x1, float y1, float cx1, float cy1, float cx2, float cy2, float x2, float y2,
 			float[] output, int o, bool tangents) {
 			if (p == 0 || float.IsNaN(p)) p = 0.0001f;
 			float tt = p * p, ttt = tt * p, u = 1 - p, uu = u * u, uuu = uu * u;

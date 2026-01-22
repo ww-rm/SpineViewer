@@ -96,10 +96,8 @@ namespace Spine.Implementations.V35
                     {
                         RegionAttachment regionAtt => new RegionAttachment35(regionAtt),
                         MeshAttachment meshAtt => new MeshAttachment35(meshAtt),
-                        ClippingAttachment clipAtt => new ClippingAttachment35(clipAtt),
                         BoundingBoxAttachment bbAtt => new BoundingBoxAttachment35(bbAtt),
                         PathAttachment pathAtt => new PathAttachment35(pathAtt),
-                        PointAttachment ptAtt => new PointAttachment35(ptAtt),
                         _ => throw new InvalidOperationException($"Unrecognized attachment type {att.GetType().FullName}")
                     };
                 }
