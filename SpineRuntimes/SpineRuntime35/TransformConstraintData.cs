@@ -32,15 +32,14 @@ using System;
 
 namespace SpineRuntime35 {
 	public class TransformConstraintData {
-		internal string name;
+		internal String name;
 		internal int order;
 		internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
 		internal BoneData target;
 		internal float rotateMix, translateMix, scaleMix, shearMix;
 		internal float offsetRotation, offsetX, offsetY, offsetScaleX, offsetScaleY, offsetShearY;
-		internal bool relative, local;
 
-		public string Name { get { return name; } }
+		public String Name { get { return name; } }
 		public int Order { get { return order; } set { order = value; } }
 		public ExposedList<BoneData> Bones { get { return bones; } }
 		public BoneData Target { get { return target; } set { target = value; } }
@@ -56,15 +55,12 @@ namespace SpineRuntime35 {
 		public float OffsetScaleY { get { return offsetScaleY; } set { offsetScaleY = value; } }
 		public float OffsetShearY { get { return offsetShearY; } set { offsetShearY = value; } }
 
-		public bool Relative { get { return relative; } set { relative = value; } }
-		public bool Local { get { return local; } set { local = value; } }
-
-		public TransformConstraintData (string name) {
+		public TransformConstraintData (String name) {
 			if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
 			this.name = name;
 		}
 
-		override public string ToString () {
+		override public String ToString () {
 			return name;
 		}
 	}

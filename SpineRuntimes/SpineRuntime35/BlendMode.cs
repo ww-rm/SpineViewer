@@ -30,6 +30,6 @@
 
 namespace SpineRuntime35 {
 	public enum BlendMode {
-		Normal, Additive, Multiply, Screen
+		normal, additive, multiply, screen
 	}
 }

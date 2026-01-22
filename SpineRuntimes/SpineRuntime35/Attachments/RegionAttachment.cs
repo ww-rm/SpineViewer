@@ -33,14 +33,14 @@ using System;
 namespace SpineRuntime35 {
 	/// <summary>Attachment that displays a texture region.</summary>
 	public class RegionAttachment : Attachment {
-		public const int BLX = 0;
-		public const int BLY = 1;
-		public const int ULX = 2;
-		public const int ULY = 3;
-		public const int URX = 4;
-		public const int URY = 5;
-		public const int BRX = 6;
-		public const int BRY = 7;
+		public const int X1 = 0;
+		public const int Y1 = 1;
+		public const int X2 = 2;
+		public const int Y2 = 3;
+		public const int X3 = 4;
+		public const int Y3 = 5;
+		public const int X4 = 6;
+		public const int Y4 = 7;
 
 		internal float x, y, rotation, scaleX = 1, scaleY = 1, width, height;
 		internal float regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;
@@ -60,8 +60,8 @@ namespace SpineRuntime35 {
 		public float B { get { return b; } set { b = value; } }
 		public float A { get { return a; } set { a = value; } }
 
-		public string Path { get; set; }
-		public object RendererObject; //public object RendererObject { get; set; }
+		public String Path { get; set; }
+		public Object RendererObject { get; set; }
 		public float RegionOffsetX { get { return regionOffsetX; } set { regionOffsetX = value; } }
 		public float RegionOffsetY { get { return regionOffsetY; } set { regionOffsetY = value; } } // Pixels stripped from the bottom left, unrotated.
 		public float RegionWidth { get { return regionWidth; } set { regionWidth = value; } }
@@ -74,6 +74,29 @@ namespace SpineRuntime35 {
 
 		public RegionAttachment (string name)
 			: base(name) {
+		}
+
+		public void SetUVs (float u, float v, float u2, float v2, bool rotate) {
+			float[] uvs = this.uvs;
+			if (rotate) {
+				uvs[X2] = u;
+				uvs[Y2] = v2;
+				uvs[X3] = u;
+				uvs[Y3] = v;
+				uvs[X4] = u2;
+				uvs[Y4] = v;
+				uvs[X1] = u2;
+				uvs[Y1] = v2;
+			} else {
+				uvs[X1] = u;
+				uvs[Y1] = v2;
+				uvs[X2] = u;
+				uvs[Y2] = v;
+				uvs[X3] = u2;
+				uvs[Y3] = v;
+				uvs[X4] = u2;
+				uvs[Y4] = v2;
+			}
 		}
 
 		public void UpdateOffset () {
@@ -101,75 +124,28 @@ namespace SpineRuntime35 {
 			float localY2Cos = localY2 * cos + y;
 			float localY2Sin = localY2 * sin;
 			float[] offset = this.offset;
-			offset[BLX] = localXCos - localYSin;
-			offset[BLY] = localYCos + localXSin;
-			offset[ULX] = localXCos - localY2Sin;
-			offset[ULY] = localY2Cos + localXSin;
-			offset[URX] = localX2Cos - localY2Sin;
-			offset[URY] = localY2Cos + localX2Sin;
-			offset[BRX] = localX2Cos - localYSin;
-			offset[BRY] = localYCos + localX2Sin;
+			offset[X1] = localXCos - localYSin;
+			offset[Y1] = localYCos + localXSin;
+			offset[X2] = localXCos - localY2Sin;
+			offset[Y2] = localY2Cos + localXSin;
+			offset[X3] = localX2Cos - localY2Sin;
+			offset[Y3] = localY2Cos + localX2Sin;
+			offset[X4] = localX2Cos - localYSin;
+			offset[Y4] = localYCos + localX2Sin;
 		}
 
-		public void SetUVs (float u, float v, float u2, float v2, bool rotate) {
-			float[] uvs = this.uvs;
-			// UV values differ from RegionAttachment.java
-			if (rotate) {
-				uvs[URX] = u;
-				uvs[URY] = v2;
-				uvs[BRX] = u;
-				uvs[BRY] = v;
-				uvs[BLX] = u2;
-				uvs[BLY] = v;
-				uvs[ULX] = u2;
-				uvs[ULY] = v2;
-			} else {
-				uvs[ULX] = u;
-				uvs[ULY] = v2;
-				uvs[URX] = u;
-				uvs[URY] = v;
-				uvs[BRX] = u2;
-				uvs[BRY] = v;
-				uvs[BLX] = u2;
-				uvs[BLY] = v2;
-			}
-		}
-
-		/// <summary>Transforms the attachment's four vertices to world coordinates.</summary>
-		/// <param name="bone">The parent bone.</param>
-		/// <param name="worldVertices">The output world vertices. Must have a length greater than or equal to offset + 8.</param>
-		/// <param name="offset">The worldVertices index to begin writing values.</param>
-		/// <param name="stride">The number of worldVertices entries between the value pairs written.</param>
-		public void ComputeWorldVertices (Bone bone, float[] worldVertices, int offset, int stride = 2) {
-			float[] vertexOffset = this.offset;
-			float bwx = bone.worldX, bwy = bone.worldY;
+		public void ComputeWorldVertices (Bone bone, float[] worldVertices) {
+			float x = bone.worldX, y = bone.worldY;			
 			float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
-			float offsetX, offsetY;
-
-			// Vertex order is different from RegionAttachment.java
-			offsetX = vertexOffset[BRX]; // 0
-			offsetY = vertexOffset[BRY]; // 1
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // bl
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
-			offset += stride;
-
-			offsetX = vertexOffset[BLX]; // 2
-			offsetY = vertexOffset[BLY]; // 3
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // ul
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
-			offset += stride;
-
-			offsetX = vertexOffset[ULX]; // 4
-			offsetY = vertexOffset[ULY]; // 5
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // ur
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
-			offset += stride;
-
-			offsetX = vertexOffset[URX]; // 6
-			offsetY = vertexOffset[URY]; // 7
-			worldVertices[offset] = offsetX * a + offsetY * b + bwx; // br
-			worldVertices[offset + 1] = offsetX * c + offsetY * d + bwy;
-			//offset += stride;
+			float[] offset = this.offset;
+			worldVertices[X1] = offset[X1] * a + offset[Y1] * b + x;
+			worldVertices[Y1] = offset[X1] * c + offset[Y1] * d + y;
+			worldVertices[X2] = offset[X2] * a + offset[Y2] * b + x;
+			worldVertices[Y2] = offset[X2] * c + offset[Y2] * d + y;
+			worldVertices[X3] = offset[X3] * a + offset[Y3] * b + x;
+			worldVertices[Y3] = offset[X3] * c + offset[Y3] * d + y;
+			worldVertices[X4] = offset[X4] * a + offset[Y4] * b + x;
+			worldVertices[Y4] = offset[X4] * c + offset[Y4] * d + y;
 		}
 	}
 }

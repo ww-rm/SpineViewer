@@ -28,22 +28,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
+using System;
+
 namespace SpineRuntime35 {
 	public interface AttachmentLoader {
 		/// <return>May be null to not load any attachment.</return>
-		RegionAttachment NewRegionAttachment (Skin skin, string name, string path);
+		RegionAttachment NewRegionAttachment (Skin skin, String name, String path);
 
 		/// <return>May be null to not load any attachment.</return>
-		MeshAttachment NewMeshAttachment (Skin skin, string name, string path);
+		MeshAttachment NewMeshAttachment (Skin skin, String name, String path);
 
 		/// <return>May be null to not load any attachment.</return>
-		BoundingBoxAttachment NewBoundingBoxAttachment (Skin skin, string name);
+		BoundingBoxAttachment NewBoundingBoxAttachment (Skin skin, String name);
 
 		/// <returns>May be null to not load any attachment</returns>
-		PathAttachment NewPathAttachment (Skin skin, string name);
-
-		PointAttachment NewPointAttachment (Skin skin, string name);
-
-		ClippingAttachment NewClippingAttachment (Skin skin, string name);
+		PathAttachment NewPathAttachment (Skin skin, String name);
 	}
 }

@@ -28,6 +28,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
+using System;
+
 namespace SpineRuntime35 {
 	public interface IUpdatable {
 		void Update ();
