@@ -9,11 +9,11 @@ namespace PSDWriter
 {
     public class PSDWriter
     {
-        private readonly PSDFileHeaderSection _fileHeaderSection;
-        private readonly PSDColorModeDataSection _colorModeDataSection;
-        private readonly PSDImageResourcesSection _imageResourcesSection;
-        private readonly PSDLayerAndMaskSection _layerAndMaskSection;
-        private readonly PSDImageDataSection _imageDataSection;
+        private readonly FileHeaderSection _fileHeaderSection;
+        private readonly ColorModeDataSection _colorModeDataSection;
+        private readonly ImageResourcesSection _imageResourcesSection;
+        private readonly LayerAndMaskSection _layerAndMaskSection;
+        private readonly ImageDataSection _imageDataSection;
 
         public PSDWriter(uint width, uint height)
         {
@@ -34,7 +34,7 @@ namespace PSDWriter
             if (string.IsNullOrEmpty(name))
                 name = Guid.NewGuid().ToString()[..8];
 
-            var layer = new PSDLayer(name, Width, Height);
+            var layer = new Sections.Layers.RgbaLayer(name, Width, Height);
             layer.SetRgbaImageData(pixels);
             _layerAndMaskSection.Layers.Add(layer);
         }

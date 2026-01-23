@@ -10,9 +10,9 @@ namespace PSDWriter.Sections
     /// <summary>
     /// Total 26 bytes PSD file header section
     /// </summary>
-    internal class PSDFileHeaderSection
+    internal class FileHeaderSection
     {
-        public PSDFileHeaderSection(uint width,  uint height)
+        public FileHeaderSection(uint width,  uint height)
         {
             if (width < 1 || width > 30000)
                 throw new ArgumentOutOfRangeException(nameof(width), width, "Supperted range is 1 to 30000");

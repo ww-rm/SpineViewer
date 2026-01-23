@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PSDWriter.Sections
 {
-    internal class PSDImageDataSection
+    internal class ImageDataSection
     {
-        public PSDImageDataSection(uint width, uint height)
+        public ImageDataSection(uint width, uint height)
         {
             Width = width; 
             Height = height;

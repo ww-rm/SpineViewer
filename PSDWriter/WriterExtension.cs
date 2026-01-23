@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PSDWriter
 {
-    internal static class PSDWriterExtension
+    internal static class WriterExtension
     {
         public static void WriteU32BE(this Stream self, uint u32)
         {

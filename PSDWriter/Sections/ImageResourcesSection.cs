@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PSDWriter.Sections
 {
-    internal class PSDColorModeDataSection
+    internal class ImageResourcesSection
     {
         public void WriteTo(Stream stream)
         {
