@@ -88,7 +88,7 @@ namespace PsdWriter.Sections.Layers
             return bytes;
         }
 
-        public virtual int RecordLength { get => 18 + 6 * _channels + 64 + GetNameBytes().Length + _additionalInfo.Select(x => x.Length).Sum(); }
+        public virtual int RecordLength { get => 18 + 6 * _channels + 24 + (2 + 2 * _channels) * 4 + GetNameBytes().Length + _additionalInfo.Select(x => x.Length).Sum(); }
 
         public virtual int ChannelDataLength { get => _channelDataA.Length + _channelDataR.Length + _channelDataG.Length + _channelDataB.Length; }
 
@@ -131,13 +131,13 @@ namespace PsdWriter.Sections.Layers
             stream.WriteByte(0);
 
             // 4 bytes (Length of extra data length, the rest data below)
-            stream.WriteI32BE(48 + nameBytes.Length + _additionalInfo.Select(x => x.Length).Sum());
+            stream.WriteI32BE(4 + 4 + (2 + 2 * _channels) * 4 + nameBytes.Length + _additionalInfo.Select(x => x.Length).Sum());
 
             // 4 bytes (Layer mask data)
             stream.WriteU32BE(0);
 
-            // 44 bytes (Blending ranges)
-            stream.WriteU32BE(40);
+            // 4 + (2 + 2 * Channels) * 4 bytes (Blending ranges)
+            stream.WriteI32BE((2 + 2 * _channels) * 4);
             stream.WriteU32Repeats(2 + 2 * _channels, 0x0000FFFF);
 
             // 4n bytes (Layer name padded with zero bytes)
