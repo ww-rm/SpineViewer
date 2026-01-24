@@ -18,6 +18,8 @@ Spine file viewer & exporter, also a dynamic wallpaper program supporting Spine 
 
 ## Features
 
+:sparkles: **v0.16.16 Now Supports Exporting PSD with Multiple Layers** :sparkles:
+
 - Supports multiple Spine file versions (`2.1.x; 3.4.x - 4.2.-`)
 - List-based multi-skeleton view with rendering order management
 - Supports multi-track animations
@@ -26,6 +28,7 @@ Spine file viewer & exporter, also a dynamic wallpaper program supporting Spine 
 - Frame rate / model / track time scale adjustment
 - Track alpha blending control
 - Export single frame / GIF / video
+- Export PSD files with multiple layers
 - Custom export via FFmpeg
 - Supports non-PNG texture formats
 - Desktop dynamic wallpaper with auto-start support
