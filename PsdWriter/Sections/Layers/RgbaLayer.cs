@@ -12,7 +12,7 @@ namespace PsdWriter.Sections.Layers
     {
         public RgbaLayer(string name, uint width, uint height) : base(name, width, height) { }
 
-        public void SetRgbaImageData(byte[] imageData, bool preMultipliedAlpha = false)
+        public void SetRgbaImageData(byte[] imageData, bool preMultipliedAlpha)
         {
             ArgumentNullException.ThrowIfNull(imageData, nameof(imageData));
             if (imageData.Length != _right * _bottom * _channels)

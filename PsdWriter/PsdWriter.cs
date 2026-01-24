@@ -38,7 +38,7 @@ namespace PsdWriter
                 name = Guid.NewGuid().ToString()[..8];
 
             var layer = new RgbaLayer(name, Width, Height);
-            layer.SetRgbaImageData(pixels);
+            layer.SetRgbaImageData(pixels, preMultipliedAlpha);
             _layerAndMaskSection.Layers.Add(layer);
         }
 
