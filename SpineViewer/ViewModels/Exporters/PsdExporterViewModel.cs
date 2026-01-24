@@ -1,53 +1,33 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SkiaSharp;
-using Spine;
+﻿using Spine;
 using Spine.Exporters;
-using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.ViewModels.MainWindow;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SpineViewer.ViewModels.Exporters
 {
-    public class FrameExporterViewModel(MainWindowViewModel vmMain) : BaseExporterViewModel(vmMain)
+    public class PsdExporterViewModel : BaseExporterViewModel
     {
-        public static ImmutableArray<SKEncodedImageFormat> FrameFormatOptions { get; } = [
-            SKEncodedImageFormat.Png, 
-            SKEncodedImageFormat.Webp,
-            SKEncodedImageFormat.Jpeg,
-        ];
-
-        public SKEncodedImageFormat Format { get => _format; set => SetProperty(ref _format, value); }
-        protected SKEncodedImageFormat _format = SKEncodedImageFormat.Png;
-
-        public int Quality { get => _quality; set => SetProperty(ref _quality, Math.Clamp(value, 0, 100)); }
-        protected int _quality = 100;
-
-        private string FormatSuffix
+        public PsdExporterViewModel(MainWindowViewModel vmMain) : base(vmMain)
         {
-            get
-            {
-                if (_format == SKEncodedImageFormat.Heif) return ".jpeg";
-                else if (_format == SKEncodedImageFormat.Jpegxl) return ".jpeg";
-                else return $".{_format.ToString().ToLowerInvariant()}";
-            }
+            // PSD 文件背景颜色固定为透明, 且不允许用户在面板修改
+            _backgroundColor = Color.FromArgb(0, 0, 0, 0);
         }
 
         protected override void Export(SpineObjectModel[] models)
         {
             base.Export(models);
-            if (!DialogService.ShowFrameExporterDialog(this)) return;
+            if (!DialogService.ShowPsdExporterDialog(this)) return;
             SpineObject[] spines = models.Select(m => m.GetSpineObject(true)).ToArray();
-            ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameExporterTitle);
+            ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_PsdExporterTitle);
             foreach (var sp in spines) sp.Dispose();
         }
 
@@ -56,12 +36,7 @@ namespace SpineViewer.ViewModels.Exporters
             if (spines.Length <= 0) return;
 
             var timestamp = DateTime.Now.ToString("yyMMddHHmmss");
-            using var exporter = new FrameExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2)
-            {
-                BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
-                Format = _format,
-                Quality = _quality
-            };
+            using var exporter = new PsdExporter(_renderer.Resolution.X + _margin * 2, _renderer.Resolution.Y + _margin * 2);
 
             // 非自动分辨率则直接用预览画面的视区参数
             if (!_autoResolution)
@@ -75,27 +50,43 @@ namespace SpineViewer.ViewModels.Exporters
 
             if (_exportSingle)
             {
-                var filename = $"frame_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{_quality}{FormatSuffix}";
+                var filename = $"layers_{timestamp}_{Guid.NewGuid().ToString()[..6]}.psd";
                 var output = Path.Combine(_outputDir!, filename);
 
                 if (_autoResolution) SetAutoResolutionStatic(exporter, spines);
 
+                exporter.ProgressReporter = (total, done, text) =>
+                {
+                    pr.Total = total;
+                    pr.Done = done;
+                    pr.ProgressText = text;
+                    _vmMain.ProgressValue = pr.Done / pr.Total;
+                };
+
+                _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
+                _vmMain.ProgressValue = 0;
                 try
                 {
-                    exporter.Export(output, spines);
+                    exporter.Export(output, ct, spines);
                 }
                 catch (Exception ex)
                 {
                     _logger.Debug(ex.ToString());
                     _logger.Error("Failed to export {0}, {1}", output, ex.Message);
                 }
+                _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
             }
             else
             {
-                int total = spines.Length;
-                int done = 1;
+                pr.Total = spines.Select(sp => sp.IterDrawCount).Sum();
+                pr.Done = 0;
 
-                pr.Total = total;
+                exporter.ProgressReporter = (total, done, text) =>
+                {
+                    pr.Done++;
+                    pr.ProgressText = text;
+                    _vmMain.ProgressValue = pr.Done / pr.Total;
+                };
 
                 _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
                 _vmMain.ProgressValue = 0;
@@ -107,25 +98,20 @@ namespace SpineViewer.ViewModels.Exporters
                         break;
                     }
 
-                    var filename = $"{sp.Name}_{timestamp}_{Guid.NewGuid().ToString()[..6]}_{_quality}{FormatSuffix}";
+                    var filename = $"{sp.Name}_{timestamp}_{Guid.NewGuid().ToString()[..6]}.psd";
                     var output = Path.Combine(_outputDir ?? sp.AssetsDir, filename);
-
-                    pr.Done = done;
-                    pr.ProgressText = $"[{done}/{total}] {output}";
-                    _vmMain.ProgressValue = pr.Done / pr.Total;
 
                     if (_autoResolution) SetAutoResolutionStatic(exporter, sp);
 
                     try
                     {
-                        exporter.Export(output, sp);
+                        exporter.Export(output, ct, sp);
                     }
                     catch (Exception ex)
                     {
                         _logger.Debug(ex.ToString());
                         _logger.Error("Failed to export {0}, {1}", output, ex.Message);
                     }
-                    done++;
                 }
                 _vmMain.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
             }

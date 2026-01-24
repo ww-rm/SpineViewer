@@ -131,6 +131,7 @@ namespace SpineViewer.Resources
         public static string Str_CloseToTrayQuest => Get<string>("Str_CloseToTrayQuest");
 
         public static string Str_FrameExporterTitle => Get<string>("Str_FrameExporterTitle");
+        public static string Str_PsdExporterTitle => Get<string>("Str_PsdExporterTitle");
         public static string Str_FrameSequenceExporterTitle => Get<string>("Str_FrameSequenceExporterTitle");
         public static string Str_FFmpegVideoExporterTitle => Get<string>("Str_FFmpegVideoExporterTitle");
 

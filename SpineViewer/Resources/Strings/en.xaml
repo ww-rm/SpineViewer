@@ -58,6 +58,7 @@
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">Apply Config from File...</s:String>
     <s:String x:Key="Str_Export">Export</s:String>
     <s:String x:Key="Str_ExportFrame">Export Frame...</s:String>
+    <s:String x:Key="Str_ExportPsd">PSD multilayer file...</s:String>
     <s:String x:Key="Str_ExportFrameSequence">Export Frame Sequence...</s:String>
     <s:String x:Key="Str_ExportVideo">Export Animation/Video...</s:String>
     <s:String x:Key="Str_ExportCustom">Custom Export...</s:String>
@@ -168,6 +169,7 @@
 
     <!-- 导出对话框弹窗文本 -->
     <s:String x:Key="Str_FrameExporterTitle">Export Single Frame</s:String>
+    <s:String x:Key="Str_PsdExporterTitle">Export PSD File</s:String>
     <s:String x:Key="Str_FrameSequenceExporterTitle">Export Frame Sequence</s:String>
     <s:String x:Key="Str_FFmpegVideoExporterTitle">Export GIF/Video</s:String>
     <s:String x:Key="Str_CustomFFmpegExporterTitle">Custom FFmpeg Export</s:String>

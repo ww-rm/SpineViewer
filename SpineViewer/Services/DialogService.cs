@@ -34,6 +34,12 @@ namespace SpineViewer.Services
             return dialog.ShowDialog() ?? false;
         }
 
+        public static bool ShowPsdExporterDialog(PsdExporterViewModel vm)
+        {
+            var dialog = new PsdExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
+            return dialog.ShowDialog() ?? false;
+        }
+
         public static bool ShowFrameSequenceExporterDialog(FrameSequenceExporterViewModel vm)
         {
             var dialog = new FrameSequenceExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };

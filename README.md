@@ -16,6 +16,8 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ## 功能
 
+:sparkles: **v0.16.16 已支持 PSD 多图层格式导出** :sparkles:
+
 - 支持多版本 spine 文件 (`2.1.x; 3.4.x - 4.2.x`)
 - 支持列表式多骨骼查看和渲染层级管理
 - 支持多轨道动画
@@ -24,6 +26,7 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 - 支持画面/模型/轨道时间倍速设置
 - 支持设置轨道 Alpha 混合参数
 - 支持单帧/动图/视频文件导出
+- 支持 PSD 多图层格式导出
 - 支持 FFmpeg 自定义导出
 - 支持非 PNG 格式的纹理图片格式
 - 支持开机自启常驻动态壁纸

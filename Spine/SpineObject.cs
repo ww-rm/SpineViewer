@@ -33,7 +33,6 @@ namespace Spine
         protected readonly SpineObjectData _data;
         protected readonly ISkeleton _skeleton;
         protected readonly IAnimationState _animationState;
-        protected readonly ISkeletonClipping _clipping;
 
         /// <summary>
         /// 皮肤加载情况, 不含 default 皮肤
@@ -126,7 +125,6 @@ namespace Spine
             // 创建状态实例
             _skeleton = _data.CreateSkeleton();
             _animationState = _data.CreateAnimationState();
-            _clipping = _data.CreateSkeletonClipping();
 
             // 挂载一个空皮肤
             _skeleton.Skin = _data.CreateSkin(Guid.NewGuid().ToString());
@@ -157,7 +155,6 @@ namespace Spine
             // 新的实例
             _skeleton = _data.CreateSkeleton();
             _animationState = _data.CreateAnimationState();
-            _clipping = _data.CreateSkeletonClipping();
 
             // 挂载一个空皮肤
             _skeleton.Skin = _data.CreateSkin(Guid.NewGuid().ToString());
@@ -507,11 +504,12 @@ namespace Spine
             states.Texture = null;
             states.Shader = UsePma ? SFMLShader.VertexAlphaPma : SFMLShader.VertexAlpha;
 
+            var clipping = _data.CreateSkeletonClipping();
             foreach (var slot in _skeleton.IterDrawOrder())
             {
                 if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
                 {
-                    _clipping.ClipEnd(slot);
+                    clipping.ClipEnd(slot);
                     continue;
                 }
 
@@ -559,10 +557,10 @@ namespace Spine
                         texture = meshAttachment.RendererObject;
                         break;
                     case IClippingAttachment clippingAttachment:
-                        _clipping.ClipStart(slot, clippingAttachment);
+                        clipping.ClipStart(slot, clippingAttachment);
                         continue;
                     default:
-                        _clipping.ClipEnd(slot);
+                        clipping.ClipEnd(slot);
                         continue;
                 }
 
@@ -580,14 +578,14 @@ namespace Spine
                     states.Texture = texture;
                 }
 
-                if (_clipping.IsClipping)
+                if (clipping.IsClipping)
                 {
-                    _clipping.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
-                    worldVertices = _clipping.ClippedVertices;
-                    worldVerticesLength = _clipping.ClippedVerticesLength;
-                    triangles = _clipping.ClippedTriangles;
-                    trianglesLength = _clipping.ClippedTrianglesLength;
-                    uvs = _clipping.ClippedUVs;
+                    clipping.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
+                    worldVertices = clipping.ClippedVertices;
+                    worldVerticesLength = clipping.ClippedVerticesLength;
+                    triangles = clipping.ClippedTriangles;
+                    trianglesLength = clipping.ClippedTrianglesLength;
+                    uvs = clipping.ClippedUVs;
                 }
 
                 var texW = texture.Size.X;
@@ -609,9 +607,9 @@ namespace Spine
                     _triangleVertices.Append(vt);
                 }
 
-                _clipping.ClipEnd(slot);
+                clipping.ClipEnd(slot);
             }
-            _clipping.ClipEnd();
+            clipping.ClipEnd();
 
             target.Draw(_triangleVertices, states);
         }
@@ -840,6 +838,150 @@ namespace Spine
                 if (DebugTexture) DrawTexture(target, states);
                 DrawNonTexture(target);
             }
+        }
+
+        /// <summary>
+        /// <see cref="IterDraw(SFML.Graphics.RenderTexture)"/> 的数量
+        /// </summary>
+        public virtual int IterDrawCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var slot in _skeleton.IterDrawOrder())
+                {
+                    if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
+                        continue;
+                    switch (slot.Attachment)
+                    {
+                        case IRegionAttachment:
+                        case IMeshAttachment:
+                            break;
+                        case IClippingAttachment:
+                            continue;
+                        default:
+                            continue;
+                    }
+                    count++;
+                }
+                return count;
+            }
+        }
+
+        /// <summary>
+        /// 迭代逐 Slot 渲染
+        /// </summary>
+        /// <returns>(Name, Image) 二元组, 调用方管理 Image 对象生命周期</returns>
+        public virtual IEnumerable<(string Name, SFML.Graphics.Image Image)> IterDraw(SFML.Graphics.RenderTexture target)
+        {
+            var states = SFML.Graphics.RenderStates.Default;
+            states.Texture = null;
+            states.Shader = UsePma ? SFMLShader.VertexAlphaPma : SFMLShader.VertexAlpha;
+
+            var clipping = _data.CreateSkeletonClipping();
+            foreach (var slot in _skeleton.IterDrawOrder())
+            {
+                if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
+                {
+                    clipping.ClipEnd(slot);
+                    continue;
+                }
+
+                var attachment = slot.Attachment;
+
+                float[] worldVertices;                          // 顶点世界坐标数组, 连续的 [x0, y0, x1, y1, ...] 坐标值
+                int worldVerticesLength;                        // 顶点数组的长度
+                int[] triangles;                                // 三角形索引, 从顶点坐标数组取的时候要乘以 2, 最大值是 worldVerticesCount - 1
+                int trianglesLength;                            // 三角形索引数组长度
+                float[] uvs;                                    // 纹理坐标数组, 连续的 [u0, v0, u1, v1, ...] 坐标值, 长度和顶点数组相同
+
+                float tintR = _skeleton.R * slot.R;
+                float tintG = _skeleton.G * slot.G;
+                float tintB = _skeleton.B * slot.B;
+                float tintA = _skeleton.A * slot.A;
+
+                SFML.Graphics.Texture texture;
+
+                switch (attachment)
+                {
+                    case IRegionAttachment regionAttachment:
+                        worldVerticesLength = regionAttachment.ComputeWorldVertices(slot, ref _worldVertices);
+                        worldVertices = _worldVertices;
+                        triangles = regionAttachment.Triangles;
+                        trianglesLength = triangles.Length;
+                        uvs = regionAttachment.UVs;
+                        tintR *= regionAttachment.R;
+                        tintG *= regionAttachment.G;
+                        tintB *= regionAttachment.B;
+                        tintA *= regionAttachment.A;
+
+                        // NOTE: RenderObject 的获取要在 ComputeWorldVertices 发生之后, 否则可能存在某些 Region 尚未被赋值产生 null 引用报错
+                        texture = regionAttachment.RendererObject;
+                        break;
+                    case IMeshAttachment meshAttachment:
+                        worldVerticesLength = meshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
+                        worldVertices = _worldVertices;
+                        triangles = meshAttachment.Triangles;
+                        trianglesLength = triangles.Length;
+                        uvs = meshAttachment.UVs;
+                        tintR *= meshAttachment.R;
+                        tintG *= meshAttachment.G;
+                        tintB *= meshAttachment.B;
+                        tintA *= meshAttachment.A;
+                        texture = meshAttachment.RendererObject;
+                        break;
+                    case IClippingAttachment clippingAttachment:
+                        clipping.ClipStart(slot, clippingAttachment);
+                        continue;
+                    default:
+                        clipping.ClipEnd(slot);
+                        continue;
+                }
+
+                states.BlendMode = slot.Blend;
+                states.Texture = texture;
+
+                if (clipping.IsClipping)
+                {
+                    clipping.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
+                    worldVertices = clipping.ClippedVertices;
+                    worldVerticesLength = clipping.ClippedVerticesLength;
+                    triangles = clipping.ClippedTriangles;
+                    trianglesLength = clipping.ClippedTrianglesLength;
+                    uvs = clipping.ClippedUVs;
+                }
+
+                // 清空之前的内容
+                target.Clear(SFML.Graphics.Color.Transparent);
+                _triangleVertices.Clear();
+
+                var texW = texture.Size.X;
+                var texH = texture.Size.Y;
+
+                SFML.Graphics.Vertex vt = new();
+                vt.Color.R = (byte)(tintR * 255);
+                vt.Color.G = (byte)(tintG * 255);
+                vt.Color.B = (byte)(tintB * 255);
+                vt.Color.A = (byte)(tintA * 255);
+
+                for (int i = 0; i < trianglesLength; i++)
+                {
+                    var index = triangles[i] << 1;
+                    vt.Position.X = worldVertices[index];
+                    vt.Position.Y = worldVertices[index + 1];
+                    vt.TexCoords.X = uvs[index] * texW;
+                    vt.TexCoords.Y = uvs[index + 1] * texH;
+                    _triangleVertices.Append(vt);
+                }
+
+                clipping.ClipEnd(slot);
+
+                target.Draw(_triangleVertices, states);
+                target.Display();
+                var img = target.Texture.CopyToImage();
+                yield return (slot.Name, img);
+            }
+            clipping.ClipEnd();
         }
 
         #endregion

@@ -42,6 +42,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _spineObjectModels = _vmMain.SpineObjects; // 缓存对象
 
             _frameExporterViewModel = new(_vmMain);
+            _psdExporterViewModel = new(_vmMain);
             _frameSequenceExporterViewModel = new(_vmMain);
             _ffmpegVideoExporterViewModel = new(_vmMain);
             _customFFmpegExporterViewModel = new(_vmMain);
@@ -57,6 +58,12 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public FrameExporterViewModel FrameExporterViewModel => _frameExporterViewModel;
         private readonly FrameExporterViewModel _frameExporterViewModel;
+
+        /// <summary>
+        /// PSD 文件导出 ViewModel
+        /// </summary>
+        public PsdExporterViewModel PsdExporterViewModel => _psdExporterViewModel;
+        private readonly PsdExporterViewModel _psdExporterViewModel;
 
         /// <summary>
         /// 帧序列 ViewModel

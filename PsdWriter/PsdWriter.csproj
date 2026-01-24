@@ -12,21 +12,9 @@
         <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <Version>0.16.16</Version>
-        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <PropertyGroup>
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="NLog" Version="5.4.0" />
-      <PackageReference Include="Spectre.Console" Version="0.52.0" />
-      <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Spine\Spine.csproj" />
-    </ItemGroup>
-
 </Project>

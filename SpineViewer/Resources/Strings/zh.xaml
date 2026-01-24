@@ -58,6 +58,7 @@
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">应用参数文件...</s:String>
     <s:String x:Key="Str_Export">导出</s:String>
     <s:String x:Key="Str_ExportFrame">单帧画面...</s:String>
+    <s:String x:Key="Str_ExportPsd">PSD 多图层文件...</s:String>
     <s:String x:Key="Str_ExportFrameSequence">帧序列...</s:String>
     <s:String x:Key="Str_ExportVideo">动图/视频...</s:String>
     <s:String x:Key="Str_ExportCustom">自定义导出...</s:String>
@@ -168,6 +169,7 @@
 
     <!-- 导出对话框弹窗文本 -->
     <s:String x:Key="Str_FrameExporterTitle">导出单帧</s:String>
+    <s:String x:Key="Str_PsdExporterTitle">导出 PSD 文件</s:String>
     <s:String x:Key="Str_FrameSequenceExporterTitle">导出帧序列</s:String>
     <s:String x:Key="Str_FFmpegVideoExporterTitle">导出动图/视频</s:String>
     <s:String x:Key="Str_CustomFFmpegExporterTitle">自定义 FFmpeg 导出</s:String>

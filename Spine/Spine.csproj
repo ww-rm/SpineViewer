@@ -11,7 +11,7 @@
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.15</Version>
+        <Version>0.16.16</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -30,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PsdWriter\PsdWriter.csproj" />
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime21\SpineRuntime21.csproj" />
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime34\SpineRuntime34.csproj" />
       <ProjectReference Include="..\SpineRuntimes\SpineRuntime35\SpineRuntime35.csproj" />

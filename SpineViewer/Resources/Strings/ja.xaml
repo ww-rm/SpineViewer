@@ -58,6 +58,7 @@
     <s:String x:Key="Str_ApplySpineObjectConfigFromFile">パラメータファイルを適用...</s:String>
     <s:String x:Key="Str_Export">エクスポート</s:String>
     <s:String x:Key="Str_ExportFrame">単一フレーム...</s:String>
+    <s:String x:Key="Str_ExportPsd">PSD 多層ファイル...</s:String>
     <s:String x:Key="Str_ExportFrameSequence">フレームシーケンス...</s:String>
     <s:String x:Key="Str_ExportVideo">アニメーション/ビデオ...</s:String>
     <s:String x:Key="Str_ExportCustom">カスタムエクスポート...</s:String>
@@ -168,6 +169,7 @@
 
     <!-- 导出对话框弹窗文本 -->
     <s:String x:Key="Str_FrameExporterTitle">単一フレームをエクスポート</s:String>
+    <s:String x:Key="Str_PsdExporterTitle">PSD ファイルをエクスポート</s:String>
     <s:String x:Key="Str_FrameSequenceExporterTitle">フレームシーケンスをエクスポート</s:String>
     <s:String x:Key="Str_FFmpegVideoExporterTitle">アニメーション/ビデオをエクスポート</s:String>
     <s:String x:Key="Str_CustomFFmpegExporterTitle">カスタムFFmpegエクスポート</s:String>
