@@ -10,6 +10,12 @@ namespace PSDWriter.Sections.Layers
 {
     internal abstract class Layer
     {
+        public static class BlendModes
+        {
+            public const string Normal = "norm";
+            public const string PassThrough = "pass";
+        }
+
         protected readonly string _name;
 
         protected readonly int _top = 0;
@@ -19,8 +25,7 @@ namespace PSDWriter.Sections.Layers
 
         protected readonly ushort _channels = 4;
 
-        protected readonly string _blendModeSignature = "8BIM";
-        protected readonly string _blendMode = "norm";
+        protected readonly string _blendMode = BlendModes.Normal;
 
         protected readonly byte _opacity = 255;
         protected readonly byte _clipping = 0;
@@ -102,17 +107,13 @@ namespace PSDWriter.Sections.Layers
             stream.WriteU16BE(_channels);
 
             // 6 * Channels bytes (Channel information)
-            stream.WriteI16BE(-1);
-            stream.WriteI32BE(_channelDataA.Length);
-            stream.WriteI16BE(0);
-            stream.WriteI32BE(_channelDataR.Length);
-            stream.WriteI16BE(1);
-            stream.WriteI32BE(_channelDataG.Length);
-            stream.WriteI16BE(2);
-            stream.WriteI32BE(_channelDataB.Length);
+            stream.WriteI16BE(-1); stream.WriteI32BE(_channelDataA.Length);
+            stream.WriteI16BE(0); stream.WriteI32BE(_channelDataR.Length);
+            stream.WriteI16BE(1); stream.WriteI32BE(_channelDataG.Length);
+            stream.WriteI16BE(2); stream.WriteI32BE(_channelDataB.Length);
 
             // 4 bytes (Blend mode signature)
-            stream.Write(Encoding.ASCII.GetBytes(_blendModeSignature));
+            stream.Write(Encoding.ASCII.GetBytes("8BIM"));
 
             // 4 bytes (Blend mode key)
             stream.Write(Encoding.ASCII.GetBytes(_blendMode));

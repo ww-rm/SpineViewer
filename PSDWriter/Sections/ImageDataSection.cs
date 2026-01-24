@@ -10,19 +10,19 @@ namespace PSDWriter.Sections
     {
         public ImageDataSection(uint width, uint height)
         {
-            Width = width; 
-            Height = height;
+            _width = width; 
+            _height = height;
         }
 
-        public uint Width { get; }
-        public uint Height { get; }
+        public uint _width;
+        public uint _height;
 
         public void WriteTo(Stream stream)
         {
             stream.WriteU16BE(1);
-            var packedRow = PackBits.Encode(new byte[Width]);
-            stream.WriteU16Repeats((int)Height * 4, (ushort)packedRow.Length);
-            for (int i = 0; i < Height * 4; i++)
+            var packedRow = PackBits.Encode(new byte[_width]);
+            stream.WriteU16Repeats((int)_height * 4, (ushort)packedRow.Length);
+            for (int i = 0; i < _height * 4; i++)
             {
                 stream.Write(packedRow);
             }

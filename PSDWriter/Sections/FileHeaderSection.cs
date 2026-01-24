@@ -18,17 +18,17 @@ namespace PSDWriter.Sections
                 throw new ArgumentOutOfRangeException(nameof(width), width, "Supperted range is 1 to 30000");
             if (height < 1 || height > 30000)
                 throw new ArgumentOutOfRangeException(nameof(height), height, "Supperted range is 1 to 30000");
-            Width = width; 
-            Height = height;
+            _width = width; 
+            _height = height;
         }
 
-        public string Signature { get; } = "8BPS";
-        public ushort Version { get; } = 1;
-        public ushort Channels { get; } = 4;
-        public uint Height { get; }
-        public uint Width { get; }
-        public ushort Depth { get; } = 8;
-        public ushort ColorMode { get; } = 3; // RGB
+        public readonly string _signature = "8BPS";
+        public readonly ushort _version = 1;
+        public readonly ushort _channels = 4;
+        public readonly uint _height;
+        public readonly uint _width;
+        public readonly ushort _depth = 8;
+        public readonly ushort _colorMode = 3; // RGB
 
         /// <summary>
         /// 26 bytes totally
@@ -36,28 +36,28 @@ namespace PSDWriter.Sections
         public void WriteTo(Stream stream)
         {
             // 4 bytes (Signature)
-            stream.Write(Encoding.ASCII.GetBytes(Signature));
+            stream.Write(Encoding.ASCII.GetBytes(_signature));
 
             // 2 bytes (Version)
-            stream.WriteU16BE(Version);
+            stream.WriteU16BE(_version);
 
             // 6 bytes (Reserved)
             stream.WriteZeros(6);
 
             // 2 bytes (Number of channels)
-            stream.WriteU16BE(Channels);
+            stream.WriteU16BE(_channels);
 
             // 4 bytes (Height in pixels)
-            stream.WriteU32BE(Height);
+            stream.WriteU32BE(_height);
 
             // 4 bytes (Width in pixels)
-            stream.WriteU32BE(Width);
+            stream.WriteU32BE(_width);
 
             // 2 bytes (Number of bits per channel)
-            stream.WriteU16BE(Depth);
+            stream.WriteU16BE(_depth);
 
             // 2 bytes (Color mode)
-            stream.WriteU16BE(ColorMode);
+            stream.WriteU16BE(_colorMode);
         }
     }
 }

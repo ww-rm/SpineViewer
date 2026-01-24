@@ -11,28 +11,30 @@ namespace PSDWriter.Sections
 {
     internal class LayerAndMaskSection
     {
-        public List<Layer> Layers { get; } = [];
+        private readonly List<Layer> _layers = [];
+
+        public List<Layer> Layers { get => _layers; }
 
         public void WriteTo(Stream stream)
         {
-            if (Layers.Count >= 0x7fff)
-                throw new ArgumentOutOfRangeException(nameof(Layers), "Too many layers");
+            if (_layers.Count >= 0x7fff)
+                throw new ArgumentOutOfRangeException(nameof(_layers), "Too many layers");
 
             // 4 bytes (Section length)
-            stream.WriteI32BE(4 + 2 + Layers.Select(it => it.RecordLength + it.ChannelDataLength).Sum() + 4);
+            stream.WriteI32BE(4 + 2 + _layers.Select(it => it.RecordLength + it.ChannelDataLength).Sum() + 4);
 
             // 4 bytes (Length of layer info)
-            stream.WriteI32BE(2 + Layers.Select(it => it.RecordLength + it.ChannelDataLength).Sum());
+            stream.WriteI32BE(2 + _layers.Select(it => it.RecordLength + it.ChannelDataLength).Sum());
 
             // 2 bytes (Layer count)
-            stream.WriteI16BE((short)Layers.Count);
+            stream.WriteI16BE((short)_layers.Count);
 
             // 2n bytes (Layer records)
-            foreach (var layer in Layers)
+            foreach (var layer in _layers)
                 layer.WriteRecordTo(stream);
 
             // 2n bytes (Layer channel data)
-            foreach (var layer in Layers)
+            foreach (var layer in _layers)
                 layer.WriteChannelDataTo(stream);
 
             // 4 bytes (Global layer mask info)
