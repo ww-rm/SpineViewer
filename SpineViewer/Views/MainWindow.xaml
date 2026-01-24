@@ -204,6 +204,9 @@
                                                         <MenuItem Header="{DynamicResource Str_ExportFrame}"
                                                                   Command="{Binding FrameExporterViewModel.Cmd_Export}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                        <MenuItem Header="{DynamicResource Str_ExportPsd}"
+                                                                  Command="{Binding PsdExporterViewModel.Cmd_Export}"
+                                                                  CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                         <MenuItem Header="{DynamicResource Str_ExportFrameSequence}"
                                                                   Command="{Binding FrameSequenceExporterViewModel.Cmd_Export}"
                                                                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
