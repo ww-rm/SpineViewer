@@ -29,6 +29,8 @@ namespace SpineViewer.ViewModels.Exporters
 
         protected readonly ISFMLRenderer _renderer;
 
+        protected string _timestamp = DateTime.Now.ToString("yyMMddHHmmss");
+
         public BaseExporterViewModel(MainWindowViewModel vmMain)
         {
             _vmMain = vmMain;
@@ -83,7 +85,7 @@ namespace SpineViewer.ViewModels.Exporters
                 OnPropertyChanged(nameof(OutputDir));
             }
         });
-        protected RelayCommand _cmd_SelectOutputDir;
+        protected RelayCommand? _cmd_SelectOutputDir;
 
         /// <summary>
         /// 使用提供的包围盒设置自动分辨率
@@ -160,6 +162,9 @@ namespace SpineViewer.ViewModels.Exporters
             return args is not null && args.Count > 0;
         }
 
-        protected abstract void Export(SpineObjectModel[] models);
+        protected virtual void Export(SpineObjectModel[] models)
+        {
+            _timestamp = DateTime.Now.ToString("yyMMddHHmmss");
+        }
     }
 }

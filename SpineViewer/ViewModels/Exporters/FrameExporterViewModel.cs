@@ -44,6 +44,7 @@ namespace SpineViewer.ViewModels.Exporters
 
         protected override void Export(SpineObjectModel[] models)
         {
+            base.Export(models);
             if (!DialogService.ShowFrameExporterDialog(this)) return;
             SpineObject[] spines = models.Select(m => m.GetSpineObject(true)).ToArray();
             ProgressService.RunAsync((pr, ct) => ExportTask(spines, pr, ct), AppResource.Str_FrameExporterTitle);
