@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime35", "SpineRunt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpineRuntime34", "SpineRuntimes\SpineRuntime34\SpineRuntime34.csproj", "{348605F7-3FF4-1DE0-4B91-7AEFE7BC5C55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSDWriter", "PSDWriter\PSDWriter.csproj", "{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsdWriter", "PsdWriter\PsdWriter.csproj", "{0D4EDF29-EE06-BC70-92D2-11B3ED6654E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

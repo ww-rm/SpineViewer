@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSDWriter.Sections
+namespace PsdWriter.Sections
 {
     /// <summary>
     /// Total 26 bytes PSD file header section

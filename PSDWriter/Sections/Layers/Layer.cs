@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace PSDWriter.Sections.Layers
+namespace PsdWriter.Sections.Layers
 {
     internal abstract class Layer
     {

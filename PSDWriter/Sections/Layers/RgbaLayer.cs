@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSDWriter.Sections.Layers
+namespace PsdWriter.Sections.Layers
 {
     internal class RgbaLayer : Layer
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSDWriter.Sections
+namespace PsdWriter.Sections
 {
     internal class ImageDataSection
     {

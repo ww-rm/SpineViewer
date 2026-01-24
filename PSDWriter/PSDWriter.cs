@@ -1,14 +1,14 @@
-﻿using PSDWriter.Sections;
-using PSDWriter.Sections.Layers;
+﻿using PsdWriter.Sections;
+using PsdWriter.Sections.Layers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSDWriter
+namespace PsdWriter
 {
-    public class PSDWriter
+    public class PsdWriter
     {
         private readonly FileHeaderSection _fileHeaderSection;
         private readonly ColorModeDataSection _colorModeDataSection;
@@ -18,7 +18,7 @@ namespace PSDWriter
 
         private readonly Stack<string> _groupNames = [];
 
-        public PSDWriter(uint width, uint height)
+        public PsdWriter(uint width, uint height)
         {
             Width = width; 
             Height = height;

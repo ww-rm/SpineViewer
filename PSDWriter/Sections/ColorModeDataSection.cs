@@ -1,4 +1,4 @@
-﻿using PSDWriter;
+﻿using PsdWriter;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSDWriter.Sections
+namespace PsdWriter.Sections
 {
     internal class ColorModeDataSection
     {
