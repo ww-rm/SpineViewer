@@ -27,6 +27,7 @@ namespace SpineViewerCLI
         Mkv = 0x0305,
         Mov = 0x0306,
         Custom = 0x0400,
+        Psd = 0x0500,
     }
 
     public class ExportCommand : Command
@@ -109,7 +110,7 @@ namespace SpineViewerCLI
 
         public Option<SFML.Graphics.Color> OptColor { get; } = new("--color")
         {
-            Description = "Background color of content.",
+            Description = "Background color of content, omitted for PSD format.",
             //DefaultValueFactory = ...
             CustomParser = Utils.ParseColor
         };
@@ -245,6 +246,7 @@ namespace SpineViewerCLI
                         case ExportFormat.Webpa:
                         case ExportFormat.Apng:
                         case ExportFormat.Webm:
+                        case ExportFormat.Psd:
                             defVal = SFML.Graphics.Color.Transparent;
                             break;
                     }
@@ -322,7 +324,7 @@ namespace SpineViewerCLI
             using var exporter = GetExporterFilledWithArgs(result, spine);
 
             // 创建输出目录
-            string output = result.GetValue(OptOutput);
+            string output = Path.GetFullPath(result.GetValue(OptOutput));
             Directory.CreateDirectory(exporter is FrameSequenceExporter ? output : Path.GetDirectoryName(output));
 
             // 挂载进度报告函数
@@ -460,6 +462,16 @@ namespace SpineViewerCLI
                     Bitrate = result.GetValue(OptFFBitrate),
                     Filter = result.GetValue(OptFFFilter),
                     CustomArgs = result.GetValue(OptFFArgs),
+                };
+            }
+            else if (formatType == 0x05)
+            {
+                return new PsdExporter(resolution.X + margin * 2, resolution.Y + margin * 2)
+                {
+                    Size = new(viewBounds.Width, -viewBounds.Height),
+                    Center = viewBounds.Position + viewBounds.Size / 2,
+                    Rotation = 0,
+                    BackgroundColor = SFML.Graphics.Color.Transparent, // 固定为透明色, 且内部忽略背景色
                 };
             }
             else
