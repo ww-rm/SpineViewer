@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/37b6b730-088a-4352-827a-c338127a16f0
 
 ## 功能
 
-:sparkles: **v0.16.16 已支持 PSD 多图层格式导出** :sparkles:
+:sparkles: **v0.16.17 已支持 PSD 多图层格式导出** :sparkles:
 
 - 支持多版本 spine 文件 (`2.1.x; 3.4.x - 4.2.x`)
 - 支持列表式多骨骼查看和渲染层级管理

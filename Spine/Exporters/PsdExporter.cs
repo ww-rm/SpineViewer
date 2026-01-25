@@ -1,5 +1,6 @@
 ﻿using PsdWriter;
 using SFML.System;
+using Spine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,15 +41,15 @@ namespace Spine.Exporters
                 }
 
                 psdWriter.BeginGroup(sp.Name);
-                foreach (var (name, image) in sp.IterDraw(_renderTexture))
+                foreach (var (slot, image) in sp.IterDraw(_renderTexture))
                 {
                     if (ct.IsCancellationRequested)
                     {
                         image.Dispose();
                         break;
                     }
-                    _progressReporter?.Invoke(layerCount, layerIdx + 1, $"[{layerIdx + 1}/{layerCount}] {output} <{sp.Name}/{name}>");
-                    psdWriter.AddRgbaLayer(image.Pixels, name, true);
+                    _progressReporter?.Invoke(layerCount, layerIdx + 1, $"[{layerIdx + 1}/{layerCount}] {output} <{sp.Name}/{slot.Name}>");
+                    psdWriter.AddRgbaLayer(image.Pixels, slot.Name, true, ConvertBlendMode(slot.Blend));
                     image.Dispose();
                     layerIdx++;
                 }
@@ -57,6 +58,20 @@ namespace Spine.Exporters
 
             _renderTexture.SetActive(false);
             psdWriter.WriteTo(output);
+        }
+
+        private string ConvertBlendMode(SFML.Graphics.BlendMode blendMode)
+        {
+            if (blendMode == SFMLBlendMode.NormalPma)
+                return PsdWriter.Sections.Layers.BlendModes.Normal;
+            else if (blendMode == SFMLBlendMode.AdditivePma)
+                return PsdWriter.Sections.Layers.BlendModes.LinearDodge;
+            else if (blendMode == SFMLBlendMode.MultiplyPma)
+                return PsdWriter.Sections.Layers.BlendModes.Multiply;
+            else if (blendMode == SFMLBlendMode.ScreenPma)
+                return PsdWriter.Sections.Layers.BlendModes.Screen;
+            else
+                throw new NotImplementedException(blendMode.ToString());
         }
     }
 }

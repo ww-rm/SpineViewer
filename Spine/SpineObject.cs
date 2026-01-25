@@ -869,12 +869,13 @@ namespace Spine
         }
 
         /// <summary>
-        /// 迭代逐 Slot 渲染
+        /// 迭代逐 Slot 渲染, 每个层的结果是预乘的, 且无混合设置, 需要调用方自行管理层混合方式
         /// </summary>
-        /// <returns>(Name, Image) 二元组, 调用方管理 Image 对象生命周期</returns>
-        public virtual IEnumerable<(string Name, SFML.Graphics.Image Image)> IterDraw(SFML.Graphics.RenderTexture target)
+        /// <returns>(Slot, Image) 二元组, 调用方管理 Image 对象生命周期</returns>
+        public virtual IEnumerable<(ISlot Slot, SFML.Graphics.Image Image)> IterDraw(SFML.Graphics.RenderTexture target)
         {
             var states = SFML.Graphics.RenderStates.Default;
+            states.BlendMode = SFMLBlendMode.NormalPma; // 此处固定使用 Normal 混合, 将像素原样渲染
             states.Texture = null;
             states.Shader = UsePma ? SFMLShader.VertexAlphaPma : SFMLShader.VertexAlpha;
 
@@ -900,8 +901,6 @@ namespace Spine
                 float tintB = _skeleton.B * slot.B;
                 float tintA = _skeleton.A * slot.A;
 
-                SFML.Graphics.Texture texture;
-
                 switch (attachment)
                 {
                     case IRegionAttachment regionAttachment:
@@ -916,7 +915,7 @@ namespace Spine
                         tintA *= regionAttachment.A;
 
                         // NOTE: RenderObject 的获取要在 ComputeWorldVertices 发生之后, 否则可能存在某些 Region 尚未被赋值产生 null 引用报错
-                        texture = regionAttachment.RendererObject;
+                        states.Texture = regionAttachment.RendererObject;
                         break;
                     case IMeshAttachment meshAttachment:
                         worldVerticesLength = meshAttachment.ComputeWorldVertices(slot, ref _worldVertices);
@@ -928,7 +927,7 @@ namespace Spine
                         tintG *= meshAttachment.G;
                         tintB *= meshAttachment.B;
                         tintA *= meshAttachment.A;
-                        texture = meshAttachment.RendererObject;
+                        states.Texture = meshAttachment.RendererObject;
                         break;
                     case IClippingAttachment clippingAttachment:
                         clipping.ClipStart(slot, clippingAttachment);
@@ -937,9 +936,6 @@ namespace Spine
                         clipping.ClipEnd(slot);
                         continue;
                 }
-
-                states.BlendMode = slot.Blend;
-                states.Texture = texture;
 
                 if (clipping.IsClipping)
                 {
@@ -955,8 +951,8 @@ namespace Spine
                 target.Clear(SFML.Graphics.Color.Transparent);
                 _triangleVertices.Clear();
 
-                var texW = texture.Size.X;
-                var texH = texture.Size.Y;
+                var texW = states.Texture.Size.X;
+                var texH = states.Texture.Size.Y;
 
                 SFML.Graphics.Vertex vt = new();
                 vt.Color.R = (byte)(tintR * 255);
@@ -979,7 +975,7 @@ namespace Spine
                 target.Draw(_triangleVertices, states);
                 target.Display();
                 var img = target.Texture.CopyToImage();
-                yield return (slot.Name, img);
+                yield return (slot, img);
             }
             clipping.ClipEnd();
         }
