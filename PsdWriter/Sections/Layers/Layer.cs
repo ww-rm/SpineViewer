@@ -10,12 +10,6 @@ namespace PsdWriter.Sections.Layers
 {
     internal abstract class Layer
     {
-        public static class BlendModes
-        {
-            public const string Normal = "norm";
-            public const string PassThrough = "pass";
-        }
-
         protected readonly string _name;
 
         protected readonly int _top = 0;
@@ -25,7 +19,7 @@ namespace PsdWriter.Sections.Layers
 
         protected readonly ushort _channels = 4;
 
-        protected readonly string _blendMode = BlendModes.Normal;
+        protected string _blendMode = BlendModes.Normal;
 
         protected readonly byte _opacity = 255;
         protected readonly byte _clipping = 0;
@@ -53,6 +47,17 @@ namespace PsdWriter.Sections.Layers
                 ms.WriteI32BE(nameUnicodeBytes.Length);
                 ms.Write(nameUnicodeBytes);
                 _additionalInfo.Add(ms.ToArray());
+            }
+        }
+
+        public string BlendMode
+        {
+            get => _blendMode;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) || value.Length != 4)
+                    throw new ArgumentException(nameof(value), "Blend mode must be a 4-bytes string");
+                _blendMode = value;
             }
         }
 
@@ -88,7 +93,7 @@ namespace PsdWriter.Sections.Layers
             return bytes;
         }
 
-        public virtual int RecordLength { get => 18 + 6 * _channels + 64 + GetNameBytes().Length + _additionalInfo.Select(x => x.Length).Sum(); }
+        public virtual int RecordLength { get => 18 + 6 * _channels + 24 + (2 + 2 * _channels) * 4 + GetNameBytes().Length + _additionalInfo.Select(x => x.Length).Sum(); }
 
         public virtual int ChannelDataLength { get => _channelDataA.Length + _channelDataR.Length + _channelDataG.Length + _channelDataB.Length; }
 
@@ -131,13 +136,13 @@ namespace PsdWriter.Sections.Layers
             stream.WriteByte(0);
 
             // 4 bytes (Length of extra data length, the rest data below)
-            stream.WriteI32BE(48 + nameBytes.Length + _additionalInfo.Select(x => x.Length).Sum());
+            stream.WriteI32BE(4 + 4 + (2 + 2 * _channels) * 4 + nameBytes.Length + _additionalInfo.Select(x => x.Length).Sum());
 
             // 4 bytes (Layer mask data)
             stream.WriteU32BE(0);
 
-            // 44 bytes (Blending ranges)
-            stream.WriteU32BE(40);
+            // 4 + (2 + 2 * Channels) * 4 bytes (Blending ranges)
+            stream.WriteI32BE((2 + 2 * _channels) * 4);
             stream.WriteU32Repeats(2 + 2 * _channels, 0x0000FFFF);
 
             // 4n bytes (Layer name padded with zero bytes)

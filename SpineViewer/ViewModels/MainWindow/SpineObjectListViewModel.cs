@@ -100,6 +100,7 @@ namespace SpineViewer.ViewModels.MainWindow
             if (args is null) return;
             lock (_spineObjectModels.Lock)
             {
+                // XXX: 此处顺序是按用户的选择顺序, 而不是列表顺序, 但是对后续操作没有区别
                 var selectedItems = args.Cast<SpineObjectModel>().ToArray();
                 foreach (var it in _spineObjectModels.Except(selectedItems)) it.IsSelected = false;
                 foreach (var it in selectedItems) it.IsSelected = true;

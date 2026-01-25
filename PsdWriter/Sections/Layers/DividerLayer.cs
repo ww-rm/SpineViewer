@@ -8,14 +8,6 @@ namespace PsdWriter.Sections.Layers
 {
     internal class DividerLayer : Layer
     {
-        public static class DividerTypes
-        {
-            public const uint Other = 0;
-            public const uint OpenFolder = 1;
-            public const uint ClosedFolder = 2;
-            public const uint BoundingSectionDivider = 3;
-        }
-
         public DividerLayer(string name, uint dividerType) : base(name, 0, 0)
         {
             using (var ms = new MemoryStream())

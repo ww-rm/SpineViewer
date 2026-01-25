@@ -32,12 +32,12 @@ namespace PsdWriter
         public uint Width { get; }
         public uint Height { get; }
 
-        public void AddRgbaLayer(byte[] pixels, string name = null, bool preMultipliedAlpha = false)
+        public void AddRgbaLayer(byte[] pixels, string name = null, bool preMultipliedAlpha = false, string blendMode = BlendModes.Normal)
         {
             if (string.IsNullOrWhiteSpace(name))
                 name = Guid.NewGuid().ToString()[..8];
 
-            var layer = new RgbaLayer(name, Width, Height);
+            var layer = new RgbaLayer(name, Width, Height) { BlendMode = blendMode };
             layer.SetRgbaImageData(pixels, preMultipliedAlpha);
             _layerAndMaskSection.Layers.Add(layer);
         }
@@ -47,7 +47,7 @@ namespace PsdWriter
             if (string.IsNullOrWhiteSpace(name))
                 name = Guid.NewGuid().ToString()[..8];
 
-            var layer = new DividerLayer("</Layer group>", DividerLayer.DividerTypes.BoundingSectionDivider);
+            var layer = new DividerLayer("</Layer group>", DividerTypes.BoundingSectionDivider);
             _layerAndMaskSection.Layers.Add(layer);
             _groupNames.Push(name);
         }
@@ -58,7 +58,7 @@ namespace PsdWriter
                 throw new IndexOutOfRangeException("No groups");
 
             var name = _groupNames.Pop();
-            var layer = new DividerLayer(name, openFolder ? DividerLayer.DividerTypes.OpenFolder : DividerLayer.DividerTypes.ClosedFolder);
+            var layer = new DividerLayer(name, openFolder ? DividerTypes.OpenFolder : DividerTypes.ClosedFolder);
             _layerAndMaskSection.Layers.Add(layer);
             return name;
         }
