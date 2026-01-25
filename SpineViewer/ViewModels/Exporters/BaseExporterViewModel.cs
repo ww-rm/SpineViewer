@@ -154,7 +154,13 @@ namespace SpineViewer.ViewModels.Exporters
         private void Export_Execute(IList? args)
         {
             if (!Export_CanExecute(args)) return;
-            Export(args.Cast<SpineObjectModel>().ToArray());
+            SpineObjectModel[] selectedItems = args.Cast<SpineObjectModel>().ToArray();
+            lock (_vmMain.SpineObjects.Lock)
+            {
+                // 此处原始顺序是按用户的选择顺序, 而不是列表顺序, 所以需要额外按列表序重取一次
+                selectedItems = _vmMain.SpineObjects.Intersect(selectedItems).ToArray();
+            }
+            Export(selectedItems);
         }
 
         private bool Export_CanExecute(IList? args)
