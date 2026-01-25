@@ -10,12 +10,6 @@ namespace PsdWriter.Sections.Layers
 {
     internal abstract class Layer
     {
-        public static class BlendModes
-        {
-            public const string Normal = "norm";
-            public const string PassThrough = "pass";
-        }
-
         protected readonly string _name;
 
         protected readonly int _top = 0;
@@ -25,7 +19,7 @@ namespace PsdWriter.Sections.Layers
 
         protected readonly ushort _channels = 4;
 
-        protected readonly string _blendMode = BlendModes.Normal;
+        protected string _blendMode = BlendModes.Normal;
 
         protected readonly byte _opacity = 255;
         protected readonly byte _clipping = 0;
@@ -53,6 +47,17 @@ namespace PsdWriter.Sections.Layers
                 ms.WriteI32BE(nameUnicodeBytes.Length);
                 ms.Write(nameUnicodeBytes);
                 _additionalInfo.Add(ms.ToArray());
+            }
+        }
+
+        public string BlendMode
+        {
+            get => _blendMode;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value) || value.Length != 4)
+                    throw new ArgumentException(nameof(value), "Blend mode must be a 4-bytes string");
+                _blendMode = value;
             }
         }
 
