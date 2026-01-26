@@ -503,13 +503,13 @@ namespace SpineViewer.Models
                         _spineObject.SetSkinStatus(name, true);
                 }
 
-                if (flag == SpineObjectConfigApplyFlag.SlotAttachement)
+                if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.SlotAttachement)
                 {
                     foreach (var (slotName, attachmentName) in m.SlotAttachment)
                         _spineObject.SetAttachment(slotName, attachmentName);
                 }
 
-                if (flag == SpineObjectConfigApplyFlag.SlotVisibility)
+                if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.SlotVisibility)
                 {
                     foreach (var slotName in m.DisabledSlots)
                         _spineObject.SetSlotVisible(slotName, false);
