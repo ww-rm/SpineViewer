@@ -5,7 +5,6 @@
 仓库目前包含以下分支:
 
 - `main`: 默认分支, 也是项目最新版的代码分支
-- `release/wpf`: WPF 版本发布分支
 - `dev/wpf`: WPF 版本开发分支
 - `release/wf`: Winforms 旧版本发布分支 (已弃用, 仅进行 bug 修复)
 - `dev/wf`: Winforms 旧版本开发分支 (已弃用, 仅进行 bug 修复)
