@@ -14,30 +14,64 @@ namespace PsdWriter.Sections.Layers
 
         public void SetRgbaImageData(byte[] imageData, bool preMultipliedAlpha)
         {
+            if (_channels != 4)
+                throw new InvalidOperationException("Channels must be 4");
+
             ArgumentNullException.ThrowIfNull(imageData, nameof(imageData));
-            if (imageData.Length != _right * _bottom * _channels)
+            if (imageData.Length != _width * _height * _channels)
                 throw new ArgumentException($"Incorrect data length {imageData.Length}", nameof(imageData));
 
-            List<byte[]> rowsR = new(_bottom);
-            List<byte[]> rowsG = new(_bottom);
-            List<byte[]> rowsB = new(_bottom);
-            List<byte[]> rowsA = new(_bottom);
+            _top = (int)_height;
+            _left = (int)_width;
+            _right = 0;
+            _bottom = 0;
 
-            for (int y = 0; y < _bottom; y++)
+            for (int y = 0; y < _height; y++)
             {
-                byte[] chR = new byte[_right];
-                byte[] chG = new byte[_right];
-                byte[] chB = new byte[_right];
-                byte[] chA = new byte[_right];
-
-                var offset = y * _right;
-                for (int x = 0; x < _right; x++)
+                var offset = y * _width;
+                for (int x = 0; x < _width; x++)
                 {
-                    var i = (offset + x) * _channels;
-                    var r = imageData[i];
-                    var g = imageData[i + 1];
-                    var b = imageData[i + 2];
-                    var a = imageData[i + 3];
+                    var pi = (offset + x) * _channels;
+                    var a = imageData[pi + 3];
+                    if (a > 0)
+                    {
+                        _left = Math.Min(_left, x);
+                        _top = Math.Min(_top, y);
+                        _right = Math.Max(_right, x + 1);
+                        _bottom = Math.Max(_bottom, y + 1);
+                    }
+                }
+            }
+
+            var rowCount = _bottom - _top;
+            var colCount = _right - _left;
+
+            if (rowCount <= 0 || colCount <= 0)
+            {
+                ClearPixels();
+                return;
+            }
+
+            List<byte[]> rowsR = new(rowCount);
+            List<byte[]> rowsG = new(rowCount);
+            List<byte[]> rowsB = new(rowCount);
+            List<byte[]> rowsA = new(rowCount);
+
+            for (int y = _top; y < _bottom; y++)
+            {
+                byte[] chR = new byte[colCount];
+                byte[] chG = new byte[colCount];
+                byte[] chB = new byte[colCount];
+                byte[] chA = new byte[colCount];
+
+                var offset = y * _width;
+                for (int x = _left, i = 0; x < _right; x++, i++)
+                {
+                    var pi = (offset + x) * _channels;
+                    var r = imageData[pi];
+                    var g = imageData[pi + 1];
+                    var b = imageData[pi + 2];
+                    var a = imageData[pi + 3];
 
                     if (preMultipliedAlpha && a > 0 && a < 255)
                     {
@@ -47,10 +81,10 @@ namespace PsdWriter.Sections.Layers
                         b = (byte)Math.Min(b / alpha, 255);
                     }
 
-                    chR[x] = r;
-                    chG[x] = g;
-                    chB[x] = b;
-                    chA[x] = a;
+                    chR[i] = r;
+                    chG[i] = g;
+                    chB[i] = b;
+                    chA[i] = a;
                 }
 
                 rowsR.Add(PackBits.Encode(chR));

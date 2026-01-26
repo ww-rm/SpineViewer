@@ -12,10 +12,13 @@ namespace PsdWriter.Sections.Layers
     {
         protected readonly string _name;
 
-        protected readonly int _top = 0;
-        protected readonly int _left = 0;
-        protected readonly int _right;
-        protected readonly int _bottom;
+        protected readonly uint _width;
+        protected readonly uint _height;
+
+        protected int _top = 0;
+        protected int _left = 0;
+        protected int _right = 0;
+        protected int _bottom = 0;
 
         protected readonly ushort _channels = 4;
 
@@ -27,16 +30,16 @@ namespace PsdWriter.Sections.Layers
 
         protected readonly List<byte[]> _additionalInfo = [];
 
-        protected byte[] _channelDataR = [];
-        protected byte[] _channelDataG = [];
-        protected byte[] _channelDataB = [];
-        protected byte[] _channelDataA = [];
+        protected byte[] _channelDataR = [0, 0];
+        protected byte[] _channelDataG = [0, 0];
+        protected byte[] _channelDataB = [0, 0];
+        protected byte[] _channelDataA = [0, 0];
 
         public Layer(string name, uint width, uint height)
         {
             _name = name;
-            _right = (int)width;
-            _bottom = (int)height;
+            _width = width;
+            _height = height;
 
             using (var ms = new MemoryStream())
             {
@@ -91,6 +94,19 @@ namespace PsdWriter.Sections.Layers
             BinaryPrimitives.WriteInt32BigEndian(bytes, nameBytesLength / 2);
             Buffer.BlockCopy(nameBytes, 0, bytes, 4, nameBytesLength);
             return bytes;
+        }
+
+        public void ClearPixels()
+        {
+            _top = 0;
+            _left = 0;
+            _right = 0;
+            _bottom = 0;
+
+            _channelDataA = [0, 0];
+            _channelDataR = [0, 0];
+            _channelDataG = [0, 0];
+            _channelDataB = [0, 0];
         }
 
         public virtual int RecordLength { get => 18 + 6 * _channels + 24 + (2 + 2 * _channels) * 4 + GetNameBytes().Length + _additionalInfo.Select(x => x.Length).Sum(); }

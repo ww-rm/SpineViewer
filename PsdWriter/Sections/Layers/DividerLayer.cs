@@ -19,10 +19,7 @@ namespace PsdWriter.Sections.Layers
                 _additionalInfo.Add(ms.ToArray());
             }
 
-            _channelDataA = [0, 0];
-            _channelDataR = [0, 0];
-            _channelDataG = [0, 0];
-            _channelDataB = [0, 0];
+            ClearPixels();
         }
     }
 }
