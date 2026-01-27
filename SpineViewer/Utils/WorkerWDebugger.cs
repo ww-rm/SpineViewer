@@ -50,12 +50,12 @@ namespace SpineViewer.Utils
             _logger.Debug("SendMessageTimeout(lParam=1) returned 0x{0:x8}", ret);
             _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
-            Marshal.SetLastPInvokeError(0);
-            ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x0, User32.SMTO_NORMAL, 1000, out _);
-            lastErr = Marshal.GetLastPInvokeError();
-            lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
-            _logger.Debug("SendMessageTimeout(lParam=0) returned 0x{0:x8}", ret);
-            _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
+            //Marshal.SetLastPInvokeError(0);
+            //ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x0, User32.SMTO_NORMAL, 1000, out _);
+            //lastErr = Marshal.GetLastPInvokeError();
+            //lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
+            //_logger.Debug("SendMessageTimeout(lParam=0) returned 0x{0:x8}", ret);
+            //_logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
             // Spy++ output
             // .....
