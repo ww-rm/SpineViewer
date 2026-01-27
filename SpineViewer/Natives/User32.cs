@@ -292,7 +292,7 @@ namespace SpineViewer.Natives
             // WorkerW behind the desktop icons. If it is already there, nothing 
             // happens.
             SendMessageTimeout(progman, WM_SPAWN_WORKER, 0xD, 0x1, SMTO_NORMAL, 1000, out _);
-            SendMessageTimeout(progman, WM_SPAWN_WORKER, 0xD, 0x0, SMTO_NORMAL, 1000, out _);
+            //SendMessageTimeout(progman, WM_SPAWN_WORKER, 0xD, 0x0, SMTO_NORMAL, 1000, out _);
 
             // Spy++ output
             // .....
