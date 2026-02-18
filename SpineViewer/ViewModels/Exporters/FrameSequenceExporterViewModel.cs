@@ -17,6 +17,9 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FrameSequenceExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
+        public int PngQuality { get => _pngQuality; set => SetProperty(ref _pngQuality, Math.Clamp(value, 0, 100)); }
+        protected int _pngQuality = 85;
+
         protected override void Export(SpineObjectModel[] models)
         {
             base.Export(models);
@@ -33,7 +36,8 @@ namespace SpineViewer.ViewModels.Exporters
                 BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A),
                 Fps = _fps,
                 Speed = _speed,
-                KeepLast = _keepLast
+                KeepLast = _keepLast,
+                PngQuality = _pngQuality,
             };
         }
 

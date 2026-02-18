@@ -177,6 +177,16 @@
                                 <TextBox Grid.Column="1" Text="{Binding Fps}"/>
                             </Grid>
 
+                            <!-- PNG 质量参数 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_PngQuality}" ToolTip="{DynamicResource Str_PngQualityTooltip}"/>
+                                <TextBox Grid.Column="1" Text="{Binding PngQuality}" ToolTip="{DynamicResource Str_PngQualityTooltip}"/>
+                            </Grid>
+
                             <!-- 导出速度 -->
                             <Grid>
                                 <Grid.ColumnDefinitions>

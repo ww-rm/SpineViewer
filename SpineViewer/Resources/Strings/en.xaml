@@ -204,6 +204,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">Export duration; if less than 0, the maximum duration of all animations in all models will be used during export.</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_PngQuality">PNG Quality</s:String>
+    <s:String x:Key="Str_PngQualityTooltip">Range 0-100. Lower values generate smaller files. Uses pngquant when available.</s:String>
     <s:String x:Key="Str_ExportSpeed">Export Speed</s:String>
     <s:String x:Key="Str_ExportSpeedTooltip">Export speed factor; only affects the animation speed of the model, not the export duration or frame rate.</s:String>
     <s:String x:Key="Str_KeepLastFrame">Keep Last Frame</s:String>

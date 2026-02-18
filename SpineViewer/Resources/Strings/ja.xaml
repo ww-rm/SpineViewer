@@ -204,6 +204,8 @@
     <s:String x:Key="Str_ExportDurationTooltip">エクスポート時間。0 未満の場合、エクスポート時にすべてのモデルのすべてのアニメーションの最大時間が使用されます。</s:String>
 
     <s:String x:Key="Str_Fps">FPS</s:String>
+    <s:String x:Key="Str_PngQuality">PNG品質パラメータ</s:String>
+    <s:String x:Key="Str_PngQualityTooltip">値の範囲は0-100。値が低いほどファイルは小さくなります。pngquant が利用可能な場合に有効です。</s:String>
     <s:String x:Key="Str_ExportSpeed">エクスポート速度</s:String>
     <s:String x:Key="Str_ExportSpeedTooltip">エクスポート速度係数。モデルの動作速度のみに影響し、エクスポート時間やフレームレートなどには影響しません。</s:String>
     <s:String x:Key="Str_KeepLastFrame">最後のフレームを保持</s:String>
@@ -266,4 +268,3 @@
     <s:String x:Key="Str_AssociateFileSuffix">ファイル拡張子を関連付ける</s:String>
 
 </ResourceDictionary>
-
