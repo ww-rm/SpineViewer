@@ -51,20 +51,20 @@ namespace Spine.Implementations.V21
                 return null;
             }
 
-            set
-            {
-                if (value is null)
-                {
-                    _o.Attachment = null;
-                    return;
-                }
-                if (value is Attachments.Attachment21 att)
-                {
-                    _o.Attachment = att.InnerObject;
-                    return;
-                }
-                throw new ArgumentException($"Received {value.GetType().Name}", nameof(value));
-            }
+            //set
+            //{
+            //    if (value is null)
+            //    {
+            //        _o.Attachment = null;
+            //        return;
+            //    }
+            //    if (value is Attachments.Attachment21 att)
+            //    {
+            //        _o.Attachment = att.InnerObject;
+            //        return;
+            //    }
+            //    throw new ArgumentException($"Received {value.GetType().Name}", nameof(value));
+            //}
         }
 
         public bool Disabled { get; set; }
