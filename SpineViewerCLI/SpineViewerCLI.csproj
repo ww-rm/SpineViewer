@@ -13,6 +13,9 @@
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <Version>0.16.24</Version>
         <OutputType>Exe</OutputType>
+
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
     <PropertyGroup>
