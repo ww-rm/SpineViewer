@@ -36,7 +36,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 上一次状态文件保存路径
     /// </summary>
-    public static readonly string UserStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "userstate.json");
+    public static readonly string UserStateFilePath = Path.Combine(App.ProcessDataDirectory, "userstate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
