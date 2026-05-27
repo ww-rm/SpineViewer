@@ -211,6 +211,15 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_HighlightSelectedModel}" ToolTip="{DynamicResource Str_HighlightSelectedModelTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding HighlightSelectedModel}" ToolTip="{DynamicResource Str_HighlightSelectedModelTooltip}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_HitTestLevel}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding HitTestLevel}"

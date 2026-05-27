@@ -79,6 +79,9 @@ namespace SpineViewer.Models
         private bool _renderSelectedOnly;
 
         [ObservableProperty]
+        private bool _highlightSelectedModel = true;
+
+        [ObservableProperty]
         private HitTestLevel _hitTestLevel;
 
         [ObservableProperty]

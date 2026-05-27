@@ -282,6 +282,16 @@ namespace SpineViewer.ViewModels.MainWindow
         private bool _renderSelectedOnly;
 
         /// <summary>
+        /// 是否高亮选中的模型 (绘制一个半透明背景框)
+        /// </summary>
+        public bool HighlightSelectedModel
+        {
+            get => _highlightSelectedModel;
+            set => SetProperty(ref _highlightSelectedModel, value);
+        }
+        private bool _highlightSelectedModel = true;
+
+        /// <summary>
         /// 启用桌面投影
         /// </summary>
         public bool WallpaperView
@@ -627,8 +637,8 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
 
-                    // 为选中对象绘制一个半透明背景
-                    if (sp.IsSelected)
+                    // 高亮选中对象, 绘制一个半透明背景
+                    if (_highlightSelectedModel && sp.IsSelected)
                     {
                         var rc = sp.GetCurrentBounds().ToFloatRect();
                         _selectedBackgroundVertices[0] = new(new(rc.Left, rc.Top), _selectedBackgroundColor);

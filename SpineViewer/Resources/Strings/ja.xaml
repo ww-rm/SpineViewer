@@ -130,6 +130,8 @@
     <s:String x:Key="Str_WallpaperMaxFps">壁紙ビューの最大FPS</s:String>
     <s:String x:Key="Str_WallpaperMaxFpsTooltip">壁紙ビューの最大フレームレート。0に設定すると制限がなし。</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">選択のみレンダリング</s:String>
+    <s:String x:Key="Str_HighlightSelectedModel">選択中のモデルを強調表示</s:String>
+    <s:String x:Key="Str_HighlightSelectedModelTooltip">選択中のモデルに半透明の背景を描画します</s:String>
     <s:String x:Key="Str_HitTestLevel">ヒットテスト精度レベル</s:String>
     <s:String x:Key="Str_LogHitSlots">ヒットテスト結果のスロット名を出力</s:String>
     <s:String x:Key="Str_LogHitSlotsTooltip">有効にすると、ログボックスに各クリック操作で命中したモデルとスロットの情報が出力されます。</s:String>

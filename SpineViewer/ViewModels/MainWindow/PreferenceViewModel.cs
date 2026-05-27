@@ -108,6 +108,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     DebugClippings = DebugClippings,
 
                     RenderSelectedOnly = RenderSelectedOnly,
+                    HighlightSelectedModel = HighlightSelectedModel,
                     HitTestLevel = HitTestLevel,
                     LogHitSlots = LogHitSlots,
                     MaxFps = MaxFps,
@@ -143,6 +144,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 DebugClippings = value.DebugClippings;
 
                 RenderSelectedOnly = value.RenderSelectedOnly;
+                HighlightSelectedModel = value.HighlightSelectedModel;
                 HitTestLevel = value.HitTestLevel;
                 LogHitSlots = value.LogHitSlots;
                 MaxFps = value.MaxFps;
@@ -264,6 +266,12 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
             set => SetProperty(_vmMain.SFMLRendererViewModel.RenderSelectedOnly, value, v => _vmMain.SFMLRendererViewModel.RenderSelectedOnly = v);
+        }
+
+        public bool HighlightSelectedModel
+        {
+            get => _vmMain.SFMLRendererViewModel.HighlightSelectedModel;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.HighlightSelectedModel, value, v => _vmMain.SFMLRendererViewModel.HighlightSelectedModel = v);
         }
 
         public HitTestLevel HitTestLevel
