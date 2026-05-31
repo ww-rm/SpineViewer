@@ -150,6 +150,11 @@ public partial class MainWindow : Window
         LogManager.ReconfigExistingLoggers();
     }
 
+    private void RichTextBoxMenuItem_ClearLog_Click(object sender, RoutedEventArgs e)
+    {
+        _loggerRichTextBox.Document.Blocks.Clear();
+    }
+
     #region MainWindow 事件处理
 
     private void MainWindow_SourceInitialized(object? sender, EventArgs e)
@@ -926,4 +931,5 @@ public partial class MainWindow : Window
         return;
 #endif
     }
+
 }

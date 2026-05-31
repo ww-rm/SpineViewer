@@ -1058,9 +1058,9 @@
 
                             <!-- 日志框容器 -->
                             <Border Grid.Row="2" Name="_loggerBoxContainer">
-                                <Border x:Name="_loggerBoxPanel" DataContext="{Binding SFMLRendererViewModel}">
+                                <Border x:Name="_loggerBoxPanel">
                                     <DockPanel>
-                                        <StatusBar DockPanel.Dock="Bottom">
+                                        <StatusBar DockPanel.Dock="Bottom" DataContext="{Binding SFMLRendererViewModel}">
                                             <StatusBarItem>
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
@@ -1072,7 +1072,13 @@
                                                 </TextBlock>
                                             </StatusBarItem>
                                         </StatusBar>
-                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}">
+                                            <RichTextBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_ClearLog}" Click="RichTextBoxMenuItem_ClearLog_Click"/>
+                                                </ContextMenu>
+                                            </RichTextBox.ContextMenu>
+                                        </RichTextBox>
                                     </DockPanel>
                                 </Border>
                             </Border>
