@@ -93,8 +93,9 @@
                             <TabItem>
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_SpineObject}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -703,8 +704,9 @@
                             <TabItem DataContext="{Binding SFMLRendererViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_Canvas}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -884,8 +886,9 @@
                             <TabItem DataContext="{Binding ExplorerListViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_Explorer}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -1000,6 +1003,37 @@
                                 </Grid>
                             </TabItem>
 
+                            <TabItem>
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_LocalAssets}">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Data="{StaticResource Geo_HardDrive}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
+                                <Grid x:Name="_localAssets">
+                                    
+                                </Grid>
+                            </TabItem>
+
+                            <!-- TODO: 在线资源 (Github) -->
+                            <TabItem Visibility="Collapsed">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_OnlineAssets}">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Data="{StaticResource Geo_CloudArrowDown}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
+                                <Grid x:Name="_onlineAssets">
+
+                                </Grid>
+                            </TabItem>
+
                         </TabControl>
                     </Border>
 
@@ -1010,49 +1044,86 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="5*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="1.2*"/>
                             </Grid.RowDefinitions>
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <TabControl>
+                                <TabControl.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="10 0"/>
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </TabControl.Resources>
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelAnimationTooltip}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <Viewbox Width="24" Height="24">
+                                                    <Path Data="{StaticResource Geo_Video}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                                </Viewbox>
+                                                <TextBlock Text="{DynamicResource Str_ModelAnimation}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </TabItem.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                                <!-- 预览画面容器 -->
-                                <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{DynamicResource SecondaryRegionBrush}">
-                                    <SFMLRenderer:SFMLRenderPanel x:Name="_renderPanel"/>
-                                </Border>
+                                        <!-- 预览画面容器 -->
+                                        <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{DynamicResource SecondaryRegionBrush}">
+                                            <SFMLRenderer:SFMLRenderPanel x:Name="_renderPanel"/>
+                                        </Border>
 
-                                <!-- 预览画面按钮组容器 -->
-                                <Border Grid.Row="1" x:Name="_renderPanelButtonsContainer">
+                                        <!-- 预览画面按钮组容器 -->
+                                        <Border Grid.Row="1" x:Name="_renderPanelButtonsContainer">
 
-                                    <!-- 画面按钮 -->
-                                    <Border x:Name="_renderPanelButtonsPanel"
+                                            <!-- 画面按钮 -->
+                                            <Border x:Name="_renderPanelButtonsPanel"
                                             DataContext="{Binding SFMLRendererViewModel}"
                                             Grid.Row="1" 
                                             Grid.IsSharedSizeScope="True"
                                             Background="{DynamicResource RegionBrush}">
-                                        <WrapPanel HorizontalAlignment="Center">
-                                            <WrapPanel.Resources>
-                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
-                                                    <Setter Property="Margin" Value="5"/>
-                                                    <Setter Property="Width" Value="50"/>
-                                                </Style>
-                                            </WrapPanel.Resources>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
-                                            <Button x:Name="_fullScreenButton" 
+                                                <WrapPanel HorizontalAlignment="Center">
+                                                    <WrapPanel.Resources>
+                                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
+                                                            <Setter Property="Margin" Value="5"/>
+                                                            <Setter Property="Width" Value="50"/>
+                                                        </Style>
+                                                    </WrapPanel.Resources>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
+                                                    <Button x:Name="_fullScreenButton" 
                                                     hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
                                                     Click="ButtonFullScreen_Click" 
                                                     ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
-                                        </WrapPanel>
-                                    </Border>
-                                </Border>
-                            </Grid>
+                                                </WrapPanel>
+                                            </Border>
+                                        </Border>
+                                    </Grid>
+                                </TabItem>
+                                
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelPreviewImageTooltip}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <Viewbox Width="24" Height="24">
+                                                    <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                                </Viewbox>
+                                                <TextBlock Text="{DynamicResource Str_ModelPreviewImage}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </TabItem.Header>
+                                    <hc:SimplePanel Background="AliceBlue"/>
+                                </TabItem>
+
+                            </TabControl>
+
 
                             <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 

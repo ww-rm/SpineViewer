@@ -24,6 +24,13 @@
     <s:String x:Key="Str_Explorer">浏览</s:String>
     <s:String x:Key="Str_SpineObject">模型</s:String>
     <s:String x:Key="Str_Canvas">画面</s:String>
+    <s:String x:Key="Str_LocalAssets">本地资源</s:String>
+    <s:String x:Key="Str_OnlineAssets">在线资源</s:String>
+    
+    <s:String x:Key="Str_ModelAnimation">模型动画</s:String>
+    <s:String x:Key="Str_ModelAnimationTooltip">在左侧模型列表中添加并设置模型动画</s:String>
+    <s:String x:Key="Str_ModelPreviewImage">模型预览图</s:String>
+    <s:String x:Key="Str_ModelPreviewImageTooltip">在左侧资源列表中添加并选择要查看的模型预览图</s:String>
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">筛选</s:String>

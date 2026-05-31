@@ -24,6 +24,13 @@
     <s:String x:Key="Str_Explorer">Explorer</s:String>
     <s:String x:Key="Str_SpineObject">Model</s:String>
     <s:String x:Key="Str_Canvas">Canvas</s:String>
+    <s:String x:Key="Str_LocalAssets">Local Assets</s:String>
+    <s:String x:Key="Str_OnlineAssets">Online Assets</s:String>
+
+    <s:String x:Key="Str_ModelAnimation">Model Animation</s:String>
+    <s:String x:Key="Str_ModelAnimationTooltip">Add and configure model animations in the model list on the left</s:String>
+    <s:String x:Key="Str_ModelPreviewImage">Model Preview Image</s:String>
+    <s:String x:Key="Str_ModelPreviewImageTooltip">Add and select a model preview image to view from the asset list on the left</s:String>
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">Filter</s:String>

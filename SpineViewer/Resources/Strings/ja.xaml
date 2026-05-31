@@ -24,6 +24,13 @@
     <s:String x:Key="Str_Explorer">エクスプローラー</s:String>
     <s:String x:Key="Str_SpineObject">モデル</s:String>
     <s:String x:Key="Str_Canvas">キャンバス</s:String>
+    <s:String x:Key="Str_LocalAssets">ローカルアセット</s:String>
+    <s:String x:Key="Str_OnlineAssets">オンラインアセット</s:String>
+
+    <s:String x:Key="Str_ModelAnimation">モデルアニメーション</s:String>
+    <s:String x:Key="Str_ModelAnimationTooltip">左側のモデルリストでモデルアニメーションを追加・設定します</s:String>
+    <s:String x:Key="Str_ModelPreviewImage">モデルプレビュー画像</s:String>
+    <s:String x:Key="Str_ModelPreviewImageTooltip">左側のアセットリストから表示するモデルプレビュー画像を追加・選択します</s:String>
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">フィルター</s:String>
