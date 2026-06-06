@@ -345,7 +345,9 @@ namespace SpineViewerCLI
             // 时间轴处理
             var warmup = result.GetValue(OptWarmUp);
             if (warmup < 0) warmup = spine.GetAnimationMaxDuration();
-            for (float t = 0, step = 1f / 60f; t < warmup; t += step)
+
+            // 按传入的帧率进行逐帧预热, 不能直接更新整个动画时长, 否则物理效果无法预热
+            for (float t = 0, step = 1f / result.GetValue(OptFps); t < warmup; t += step)
                 spine.Update(Math.Min(step, warmup - t));
             spine.Update(result.GetValue(OptTime));
 
@@ -417,8 +419,10 @@ namespace SpineViewerCLI
             }
 
             var duration = result.GetValue(OptDuration);
+            
             // 除以速度才能覆盖整数个循环, 否则 speed != 1 时接缝跳变
-            if (duration < 0) duration = spine.GetAnimationMaxDuration() / Math.Max(result.GetValue(OptSpeed), 1e-6f);
+            if (duration < 0) 
+                duration = spine.GetAnimationMaxDuration() / Math.Max(result.GetValue(OptSpeed), 1e-6f);
 
             if (formatType == 0x01)
             {
