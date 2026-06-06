@@ -344,7 +344,9 @@ namespace SpineViewerCLI
 
             // 时间轴处理
             var warmup = result.GetValue(OptWarmUp);
-            spine.Update(warmup < 0 ? spine.GetAnimationMaxDuration() : warmup);
+            if (warmup < 0) warmup = spine.GetAnimationMaxDuration();
+            for (float t = 0, step = 1f / 60f; t < warmup; t += step)
+                spine.Update(Math.Min(step, warmup - t));
             spine.Update(result.GetValue(OptTime));
 
             using var exporter = GetExporterFilledWithArgs(result, spine);
@@ -415,7 +417,8 @@ namespace SpineViewerCLI
             }
 
             var duration = result.GetValue(OptDuration);
-            if (duration < 0) duration = spine.GetAnimationMaxDuration();
+            // 除以速度才能覆盖整数个循环, 否则 speed != 1 时接缝跳变
+            if (duration < 0) duration = spine.GetAnimationMaxDuration() / Math.Max(result.GetValue(OptSpeed), 1e-6f);
 
             if (formatType == 0x01)
             {
