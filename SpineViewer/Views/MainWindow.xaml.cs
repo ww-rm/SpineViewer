@@ -36,7 +36,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 上一次状态文件保存路径
     /// </summary>
-    public static readonly string UserStateFilePath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "userstate.json");
+    public static readonly string UserStateFilePath = Path.Combine(App.ProcessDataDirectory, "userstate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -148,6 +148,11 @@ public partial class MainWindow : Window
         LogManager.Configuration.AddTarget(rtbTarget);
         LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
         LogManager.ReconfigExistingLoggers();
+    }
+
+    private void RichTextBoxMenuItem_ClearLog_Click(object sender, RoutedEventArgs e)
+    {
+        _loggerRichTextBox.Document.Blocks.Clear();
     }
 
     #region MainWindow 事件处理
@@ -926,4 +931,5 @@ public partial class MainWindow : Window
         return;
 #endif
     }
+
 }

@@ -92,7 +92,7 @@
 
     <Style x:Key="MyTabItemHeaderContainerStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource RegionBrush}"/>
-        <Setter Property="Margin" Value="-10 -5 -8 -5"/>
+        <Setter Property="Margin" Value="-8 -3 -8 -3"/>
         <Setter Property="Padding" Value="10 5"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

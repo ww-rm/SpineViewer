@@ -43,6 +43,8 @@ namespace SpineViewer
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
+        public static readonly string ProcessDataDirectory = Path.Combine(ProcessDirectory, "data");
+
         private static readonly string AutoRunCommand = $"\"{ProcessPath}\" {AutoRunFlag}";
 
         private static readonly string SkelFileDescription = $"SpineViewer File";

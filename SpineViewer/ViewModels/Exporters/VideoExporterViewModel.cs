@@ -71,8 +71,17 @@ namespace SpineViewer.ViewModels.Exporters
 
                 if (_autoResolution) SetAutoResolutionAnimated(exporter, spines);
 
-                // 如果时长是一个负数值则使用所有动画时长的最大值
-                exporter.Duration = _duration < 0 ? spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max() : _duration;
+                exporter.Duration = _duration;
+
+                if (_duration < 0)
+                {
+                    // 如果时长是一个负数值则使用所有动画时长的最大值
+                    var duration = spines.Select(sp => sp.GetAnimationMaxDuration()).DefaultIfEmpty(0).Max();
+
+                    // 根据速度因子进行缩放, 保证动画完整性
+                    exporter.Duration = duration / _speed;
+                }
+
 
                 exporter.ProgressReporter = (total, done, text) =>
                 {
@@ -103,7 +112,7 @@ namespace SpineViewer.ViewModels.Exporters
                 {
                     foreach (var sp in spines)
                     {
-                        exporter.Duration = sp.GetAnimationMaxDuration();
+                        exporter.Duration = sp.GetAnimationMaxDuration() / _speed; // 需要同步缩放总时长
                         totalFrameCount += exporter.GetFrameCount();
                     }
                 }
@@ -136,7 +145,7 @@ namespace SpineViewer.ViewModels.Exporters
                     if (_autoResolution) SetAutoResolutionAnimated(exporter, sp);
 
                     // 如果时长是负数则需要每次都设置成动画的时长值, 否则前面统计帧数时已经设置过时长值
-                    if (_duration < 0) exporter.Duration = sp.GetAnimationMaxDuration();
+                    if (_duration < 0) exporter.Duration = sp.GetAnimationMaxDuration() / _speed;
 
                     var outputName = GetOutputName(sp.Name);
                     var output = Path.Combine(_outputDir ?? sp.AssetsDir, outputName);

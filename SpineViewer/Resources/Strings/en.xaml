@@ -24,6 +24,13 @@
     <s:String x:Key="Str_Explorer">Explorer</s:String>
     <s:String x:Key="Str_SpineObject">Model</s:String>
     <s:String x:Key="Str_Canvas">Canvas</s:String>
+    <s:String x:Key="Str_LocalAssets">Local Assets</s:String>
+    <s:String x:Key="Str_OnlineAssets">Online Assets</s:String>
+
+    <s:String x:Key="Str_ModelAnimation">Model Animation</s:String>
+    <s:String x:Key="Str_ModelAnimationTooltip">Add and configure model animations in the model list on the left</s:String>
+    <s:String x:Key="Str_ModelPreviewImage">Model Preview Image</s:String>
+    <s:String x:Key="Str_ModelPreviewImageTooltip">Add and select a model preview image to view from the asset list on the left</s:String>
 
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">Filter</s:String>
@@ -38,7 +45,8 @@
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>
     <s:String x:Key="Str_Show">Show</s:String>
-    <s:String x:Key="Str_ListViewStatusBar">{0} items, {1} selected</s:String>
+    <s:String x:Key="Str_TotalCountStatusBar">{0} items</s:String>
+    <s:String x:Key="Str_TotalAndSelectedCountStatusBar">{0} items, {1} selected</s:String>
     <s:String x:Key="Str_AddSpineObject">Add...</s:String>
     <s:String x:Key="Str_OpenSkelFileTitle">Select Skeleton File (skel)</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">Select Atlas File (atlas)</s:String>
@@ -130,6 +138,8 @@
     <s:String x:Key="Str_WallpaperMaxFps">Max FPS of Wallpaper View</s:String>
     <s:String x:Key="Str_WallpaperMaxFpsTooltip">Maximum frame rate of the wallpaper view. Set to 0 for no limit.</s:String>
     <s:String x:Key="Str_RenderSelectedOnly">Render Selected Only</s:String>
+    <s:String x:Key="Str_HighlightSelectedModel">Highlight Selected Model</s:String>
+    <s:String x:Key="Str_HighlightSelectedModelTooltip">Draw a semi-transparent background for the selected model</s:String>
     <s:String x:Key="Str_HitTestLevel">Hit Test Accuracy Level</s:String>
     <s:String x:Key="Str_LogHitSlots">Output Hit Test Slot Names</s:String>
     <s:String x:Key="Str_LogHitSlotsTooltip">When enabled, the log box will output the model and slot information for each click hit test.</s:String>
@@ -145,6 +155,9 @@
     <s:String x:Key="Str_ForwardStepTooltip">Forward 1 Frame</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">Forward 10 Frames</s:String>
     <s:String x:Key="Str_FullScreenTooltip">Window/Fullscreen; F11</s:String>
+
+    <!-- 日志框 -->
+    <s:String x:Key="Str_ClearLog">Clear Log</s:String>
 
     <!-- 日志框下方附加信息 -->
     <s:String x:Key="Str_RealTimeFps">Real-time FPS: {0:F1}/{1:F1}</s:String>

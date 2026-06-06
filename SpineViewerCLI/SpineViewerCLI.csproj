@@ -11,8 +11,11 @@
         <BaseOutputPath>$(SolutionDir)out</BaseOutputPath>
         <OutputPath>$(BaseOutputPath)\$(Configuration)\$(PlatformTarget)</OutputPath>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>0.16.24</Version>
+        <Version>0.16.25</Version>
         <OutputType>Exe</OutputType>
+
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
     <PropertyGroup>

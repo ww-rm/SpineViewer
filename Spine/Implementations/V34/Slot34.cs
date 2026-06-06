@@ -58,20 +58,20 @@ namespace Spine.Implementations.V34
                 return null;
             }
 
-            set
-            {
-                if (value is null)
-                {
-                    _o.Attachment = null;
-                    return;
-                }
-                if (value is Attachments.Attachment34 att)
-                {
-                    _o.Attachment = att.InnerObject;
-                    return;
-                }
-                throw new ArgumentException($"Received {value.GetType().Name}", nameof(value));
-            }
+            //set
+            //{
+            //    if (value is null)
+            //    {
+            //        _o.Attachment = null;
+            //        return;
+            //    }
+            //    if (value is Attachments.Attachment34 att)
+            //    {
+            //        _o.Attachment = att.InnerObject;
+            //        return;
+            //    }
+            //    throw new ArgumentException($"Received {value.GetType().Name}", nameof(value));
+            //}
         }
 
         public bool Disabled { get; set; }

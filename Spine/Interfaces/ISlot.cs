@@ -52,7 +52,7 @@ namespace Spine.Interfaces
         /// <summary>
         /// 使用的附件, 可以设置为 null 清空附件
         /// </summary>
-        public IAttachment? Attachment { get; set; }
+        public IAttachment? Attachment { get; }
 
         /// <summary>
         /// 是否已禁用渲染该插槽

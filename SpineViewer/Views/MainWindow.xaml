@@ -93,8 +93,9 @@
                             <TabItem>
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_SpineObject}">
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_SpineObject}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Cubes}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -112,7 +113,7 @@
                                             <StatusBarItem>
                                                 <TextBlock>
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
                                                             <Binding Path="Items.Count" ElementName="_spinesListView"/>
                                                             <Binding Path="SelectedItems.Count" ElementName="_spinesListView"/>
                                                         </MultiBinding>
@@ -703,8 +704,9 @@
                             <TabItem DataContext="{Binding SFMLRendererViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Canvas}" >
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_Canvas}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Sliders}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -884,8 +886,9 @@
                             <TabItem DataContext="{Binding ExplorerListViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
-                                        MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown">
-                                        <Viewbox Width="24" Height="24" ToolTip="{DynamicResource Str_Explorer}">
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_Explorer}">
+                                        <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
@@ -920,7 +923,7 @@
                                             <StatusBarItem>
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
                                                             <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
                                                             <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
                                                         </MultiBinding>
@@ -930,7 +933,6 @@
                                         </StatusBar>
 
                                         <ListBox x:Name="_spineFilesListBox"
-                                                 VirtualizingPanel.IsVirtualizing="True"
                                                  ItemsSource="{Binding ShownItems}"
                                                  DisplayMemberPath="FileName">
                                             <i:Interaction.Triggers>
@@ -1000,6 +1002,99 @@
                                 </Grid>
                             </TabItem>
 
+                            <!-- 本地资源 TODO: 记录布局 -->
+                            <TabItem Visibility="Collapsed">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_LocalAssets}">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Data="{StaticResource Geo_HardDrive}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
+                                <Grid x:Name="_localAssetsGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <DockPanel>
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_localAssetRepoListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+                                        
+                                        <TreeView x:Name="_localAssetRepoListBox">
+                                            <TreeViewItem Header="t1">
+                                                <TreeViewItem Header="t11">
+                                                    
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                            <TreeViewItem Header="t2">
+                                                <TreeViewItem Header="t21">
+                                                    
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                        </TreeView>
+                                    </DockPanel>
+
+                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                                    <DockPanel Grid.Row="2">
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_localAssetFilesListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetFilesListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+
+                                        <ListBox x:Name="_localAssetFilesListBox">
+                                            <ListBoxItem>
+                                                1
+                                            </ListBoxItem>
+                                            <ListBoxItem>
+                                                2
+                                            </ListBoxItem>
+                                        </ListBox>
+                                    </DockPanel>
+                                </Grid>
+                            </TabItem>
+
+                            <!-- TODO: 在线资源 (Github) -->
+                            <TabItem Visibility="Collapsed">
+                                <TabItem.Header>
+                                    <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
+                                            MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
+                                            ToolTip="{DynamicResource Str_OnlineAssets}">
+                                        <Viewbox Width="24" Height="24">
+                                            <Path Data="{StaticResource Geo_CloudArrowDown}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                        </Viewbox>
+                                    </Border>
+                                </TabItem.Header>
+                                <Grid x:Name="_onlineAssets">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                            </TabItem>
+
                         </TabControl>
                     </Border>
 
@@ -1010,57 +1105,97 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="5*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="1.2*"/>
                             </Grid.RowDefinitions>
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <TabControl>
+                                <TabControl.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="10 0"/>
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </TabControl.Resources>
+                                
+                                <!-- 动画预览标签页 -->
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelAnimationTooltip}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <Viewbox Width="24" Height="24">
+                                                    <Path Data="{StaticResource Geo_Video}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                                </Viewbox>
+                                                <TextBlock Text="{DynamicResource Str_ModelAnimation}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </TabItem.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                                <!-- 预览画面容器 -->
-                                <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{DynamicResource SecondaryRegionBrush}">
-                                    <SFMLRenderer:SFMLRenderPanel x:Name="_renderPanel"/>
-                                </Border>
+                                        <!-- 预览画面容器 -->
+                                        <Border Grid.Row="0" x:Name="_renderPanelContainer" Background="{DynamicResource SecondaryRegionBrush}">
+                                            <SFMLRenderer:SFMLRenderPanel x:Name="_renderPanel"/>
+                                        </Border>
 
-                                <!-- 预览画面按钮组容器 -->
-                                <Border Grid.Row="1" x:Name="_renderPanelButtonsContainer">
+                                        <!-- 预览画面按钮组容器 -->
+                                        <Border Grid.Row="1" x:Name="_renderPanelButtonsContainer">
 
-                                    <!-- 画面按钮 -->
-                                    <Border x:Name="_renderPanelButtonsPanel"
+                                            <!-- 画面按钮 -->
+                                            <Border x:Name="_renderPanelButtonsPanel"
                                             DataContext="{Binding SFMLRendererViewModel}"
                                             Grid.Row="1" 
                                             Grid.IsSharedSizeScope="True"
                                             Background="{DynamicResource RegionBrush}">
-                                        <WrapPanel HorizontalAlignment="Center">
-                                            <WrapPanel.Resources>
-                                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
-                                                    <Setter Property="Margin" Value="5"/>
-                                                    <Setter Property="Width" Value="50"/>
-                                                </Style>
-                                            </WrapPanel.Resources>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
-                                            <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
-                                            <Button x:Name="_fullScreenButton" 
+                                                <WrapPanel HorizontalAlignment="Center">
+                                                    <WrapPanel.Resources>
+                                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
+                                                            <Setter Property="Margin" Value="5"/>
+                                                            <Setter Property="Width" Value="50"/>
+                                                        </Style>
+                                                    </WrapPanel.Resources>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_Stop}" Command="{Binding Cmd_Stop}" ToolTip="{DynamicResource Str_StopTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_RotateLeft}" Command="{Binding Cmd_Restart}" ToolTip="{DynamicResource Str_RestartTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
+                                                    <Button x:Name="_fullScreenButton" 
                                                     hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
                                                     Click="ButtonFullScreen_Click" 
                                                     ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
-                                        </WrapPanel>
-                                    </Border>
-                                </Border>
-                            </Grid>
+                                                </WrapPanel>
+                                            </Border>
+                                        </Border>
+                                    </Grid>
+                                </TabItem>
+                                
+                                <!-- TODO: 预览图查看标签页 -->
+                                <TabItem Visibility="Collapsed">
+                                    <TabItem.Header>
+                                        <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelPreviewImageTooltip}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <Viewbox Width="24" Height="24">
+                                                    <Path Data="{StaticResource Geo_Image}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
+                                                </Viewbox>
+                                                <TextBlock Text="{DynamicResource Str_ModelPreviewImage}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </TabItem.Header>
+                                    <hc:SimplePanel Background="AliceBlue"/>
+                                </TabItem>
+
+                            </TabControl>
+
 
                             <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
                             <!-- 日志框容器 -->
                             <Border Grid.Row="2" Name="_loggerBoxContainer">
-                                <Border x:Name="_loggerBoxPanel" DataContext="{Binding SFMLRendererViewModel}">
+                                <Border x:Name="_loggerBoxPanel">
                                     <DockPanel>
-                                        <StatusBar DockPanel.Dock="Bottom">
+                                        <StatusBar DockPanel.Dock="Bottom" DataContext="{Binding SFMLRendererViewModel}">
                                             <StatusBarItem>
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
@@ -1072,7 +1207,13 @@
                                                 </TextBlock>
                                             </StatusBarItem>
                                         </StatusBar>
-                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}"/>
+                                        <RichTextBox x:Name="_loggerRichTextBox" Grid.Row="2" Style="{StaticResource MyLogRichTextBoxStyle}">
+                                            <RichTextBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_ClearLog}" Click="RichTextBoxMenuItem_ClearLog_Click"/>
+                                                </ContextMenu>
+                                            </RichTextBox.ContextMenu>
+                                        </RichTextBox>
                                     </DockPanel>
                                 </Border>
                             </Border>
