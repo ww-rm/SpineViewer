@@ -45,7 +45,8 @@
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">名称</s:String>
     <s:String x:Key="Str_Show">显示</s:String>
-    <s:String x:Key="Str_ListViewStatusBar">共 {0} 项，已选择 {1} 项</s:String>
+    <s:String x:Key="Str_TotalCountStatusBar">共 {0} 项</s:String>
+    <s:String x:Key="Str_TotalAndSelectedCountStatusBar">共 {0} 项，已选择 {1} 项</s:String>
     <s:String x:Key="Str_AddSpineObject">添加...</s:String>
     <s:String x:Key="Str_OpenSkelFileTitle">选择骨骼文件（skel）</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">选择图集文件（atlas）</s:String>

@@ -45,7 +45,8 @@
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>
     <s:String x:Key="Str_Show">Show</s:String>
-    <s:String x:Key="Str_ListViewStatusBar">{0} items, {1} selected</s:String>
+    <s:String x:Key="Str_TotalCountStatusBar">{0} items</s:String>
+    <s:String x:Key="Str_TotalAndSelectedCountStatusBar">{0} items, {1} selected</s:String>
     <s:String x:Key="Str_AddSpineObject">Add...</s:String>
     <s:String x:Key="Str_OpenSkelFileTitle">Select Skeleton File (skel)</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">Select Atlas File (atlas)</s:String>

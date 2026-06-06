@@ -113,7 +113,7 @@
                                             <StatusBarItem>
                                                 <TextBlock>
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
                                                             <Binding Path="Items.Count" ElementName="_spinesListView"/>
                                                             <Binding Path="SelectedItems.Count" ElementName="_spinesListView"/>
                                                         </MultiBinding>
@@ -923,7 +923,7 @@
                                             <StatusBarItem>
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_ListViewStatusBar">
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
                                                             <Binding Path="Items.Count" ElementName="_spineFilesListBox"/>
                                                             <Binding Path="SelectedItems.Count" ElementName="_spineFilesListBox"/>
                                                         </MultiBinding>
@@ -933,7 +933,6 @@
                                         </StatusBar>
 
                                         <ListBox x:Name="_spineFilesListBox"
-                                                 VirtualizingPanel.IsVirtualizing="True"
                                                  ItemsSource="{Binding ShownItems}"
                                                  DisplayMemberPath="FileName">
                                             <i:Interaction.Triggers>
@@ -1003,7 +1002,8 @@
                                 </Grid>
                             </TabItem>
 
-                            <TabItem>
+                            <!-- 本地资源 TODO: 记录布局 -->
+                            <TabItem Visibility="Collapsed">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
@@ -1013,8 +1013,65 @@
                                         </Viewbox>
                                     </Border>
                                 </TabItem.Header>
-                                <Grid x:Name="_localAssets">
+                                <Grid x:Name="_localAssetsGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
                                     
+                                    <DockPanel>
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_localAssetRepoListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+                                        
+                                        <TreeView x:Name="_localAssetRepoListBox">
+                                            <TreeViewItem Header="t1">
+                                                <TreeViewItem Header="t11">
+                                                    
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                            <TreeViewItem Header="t2">
+                                                <TreeViewItem Header="t21">
+                                                    
+                                                </TreeViewItem>
+                                            </TreeViewItem>
+                                        </TreeView>
+                                    </DockPanel>
+
+                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                                    <DockPanel Grid.Row="2">
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_localAssetFilesListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetFilesListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+
+                                        <ListBox x:Name="_localAssetFilesListBox">
+                                            <ListBoxItem>
+                                                1
+                                            </ListBoxItem>
+                                            <ListBoxItem>
+                                                2
+                                            </ListBoxItem>
+                                        </ListBox>
+                                    </DockPanel>
                                 </Grid>
                             </TabItem>
 
@@ -1030,7 +1087,11 @@
                                     </Border>
                                 </TabItem.Header>
                                 <Grid x:Name="_onlineAssets">
-
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
                                 </Grid>
                             </TabItem>
 
@@ -1055,6 +1116,8 @@
                                         <Setter Property="VerticalAlignment" Value="Center"/>
                                     </Style>
                                 </TabControl.Resources>
+                                
+                                <!-- 动画预览标签页 -->
                                 <TabItem>
                                     <TabItem.Header>
                                         <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelAnimationTooltip}">
@@ -1108,7 +1171,8 @@
                                     </Grid>
                                 </TabItem>
                                 
-                                <TabItem>
+                                <!-- TODO: 预览图查看标签页 -->
+                                <TabItem Visibility="Collapsed">
                                     <TabItem.Header>
                                         <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelPreviewImageTooltip}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
