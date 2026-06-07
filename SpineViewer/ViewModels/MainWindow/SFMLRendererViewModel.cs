@@ -353,6 +353,37 @@ namespace SpineViewer.ViewModels.MainWindow
         });
         private RelayCommand? _cmd_ForwardFast;
 
+        public RelayCommand Cmd_CenterModelsAtOrigin => _cmd_CenterModelsAtOrigin ??= new(() =>
+        {
+            lock (_models.Lock)
+            {
+                var targets = _models.Where(it => it.IsShown && it.IsSelected).ToArray();
+                if (targets.Length <= 0)
+                    targets = _models.Where(it => it.IsShown).ToArray();
+                if (targets.Length <= 0) return;
+
+                Rect? bounds = null;
+                foreach (var sp in targets)
+                {
+                    var rc = sp.GetCurrentBounds();
+                    if (rc.IsEmpty) continue;
+                    bounds = bounds is null ? rc : Rect.Union(bounds.Value, rc);
+                }
+                if (bounds is null || bounds.Value.IsEmpty) return;
+
+                var deltaX = -(float)(bounds.Value.Left + bounds.Value.Width / 2);
+                var deltaY = -(float)(bounds.Value.Top + bounds.Value.Height / 2);
+                foreach (var sp in targets)
+                {
+                    sp.X += deltaX;
+                    sp.Y += deltaY;
+                }
+            }
+
+            _vmMain.SpineObjectTabViewModel.RefreshTransformProperties();
+        });
+        private RelayCommand? _cmd_CenterModelsAtOrigin;
+
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
             float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;
@@ -463,6 +494,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     }
                 }
                 _draggingSrc = dst;
+                _vmMain.SpineObjectTabViewModel.RefreshTransformProperties();
             }
         }
 

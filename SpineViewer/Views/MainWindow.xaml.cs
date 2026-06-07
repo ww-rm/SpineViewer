@@ -167,7 +167,7 @@ public partial class MainWindow : Window
     {
         var vm = _vm.SFMLRendererViewModel;
         _renderPanel.CanvasMouseWheelScrolled += vm.CanvasMouseWheelScrolled;
-        _renderPanel.CanvasMouseButtonPressed += (s, e) => { vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
+        _renderPanel.CanvasMouseButtonPressed += (s, e) => { CommitFocusedTextBox(); vm.CanvasMouseButtonPressed(s, e); _spinesListView.Focus(); }; // 用户点击画布后强制转移焦点至列表
         _renderPanel.CanvasMouseMoved += vm.CanvasMouseMove;
         _renderPanel.CanvasMouseButtonReleased += vm.CanvasMouseButtonReleased;
 
@@ -745,9 +745,21 @@ public partial class MainWindow : Window
             SwitchToNormalLayout();
     }
 
+    private static void CommitFocusedTextBox()
+    {
+        if (Keyboard.FocusedElement is TextBox textBox)
+            textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+    }
+
     private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Escape)
+        if (e.Key == Key.Enter && Keyboard.FocusedElement is TextBox)
+        {
+            CommitFocusedTextBox();
+            Keyboard.ClearFocus();
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape)
         {
             if (_fullScreenLayout.Visibility == Visibility.Visible)
             {

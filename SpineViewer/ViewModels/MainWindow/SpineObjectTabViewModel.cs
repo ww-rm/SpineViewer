@@ -488,6 +488,12 @@ namespace SpineViewer.ViewModels.MainWindow
             foreach (var idx in commonTrackIndices) _animationTracks.Add(new(idx, _selectedObjects));
         }
 
+        public void RefreshTransformProperties()
+        {
+            OnPropertyChanged(nameof(X));
+            OnPropertyChanged(nameof(Y));
+        }
+
         public bool? DebugTexture
         {
             get

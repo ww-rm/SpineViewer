@@ -154,6 +154,7 @@
     <s:String x:Key="Str_PlayPauseTooltip">Play/Pause</s:String>
     <s:String x:Key="Str_ForwardStepTooltip">Forward 1 Frame</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">Forward 10 Frames</s:String>
+    <s:String x:Key="Str_CenterModelsAtOriginTooltip">Center selected models at the axis origin; uses all visible models when none are selected</s:String>
     <s:String x:Key="Str_FullScreenTooltip">Window/Fullscreen; F11</s:String>
 
     <!-- 日志框 -->
