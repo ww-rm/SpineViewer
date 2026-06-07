@@ -353,6 +353,30 @@ namespace SpineViewer.ViewModels.MainWindow
         });
         private RelayCommand? _cmd_ForwardFast;
 
+        public RelayCommand Cmd_CenterModelsAtOrigin => _cmd_CenterModelsAtOrigin ??= new(() =>
+        {
+            lock (_models.Lock)
+            {
+                var spines = _models.Where(it => it.IsShown && it.IsSelected).ToArray();
+                if (spines.Length <= 0)
+                    spines = _models.Where(it => it.IsShown).ToArray();
+                if (spines.Length <= 0) return;
+
+                var bounds = spines[0].GetCurrentBounds();
+                foreach (var sp in spines.Skip(1))
+                    bounds.Union(sp.GetCurrentBounds());
+
+                var offsetX = (float)(bounds.Left + bounds.Width / 2);
+                var offsetY = (float)(bounds.Top + bounds.Height / 2);
+                foreach (var sp in spines)
+                {
+                    sp.X -= offsetX;
+                    sp.Y -= offsetY;
+                }
+            }
+        });
+        private RelayCommand? _cmd_CenterModelsAtOrigin;
+
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
             float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;

@@ -27,6 +27,9 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (ReferenceEquals(_selectedObjects, value)) return;
 
+                foreach (var obj in _selectedObjects)
+                    obj.PropertyChanged -= SelectedObject_PropertyChanged;
+
                 // 清空之前的所有内容
                 _skins.Clear();
                 _slots.Clear();
@@ -34,6 +37,9 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 // 生成新的内容
                 _selectedObjects = value ?? [];
+                foreach (var obj in _selectedObjects)
+                    obj.PropertyChanged += SelectedObject_PropertyChanged;
+
                 if (_selectedObjects.Length > 0)
                 {
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
@@ -61,35 +67,72 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 Cmd_AppendTrack.NotifyCanExecuteChanged();
 
-                OnPropertyChanged(nameof(Version));
-                OnPropertyChanged(nameof(AssetsDir));
-                OnPropertyChanged(nameof(SkelPath));
-                OnPropertyChanged(nameof(AtlasPath));
-                OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(FileVersion));
-
-                OnPropertyChanged(nameof(IsShown));
-                OnPropertyChanged(nameof(UsePma));
-                OnPropertyChanged(nameof(Physics));
-                OnPropertyChanged(nameof(TimeScale));
-
-                OnPropertyChanged(nameof(Scale));
-                OnPropertyChanged(nameof(FlipX));
-                OnPropertyChanged(nameof(FlipY));
-                OnPropertyChanged(nameof(X));
-                OnPropertyChanged(nameof(Y));
-
-                OnPropertyChanged(nameof(DebugTexture));
-                OnPropertyChanged(nameof(DebugBounds));
-                OnPropertyChanged(nameof(DebugBones));
-                OnPropertyChanged(nameof(DebugRegions));
-                OnPropertyChanged(nameof(DebugMeshHulls));
-                OnPropertyChanged(nameof(DebugMeshes));
-                OnPropertyChanged(nameof(DebugBoundingBoxes));
-                OnPropertyChanged(nameof(DebugPaths));
-                OnPropertyChanged(nameof(DebugPoints));
-                OnPropertyChanged(nameof(DebugClippings));
+                NotifySelectedObjectPropertiesChanged();
             }
+        }
+
+        private void SelectedObject_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case null:
+                case "":
+                    NotifySelectedObjectPropertiesChanged();
+                    break;
+                case nameof(SpineObjectModel.IsShown):
+                case nameof(SpineObjectModel.UsePma):
+                case nameof(SpineObjectModel.Physics):
+                case nameof(SpineObjectModel.TimeScale):
+                case nameof(SpineObjectModel.Scale):
+                case nameof(SpineObjectModel.FlipX):
+                case nameof(SpineObjectModel.FlipY):
+                case nameof(SpineObjectModel.X):
+                case nameof(SpineObjectModel.Y):
+                case nameof(SpineObjectModel.DebugTexture):
+                case nameof(SpineObjectModel.DebugBounds):
+                case nameof(SpineObjectModel.DebugBones):
+                case nameof(SpineObjectModel.DebugRegions):
+                case nameof(SpineObjectModel.DebugMeshHulls):
+                case nameof(SpineObjectModel.DebugMeshes):
+                case nameof(SpineObjectModel.DebugBoundingBoxes):
+                case nameof(SpineObjectModel.DebugPaths):
+                case nameof(SpineObjectModel.DebugPoints):
+                case nameof(SpineObjectModel.DebugClippings):
+                    OnPropertyChanged(e.PropertyName);
+                    break;
+            }
+        }
+
+        private void NotifySelectedObjectPropertiesChanged()
+        {
+            OnPropertyChanged(nameof(Version));
+            OnPropertyChanged(nameof(AssetsDir));
+            OnPropertyChanged(nameof(SkelPath));
+            OnPropertyChanged(nameof(AtlasPath));
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(FileVersion));
+
+            OnPropertyChanged(nameof(IsShown));
+            OnPropertyChanged(nameof(UsePma));
+            OnPropertyChanged(nameof(Physics));
+            OnPropertyChanged(nameof(TimeScale));
+
+            OnPropertyChanged(nameof(Scale));
+            OnPropertyChanged(nameof(FlipX));
+            OnPropertyChanged(nameof(FlipY));
+            OnPropertyChanged(nameof(X));
+            OnPropertyChanged(nameof(Y));
+
+            OnPropertyChanged(nameof(DebugTexture));
+            OnPropertyChanged(nameof(DebugBounds));
+            OnPropertyChanged(nameof(DebugBones));
+            OnPropertyChanged(nameof(DebugRegions));
+            OnPropertyChanged(nameof(DebugMeshHulls));
+            OnPropertyChanged(nameof(DebugMeshes));
+            OnPropertyChanged(nameof(DebugBoundingBoxes));
+            OnPropertyChanged(nameof(DebugPaths));
+            OnPropertyChanged(nameof(DebugPoints));
+            OnPropertyChanged(nameof(DebugClippings));
         }
 
         public SpineVersion? Version
@@ -306,7 +349,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (_selectedObjects.Length <= 0) return;
                 if (value is null) return;
                 foreach (var sp in _selectedObjects) sp.X = (float)value;
-                OnPropertyChanged();
             }
         }
 
@@ -325,7 +367,6 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (_selectedObjects.Length <= 0) return;
                 if (value is null) return;
                 foreach (var sp in _selectedObjects) sp.Y = (float)value;
-                OnPropertyChanged();
             }
         }
 

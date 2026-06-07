@@ -154,6 +154,7 @@
     <s:String x:Key="Str_PlayPauseTooltip">播放/暂停</s:String>
     <s:String x:Key="Str_ForwardStepTooltip">快进 1 帧</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">快进 10 帧</s:String>
+    <s:String x:Key="Str_CenterModelsAtOriginTooltip">将选中模型居中到坐标原点</s:String>
     <s:String x:Key="Str_FullScreenTooltip">窗口/全屏; F11</s:String>
     
     <!-- 日志框 -->

@@ -154,6 +154,7 @@
     <s:String x:Key="Str_PlayPauseTooltip">再生/一時停止</s:String>
     <s:String x:Key="Str_ForwardStepTooltip">1フレーム進める</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">10フレーム進める</s:String>
+    <s:String x:Key="Str_CenterModelsAtOriginTooltip">選択中のモデルを原点に中央揃え</s:String>
     <s:String x:Key="Str_FullScreenTooltip">ウィンドウ/フルスクリーン; F11</s:String>
 
     <!-- 日志框 -->
