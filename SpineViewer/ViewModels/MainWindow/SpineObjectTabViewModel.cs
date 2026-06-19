@@ -373,7 +373,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     foreach (var obj in _selectedObjects.Skip(1)) 
                         commonSlotNames = commonSlotNames.Intersect(obj.Slots);
                     if (!string.IsNullOrWhiteSpace(_slotFilterString)) 
-                        commonSlotNames = commonSlotNames.Where(v => v.Contains(_slotFilterString));
+                        commonSlotNames = commonSlotNames.Where(v => v.Contains(_slotFilterString, StringComparison.InvariantCultureIgnoreCase));
                     foreach (var name in commonSlotNames.Order()) 
                         _slots.Add(new(name, _selectedObjects));
                 }
