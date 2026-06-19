@@ -165,6 +165,12 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 打开 Wiki 页面
+        /// </summary>
+        public RelayCommand Cmd_GotoWiki => _cmd_GotoWiki ??= new(() => Process.Start(new ProcessStartInfo("https://github.com/ww-rm/SpineViewer/wiki") { UseShellExecute = true }));
+        private RelayCommand? _cmd_GotoWiki;
+
+        /// <summary>
         /// 打开 FFmpeg 下载页面
         /// </summary>
         public RelayCommand Cmd_DownloadFFmpeg => _cmd_DownloadFFmpeg ??= new(() => Process.Start(new ProcessStartInfo("https://ffmpeg.org/download.html") { UseShellExecute = true }));

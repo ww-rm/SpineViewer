@@ -6,6 +6,7 @@
     <s:String x:Key="Str_Tool">Tools</s:String>
     <s:String x:Key="Str_Download">Download</s:String>
     <s:String x:Key="Str_Help">Help</s:String>
+    <s:String x:Key="Str_Wiki">Wiki</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">Go to download FFmpeg</s:String>
     <s:String x:Key="Str_DiagnosticsTools">Diagnostics Tools</s:String>
     <s:String x:Key="Str_SystemInfo">System Information</s:String>

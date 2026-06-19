@@ -62,6 +62,7 @@
                     <!--<MenuItem Header="{DynamicResource Str_Tool}"/>-->
                     <!--<MenuItem Header="{DynamicResource Str_Download}"/>-->
                     <MenuItem Header="{DynamicResource Str_Help}">
+                        <MenuItem Header="{DynamicResource Str_Wiki}" Command="{Binding Cmd_GotoWiki}"/>
                         <MenuItem Header="{DynamicResource Str_DownloadFFmpeg}" Command="{Binding Cmd_DownloadFFmpeg}"/>
                         <MenuItem Header="{DynamicResource Str_DiagnosticsTools}">
                             <MenuItem Header="{DynamicResource Str_SystemInfo}" Command="{Binding Cmd_ShowSystemInfoDialog}"/>
