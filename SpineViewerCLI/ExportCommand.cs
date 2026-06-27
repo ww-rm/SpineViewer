@@ -2,6 +2,7 @@
 using Spectre.Console;
 using Spine;
 using Spine.Exporters;
+using Spine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -91,6 +92,12 @@ namespace SpineViewerCLI
         public Option<bool> OptPma { get; } = new("--pma")
         {
             Description = "Specifies whether the texture uses PMA (premultiplied alpha) format.",
+        };
+
+        public Option<ISkeleton.Physics> OptPhysics { get; } = new("--physics")
+        {
+            Description = "Specifies the method for updating physics effects.",
+            DefaultValueFactory = _ => ISkeleton.Physics.Update,
         };
 
         public Option<string[]> OptSkins { get; } = new("--skins")
@@ -307,6 +314,7 @@ namespace SpineViewerCLI
             // 设置模型参数
             spine.Skeleton.ScaleX = spine.Skeleton.ScaleY = result.GetValue(OptScale);
             spine.UsePma = result.GetValue(OptPma);
+            spine.Physics = result.GetValue(OptPhysics);
 
             // 设置要导出的动画
             var isTrackLoop = !result.GetValue(OptDisableTrackLoop);
