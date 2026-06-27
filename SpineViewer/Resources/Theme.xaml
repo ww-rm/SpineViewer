@@ -115,11 +115,16 @@
         </Setter>
     </Style>
 
+    <Style x:Key="MyTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}">
+        <Setter Property="utils:TextBoxEnterCommitBehavior.Enable" Value="True"/>
+    </Style>
+
     <Style TargetType="GridSplitter" BasedOn="{StaticResource MyGridSplitterBaseStyle}"/>
     <Style TargetType="ToggleButton" BasedOn="{StaticResource MyToggleButtonBaseStyle}"/>
     <Style TargetType="ListBox" BasedOn="{StaticResource MyListBoxBaseStyle}"/>
     <Style TargetType="ListView" BasedOn="{StaticResource MyListViewBaseStyle}"/>
     <Style TargetType="GroupBox" BasedOn="{StaticResource MyGroupBoxBaseStyle}"/>
     <Style TargetType="Label" BasedOn="{StaticResource MyLabelStyle}"/>
+    <Style TargetType="TextBox" BasedOn="{StaticResource MyTextBoxStyle}"/>
 
 </ResourceDictionary>
