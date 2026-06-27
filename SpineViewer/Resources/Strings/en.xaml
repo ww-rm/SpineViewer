@@ -271,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">When enabled, this helps reduce aliasing when textures are scaled down, at the cost of slightly higher video memory usage.</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">Model Loading Options</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">Avoid Overlap When Adding</s:String>
 
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 

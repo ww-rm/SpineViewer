@@ -36,6 +36,9 @@ namespace SpineViewer.Models
         #region 模型加载首选项
 
         [ObservableProperty]
+        private bool _avoidOverlapWhenAdding;
+
+        [ObservableProperty]
         private bool _isShown = true;
 
         [ObservableProperty]

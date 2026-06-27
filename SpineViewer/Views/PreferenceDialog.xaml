@@ -89,6 +89,15 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AvoidOverlapWhenAdding}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding AvoidOverlapWhenAdding}"/>
+                            </Grid>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_IsShown}"/>
                                 <ToggleButton Grid.Column="1" IsChecked="{Binding IsShown}"/>
                             </Grid>

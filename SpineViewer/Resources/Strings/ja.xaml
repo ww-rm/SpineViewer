@@ -271,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">有効にすると、テクスチャ縮小時のジャギーを軽減しますが、ビデオメモリの使用量が若干増加します。</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">モデル読み込みオプション</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">追加時に重なりを回避</s:String>
 
     <s:String x:Key="Str_RendererPreference">プレビュー画面オプション</s:String>
 

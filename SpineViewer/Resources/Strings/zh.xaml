@@ -271,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">开启后有助于改善纹理缩小时的锯齿现象，但是会略微增加显存占用</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">模型加载选项</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">添加时避免重叠</s:String>
 
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
 
