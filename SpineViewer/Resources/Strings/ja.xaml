@@ -57,6 +57,8 @@
     <s:String x:Key="Str_Reload">再読み込み</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
+    <s:String x:Key="Str_FocusSpineObject">モデルにフォーカス</s:String>
+    <s:String x:Key="Str_CenterSpineObject">モデルを中央へ移動</s:String>
     <s:String x:Key="Str_SpineObjectConfig">モデル設定</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
     <s:String x:Key="Str_CopySpineObjectSkinConfig">パラメーターをコピー（スキンのみ）</s:String>

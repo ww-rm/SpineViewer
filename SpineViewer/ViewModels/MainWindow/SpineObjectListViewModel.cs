@@ -255,7 +255,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!RemoveSpineObject_CanExecute(args)) return;
 
-            if (args.Count > 1)
+            if (args!.Count > 1)
             {
                 if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
                     return;
@@ -289,7 +289,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!RemoveAllSpineObject_CanExecute(args)) return;
 
-            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args!.Count)))
                 return;
 
             lock (_spineObjectModels.Lock)
@@ -329,7 +329,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!ReloadSpineObject_CanExecute(args)) return;
 
-            if (args.Count <= 1)
+            if (args!.Count <= 1)
             {
                 lock (_spineObjectModels.Lock)
                 {
@@ -438,7 +438,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void MoveUpSpineObject_Execute(IList? args)
         {
             if (!MoveUpSpineObject_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
                 var idx = _spineObjectModels.IndexOf(sp);
@@ -463,7 +463,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void MoveDownSpineObject_Execute(IList? args)
         {
             if (!MoveDownSpineObject_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
                 var idx = _spineObjectModels.IndexOf(sp);
@@ -476,6 +476,75 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (args is null) return false;
             if (args.Count != 1) return false;
+            return true;
+        }
+
+        #endregion
+
+        #region 模型属性控制菜单项实现
+
+        /// <summary>
+        /// 聚焦选中的模型, 将视图移动到选中模型的中心
+        /// </summary>
+        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_FocusSpineObject;
+
+        private void FocusSpineObject_Execute(IList? args)
+        {
+            if (!FocusSpineObject_CanExecute(args)) return;
+
+            var spines = args!.Cast<SpineObjectModel>().ToArray();
+
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1))
+                bounds.Union(sp.GetCurrentBounds());
+
+            var centerX = (float)(bounds.Left + bounds.Width / 2);
+            var centerY = (float)(bounds.Top + bounds.Height / 2);
+
+            _vmMain.SFMLRendererViewModel.CenterX = centerX;
+            _vmMain.SFMLRendererViewModel.CenterY = centerY;
+        }
+
+        private bool FocusSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 将选中的模型居中显示, 移动到当前视图中心
+        /// </summary>
+        public RelayCommand<IList?> Cmd_CenterSpineObject => _cmd_CenterSpineObject ??= new(CenterSpineObject_Execute, CenterSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_CenterSpineObject;
+
+        private void CenterSpineObject_Execute(IList? args)
+        {
+            if (!CenterSpineObject_CanExecute(args)) return;
+
+            var spines = args!.Cast<SpineObjectModel>().ToArray();
+
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1))
+                bounds.Union(sp.GetCurrentBounds());
+
+            var centerX = (float)(bounds.Left + bounds.Width / 2);
+            var centerY = (float)(bounds.Top + bounds.Height / 2);
+
+            var offsetX = centerX - _vmMain.SFMLRendererViewModel.CenterX;
+            var offsetY = centerY - _vmMain.SFMLRendererViewModel.CenterY;
+            foreach (var sp in spines)
+            {
+                sp.X -= offsetX;
+                sp.Y -= offsetY;
+            }
+        }
+
+        private bool CenterSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
             return true;
         }
 
@@ -513,7 +582,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void CopySpineObjectConfig_Execute(IList? args, SpineObjectConfigApplyFlag flag)
         {
             if (!CopySpineObjectConfig_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             _copiedSpineObjectConfigModel = sp.ObjectConfig;
             _copiedConfigFlag = flag;
             _logger.Info("Copy config[{0}] from model: {1}", flag, sp.Name);
@@ -535,7 +604,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void ApplySpineObjectConfig_Execute(IList? args)
         {
             if (!ApplySpineObjectConfig_CanExecute(args)) return;
-            foreach (SpineObjectModel sp in args)
+            foreach (SpineObjectModel sp in args!)
             {
                 sp.ApplyObjectConfig(_copiedSpineObjectConfigModel, _copiedConfigFlag);
                 _logger.Info("Apply config[{0}] to model: {1}", _copiedConfigFlag, sp.Name);
@@ -559,7 +628,7 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
             if (JsonHelper.Deserialize<SpineObjectConfigModel>(fileName, out var config))
             {
-                foreach (SpineObjectModel sp in args)
+                foreach (SpineObjectModel sp in args!)
                 {
                     sp.ObjectConfig = config;
                     _logger.Info("Apply config to model: {0}", sp.Name);
@@ -580,8 +649,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void SaveSpineObjectConfigToFile_Execute(IList? args)
         {
             if (!SaveSpineObjectConfigToFile_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
-            var config = sp.ObjectConfig;
+            var sp = (SpineObjectModel)args![0]!;
 
             string fileName = $"{Path.ChangeExtension(Path.GetFileName(sp.SkelPath), ".jcfg")}";
             if (!DialogService.ShowSaveJsonDialog(ref fileName, sp.AssetsDir)) return;

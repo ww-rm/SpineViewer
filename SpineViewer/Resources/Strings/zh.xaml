@@ -57,6 +57,8 @@
     <s:String x:Key="Str_Reload">重新加载</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
+    <s:String x:Key="Str_FocusSpineObject">聚焦</s:String>
+    <s:String x:Key="Str_CenterSpineObject">居中</s:String>
     <s:String x:Key="Str_SpineObjectConfig">模型参数</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">复制参数</s:String>
     <s:String x:Key="Str_CopySpineObjectSkinConfig">复制参数（仅皮肤）</s:String>
