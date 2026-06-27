@@ -23,7 +23,7 @@
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
             </Style>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBaseStyle}">
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MyTextBoxStyle}">
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
             </Style>
         </Grid.Resources>
