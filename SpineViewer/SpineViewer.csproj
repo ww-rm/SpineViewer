@@ -20,6 +20,7 @@
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
         <ApplicationIcon>Resources\Images\spineviewer.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
