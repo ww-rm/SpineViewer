@@ -25,6 +25,8 @@ namespace SpineViewer.ViewModels.MainWindow
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private const float AddingMaxOverlapRatio = 0.05f;
+
         /// <summary>
         /// 主窗口视图模型引用
         /// </summary>
@@ -107,6 +109,16 @@ namespace SpineViewer.ViewModels.MainWindow
                 _vmMain.SpineObjectTabViewModel.SelectedObjects = selectedItems;
             }
         }
+
+        /// <summary>
+        /// 添加模型时避免重叠
+        /// </summary>
+        public bool AvoidOverlapWhenAdding
+        {
+            get => _avoidOverlapWhenAdding;
+            set => SetProperty(ref _avoidOverlapWhenAdding, value);
+        }
+        private bool _avoidOverlapWhenAdding = false;
 
         /// <summary>
         /// 从路径列表添加对象
@@ -203,7 +215,33 @@ namespace SpineViewer.ViewModels.MainWindow
             try
             {
                 var sp = new SpineObjectModel(skelPath, atlasPath);
-                lock (_spineObjectModels.Lock) _spineObjectModels.Insert(0, sp);
+                lock (_spineObjectModels.Lock)
+                {
+                    _spineObjectModels.Insert(0, sp);
+                    if (_avoidOverlapWhenAdding && _spineObjectModels.Count > 1)
+                    {
+                        // 已有模型所有包围盒
+                        var existedBounds = _spineObjectModels.Skip(1).Select(it => it.GetCurrentBounds()).ToArray();
+
+                        // 新添加模型的包围盒
+                        Rect spBound = sp.GetCurrentBounds();
+
+                        // 计算最佳添加位置
+                        var pt = ComputeBestAddingPosition(existedBounds, spBound);
+                        var bestX = (float)pt.X;
+                        var bestY = (float)pt.Y;
+
+                        var centerX = (float)(spBound.Left + spBound.Width / 2);
+                        var centerY = (float)(spBound.Top + spBound.Height / 2);
+
+                        var offsetX = centerX - bestX;
+                        var offsetY = centerY - bestY;
+
+                        sp.X -= offsetX; 
+                        sp.Y -= offsetY;
+                    }
+                }
+
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
                     RequestSelectionChanging?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
@@ -225,6 +263,63 @@ namespace SpineViewer.ViewModels.MainWindow
                 _logger.Error("Failed to load: {0}, {1}", skelPath, ex.Message);
             }
             return false;
+        }
+
+        /// <summary>
+        /// 计算最合适添加模型的中心坐标位置
+        /// </summary>
+        public Point ComputeBestAddingPosition(Rect[] existedBounds, Rect newBound)
+        {
+            // 视图中心
+            float centerX = _vmMain.SFMLRendererViewModel.CenterX;
+            float centerY = _vmMain.SFMLRendererViewModel.CenterY;
+            float resX = _vmMain.SFMLRendererViewModel.ResolutionX;
+            float resY = _vmMain.SFMLRendererViewModel.ResolutionY;
+            float aspectX = resX / MathF.Min(resX, resY);
+            float aspectY = resY / MathF.Min(resX, resY);
+
+            // 新矩形宽高面积
+            float width = (float)newBound.Width;
+            float height = (float)newBound.Height;
+            float newArea = width * height;
+
+            // 邻近采样距离 (像素)
+            float spacing = 8f;
+
+            float theta = 0f;
+            while (true)
+            {
+                // 阿基米德螺旋采样
+                float radius = spacing * theta;
+
+                float candidateCenterX = centerX + radius * MathF.Cos(theta) * aspectX;
+                float candidateCenterY = centerY + radius * MathF.Sin(theta) * aspectY;
+
+                Rect candidate = new(candidateCenterX - width / 2, candidateCenterY - height / 2, width, height);
+
+                // 计算与所有现有矩形的面积交集, 允许重叠面积重复计算
+                float overlapArea = 0f;
+                foreach (Rect existed in existedBounds)
+                {
+                    Rect intersection = Rect.Intersect(candidate, existed);
+
+                    if (intersection.IsEmpty)
+                        continue;
+
+                    overlapArea += (float)(intersection.Width * intersection.Height);
+
+                    if (overlapArea > newArea * AddingMaxOverlapRatio)
+                        break;
+                }
+
+                if (overlapArea  <= newArea * AddingMaxOverlapRatio)
+                {
+                    return new Point(candidateCenterX, candidateCenterY);
+                }
+
+                // 递增角度, 并且保持每一轮采样的弧度近似相同
+                theta += spacing / MathF.Max(radius, spacing);
+            }
         }
 
         #region 模型列表管理菜单项实现
@@ -255,7 +350,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!RemoveSpineObject_CanExecute(args)) return;
 
-            if (args.Count > 1)
+            if (args!.Count > 1)
             {
                 if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
                     return;
@@ -289,7 +384,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!RemoveAllSpineObject_CanExecute(args)) return;
 
-            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args!.Count)))
                 return;
 
             lock (_spineObjectModels.Lock)
@@ -329,7 +424,7 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (!ReloadSpineObject_CanExecute(args)) return;
 
-            if (args.Count <= 1)
+            if (args!.Count <= 1)
             {
                 lock (_spineObjectModels.Lock)
                 {
@@ -438,7 +533,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void MoveUpSpineObject_Execute(IList? args)
         {
             if (!MoveUpSpineObject_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
                 var idx = _spineObjectModels.IndexOf(sp);
@@ -463,7 +558,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void MoveDownSpineObject_Execute(IList? args)
         {
             if (!MoveDownSpineObject_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
                 var idx = _spineObjectModels.IndexOf(sp);
@@ -476,6 +571,75 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             if (args is null) return false;
             if (args.Count != 1) return false;
+            return true;
+        }
+
+        #endregion
+
+        #region 模型属性控制菜单项实现
+
+        /// <summary>
+        /// 聚焦选中的模型, 将视图移动到选中模型的中心
+        /// </summary>
+        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_FocusSpineObject;
+
+        private void FocusSpineObject_Execute(IList? args)
+        {
+            if (!FocusSpineObject_CanExecute(args)) return;
+
+            var spines = args!.Cast<SpineObjectModel>().ToArray();
+
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1))
+                bounds.Union(sp.GetCurrentBounds());
+
+            var centerX = (float)(bounds.Left + bounds.Width / 2);
+            var centerY = (float)(bounds.Top + bounds.Height / 2);
+
+            _vmMain.SFMLRendererViewModel.CenterX = centerX;
+            _vmMain.SFMLRendererViewModel.CenterY = centerY;
+        }
+
+        private bool FocusSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 将选中的模型居中显示, 移动到当前视图中心
+        /// </summary>
+        public RelayCommand<IList?> Cmd_CenterSpineObject => _cmd_CenterSpineObject ??= new(CenterSpineObject_Execute, CenterSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_CenterSpineObject;
+
+        private void CenterSpineObject_Execute(IList? args)
+        {
+            if (!CenterSpineObject_CanExecute(args)) return;
+
+            var spines = args!.Cast<SpineObjectModel>().ToArray();
+
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1))
+                bounds.Union(sp.GetCurrentBounds());
+
+            var centerX = (float)(bounds.Left + bounds.Width / 2);
+            var centerY = (float)(bounds.Top + bounds.Height / 2);
+
+            var offsetX = centerX - _vmMain.SFMLRendererViewModel.CenterX;
+            var offsetY = centerY - _vmMain.SFMLRendererViewModel.CenterY;
+            foreach (var sp in spines)
+            {
+                sp.X -= offsetX;
+                sp.Y -= offsetY;
+            }
+        }
+
+        private bool CenterSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
             return true;
         }
 
@@ -513,7 +677,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void CopySpineObjectConfig_Execute(IList? args, SpineObjectConfigApplyFlag flag)
         {
             if (!CopySpineObjectConfig_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
+            var sp = (SpineObjectModel)args![0]!;
             _copiedSpineObjectConfigModel = sp.ObjectConfig;
             _copiedConfigFlag = flag;
             _logger.Info("Copy config[{0}] from model: {1}", flag, sp.Name);
@@ -535,7 +699,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void ApplySpineObjectConfig_Execute(IList? args)
         {
             if (!ApplySpineObjectConfig_CanExecute(args)) return;
-            foreach (SpineObjectModel sp in args)
+            foreach (SpineObjectModel sp in args!)
             {
                 sp.ApplyObjectConfig(_copiedSpineObjectConfigModel, _copiedConfigFlag);
                 _logger.Info("Apply config[{0}] to model: {1}", _copiedConfigFlag, sp.Name);
@@ -559,7 +723,7 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
             if (JsonHelper.Deserialize<SpineObjectConfigModel>(fileName, out var config))
             {
-                foreach (SpineObjectModel sp in args)
+                foreach (SpineObjectModel sp in args!)
                 {
                     sp.ObjectConfig = config;
                     _logger.Info("Apply config to model: {0}", sp.Name);
@@ -580,8 +744,7 @@ namespace SpineViewer.ViewModels.MainWindow
         private void SaveSpineObjectConfigToFile_Execute(IList? args)
         {
             if (!SaveSpineObjectConfigToFile_CanExecute(args)) return;
-            var sp = (SpineObjectModel)args[0];
-            var config = sp.ObjectConfig;
+            var sp = (SpineObjectModel)args![0]!;
 
             string fileName = $"{Path.ChangeExtension(Path.GetFileName(sp.SkelPath), ".jcfg")}";
             if (!DialogService.ShowSaveJsonDialog(ref fileName, sp.AssetsDir)) return;

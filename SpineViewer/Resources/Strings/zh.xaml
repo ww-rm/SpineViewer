@@ -6,6 +6,7 @@
     <s:String x:Key="Str_Tool">工具</s:String>
     <s:String x:Key="Str_Download">下载</s:String>
     <s:String x:Key="Str_Help">帮助</s:String>
+    <s:String x:Key="Str_Wiki">使用文档</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">前往下载 FFmpeg</s:String>
     <s:String x:Key="Str_DiagnosticsTools">诊断工具</s:String>
     <s:String x:Key="Str_SystemInfo">系统信息</s:String>
@@ -56,6 +57,8 @@
     <s:String x:Key="Str_Reload">重新加载</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
+    <s:String x:Key="Str_FocusSpineObject">聚焦</s:String>
+    <s:String x:Key="Str_CenterSpineObject">居中</s:String>
     <s:String x:Key="Str_SpineObjectConfig">模型参数</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">复制参数</s:String>
     <s:String x:Key="Str_CopySpineObjectSkinConfig">复制参数（仅皮肤）</s:String>
@@ -268,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">开启后有助于改善纹理缩小时的锯齿现象，但是会略微增加显存占用</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">模型加载选项</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">添加时避免重叠</s:String>
 
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
 

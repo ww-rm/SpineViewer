@@ -6,6 +6,7 @@
     <s:String x:Key="Str_Tool">ツール</s:String>
     <s:String x:Key="Str_Download">ダウンロード</s:String>
     <s:String x:Key="Str_Help">ヘルプ</s:String>
+    <s:String x:Key="Str_Wiki">Wiki</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">FFmpeg をダウンロードしに行く</s:String>
     <s:String x:Key="Str_DiagnosticsTools">診断ツール</s:String>
     <s:String x:Key="Str_SystemInfo">システム情報</s:String>
@@ -56,6 +57,8 @@
     <s:String x:Key="Str_Reload">再読み込み</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下へ移動</s:String>
+    <s:String x:Key="Str_FocusSpineObject">モデルにフォーカス</s:String>
+    <s:String x:Key="Str_CenterSpineObject">モデルを中央へ移動</s:String>
     <s:String x:Key="Str_SpineObjectConfig">モデル設定</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">パラメーターをコピー</s:String>
     <s:String x:Key="Str_CopySpineObjectSkinConfig">パラメーターをコピー（スキンのみ）</s:String>
@@ -268,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">有効にすると、テクスチャ縮小時のジャギーを軽減しますが、ビデオメモリの使用量が若干増加します。</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">モデル読み込みオプション</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">追加時に重なりを回避</s:String>
 
     <s:String x:Key="Str_RendererPreference">プレビュー画面オプション</s:String>
 

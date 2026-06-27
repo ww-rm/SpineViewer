@@ -3,6 +3,7 @@ using Spine.Interfaces;
 using Spine.Interfaces.Attachments;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,6 +133,11 @@ namespace Spine
                 {
                     var boneX = slot.Bone.WorldX;
                     var boneY = slot.Bone.WorldY;
+
+                    // 部分模型出现此处数值是 NaN 的情况
+                    if (float.IsNaN(boneX) || float.IsNaN(boneY))
+                        continue;
+
                     minX = Math.Min(minX, boneX);
                     minY = Math.Min(minY, boneY);
                     maxX = Math.Max(maxX, boneX);

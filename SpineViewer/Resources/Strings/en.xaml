@@ -6,6 +6,7 @@
     <s:String x:Key="Str_Tool">Tools</s:String>
     <s:String x:Key="Str_Download">Download</s:String>
     <s:String x:Key="Str_Help">Help</s:String>
+    <s:String x:Key="Str_Wiki">Wiki</s:String>
     <s:String x:Key="Str_DownloadFFmpeg">Go to download FFmpeg</s:String>
     <s:String x:Key="Str_DiagnosticsTools">Diagnostics Tools</s:String>
     <s:String x:Key="Str_SystemInfo">System Information</s:String>
@@ -56,6 +57,8 @@
     <s:String x:Key="Str_Reload">Reload</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
+    <s:String x:Key="Str_FocusSpineObject">Focus Model</s:String>
+    <s:String x:Key="Str_CenterSpineObject">Center Model</s:String>
     <s:String x:Key="Str_SpineObjectConfig">Model Config</s:String>
     <s:String x:Key="Str_CopySpineObjectConfig">Copy Config</s:String>
     <s:String x:Key="Str_CopySpineObjectSkinConfig">Copy Parameters (Skin Only)</s:String>
@@ -268,6 +271,7 @@
     <s:String x:Key="Str_ForceMipmapTooltip">When enabled, this helps reduce aliasing when textures are scaled down, at the cost of slightly higher video memory usage.</s:String>
 
     <s:String x:Key="Str_SpineLoadPreference">Model Loading Options</s:String>
+    <s:String x:Key="Str_AvoidOverlapWhenAdding">Avoid Overlap When Adding</s:String>
 
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 

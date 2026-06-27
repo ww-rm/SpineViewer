@@ -28,6 +28,9 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (ReferenceEquals(_selectedObjects, value)) return;
 
                 // 清空之前的所有内容
+                foreach (var obj in _selectedObjects) 
+                    obj.PropertyChanged -= SingleModel_PropertyChanged;
+
                 _skins.Clear();
                 _slots.Clear();
                 _animationTracks.Clear();
@@ -36,31 +39,39 @@ namespace SpineViewer.ViewModels.MainWindow
                 _selectedObjects = value ?? [];
                 if (_selectedObjects.Length > 0)
                 {
+                    foreach (var obj in _selectedObjects) 
+                        obj.PropertyChanged += SingleModel_PropertyChanged;
+
                     IEnumerable<string> commonSkinNames = _selectedObjects[0].Skins;
-                    foreach (var obj in _selectedObjects.Skip(1)) 
+                    foreach (var obj in _selectedObjects.Skip(1))
                         commonSkinNames = commonSkinNames.Intersect(obj.Skins);
-                    foreach (var name in commonSkinNames.Order()) 
+                    foreach (var name in commonSkinNames.Order())
                         _skins.Add(new(name, _selectedObjects));
 
                     IEnumerable<string> commonSlotNames = _selectedObjects[0].Slots;
-                    foreach (var obj in _selectedObjects.Skip(1)) 
+                    foreach (var obj in _selectedObjects.Skip(1))
                         commonSlotNames = commonSlotNames.Intersect(obj.Slots);
-                    if (!string.IsNullOrWhiteSpace(_slotFilterString)) 
+                    if (!string.IsNullOrWhiteSpace(_slotFilterString))
                         commonSlotNames = commonSlotNames.Where(v => v.Contains(_slotFilterString));
                     foreach (var name in commonSlotNames.Order())
                         _slots.Add(new(name, _selectedObjects));
 
                     IEnumerable<int> commonTrackIndices = _selectedObjects[0].GetTrackIndices();
-                    foreach (var obj in _selectedObjects.Skip(1)) 
+                    foreach (var obj in _selectedObjects.Skip(1))
                         commonTrackIndices = commonTrackIndices.Intersect(obj.GetTrackIndices());
-                    foreach (var idx in commonTrackIndices.Order()) 
+                    foreach (var idx in commonTrackIndices.Order())
                         _animationTracks.Add(new(idx, _selectedObjects));
                 }
 
                 OnPropertyChanged();
+            }
+        }
 
-                Cmd_AppendTrack.NotifyCanExecuteChanged();
-
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.PropertyName == nameof(SelectedObjects))
+            {
                 OnPropertyChanged(nameof(Version));
                 OnPropertyChanged(nameof(AssetsDir));
                 OnPropertyChanged(nameof(SkelPath));
@@ -78,6 +89,13 @@ namespace SpineViewer.ViewModels.MainWindow
                 OnPropertyChanged(nameof(FlipY));
                 OnPropertyChanged(nameof(X));
                 OnPropertyChanged(nameof(Y));
+
+                // 与 SelectedObjects 有关的无参命令要在此显式通知可执行性改变
+                Cmd_EnableAllSkins.NotifyCanExecuteChanged();
+                Cmd_DisableAllSkins.NotifyCanExecuteChanged();
+                Cmd_EnableAllSlots.NotifyCanExecuteChanged();
+                Cmd_DisableAllSlots.NotifyCanExecuteChanged();
+                Cmd_AppendTrack.NotifyCanExecuteChanged();
 
                 OnPropertyChanged(nameof(DebugTexture));
                 OnPropertyChanged(nameof(DebugBounds));
@@ -335,25 +353,25 @@ namespace SpineViewer.ViewModels.MainWindow
             args => { if (args is null) return; foreach (var s in args.OfType<SkinViewModel>()) s.Status = true; },
             args => { return args is not null && args.OfType<SkinViewModel>().Any(); }
         );
-        private RelayCommand<IList?> _cmd_EnableSkins;
+        private RelayCommand<IList?>? _cmd_EnableSkins;
 
         public RelayCommand<IList?> Cmd_DisableSkins => _cmd_DisableSkins ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SkinViewModel>()) s.Status = false; },
             args => { return args is not null && args.OfType<SkinViewModel>().Any(); }
         );
-        private RelayCommand<IList?> _cmd_DisableSkins;
+        private RelayCommand<IList?>? _cmd_DisableSkins;
 
         public RelayCommand Cmd_EnableAllSkins => _cmd_EnableAllSkins ??= new(
             () => { if (_skins.Count <= 0) return; foreach (var s in _skins) s.Status = true; },
             () => { return _skins.Count > 0; }
         );
-        private RelayCommand _cmd_EnableAllSkins;
+        private RelayCommand? _cmd_EnableAllSkins;
 
         public RelayCommand Cmd_DisableAllSkins => _cmd_DisableAllSkins ??= new(
             () => { if (_skins.Count <= 0) return; foreach (var s in _skins) s.Status = false; },
             () => { return _skins.Count > 0; }
         );
-        private RelayCommand _cmd_DisableAllSkins;
+        private RelayCommand? _cmd_DisableAllSkins;
 
         public ObservableCollection<SlotViewModel> Slots => _slots;
 
@@ -373,7 +391,7 @@ namespace SpineViewer.ViewModels.MainWindow
                     foreach (var obj in _selectedObjects.Skip(1)) 
                         commonSlotNames = commonSlotNames.Intersect(obj.Slots);
                     if (!string.IsNullOrWhiteSpace(_slotFilterString)) 
-                        commonSlotNames = commonSlotNames.Where(v => v.Contains(_slotFilterString));
+                        commonSlotNames = commonSlotNames.Where(v => v.Contains(_slotFilterString, StringComparison.InvariantCultureIgnoreCase));
                     foreach (var name in commonSlotNames.Order()) 
                         _slots.Add(new(name, _selectedObjects));
                 }
@@ -385,25 +403,25 @@ namespace SpineViewer.ViewModels.MainWindow
             args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = true; },
             args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
-        private RelayCommand<IList?> _cmd_EnableSlots;
+        private RelayCommand<IList?>? _cmd_EnableSlots;
 
         public RelayCommand<IList?> Cmd_DisableSlots => _cmd_DisableSlots ??= new (
             args => { if (args is null) return; foreach (var s in args.OfType<SlotViewModel>()) s.Visible = false; },
             args => { return args is not null && args.OfType<SlotViewModel>().Any(); }
         );
-        private RelayCommand<IList?> _cmd_DisableSlots;
+        private RelayCommand<IList?>? _cmd_DisableSlots;
 
         public RelayCommand Cmd_EnableAllSlots => _cmd_EnableAllSlots ??= new(
             () => { if (_slots.Count <= 0) return; foreach (var s in _slots) s.Visible = true; },
             () => { return _slots.Count > 0; }
         );
-        private RelayCommand _cmd_EnableAllSlots;
+        private RelayCommand? _cmd_EnableAllSlots;
 
         public RelayCommand Cmd_DisableAllSlots => _cmd_DisableAllSlots ??= new(
             () => { if (_slots.Count <= 0) return; foreach (var s in _slots) s.Visible = false; },
             () => { return _slots.Count > 0; }
         );
-        private RelayCommand _cmd_DisableAllSlots;
+        private RelayCommand? _cmd_DisableAllSlots;
 
         public ObservableCollection<AnimationTrackViewModel> AnimationTracks => _animationTracks;
 
@@ -457,7 +475,7 @@ namespace SpineViewer.ViewModels.MainWindow
         );
         private RelayCommand<IList?>? _cmd_InsertTrack;
 
-        public RelayCommand<IList?>? Cmd_ClearTrack => _cmd_ClearTrack ??= new(
+        public RelayCommand<IList?> Cmd_ClearTrack => _cmd_ClearTrack ??= new(
             args =>
             {
                 if (_selectedObjects.Length <= 0) return;
@@ -675,6 +693,46 @@ namespace SpineViewer.ViewModels.MainWindow
                 if (value is null) return;
                 foreach (var sp in _selectedObjects) sp.DebugClippings = (bool)value;
                 OnPropertyChanged();
+            }
+        }
+
+        private static readonly Dictionary<string, string> _singleModelPropertyMap = new()
+        {
+            { nameof(SpineObjectModel.IsShown), nameof(IsShown) },
+            { nameof(SpineObjectModel.UsePma), nameof(UsePma) },
+            { nameof(SpineObjectModel.Physics), nameof(Physics) },
+            { nameof(SpineObjectModel.TimeScale), nameof(TimeScale) },
+
+            { nameof(SpineObjectModel.Scale), nameof(Scale) },
+            { nameof(SpineObjectModel.FlipX), nameof(FlipX) },
+            { nameof(SpineObjectModel.FlipY), nameof(FlipY) },
+            { nameof(SpineObjectModel.X), nameof(X) },
+            { nameof(SpineObjectModel.Y), nameof(Y) },
+
+            // XXX: 由于动画轨道变化不好进行事件监听, 目前 SpineObjectModel 暂未实现 Skins/Slots/AnimationTracks 属性变化事件
+            // 部分历史修改过程见 [2306fea](https://github.com/ww-rm/SpineViewer/commit/2306fea0743183e9e375fd243d90040ff827d43e)
+            // 因为 Skins/Slots/AnimationTracks 目前只通过属性面板进行切换, 因此可以不考虑其他地方对该属性的修改产生变化
+
+            { nameof(SpineObjectModel.DebugTexture), nameof(DebugTexture) },
+            { nameof(SpineObjectModel.DebugBounds), nameof(DebugBounds) },
+            { nameof(SpineObjectModel.DebugBones), nameof(DebugBones) },
+            { nameof(SpineObjectModel.DebugRegions), nameof(DebugRegions) },
+            { nameof(SpineObjectModel.DebugMeshHulls), nameof(DebugMeshHulls) },
+            { nameof(SpineObjectModel.DebugMeshes), nameof(DebugMeshes) },
+            { nameof(SpineObjectModel.DebugBoundingBoxes), nameof(DebugBoundingBoxes) },
+            { nameof(SpineObjectModel.DebugPaths), nameof(DebugPaths) },
+            { nameof(SpineObjectModel.DebugPoints), nameof(DebugPoints) },
+            { nameof(SpineObjectModel.DebugClippings), nameof(DebugClippings) },
+        };
+
+        /// <summary>
+        /// 监听单个模型属性发生变化, 则更新聚合属性值
+        /// </summary>
+        private void SingleModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (_singleModelPropertyMap.TryGetValue(e.PropertyName, out var targetProperty))
+            {
+                OnPropertyChanged(targetProperty);
             }
         }
 

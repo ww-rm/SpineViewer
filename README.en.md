@@ -20,6 +20,8 @@ Spine file viewer & exporter, also a dynamic wallpaper program supporting Spine 
 
 - Supports multiple Spine file versions (`2.1.x; 3.4.x - 4.2.-`)
 - List-based multi-skeleton view with rendering order management
+- Supports non-overlapping arrangement on import
+- Supports focusing on and centering selected models
 - Supports multi-track animations and skins settings
 - Debug rendering support
 - Frame rate / model / track time scale adjustment

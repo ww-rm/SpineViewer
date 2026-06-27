@@ -61,6 +61,11 @@ jobs:
           dotnet publish "$env:PROJECT_NAME\$env:PROJECT_NAME.csproj" -c Release -r win-x64 --sc true -o "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained"
           dotnet publish "$env:PROJ_CLI_NAME\$env:PROJ_CLI_NAME.csproj" -c Release -r win-x64 --sc true -o "publish\$env:PROJECT_NAME-$env:VERSION-SelfContained"
 
+      - name: Remove pdb files
+        shell: pwsh
+        run: |
+          Get-ChildItem publish -Recurse -Filter *.pdb | Remove-Item -Force
+
       - name: Compress Windows builds
         shell: pwsh
         run: |
@@ -122,6 +127,10 @@ jobs:
       - name: Publish Linux SelfContained version
         run: |
           dotnet publish "$PROJ_CLI_NAME/$PROJ_CLI_NAME.csproj" -c Release -r linux-x64 --sc true -o "publish/${PROJ_CLI_NAME}-${VERSION}-Linux-SelfContained"
+
+      - name: Remove pdb files
+        run: |
+          find publish -type f -name "*.pdb" -delete
 
       - name: Compress Linux build
         run: |

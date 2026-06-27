@@ -2,6 +2,7 @@
 using Spectre.Console;
 using Spine;
 using Spine.Exporters;
+using Spine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -93,6 +94,12 @@ namespace SpineViewerCLI
             Description = "Specifies whether the texture uses PMA (premultiplied alpha) format.",
         };
 
+        public Option<ISkeleton.Physics> OptPhysics { get; } = new("--physics")
+        {
+            Description = "Specifies the method for updating physics effects.",
+            DefaultValueFactory = _ => ISkeleton.Physics.Update,
+        };
+
         public Option<string[]> OptSkins { get; } = new("--skins")
         {
             Description = "Skins to export. Multiple skins can be specified.",
@@ -114,7 +121,7 @@ namespace SpineViewerCLI
 
         public Option<float> OptWarmUp { get; } = new("--warm-up")
         {
-            Description = "Warm-up duration of the animation, used to stabilize physics effects. A negative value will automatically warm up for the maximum duration among all animations.",
+            Description = "Warm-up duration used to stabilize physics effects. If negative, the warm-up duration is set to the maximum animation duration multiplied by the absolute value.",
             DefaultValueFactory = _ => 0f,
         };
 
@@ -307,6 +314,7 @@ namespace SpineViewerCLI
             // 设置模型参数
             spine.Skeleton.ScaleX = spine.Skeleton.ScaleY = result.GetValue(OptScale);
             spine.UsePma = result.GetValue(OptPma);
+            spine.Physics = result.GetValue(OptPhysics);
 
             // 设置要导出的动画
             var isTrackLoop = !result.GetValue(OptDisableTrackLoop);
@@ -344,7 +352,7 @@ namespace SpineViewerCLI
 
             // 时间轴处理
             var warmup = result.GetValue(OptWarmUp);
-            if (warmup < 0) warmup = spine.GetAnimationMaxDuration();
+            if (warmup < 0) warmup = spine.GetAnimationMaxDuration() * -warmup;
 
             // 按传入的帧率进行逐帧预热, 不能直接更新整个动画时长, 否则物理效果无法预热
             for (float t = 0, step = 1f / result.GetValue(OptFps); t < warmup; t += step)
