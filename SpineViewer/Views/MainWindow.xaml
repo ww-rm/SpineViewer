@@ -24,6 +24,10 @@
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
     </Window.TaskbarItemInfo>
 
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+0" Command="{Binding SFMLRendererViewModel.Cmd_ResetView}"/>
+    </Window.InputBindings>
+
     <Grid>
         <!-- 非可视元素通知栏图标 -->
         <hc:NotifyIcon x:Name="_notifyIcon"
@@ -136,6 +140,10 @@
                                                     <i:InvokeCommandAction Command="{Binding Cmd_ListViewSelectionChanged}"
                                                                            CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 </i:EventTrigger>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_FocusSpineObject}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                </i:EventTrigger>
                                             </i:Interaction.Triggers>
 
                                             <ListView.InputBindings>
@@ -144,8 +152,8 @@
                                                 <KeyBinding Gesture="Ctrl+R" Command="{Binding Cmd_ReloadSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+E" Command="{Binding Cmd_FocusSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+Shift+E" Command="{Binding Cmd_CenterSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+E" Command="{Binding Cmd_CenterSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+F" Command="{Binding Cmd_FocusSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+C" Command="{Binding Cmd_CopySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+V" Command="{Binding Cmd_ApplySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                             </ListView.InputBindings>
@@ -177,14 +185,14 @@
                                                               InputGestureText="Alt+S"
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_FocusSpineObject}"
-                                                              InputGestureText="Ctrl+E"
-                                                              Command="{Binding Cmd_FocusSpineObject}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_CenterSpineObject}"
-                                                              InputGestureText="Ctrl+Shift+E"
+                                                              InputGestureText="Ctrl+E"
                                                               Command="{Binding Cmd_CenterSpineObject}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_FocusSpineObject}"
+                                                              InputGestureText="Ctrl+F"
+                                                              Command="{Binding Cmd_FocusSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_SpineObjectConfig}">
@@ -1157,10 +1165,10 @@
 
                                             <!-- 画面按钮 -->
                                             <Border x:Name="_renderPanelButtonsPanel"
-                                            DataContext="{Binding SFMLRendererViewModel}"
-                                            Grid.Row="1" 
-                                            Grid.IsSharedSizeScope="True"
-                                            Background="{DynamicResource RegionBrush}">
+                                                    DataContext="{Binding SFMLRendererViewModel}"
+                                                    Grid.Row="1" 
+                                                    Grid.IsSharedSizeScope="True"
+                                                    Background="{DynamicResource RegionBrush}">
                                                 <WrapPanel HorizontalAlignment="Center">
                                                     <WrapPanel.Resources>
                                                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
@@ -1173,10 +1181,8 @@
                                                     <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
                                                     <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
                                                     <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
-                                                    <Button x:Name="_fullScreenButton" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
-                                                    Click="ButtonFullScreen_Click" 
-                                                    ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
+                                                    <Button x:Name="_fullScreenButton" hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" Click="ButtonFullScreen_Click" ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_House}" Command="{Binding Cmd_ResetView}" ToolTip="{DynamicResource Str_ResetViewTooltip}"/>
                                                 </WrapPanel>
                                             </Border>
                                         </Border>

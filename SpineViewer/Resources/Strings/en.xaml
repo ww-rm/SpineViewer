@@ -158,6 +158,7 @@
     <s:String x:Key="Str_ForwardStepTooltip">Forward 1 Frame</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">Forward 10 Frames</s:String>
     <s:String x:Key="Str_FullScreenTooltip">Window/Fullscreen; F11</s:String>
+    <s:String x:Key="Str_ResetViewTooltip">Reset view to default position and zoom; Ctrl+0</s:String>
 
     <!-- 日志框 -->
     <s:String x:Key="Str_ClearLog">Clear Log</s:String>

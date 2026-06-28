@@ -239,6 +239,9 @@ namespace SpineViewer.ViewModels.MainWindow
 
                         sp.X -= offsetX; 
                         sp.Y -= offsetY;
+
+                        // 需要更新一次否则包围盒还没更新
+                        sp.Update(0);
                     }
                 }
 
@@ -281,7 +284,7 @@ namespace SpineViewer.ViewModels.MainWindow
             // 新矩形宽高面积
             float width = (float)newBound.Width;
             float height = (float)newBound.Height;
-            float newArea = width * height;
+            float maxOverlapArea = width * height * AddingMaxOverlapRatio;
 
             // 邻近采样距离 (像素)
             float spacing = 8f;
@@ -308,11 +311,11 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     overlapArea += (float)(intersection.Width * intersection.Height);
 
-                    if (overlapArea > newArea * AddingMaxOverlapRatio)
+                    if (overlapArea > maxOverlapArea)
                         break;
                 }
 
-                if (overlapArea  <= newArea * AddingMaxOverlapRatio)
+                if (overlapArea <= maxOverlapArea)
                 {
                     return new Point(candidateCenterX, candidateCenterY);
                 }
@@ -579,36 +582,6 @@ namespace SpineViewer.ViewModels.MainWindow
         #region 模型属性控制菜单项实现
 
         /// <summary>
-        /// 聚焦选中的模型, 将视图移动到选中模型的中心
-        /// </summary>
-        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
-        private RelayCommand<IList?>? _cmd_FocusSpineObject;
-
-        private void FocusSpineObject_Execute(IList? args)
-        {
-            if (!FocusSpineObject_CanExecute(args)) return;
-
-            var spines = args!.Cast<SpineObjectModel>().ToArray();
-
-            var bounds = spines[0].GetCurrentBounds();
-            foreach (var sp in spines.Skip(1))
-                bounds.Union(sp.GetCurrentBounds());
-
-            var centerX = (float)(bounds.Left + bounds.Width / 2);
-            var centerY = (float)(bounds.Top + bounds.Height / 2);
-
-            _vmMain.SFMLRendererViewModel.CenterX = centerX;
-            _vmMain.SFMLRendererViewModel.CenterY = centerY;
-        }
-
-        private bool FocusSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
-        }
-
-        /// <summary>
         /// 将选中的模型居中显示, 移动到当前视图中心
         /// </summary>
         public RelayCommand<IList?> Cmd_CenterSpineObject => _cmd_CenterSpineObject ??= new(CenterSpineObject_Execute, CenterSpineObject_CanExecute);
@@ -637,6 +610,42 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         private bool CenterSpineObject_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 聚焦选中的模型, 将视图移动到选中模型的中心, 并缩放至合适的大小
+        /// </summary>
+        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
+        private RelayCommand<IList?>? _cmd_FocusSpineObject;
+
+        private void FocusSpineObject_Execute(IList? args)
+        {
+            if (!FocusSpineObject_CanExecute(args)) return;
+
+            var spines = args!.Cast<SpineObjectModel>().ToArray();
+
+            var bounds = spines[0].GetCurrentBounds();
+            foreach (var sp in spines.Skip(1))
+                bounds.Union(sp.GetCurrentBounds());
+
+            var centerX = (float)(bounds.Left + bounds.Width / 2);
+            var centerY = (float)(bounds.Top + bounds.Height / 2);
+
+            var zoom = MathF.Min(
+                _vmMain.SFMLRendererViewModel.ResolutionX / (float)bounds.Width,
+                _vmMain.SFMLRendererViewModel.ResolutionY / (float)bounds.Height
+            ) * 0.9f;
+
+            _vmMain.SFMLRendererViewModel.CenterX = centerX;
+            _vmMain.SFMLRendererViewModel.CenterY = centerY;
+            _vmMain.SFMLRendererViewModel.Zoom = zoom;
+        }
+
+        private bool FocusSpineObject_CanExecute(IList? args)
         {
             if (args is null) return false;
             if (args.Count <= 0) return false;

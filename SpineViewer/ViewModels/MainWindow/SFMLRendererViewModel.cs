@@ -353,6 +353,13 @@ namespace SpineViewer.ViewModels.MainWindow
         });
         private RelayCommand? _cmd_ForwardFast;
 
+        public RelayCommand Cmd_ResetView => _cmd_ResetView ??= new(() =>
+        {
+            CenterX = CenterY = 0;
+            Zoom = 0.75f;
+        });
+        private RelayCommand? _cmd_ResetView;
+
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
             float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;
