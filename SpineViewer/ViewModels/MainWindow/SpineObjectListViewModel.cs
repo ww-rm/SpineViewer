@@ -617,7 +617,7 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// 聚焦选中的模型, 将视图移动到选中模型的中心
+        /// 聚焦选中的模型, 将视图移动到选中模型的中心, 并缩放至合适的大小
         /// </summary>
         public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
         private RelayCommand<IList?>? _cmd_FocusSpineObject;
@@ -635,8 +635,14 @@ namespace SpineViewer.ViewModels.MainWindow
             var centerX = (float)(bounds.Left + bounds.Width / 2);
             var centerY = (float)(bounds.Top + bounds.Height / 2);
 
+            var zoom = MathF.Min(
+                _vmMain.SFMLRendererViewModel.ResolutionX / (float)bounds.Width,
+                _vmMain.SFMLRendererViewModel.ResolutionY / (float)bounds.Height
+            ) * 0.9f;
+
             _vmMain.SFMLRendererViewModel.CenterX = centerX;
             _vmMain.SFMLRendererViewModel.CenterY = centerY;
+            _vmMain.SFMLRendererViewModel.Zoom = zoom;
         }
 
         private bool FocusSpineObject_CanExecute(IList? args)
