@@ -144,8 +144,8 @@
                                                 <KeyBinding Gesture="Ctrl+R" Command="{Binding Cmd_ReloadSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+E" Command="{Binding Cmd_FocusSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
-                                                <KeyBinding Gesture="Ctrl+Shift+E" Command="{Binding Cmd_CenterSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+E" Command="{Binding Cmd_CenterSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                <KeyBinding Gesture="Ctrl+F" Command="{Binding Cmd_FocusSpineObject}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+C" Command="{Binding Cmd_CopySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 <KeyBinding Gesture="Ctrl+Shift+V" Command="{Binding Cmd_ApplySpineObjectConfig}" CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                             </ListView.InputBindings>
@@ -177,14 +177,14 @@
                                                               InputGestureText="Alt+S"
                                                               Command="{Binding Cmd_MoveDownSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_FocusSpineObject}"
-                                                              InputGestureText="Ctrl+E"
-                                                              Command="{Binding Cmd_FocusSpineObject}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_CenterSpineObject}"
-                                                              InputGestureText="Ctrl+Shift+E"
+                                                              InputGestureText="Ctrl+E"
                                                               Command="{Binding Cmd_CenterSpineObject}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_FocusSpineObject}"
+                                                              InputGestureText="Ctrl+F"
+                                                              Command="{Binding Cmd_FocusSpineObject}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_SpineObjectConfig}">
