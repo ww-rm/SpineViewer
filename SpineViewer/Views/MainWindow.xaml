@@ -136,6 +136,10 @@
                                                     <i:InvokeCommandAction Command="{Binding Cmd_ListViewSelectionChanged}"
                                                                            CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
                                                 </i:EventTrigger>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_FocusSpineObject}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_spinesListView}"/>
+                                                </i:EventTrigger>
                                             </i:Interaction.Triggers>
 
                                             <ListView.InputBindings>
