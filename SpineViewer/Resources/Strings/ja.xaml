@@ -158,6 +158,7 @@
     <s:String x:Key="Str_ForwardStepTooltip">1フレーム進める</s:String>
     <s:String x:Key="Str_ForwardFastTooltip">10フレーム進める</s:String>
     <s:String x:Key="Str_FullScreenTooltip">ウィンドウ/フルスクリーン; F11</s:String>
+    <s:String x:Key="Str_ResetViewTooltip">表示位置とズームを初期状態に戻す; Ctrl+0</s:String>
 
     <!-- 日志框 -->
     <s:String x:Key="Str_ClearLog">ログをクリア</s:String>

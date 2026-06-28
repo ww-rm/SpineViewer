@@ -24,6 +24,10 @@
         <TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding ProgressValue}"/>
     </Window.TaskbarItemInfo>
 
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+0" Command="{Binding SFMLRendererViewModel.Cmd_ResetView}"/>
+    </Window.InputBindings>
+
     <Grid>
         <!-- 非可视元素通知栏图标 -->
         <hc:NotifyIcon x:Name="_notifyIcon"
@@ -1161,10 +1165,10 @@
 
                                             <!-- 画面按钮 -->
                                             <Border x:Name="_renderPanelButtonsPanel"
-                                            DataContext="{Binding SFMLRendererViewModel}"
-                                            Grid.Row="1" 
-                                            Grid.IsSharedSizeScope="True"
-                                            Background="{DynamicResource RegionBrush}">
+                                                    DataContext="{Binding SFMLRendererViewModel}"
+                                                    Grid.Row="1" 
+                                                    Grid.IsSharedSizeScope="True"
+                                                    Background="{DynamicResource RegionBrush}">
                                                 <WrapPanel HorizontalAlignment="Center">
                                                     <WrapPanel.Resources>
                                                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
@@ -1177,10 +1181,8 @@
                                                     <Button hc:IconElement.Geometry="{Binding Geo_PlayPause}" Command="{Binding Cmd_PlayPause}" ToolTip="{DynamicResource Str_PlayPauseTooltip}"/>
                                                     <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardStep}" Command="{Binding Cmd_ForwardStep}" ToolTip="{DynamicResource Str_ForwardStepTooltip}"/>
                                                     <Button hc:IconElement.Geometry="{StaticResource Geo_ForwardFast}" Command="{Binding Cmd_ForwardFast}" ToolTip="{DynamicResource Str_ForwardFastTooltip}"/>
-                                                    <Button x:Name="_fullScreenButton" 
-                                                    hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" 
-                                                    Click="ButtonFullScreen_Click" 
-                                                    ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
+                                                    <Button x:Name="_fullScreenButton" hc:IconElement.Geometry="{StaticResource Geo_ArrowsMaximize}" Click="ButtonFullScreen_Click" ToolTip="{DynamicResource Str_FullScreenTooltip}"/>
+                                                    <Button hc:IconElement.Geometry="{StaticResource Geo_House}" Command="{Binding Cmd_ResetView}" ToolTip="{DynamicResource Str_ResetViewTooltip}"/>
                                                 </WrapPanel>
                                             </Border>
                                         </Border>
