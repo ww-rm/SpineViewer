@@ -4,6 +4,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:o="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:utils="clr-namespace:SpineViewer.Utils"
+                    xmlns:beh="clr-namespace:SpineViewer.Behaviors"
                     xmlns:hc="https://handyorg.github.io/handycontrol">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
@@ -46,7 +47,7 @@
                 </Style>
             </Setter.Value>
         </Setter>
-        <EventSetter Event="MouseLeftButtonDown" Handler="ListBox_MouseLeftButtonDown"/>
+        <Setter Property="beh:ClearSelectionOnBlankBehavior.Enable" Value="True"/>
     </Style>
 
     <Style x:Key="MyListViewBaseStyle" TargetType="ListView" BasedOn="{StaticResource ListViewBaseStyle}">
@@ -54,7 +55,7 @@
         <!--<Setter Property="VirtualizingPanel.IsVirtualizing" Value="False"/>-->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListViewItemBaseStyle.Small}"/>
-        <EventSetter Event="MouseLeftButtonDown" Handler="ListView_MouseLeftButtonDown"/>
+        <Setter Property="beh:ClearSelectionOnBlankBehavior.Enable" Value="True"/>
     </Style>
 
     <Style x:Key="MyGroupBoxBaseStyle" TargetType="GroupBox" BasedOn="{StaticResource GroupBoxTab}">
@@ -116,7 +117,7 @@
     </Style>
 
     <Style x:Key="MyTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxBaseStyle}">
-        <Setter Property="utils:TextBoxEnterCommitBehavior.Enable" Value="True"/>
+        <Setter Property="beh:TextBoxEnterCommitBehavior.Enable" Value="True"/>
     </Style>
 
     <Style TargetType="GridSplitter" BasedOn="{StaticResource MyGridSplitterBaseStyle}"/>
