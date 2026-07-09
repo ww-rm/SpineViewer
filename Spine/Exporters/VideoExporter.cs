@@ -4,6 +4,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,39 @@ namespace Spine.Exporters
     /// </summary>
     public abstract class VideoExporter : BaseExporter
     {
+        /// <summary>
+        /// 是否能启动 ffmpeg
+        /// </summary>
+        protected static readonly bool _hasFFmpeg;
+
+        static VideoExporter()
+        {
+            // 检查并设置 ffmpeg
+            try
+            {
+                using var process = new Process();
+
+                process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = "ffmpeg",
+                    Arguments = "-version",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                process.Start();
+                process.WaitForExit(3000);
+
+                _hasFFmpeg =  process.ExitCode == 0;
+            }
+            catch
+            {
+                _hasFFmpeg = false;
+            }
+        }
+
         private readonly object _frameOutputLock = new();
         private SFMLImageVideoFrame? _frameOutput;
 

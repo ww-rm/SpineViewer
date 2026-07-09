@@ -106,6 +106,12 @@ namespace Spine.Exporters
 
         public override void Export(string output, CancellationToken ct, params SpineObject[] spines)
         {
+            if (!_hasFFmpeg)
+            {
+                _logger.Error("Failed to start ffmpeg, export is not available");
+                return;
+            }
+
             var videoFramesSource = new RawVideoPipeSource(GetFrames(spines, output, ct)) { FrameRate = _fps };
             Action<FFMpegArgumentOptions> setOutputOptions = _format switch
             {
