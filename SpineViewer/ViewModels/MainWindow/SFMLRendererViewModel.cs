@@ -683,9 +683,13 @@ namespace SpineViewer.ViewModels.MainWindow
             // 渲染 Spine
             lock (_models.Lock)
             {
-                foreach (var sp in _models.Where(sp => sp.IsShown && (!_renderSelectedOnly || sp.IsSelected)).Reverse())
+                for (int i = _models.Count - 1; i >= 0; i--)
                 {
                     if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
+
+                    var sp = _models[i];
+                    if (!sp.IsShown || _renderSelectedOnly && !sp.IsSelected)
+                        continue;
 
                     // 判断是否可视, 不可视则跳过渲染
                     var bounds = sp.GetCurrentBounds();
@@ -751,10 +755,14 @@ namespace SpineViewer.ViewModels.MainWindow
                     // 渲染 Spine
                     lock (_models.Lock)
                     {
-                        foreach (var sp in _models.Where(sp => sp.IsShown && (!_renderSelectedOnly || sp.IsSelected)).Reverse())
+                        for (int i = _models.Count - 1; i >= 0; i--)
                         {
                             if (_cancelToken?.IsCancellationRequested ?? true)
                                 break; // 提前中止
+
+                            var sp = _models[i];
+                            if (!sp.IsShown || _renderSelectedOnly && !sp.IsSelected)
+                                continue;
 
                             // 判断是否可视, 不可视则跳过渲染
                             var bounds = sp.GetCurrentBounds();
