@@ -561,20 +561,28 @@ namespace Spine
                 var texW = texture.Size.X;
                 var texH = texture.Size.Y;
 
-                SFML.Graphics.Vertex vt = new();
-                vt.Color.R = (byte)(tintR * 255);
-                vt.Color.G = (byte)(tintG * 255);
-                vt.Color.B = (byte)(tintB * 255);
-                vt.Color.A = (byte)(tintA * 255);
+                SFML.Graphics.Vertex vt = new()
+                {
+                    Color = new(
+                        (byte)(tintR * 255),
+                        (byte)(tintG * 255),
+                        (byte)(tintB * 255),
+                        (byte)(tintA * 255)
+                    )
+                };
+                ref var vtPosRef = ref vt.Position;
+                ref var vtTexCoordsRef = ref vt.TexCoords;
 
-                for (int i = 0; i < trianglesLength; i++)
+                var offset = _triangleVertices.VertexCount;
+                _triangleVertices.Resize(offset + (uint)trianglesLength);
+                for (uint i = 0; i < trianglesLength; i++)
                 {
                     var index = triangles[i] << 1;
-                    vt.Position.X = worldVertices[index];
-                    vt.Position.Y = worldVertices[index + 1];
-                    vt.TexCoords.X = uvs[index] * texW;
-                    vt.TexCoords.Y = uvs[index + 1] * texH;
-                    _triangleVertices.Append(vt);
+                    vtPosRef.X = worldVertices[index];
+                    vtPosRef.Y = worldVertices[index + 1];
+                    vtTexCoordsRef.X = uvs[index] * texW;
+                    vtTexCoordsRef.Y = uvs[index + 1] * texH;
+                    _triangleVertices[offset + i] = vt;
                 }
 
                 clipping.ClipEnd(slot);
