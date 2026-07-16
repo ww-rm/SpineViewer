@@ -279,6 +279,8 @@
     <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
     <s:String x:Key="Str_AppSkin">スキン</s:String>
+    <s:String x:Key="Str_MaxParallelism">最大並列数</s:String>
+    <s:String x:Key="Str_MaxParallelismTooltip">モデル更新時に使用する並列タスクの最大数。0 は並列処理を無効にします。-1 は利用可能な論理プロセッサ数から 1 を引いた値を使用します。</s:String>
     <s:String x:Key="Str_CloseToTray">閉じるときにトレイに最小化する</s:String>
     <s:String x:Key="Str_AutoRun">自動起動</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">起動時にワークスペースファイルを自動読み込み</s:String>

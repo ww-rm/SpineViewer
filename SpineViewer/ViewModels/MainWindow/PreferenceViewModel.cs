@@ -117,6 +117,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
                     AppLanguage = AppLanguage,
                     AppSkin = AppSkin,
+                    MaxParallelism = MaxParallelism,
                     WallpaperView = WallpaperView,
                     WallpaperMaxFps = WallpaperMaxFps,
                     CloseToTray = CloseToTray,
@@ -154,6 +155,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 AppLanguage = value.AppLanguage;
                 AppSkin = value.AppSkin;
+                MaxParallelism = value.MaxParallelism;
                 WallpaperView = value.WallpaperView;
                 WallpaperMaxFps = value.WallpaperMaxFps;
                 CloseToTray = value.CloseToTray;
@@ -319,6 +321,12 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             get => ((App)App.Current).Skin;
             set => SetProperty(((App)App.Current).Skin, value, v => ((App)App.Current).Skin = v);
+        }
+
+        public int MaxParallelism
+        {
+            get => _vmMain.SFMLRendererViewModel.MaxParallelism;
+            set => SetProperty(_vmMain.SFMLRendererViewModel.MaxParallelism, value, v => _vmMain.SFMLRendererViewModel.MaxParallelism = v);
         }
 
         public bool WallpaperView

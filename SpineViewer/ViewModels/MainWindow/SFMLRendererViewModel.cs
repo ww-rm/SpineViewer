@@ -169,6 +169,22 @@ namespace SpineViewer.ViewModels.MainWindow
             set => SetProperty(_wallpaperRenderer.MaxFps, value, v => _wallpaperRenderer.MaxFps = value);
         }
 
+        /// <summary>
+        /// 逻辑帧内最大并行计算度, -1 使用 <see cref="Environment.ProcessorCount"/> - 1, 0 关闭并行.
+        /// </summary>
+        public int MaxParallelism
+        {
+            get => _maxParallelism;
+            set
+            {
+                if (value < 0) value = -1;
+                if (SetProperty(ref _maxParallelism, value))
+                    _maxDegreeOfParallelism = _maxParallelism < 0 ? (Environment.ProcessorCount - 1) : _maxParallelism;
+            }
+        }
+        private int _maxParallelism = 0;
+        private int _maxDegreeOfParallelism = 0;
+
         public float RealTimeFps => _realTimeFps;
         private float _realTimeFps;
 
@@ -566,15 +582,40 @@ namespace SpineViewer.ViewModels.MainWindow
                 _forwardDelta = 0;
             }
 
+            // 乘上速度因子
+            delta *= _speed;
+
             // 更新模型对象时间
             lock (_models.Lock)
             {
-                foreach (var sp in _models.Where(sp => sp.IsShown && (!_renderSelectedOnly || sp.IsSelected)).Reverse())
+                if (_maxDegreeOfParallelism > 0)
                 {
-                    if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
-
-                    sp.Update(0); // 避免物理效果出现问题
-                    sp.Update(delta * _speed);
+                    try
+                    {
+                        Parallel.ForEach(
+                            _models,
+                            new()
+                            {
+                                MaxDegreeOfParallelism = _maxDegreeOfParallelism,
+                                CancellationToken = _cancelToken?.Token ?? CancellationToken.None
+                            },
+                            sp =>
+                            {
+                                sp.Update(0);
+                                sp.Update(delta);
+                            }
+                        );
+                    }
+                    catch (OperationCanceledException) { }
+                }
+                else
+                {
+                    foreach (var sp in _models)
+                    {
+                        if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
+                        sp.Update(0); // 避免物理效果出现问题
+                        sp.Update(delta);
+                    }
                 }
             }
 
