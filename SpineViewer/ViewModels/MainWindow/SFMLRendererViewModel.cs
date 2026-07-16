@@ -637,12 +637,19 @@ namespace SpineViewer.ViewModels.MainWindow
                 _renderer.Draw(_axisVertices);
             }
 
+            var rendererBounds = _renderer.GetAbsBounds();
+
             // 渲染 Spine
             lock (_models.Lock)
             {
                 foreach (var sp in _models.Where(sp => sp.IsShown && (!_renderSelectedOnly || sp.IsSelected)).Reverse())
                 {
                     if (_cancelToken?.IsCancellationRequested ?? true) break; // 提前中止
+
+                    // 判断是否可视, 不可视则跳过渲染
+                    var bounds = sp.GetCurrentBounds();
+                    if (!bounds.IntersectsWith(rendererBounds))
+                        continue;
 
                     // 高亮选中对象, 绘制一个半透明背景
                     if (_highlightSelectedModel && sp.IsSelected)
@@ -698,6 +705,8 @@ namespace SpineViewer.ViewModels.MainWindow
                         }
                     }
 
+                    var rendererBounds = _wallpaperRenderer.GetAbsBounds();
+
                     // 渲染 Spine
                     lock (_models.Lock)
                     {
@@ -705,6 +714,11 @@ namespace SpineViewer.ViewModels.MainWindow
                         {
                             if (_cancelToken?.IsCancellationRequested ?? true)
                                 break; // 提前中止
+
+                            // 判断是否可视, 不可视则跳过渲染
+                            var bounds = sp.GetCurrentBounds();
+                            if (!bounds.IntersectsWith(rendererBounds))
+                                continue;
 
                             _wallpaperRenderer.Draw(sp);
                         }
