@@ -78,6 +78,7 @@ namespace Spine.Utils
             if (_isDirty)
             {
                 _vertexBuffer.Update(_vertexArray, (uint)_vertexCount, 0);
+                _isDirty = false;
             }
 
             // 分段 draw
