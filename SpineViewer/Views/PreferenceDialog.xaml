@@ -273,10 +273,19 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource Str_Skin}"/>
+                                <Label Content="{DynamicResource Str_AppSkin}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding AppSkin}"
                                           ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_MaxParallelism}" ToolTip="{DynamicResource Str_MaxParallelismTooltip}"/>
+                                <TextBox Grid.Column="1" Text="{Binding MaxParallelism}"  ToolTip="{DynamicResource Str_MaxParallelismTooltip}"/>
                             </Grid>
 
                             <Grid>

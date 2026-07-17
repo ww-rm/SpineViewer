@@ -414,17 +414,29 @@ namespace Spine
         /// <summary>
         /// 三角形顶点缓冲区
         /// </summary>
-        protected readonly SFML.Graphics.VertexArray _triangleVertices = new(SFML.Graphics.PrimitiveType.Triangles);
+        protected readonly SFMLVertexBuffer _triangleVertices = new(
+            1024, 
+            SFML.Graphics.PrimitiveType.Triangles, 
+            SFML.Graphics.VertexBuffer.UsageSpecifier.Dynamic
+        );
 
         /// <summary>
         /// 无面积线条缓冲区
         /// </summary>
-        protected readonly SFML.Graphics.VertexArray _lineVertices = new(SFML.Graphics.PrimitiveType.Lines);
+        protected readonly SFMLVertexBuffer _lineVertices = new(
+            1024, 
+            SFML.Graphics.PrimitiveType.Lines,
+            SFML.Graphics.VertexBuffer.UsageSpecifier.Dynamic
+        );
 
         /// <summary>
         /// 有宽度线条缓冲区, 需要通过 <see cref="AddRectLine"/> 添加顶点
         /// </summary>
-        protected readonly SFML.Graphics.VertexArray _rectLineVertices = new(SFML.Graphics.PrimitiveType.Quads);
+        protected readonly SFMLVertexBuffer _rectLineVertices = new(
+            1024, 
+            SFML.Graphics.PrimitiveType.Quads,
+            SFML.Graphics.VertexBuffer.UsageSpecifier.Dynamic
+        );
 
         /// <summary>
         /// 有半径圆点临时缓存对象
@@ -459,10 +471,10 @@ namespace Spine
             var t = new SFML.System.Vector2f(halfWidth * cosTheta, halfWidth * sinTheta);
             var v = new SFML.Graphics.Vertex() { Color = color };
 
-            v.Position = p1 + t; _rectLineVertices.Append(v);
-            v.Position = p2 + t; _rectLineVertices.Append(v);
-            v.Position = p2 - t; _rectLineVertices.Append(v);
-            v.Position = p1 - t; _rectLineVertices.Append(v);
+            v.Position = p1 + t; _rectLineVertices.AddVertex(v);
+            v.Position = p2 + t; _rectLineVertices.AddVertex(v);
+            v.Position = p2 - t; _rectLineVertices.AddVertex(v);
+            v.Position = p1 - t; _rectLineVertices.AddVertex(v);
         }
 
         /// <summary>
@@ -534,16 +546,12 @@ namespace Spine
                         continue;
                 }
 
-                // 纹理或者混合模式发生变化则立即渲染
+                // 纹理或者混合模式发生变化则记录状态
                 var blendMode = slot.Blend;
                 states.Texture ??= texture;
                 if (states.BlendMode != blendMode || states.Texture != texture)
                 {
-                    if (_triangleVertices.VertexCount > 0)
-                    {
-                        target.Draw(_triangleVertices, states);
-                        _triangleVertices.Clear();
-                    }
+                    _triangleVertices.AddStates(states);
                     states.BlendMode = blendMode;
                     states.Texture = texture;
                 }
@@ -561,20 +569,24 @@ namespace Spine
                 var texW = texture.Size.X;
                 var texH = texture.Size.Y;
 
-                SFML.Graphics.Vertex vt = new();
-                vt.Color.R = (byte)(tintR * 255);
-                vt.Color.G = (byte)(tintG * 255);
-                vt.Color.B = (byte)(tintB * 255);
-                vt.Color.A = (byte)(tintA * 255);
+                SFML.Graphics.Vertex vt = new()
+                {
+                    Color = new(
+                        (byte)(tintR * 255),
+                        (byte)(tintG * 255),
+                        (byte)(tintB * 255),
+                        (byte)(tintA * 255)
+                    )
+                };
 
-                for (int i = 0; i < trianglesLength; i++)
+                for (uint i = 0; i < trianglesLength; i++)
                 {
                     var index = triangles[i] << 1;
                     vt.Position.X = worldVertices[index];
                     vt.Position.Y = worldVertices[index + 1];
                     vt.TexCoords.X = uvs[index] * texW;
                     vt.TexCoords.Y = uvs[index + 1] * texH;
-                    _triangleVertices.Append(vt);
+                    _triangleVertices.AddVertex(vt);
                 }
 
                 clipping.ClipEnd(slot);
@@ -604,23 +616,23 @@ namespace Spine
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
 
                         vt.Position.X = _worldVertices[2];
                         vt.Position.Y = _worldVertices[3];
-                        _lineVertices.Append(vt); _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                         vt.Position.X = _worldVertices[4];
                         vt.Position.Y = _worldVertices[5];
-                        _lineVertices.Append(vt); _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                         vt.Position.X = _worldVertices[6];
                         vt.Position.Y = _worldVertices[7];
-                        _lineVertices.Append(vt); _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
                     }
                 }
             }
@@ -643,19 +655,19 @@ namespace Spine
 
                             vt.Position.X = _worldVertices[idx0];
                             vt.Position.Y = _worldVertices[idx0 + 1];
-                            _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt);
 
                             vt.Position.X = _worldVertices[idx1];
                             vt.Position.Y = _worldVertices[idx1 + 1];
-                            _lineVertices.Append(vt); _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                             vt.Position.X = _worldVertices[idx2];
                             vt.Position.Y = _worldVertices[idx2 + 1];
-                            _lineVertices.Append(vt); _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                             vt.Position.X = _worldVertices[idx0];
                             vt.Position.Y = _worldVertices[idx0 + 1];
-                            _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt);
                         }
                     }
                 }
@@ -675,19 +687,19 @@ namespace Spine
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
 
                         for (int i = 2; i < hullLength - 1; i += 2)
                         {
                             vt.Position.X = _worldVertices[i];
                             vt.Position.Y = _worldVertices[i + 1];
-                            _lineVertices.Append(vt);
-                            _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt);
+                            _lineVertices.AddVertex(vt);
                         }
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
                     }
                 }
             }
@@ -718,19 +730,19 @@ namespace Spine
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
 
                         for (int i = 2; i < length - 1; i += 2)
                         {
                             vt.Position.X = _worldVertices[i];
                             vt.Position.Y = _worldVertices[i + 1];
-                            _lineVertices.Append(vt);
-                            _lineVertices.Append(vt);
+                            _lineVertices.AddVertex(vt);
+                            _lineVertices.AddVertex(vt);
                         }
 
                         vt.Position.X = _worldVertices[0];
                         vt.Position.Y = _worldVertices[1];
-                        _lineVertices.Append(vt);
+                        _lineVertices.AddVertex(vt);
                     }
                 }
             }
@@ -744,23 +756,23 @@ namespace Spine
 
                 vt.Position.X = x1;
                 vt.Position.Y = y1;
-                _lineVertices.Append(vt);
+                _lineVertices.AddVertex(vt);
 
                 vt.Position.X = x2;
                 vt.Position.Y = y1;
-                _lineVertices.Append(vt); _lineVertices.Append(vt);
+                _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                 vt.Position.X = x2;
                 vt.Position.Y = y2;
-                _lineVertices.Append(vt); _lineVertices.Append(vt);
+                _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                 vt.Position.X = x1;
                 vt.Position.Y = y2;
-                _lineVertices.Append(vt); _lineVertices.Append(vt);
+                _lineVertices.AddVertex(vt); _lineVertices.AddVertex(vt);
 
                 vt.Position.X = x1;
                 vt.Position.Y = y1;
-                _lineVertices.Append(vt);
+                _lineVertices.AddVertex(vt);
             }
 
             // 骨骼线放最后画
@@ -937,7 +949,7 @@ namespace Spine
                     vt.Position.Y = worldVertices[index + 1];
                     vt.TexCoords.X = uvs[index] * texW;
                     vt.TexCoords.Y = uvs[index + 1] * texH;
-                    _triangleVertices.Append(vt);
+                    _triangleVertices.AddVertex(vt);
                 }
 
                 clipping.ClipEnd(slot);

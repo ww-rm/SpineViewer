@@ -87,7 +87,7 @@ namespace SpineRuntime34 {
 			float id = 1 / (pp.a * pp.d - pp.b * pp.c);
 			float x = targetX - pp.worldX, y = targetY - pp.worldY;
 			float tx = (x * pp.d - y * pp.b) * id - bone.x, ty = (y * pp.a - x * pp.c) * id - bone.y;
-			float rotationIK = MathUtils.Atan2(ty, tx) * MathUtils.radDeg - bone.shearX - bone.rotation;
+			float rotationIK = MathUtils.Atan2(ty, tx) * MathUtils.RadDeg - bone.shearX - bone.rotation;
 			if (bone.scaleX < 0) rotationIK += 180;
 			if (rotationIK > 180)
 				rotationIK -= 360;
@@ -218,13 +218,13 @@ namespace SpineRuntime34 {
 			outer:
 			float os = MathUtils.Atan2(cy, cx) * s2;
 			float rotation = parent.rotation;
-			a1 = (a1 - os) * MathUtils.radDeg + os1 - rotation;
+			a1 = (a1 - os) * MathUtils.RadDeg + os1 - rotation;
 			if (a1 > 180)
 				a1 -= 360;
 			else if (a1 < -180) a1 += 360;
 			parent.UpdateWorldTransform(px, py, rotation + a1 * alpha, parent.scaleX, parent.scaleY, 0, 0);
 			rotation = child.rotation;
-			a2 = ((a2 + os) * MathUtils.radDeg - child.shearX) * s2 + os2 - rotation;
+			a2 = ((a2 + os) * MathUtils.RadDeg - child.shearX) * s2 + os2 - rotation;
 			if (a2 > 180)
 				a2 -= 360;
 			else if (a2 < -180) a2 += 360;

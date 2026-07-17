@@ -75,7 +75,7 @@ namespace SpineRuntime34 {
 
 				if (rotateMix > 0) {
 					float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
-					float r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.degRad;
+					float r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.DegRad;
 					if (r > MathUtils.PI)
 						r -= MathUtils.PI2;
 					else if (r < -MathUtils.PI) r += MathUtils.PI2;
@@ -114,7 +114,7 @@ namespace SpineRuntime34 {
 					if (r > MathUtils.PI)
 						r -= MathUtils.PI2;
 					else if (r < -MathUtils.PI) r += MathUtils.PI2;
-					r = by + (r + data.offsetShearY * MathUtils.degRad) * shearMix;
+					r = by + (r + data.offsetShearY * MathUtils.DegRad) * shearMix;
 					float s = (float)Math.Sqrt(b * b + d * d);
 					bone.b = MathUtils.Cos(r) * s;
 					bone.d = MathUtils.Sin(r) * s;
