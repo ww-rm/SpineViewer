@@ -69,8 +69,8 @@ namespace SpineRuntime34 {
 		public float WorldY { get { return worldY; } }
 		public float WorldSignX { get { return worldSignX; } }
 		public float WorldSignY { get { return worldSignY; } }
-		public float WorldRotationX { get { return MathUtils.Atan2(c, a) * MathUtils.radDeg; } }
-		public float WorldRotationY { get { return MathUtils.Atan2(d, b) * MathUtils.radDeg; } }
+		public float WorldRotationX { get { return MathUtils.Atan2(c, a) * MathUtils.RadDeg; } }
+		public float WorldRotationY { get { return MathUtils.Atan2(d, b) * MathUtils.RadDeg; } }
 		public float WorldScaleX { get { return (float)Math.Sqrt(a * a + c * c) * worldSignX; } }
 		public float WorldScaleY { get { return (float)Math.Sqrt(b * b + d * d) * worldSignY; } }
 
@@ -210,7 +210,7 @@ namespace SpineRuntime34 {
 				Bone parent = this.parent;
 				if (parent == null) return rotation;
 				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, a = this.a, c = this.c;
-				return MathUtils.Atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.radDeg;
+				return MathUtils.Atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.RadDeg;
 			}
 		}
 
@@ -219,7 +219,7 @@ namespace SpineRuntime34 {
 				Bone parent = this.parent;
 				if (parent == null) return rotation;
 				float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d, b = this.b, d = this.d;
-				return MathUtils.Atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.radDeg;
+				return MathUtils.Atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.RadDeg;
 			}
 		}
 
@@ -244,12 +244,12 @@ namespace SpineRuntime34 {
 			if (parent == null) {
 				x = worldX;
 				y = worldY;
-				rotation = MathUtils.Atan2(c, a) * MathUtils.radDeg;
+				rotation = MathUtils.Atan2(c, a) * MathUtils.RadDeg;
 				scaleX = (float)Math.Sqrt(a * a + c * c);
 				scaleY = (float)Math.Sqrt(b * b + d * d);
 				float det = a * d - b * c;
 				shearX = 0;
-				shearY = MathUtils.Atan2(a * b + c * d, det) * MathUtils.radDeg;
+				shearY = MathUtils.Atan2(a * b + c * d, det) * MathUtils.RadDeg;
 				return;
 			}
 			float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
@@ -270,13 +270,13 @@ namespace SpineRuntime34 {
 			if (scaleX > 0.0001f) {
 				float det = ra * rd - rb * rc;
 				scaleY = det / scaleX;
-				shearY = MathUtils.Atan2(ra * rb + rc * rd, det) * MathUtils.radDeg;
-				rotation = MathUtils.Atan2(rc, ra) * MathUtils.radDeg;
+				shearY = MathUtils.Atan2(ra * rb + rc * rd, det) * MathUtils.RadDeg;
+				rotation = MathUtils.Atan2(rc, ra) * MathUtils.RadDeg;
 			} else {
 				scaleX = 0;
 				scaleY = (float)Math.Sqrt(rb * rb + rd * rd);
 				shearY = 0;
-				rotation = 90 - MathUtils.Atan2(rd, rb) * MathUtils.radDeg;
+				rotation = 90 - MathUtils.Atan2(rd, rb) * MathUtils.RadDeg;
 			}
 			appliedRotation = rotation;
 		}

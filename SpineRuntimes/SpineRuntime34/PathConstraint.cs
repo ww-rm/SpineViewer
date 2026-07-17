@@ -129,7 +129,7 @@ namespace SpineRuntime34 {
 						r = positions[p + 2];
 					else
 						r = MathUtils.Atan2(dy, dx);
-					r -= MathUtils.Atan2(c, a) - offsetRotation * MathUtils.degRad;
+					r -= MathUtils.Atan2(c, a) - offsetRotation * MathUtils.DegRad;
 					if (tip) {
 						cos = MathUtils.Cos(r);
 						sin = MathUtils.Sin(r);
