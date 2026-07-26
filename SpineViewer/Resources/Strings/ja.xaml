@@ -42,6 +42,7 @@
     <s:String x:Key="Str_AddSelectedItems">選択項目をインポート</s:String>
     <s:String x:Key="Str_GeneratePreviewForSelected">選択項目のプレビューを生成</s:String>
     <s:String x:Key="Str_DeletePreviewsForSelected">選択項目のプレビューを削除</s:String>
+    <s:String x:Key="Str_FullPath">フルパス</s:String>
 
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">名前</s:String>

@@ -42,6 +42,7 @@
     <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>
     <s:String x:Key="Str_GeneratePreviewForSelected">Generate Preview for Selected</s:String>
     <s:String x:Key="Str_DeletePreviewsForSelected">Delete Previews for Selected</s:String>
+    <s:String x:Key="Str_FullPath">Full Path</s:String>
 
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>

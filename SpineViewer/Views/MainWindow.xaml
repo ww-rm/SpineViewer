@@ -1046,22 +1046,36 @@
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
                                                         <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
-                                                            <Binding Path="Items.Count" ElementName="_localAssetRepoListBox"/>
-                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetRepoListBox"/>
+                                                            <Binding Path="Items.Count" ElementName="_localAssetRepoListView"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetRepoListView"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
                                             </StatusBarItem>
                                         </StatusBar>
 
-                                        <ListBox x:Name="_localAssetRepoListBox"
-                                                 ItemsSource="{Binding LocalDirectories}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding FullPath}"/>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                        <ListView x:Name="_localAssetRepoListView"
+                                                  ItemsSource="{Binding LocalDirectories}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            
+                                            <ListView.ItemContainerStyle>
+                                                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemBaseStyle.Small}">
+                                                    <Setter Property="ToolTip" Value="{Binding FullPath}"/>
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="{DynamicResource Str_Name}" DisplayMemberBinding="{Binding Name}"/>
+                                                    <GridViewColumn Header="{DynamicResource Str_FullPath}" DisplayMemberBinding="{Binding FullPath}"/>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
                                     </DockPanel>
 
                                     <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
@@ -1079,6 +1093,10 @@
                                                 </TextBlock>
                                             </StatusBarItem>
                                         </StatusBar>
+
+                                        <hc:TextBox DockPanel.Dock="Top"
+                                                    hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
+                                                    Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
 
                                         <ListBox x:Name="_localAssetFilesListBox"
                                                  ItemsSource="{Binding ShownItems}">

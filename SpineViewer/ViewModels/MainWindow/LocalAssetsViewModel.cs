@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using NLog;
 using Spine;
 using SpineViewer.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -24,13 +26,17 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private readonly MainWindowViewModel _vmMain;
 
+        private LocalDirectoryViewModel? _selectedDirectory = null;
+
         public LocalAssetsViewModel(MainWindowViewModel vmMain)
         {
             _vmMain = vmMain;
 #if DEBUG
             _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_SD\docs"));
-            _localDirectories[0].RefreshItems();
-            _shownItems.AddRange(_localDirectories[0].Items);
+            _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs"));
+
+            foreach (var a in _localDirectories)
+                a.RefreshItems();
 #endif
         }
 
@@ -44,7 +50,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 当前选中目录下的所有子项文件, 含递归目录
         /// </summary>
         public List<LocalDirectoryItemViewModel> ShownItems => _shownItems;
-        private readonly List<LocalDirectoryItemViewModel> _shownItems = [];
+        private List<LocalDirectoryItemViewModel> _shownItems = [];
 
         /// <summary>
         /// 筛选字符串
@@ -52,9 +58,63 @@ namespace SpineViewer.ViewModels.MainWindow
         public string? FilterString
         {
             get => string.IsNullOrWhiteSpace(_filterString) ? null : _filterString;
-            set => throw new NotImplementedException();
+            set
+            {
+                if (!SetProperty(ref _filterString, value)) 
+                    return;
+                RefreshItems();
+            }
         }
         private string? _filterString;
+
+        /// <summary>
+        /// 选中项发生变化命令
+        /// </summary>
+        public RelayCommand<IList?> Cmd_SelectionChanged => _cmd_SelectionChanged ??= new(args =>
+        {
+            // 选中单个目录时显示该目录下所有文件项
+            if (args is null || args.Count != 1)
+            {
+                _selectedDirectory = null;
+            }
+            else
+            {
+                _selectedDirectory = (LocalDirectoryViewModel)args[0]!;
+            }
+            RefreshItems();
+        });
+        private RelayCommand<IList?>? _cmd_SelectionChanged;
+
+        /// <summary>
+        /// 强制刷新列表项命令
+        /// </summary>
+        public RelayCommand Cmd_RefreshItems => _cmd_RefreshItems ??= new(() => RefreshItems(true));
+        private RelayCommand? _cmd_RefreshItems;
+
+        /// <summary>
+        /// 刷新目录下的文件项, 可以更新文件夹项缓存
+        /// </summary>
+        public void RefreshItems(bool forceRefreshCache = false)
+        {
+            _shownItems = [];
+            if (_selectedDirectory is not null)
+            {
+                if (_selectedDirectory.Items.Count <= 0 || forceRefreshCache)
+                {
+                    _selectedDirectory.RefreshItems();
+                }
+
+                if (string.IsNullOrWhiteSpace(_filterString))
+                {
+                    _shownItems.AddRange(_selectedDirectory.Items);
+                }
+                else
+                {
+                    _shownItems.AddRange(_selectedDirectory.Items.Where(it => it.FileName.Contains(_filterString, StringComparison.OrdinalIgnoreCase)));
+                }
+            }
+            OnPropertyChanged(nameof(ShownItems));
+        }
     }
 
     /// <summary>
@@ -80,11 +140,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 备注名称
         /// </summary>
-        public string Name 
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+        public string Name { get => _name; set => SetProperty(ref _name, value); }
         private string _name;
 
         /// <summary>
