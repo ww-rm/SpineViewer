@@ -1023,7 +1023,7 @@
                             </TabItem>
 
                             <!-- 本地资源 TODO: 记录布局 -->
-                            <TabItem Visibility="Collapsed">
+                            <TabItem DataContext="{Binding LocalAssetsViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
@@ -1045,26 +1045,23 @@
                                             <StatusBarItem>
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalCountStatusBar">
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
                                                             <Binding Path="Items.Count" ElementName="_localAssetRepoListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetRepoListBox"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
                                             </StatusBarItem>
                                         </StatusBar>
-                                        
-                                        <TreeView x:Name="_localAssetRepoListBox">
-                                            <TreeViewItem Header="t1">
-                                                <TreeViewItem Header="t11">
-                                                    
-                                                </TreeViewItem>
-                                            </TreeViewItem>
-                                            <TreeViewItem Header="t2">
-                                                <TreeViewItem Header="t21">
-                                                    
-                                                </TreeViewItem>
-                                            </TreeViewItem>
-                                        </TreeView>
+
+                                        <ListBox x:Name="_localAssetRepoListBox"
+                                                 ItemsSource="{Binding LocalDirectories}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding FullPath}"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
                                     </DockPanel>
 
                                     <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
@@ -1083,13 +1080,13 @@
                                             </StatusBarItem>
                                         </StatusBar>
 
-                                        <ListBox x:Name="_localAssetFilesListBox">
-                                            <ListBoxItem>
-                                                1
-                                            </ListBoxItem>
-                                            <ListBoxItem>
-                                                2
-                                            </ListBoxItem>
+                                        <ListBox x:Name="_localAssetFilesListBox"
+                                                 ItemsSource="{Binding ShownItems}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding FileName}" ToolTip="{Binding FullPath}"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
                                         </ListBox>
                                     </DockPanel>
                                 </Grid>
@@ -1190,7 +1187,7 @@
                                 </TabItem>
                                 
                                 <!-- TODO: 预览图查看标签页 -->
-                                <TabItem Visibility="Collapsed">
+                                <TabItem>
                                     <TabItem.Header>
                                         <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelPreviewImageTooltip}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">

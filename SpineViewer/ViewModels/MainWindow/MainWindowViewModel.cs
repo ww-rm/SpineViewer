@@ -24,6 +24,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _wallpaperRenderer = wallpaperRenderer;
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
+            _localAssetsViewModel = new(this);
             _sfmlRendererViewModel = new(this);
             _preferenceViewModel = new(this);
         }
@@ -115,6 +116,12 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public SpineObjectTabViewModel SpineObjectTabViewModel => _spineObjectTabViewModel;
         private readonly SpineObjectTabViewModel _spineObjectTabViewModel = new();
+
+        /// <summary>
+        /// 本地资源 ViewModel
+        /// </summary>
+        public LocalAssetsViewModel LocalAssetsViewModel => _localAssetsViewModel;
+        private readonly LocalAssetsViewModel _localAssetsViewModel;
 
         /// <summary>
         /// SFML 渲染 ViewModel
