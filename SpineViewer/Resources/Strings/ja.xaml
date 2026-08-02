@@ -36,13 +36,19 @@
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">フィルター</s:String>
     <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">フォルダーを開く</s:String>
-    <s:String x:Key="Str_RefreshItemsTooltip">リストを更新</s:String>
     <s:String x:Key="Str_FileDirectory">ファイルディレクトリ</s:String>
     <s:String x:Key="Str_FileName">ファイル名</s:String>
     <s:String x:Key="Str_AddSelectedItems">選択項目をインポート</s:String>
     <s:String x:Key="Str_GeneratePreviewForSelected">選択項目のプレビューを生成</s:String>
     <s:String x:Key="Str_DeletePreviewsForSelected">選択項目のプレビューを削除</s:String>
     <s:String x:Key="Str_FullPath">フルパス</s:String>
+    <s:String x:Key="Str_AddLocalAsset">追加...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">削除</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">上へ移動</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">下へ移動</s:String>
+    <s:String x:Key="Str_RefreshItems">項目一覧を更新</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">エクスプローラーで開く...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">編集...</s:String>
 
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">名前</s:String>

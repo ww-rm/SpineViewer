@@ -3,10 +3,14 @@ using CommunityToolkit.Mvvm.Input;
 using NLog;
 using Spine;
 using SpineViewer.Extensions;
+using SpineViewer.Models;
+using SpineViewer.Resources;
+using SpineViewer.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,11 +21,6 @@ namespace SpineViewer.ViewModels.MainWindow
 {
     public class LocalAssetsViewModel : ObservableObject
     {
-        /// <summary>
-        /// 缩略图文件名格式字符串, 需要一个参数
-        /// </summary>
-        public static string PreviewFileNameFormat => ".{0}.preview.webp";
-
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly MainWindowViewModel _vmMain;
@@ -34,9 +33,7 @@ namespace SpineViewer.ViewModels.MainWindow
 #if DEBUG
             _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_SD\docs"));
             _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs"));
-
-            foreach (var a in _localDirectories)
-                a.RefreshItems();
+            _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs(不存在测试)"));
 #endif
         }
 
@@ -86,15 +83,164 @@ namespace SpineViewer.ViewModels.MainWindow
         private RelayCommand<IList?>? _cmd_SelectionChanged;
 
         /// <summary>
+        /// 添加本地资源目录
+        /// </summary>
+        public RelayCommand<IList?> Cmd_AddLocalAsset => _cmd_AddLocalAsset ??= new(AddLocalAsset_Execute);
+        private RelayCommand<IList?>? _cmd_AddLocalAsset;
+
+        private void AddLocalAsset_Execute(IList? args)
+        {
+            if (!DialogService.ShowOpenFolderDialog(out var selectedPath))
+                return;
+
+            _localDirectories.Add(new(selectedPath!));
+            SaveLocalAssets();
+        }
+
+        /// <summary>
+        /// 移除本地资源目录
+        /// </summary>
+        public RelayCommand<IList?> Cmd_RemoveLocalAsset => _cmd_RemoveLocalAsset ??= new(RemoveLocalAsset_Execute, RemoveLocalAsset_CanExecute);
+        private RelayCommand<IList?> _cmd_RemoveLocalAsset;
+
+        private void RemoveLocalAsset_Execute(IList? args)
+        {
+            if (!RemoveLocalAsset_CanExecute(args)) return;
+
+            if (args!.Count > 1)
+            {
+                if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args.Count)))
+                    return;
+            }
+
+            // NOTE: 这里必须要浅拷贝一次, 不能直接对会被修改的绑定数据 args 进行 foreach 遍历
+            foreach (var dvm in args.Cast<LocalDirectoryViewModel>().ToArray())
+            {
+                _localDirectories.Remove(dvm);
+            }
+
+            SaveLocalAssets();
+        }
+
+        private bool RemoveLocalAsset_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 目录上移一位
+        /// </summary>
+        public RelayCommand<IList?> Cmd_MoveUpLocalAsset => _cmd_MoveUpLocalAsset ??= new(MoveUpLocalAsset_Execute, MoveUpLocalAsset_CanExecute);
+        private RelayCommand<IList?>? _cmd_MoveUpLocalAsset;
+
+        private void MoveUpLocalAsset_Execute(IList? args)
+        {
+            if (!MoveUpLocalAsset_CanExecute(args)) return;
+            var dvm = (LocalDirectoryViewModel)args![0]!;
+            var idx = _localDirectories.IndexOf(dvm);
+            if (idx <= 0) return;
+            _localDirectories.Move(idx, idx - 1);
+
+            SaveLocalAssets();
+        }
+
+        private bool MoveUpLocalAsset_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 目录下移一位
+        /// </summary>
+        public RelayCommand<IList?> Cmd_MoveDownLocalAsset => _cmd_MoveDownLocalAsset ??= new(MoveDownLocalAsset_Execute, MoveDownLocalAsset_CanExecute);
+        private RelayCommand<IList?>? _cmd_MoveDownLocalAsset;
+
+        private void MoveDownLocalAsset_Execute(IList? args)
+        {
+            if (!MoveDownLocalAsset_CanExecute(args)) return;
+            var dvm = (LocalDirectoryViewModel)args![0]!;
+            var idx = _localDirectories.IndexOf(dvm);
+            if (idx < 0 || idx >= _localDirectories.Count - 1) return;
+            _localDirectories.Move(idx, idx + 1);
+
+            SaveLocalAssets();
+        }
+
+        private bool MoveDownLocalAsset_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 在资源管理中打开本地资源目录
+        /// </summary>
+        public RelayCommand<IList?> Cmd_OpenLocalAssetInExplorer => _cmd_OpenLocalAssetInExplorer ??= new(OpenLocalAssetInExplorer_Execute, OpenLocalAssetInExplorer_CanExecute);
+        private RelayCommand<IList?>? _cmd_OpenLocalAssetInExplorer;
+
+        private void OpenLocalAssetInExplorer_Execute(IList? args)
+        {
+            if (!OpenLocalAssetInExplorer_CanExecute(args)) return;
+            var dvm = (LocalDirectoryViewModel)args![0]!;
+            dvm.OpenInExplorer();
+        }
+
+        private bool OpenLocalAssetInExplorer_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
+            return true;
+        }
+
+        /// <summary>
         /// 强制刷新列表项命令
         /// </summary>
-        public RelayCommand Cmd_RefreshItems => _cmd_RefreshItems ??= new(() => RefreshItems(true));
-        private RelayCommand? _cmd_RefreshItems;
+        public RelayCommand<IList?> Cmd_RefreshItems => _cmd_RefreshItems ??= new(
+            args =>
+            {
+                if (args is null) return;
+                if (args.Count != 1) return;
+                RefreshItems(true);
+            },
+            args =>
+            {
+                if (args is null) return false;
+                if (args.Count != 1) return false;
+                return true;
+            }
+        );
+        private RelayCommand<IList?>? _cmd_RefreshItems;
+
+        /// <summary>
+        /// 编辑资源目录信息
+        /// </summary>
+        public RelayCommand<IList?> Cmd_EditLocalAsset => _cmd_EditLocalAsset ??= new(EditLocalAsset_Execute, EditLocalAsset_CanExecute);
+        private RelayCommand<IList?>? _cmd_EditLocalAsset;
+
+        private void EditLocalAsset_Execute(IList? args)
+        {
+            if (!EditLocalAsset_CanExecute(args)) return;
+            var dvm = (LocalDirectoryViewModel)args![0]!;
+
+            _logger.Warn("TODO: EditLocalAsset");
+        }
+
+        private bool EditLocalAsset_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
+            return true;
+        }
 
         /// <summary>
         /// 刷新目录下的文件项, 可以更新文件夹项缓存
         /// </summary>
-        public void RefreshItems(bool forceRefreshCache = false)
+        private void RefreshItems(bool forceRefreshCache = false)
         {
             _shownItems = [];
             if (_selectedDirectory is not null)
@@ -115,19 +261,28 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             OnPropertyChanged(nameof(ShownItems));
         }
+
+        /// <summary>
+        /// 保存资源列表至本地
+        /// </summary>
+        private void SaveLocalAssets()
+        {
+            _logger.Warn("TODO: SaveLocalAssets");
+        }
     }
 
     /// <summary>
     /// 本地资源目录对象
     /// </summary>
-    public class LocalDirectoryViewModel : ObservableObject
+    public sealed class LocalDirectoryViewModel : ObservableObject
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public LocalDirectoryViewModel(string path)
         {
-            if (!Directory.Exists(path))
-                throw new FileNotFoundException("Directory not exists", nameof(path));
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentNullException(nameof(path));
+
             FullPath = Path.GetFullPath(path);
             _name = Path.GetFileName(FullPath);
         }
@@ -155,6 +310,13 @@ namespace SpineViewer.ViewModels.MainWindow
         public void RefreshItems()
         {
             _items.Clear();
+
+            if (!Directory.Exists(FullPath))
+            {
+                _logger.Error("Directory '{0}' is not existed.", FullPath);
+                return;
+            }
+
             try
             {
                 foreach (var file in Directory.EnumerateFiles(FullPath, "*.*", SearchOption.AllDirectories))
@@ -170,13 +332,49 @@ namespace SpineViewer.ViewModels.MainWindow
                 _logger.Error("Failed to enumerate files in dir: {0}, {1}", FullPath, ex.Message);
             }
         }
+
+        /// <summary>
+        /// 在资源管理器中打开目录
+        /// </summary>
+        public void OpenInExplorer()
+        {
+            if (!Directory.Exists(FullPath))
+            {
+                _logger.Error("Directory '{0}' is not existed.", FullPath);
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "explorer.exe",
+                Arguments = $"\"{FullPath}\"",
+                UseShellExecute = true,
+            });
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is LocalDirectoryViewModel vm)
+                return vm.FullPath.Equals(FullPath);
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return FullPath.GetHashCode();
+        }
     }
 
     /// <summary>
     /// 本地资源对象
     /// </summary>
-    public class LocalDirectoryItemViewModel : ObservableObject
+    public sealed class LocalDirectoryItemViewModel : ObservableObject
     {
+        /// <summary>
+        /// 缩略图文件名格式字符串, 需要一个参数
+        /// </summary>
+        public static string PreviewFileNameFormat => ".{0}.preview.webp";
+
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public LocalDirectoryItemViewModel(string path)
@@ -184,7 +382,7 @@ namespace SpineViewer.ViewModels.MainWindow
             FullPath = Path.GetFullPath(path);
             FileDirectory = Path.GetDirectoryName(FullPath) ?? "";
             FileName = Path.GetFileName(FullPath);
-            PreviewFilePath = Path.Combine(FileDirectory, string.Format(LocalAssetsViewModel.PreviewFileNameFormat, FileName));
+            PreviewFilePath = Path.Combine(FileDirectory, string.Format(PreviewFileNameFormat, FileName));
         }
 
         /// <summary>
@@ -229,6 +427,18 @@ namespace SpineViewer.ViewModels.MainWindow
                     return null;
                 }
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is LocalDirectoryItemViewModel vm) 
+                return vm.FullPath.Equals(FullPath);
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return FullPath.GetHashCode();
         }
     }
 }

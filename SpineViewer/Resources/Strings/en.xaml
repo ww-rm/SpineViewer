@@ -36,13 +36,19 @@
     <!-- 浏览标签页 -->
     <s:String x:Key="Str_Filter">Filter</s:String>
     <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">Open Directory</s:String>
-    <s:String x:Key="Str_RefreshItemsTooltip">Refresh Items</s:String>
     <s:String x:Key="Str_FileDirectory">File Directory</s:String>
     <s:String x:Key="Str_FileName">File Name</s:String>
     <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>
     <s:String x:Key="Str_GeneratePreviewForSelected">Generate Preview for Selected</s:String>
     <s:String x:Key="Str_DeletePreviewsForSelected">Delete Previews for Selected</s:String>
     <s:String x:Key="Str_FullPath">Full Path</s:String>
+    <s:String x:Key="Str_AddLocalAsset">Add...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">Remove</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">Move Up</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">Move Down</s:String>
+    <s:String x:Key="Str_RefreshItems">Refresh Items</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">Open in File Explorer...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">Edit...</s:String>
 
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>

@@ -1054,6 +1054,7 @@
                                             </StatusBarItem>
                                         </StatusBar>
 
+                                        <!-- 本地资源文件夹列表 -->
                                         <ListView x:Name="_localAssetRepoListView"
                                                   ItemsSource="{Binding LocalDirectories}">
                                             <i:Interaction.Triggers>
@@ -1075,6 +1076,45 @@
                                                     <GridViewColumn Header="{DynamicResource Str_FullPath}" DisplayMemberBinding="{Binding FullPath}"/>
                                                 </GridView>
                                             </ListView.View>
+
+                                            <ListView.InputBindings>
+                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenLocalAssetInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                            </ListView.InputBindings>
+
+                                            <ListView.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_AddLocalAsset}"
+                                                              Command="{Binding Cmd_AddLocalAsset}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RemoveLocalAsset}"
+                                                              InputGestureText="Delete"
+                                                              Command="{Binding Cmd_RemoveLocalAsset}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_MoveUpLocalAsset}"
+                                                              InputGestureText="Alt+W"
+                                                              Command="{Binding Cmd_MoveUpLocalAsset}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_MoveDownLocalAsset}"
+                                                              InputGestureText="Alt+S"
+                                                              Command="{Binding Cmd_MoveDownLocalAsset}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_OpenLocalAssetInExplorer}"
+                                                              InputGestureText="Shift+Alt+E"
+                                                              Command="{Binding Cmd_OpenLocalAssetInExplorer}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RefreshItems}"
+                                                              Command="{Binding Cmd_RefreshItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_EditLocalAsset}"
+                                                              Command="{Binding Cmd_EditLocalAsset}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListView.ContextMenu>
+
                                         </ListView>
                                     </DockPanel>
 
@@ -1098,8 +1138,8 @@
                                                     hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
                                                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                        <ListBox x:Name="_localAssetFilesListBox"
-                                                 ItemsSource="{Binding ShownItems}">
+                                        <!-- 本地资源目录文件列表 -->
+                                        <ListBox x:Name="_localAssetFilesListBox" ItemsSource="{Binding ShownItems}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding FileName}" ToolTip="{Binding FullPath}"/>
