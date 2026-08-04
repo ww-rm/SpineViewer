@@ -6,6 +6,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace SpineViewer.ViewModels.MainWindow
 {
     public class LocalAssetsViewModel : ObservableObject
     {
+        /// <summary>
+        /// 文件保存路径
+        /// </summary>
+        public static readonly string LocalAssetsFilePath = Path.Combine(App.ProcessDataDirectory, "localassets.json");
+
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly MainWindowViewModel _vmMain;
@@ -30,11 +36,6 @@ namespace SpineViewer.ViewModels.MainWindow
         public LocalAssetsViewModel(MainWindowViewModel vmMain)
         {
             _vmMain = vmMain;
-#if DEBUG
-            _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_SD\docs"));
-            _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs"));
-            _localDirectories.Add(new(@"D:\ACGN\AzurLane_Export\AzurLane_Dynamic\docs(不存在测试)"));
-#endif
         }
 
         /// <summary>
@@ -263,11 +264,37 @@ namespace SpineViewer.ViewModels.MainWindow
         }
 
         /// <summary>
+        /// 从本地加载资源列表
+        /// </summary>
+        public void LoadLocalAssets()
+        {
+            // 先清空列表
+            _selectedDirectory = null;
+            RefreshItems();
+            _localDirectories.Clear();
+
+            if (JsonHelper.Deserialize<LocalAssetsModel>(LocalAssetsFilePath, out var m, true))
+            {
+                foreach (var it in m.LocalDirectories)
+                {
+                    _localDirectories.Add(new(it.FullPath) { Name = it.Name });
+                }
+            }
+        }
+
+        /// <summary>
         /// 保存资源列表至本地
         /// </summary>
-        private void SaveLocalAssets()
+        public void SaveLocalAssets()
         {
-            _logger.Warn("TODO: SaveLocalAssets");
+            var m = new LocalAssetsModel();
+
+            foreach (var dvm in _localDirectories)
+            {
+                m.LocalDirectories.Add(new() { FullPath = dvm.FullPath, Name = dvm.Name });
+            }
+
+            JsonHelper.Serialize(m, LocalAssetsFilePath);
         }
     }
 
@@ -295,7 +322,16 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 备注名称
         /// </summary>
-        public string Name { get => _name; set => SetProperty(ref _name, value); }
+        public string Name 
+        { 
+            get => _name;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    value = Path.GetFileName(FullPath);
+                SetProperty(ref _name, value);
+            }
+        }
         private string _name;
 
         /// <summary>

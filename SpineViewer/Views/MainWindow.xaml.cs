@@ -183,6 +183,9 @@ public partial class MainWindow : Window
         // 加载首选项
         _vm.PreferenceViewModel.LoadPreference();
 
+        // 加载资源列表
+        _vm.LocalAssetsViewModel.LoadLocalAssets();
+
         // 还原上一次用户历史状态并开启监听器
         LoadUserState();
         AddUserStateListeners();
