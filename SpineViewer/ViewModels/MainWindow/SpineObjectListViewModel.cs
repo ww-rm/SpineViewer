@@ -153,8 +153,8 @@ namespace SpineViewer.ViewModels.MainWindow
                     if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_TooManyItemsToAddQuest, validPaths.Count)))
                         return;
                 }
-                ProgressService.RunAsync((pr, ct) => AddSpineObjectsTask(
-                    validPaths.ToArray(), pr, ct),
+                ProgressService.RunAsync(
+                    (pr, ct) => AddSpineObjectsTask(validPaths.ToArray(), pr, ct),
                     AppResource.Str_AddSpineObjectsTitle
                 );
             }
@@ -453,8 +453,8 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             else
             {
-                ProgressService.RunAsync((pr, ct) => ReloadSpineObjectsTask(
-                    args.Cast<SpineObjectModel>().ToArray(), pr, ct),
+                ProgressService.RunAsync(
+                    (pr, ct) => ReloadSpineObjectsTask(args.Cast<SpineObjectModel>().ToArray(), pr, ct),
                     AppResource.Str_ReloadSpineObjectsTitle
                 );
             }
@@ -805,8 +805,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
             if (models.Count > 1)
             {
-                ProgressService.RunAsync((pr, ct) => AddSpineObjectFromWorkspaceListTask(
-                    models, pr, ct),
+                ProgressService.RunAsync(
+                    (pr, ct) => AddSpineObjectFromWorkspaceListTask(models, pr, ct),
                     AppResource.Str_AddSpineObjectsTitle
                 );
             }
