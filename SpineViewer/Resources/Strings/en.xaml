@@ -33,23 +33,6 @@
     <s:String x:Key="Str_ModelPreviewImage">Model Preview Image</s:String>
     <s:String x:Key="Str_ModelPreviewImageTooltip">Add and select a model preview image to view from the asset list on the left</s:String>
 
-    <!-- 浏览标签页 -->
-    <s:String x:Key="Str_Filter">Filter</s:String>
-    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">Open Directory</s:String>
-    <s:String x:Key="Str_FileDirectory">File Directory</s:String>
-    <s:String x:Key="Str_FileName">File Name</s:String>
-    <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>
-    <s:String x:Key="Str_GeneratePreviewForSelected">Generate Preview for Selected</s:String>
-    <s:String x:Key="Str_DeletePreviewsForSelected">Delete Previews for Selected</s:String>
-    <s:String x:Key="Str_FullPath">Full Path</s:String>
-    <s:String x:Key="Str_AddLocalAsset">Add...</s:String>
-    <s:String x:Key="Str_RemoveLocalAsset">Remove</s:String>
-    <s:String x:Key="Str_MoveUpLocalAsset">Move Up</s:String>
-    <s:String x:Key="Str_MoveDownLocalAsset">Move Down</s:String>
-    <s:String x:Key="Str_RefreshItems">Refresh Items</s:String>
-    <s:String x:Key="Str_OpenLocalAssetInExplorer">Open in File Explorer...</s:String>
-    <s:String x:Key="Str_EditLocalAsset">Edit...</s:String>
-
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>
     <s:String x:Key="Str_Show">Show</s:String>
@@ -157,6 +140,20 @@
     <s:String x:Key="Str_BackgroundColor">Background Color</s:String>
     <s:String x:Key="Str_BackgroundImagePath">Background Image Path</s:String>
     <s:String x:Key="Str_BackgroundImageMode">Background Image Mode</s:String>
+
+    <!-- 本地资源标签页 -->
+    <s:String x:Key="Str_Filter">Filter</s:String>
+    <s:String x:Key="Str_FullPath">Full Path</s:String>
+    <s:String x:Key="Str_AddLocalAsset">Add...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">Remove</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">Move Up</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">Move Down</s:String>
+    <s:String x:Key="Str_RefreshItems">Refresh Item List</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">Open in File Explorer...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">Edit...</s:String>
+    <s:String x:Key="Str_GeneratePreviews">Generate Previews...</s:String>
+    <s:String x:Key="Str_DeletePreviews">Delete Previews</s:String>
+    <s:String x:Key="Str_ImportSelectedItems">Import Selected Items</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">Stop</s:String>

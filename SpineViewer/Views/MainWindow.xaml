@@ -903,7 +903,7 @@
                             </TabItem>
                             
                             <!-- 浏览页 -->
-                            <TabItem DataContext="{Binding ExplorerListViewModel}">
+                            <TabItem DataContext="{Binding ExplorerListViewModel}" Visibility="Collapsed">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
@@ -964,14 +964,14 @@
 
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddSelectedItems}"
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
                                                               Command="{Binding Cmd_AddSelectedItems}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviewForSelected}"
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
                                                               Command="{Binding Cmd_GeneratePreviews}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_DeletePreviewsForSelected}"
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviews}"
                                                               Command="{Binding Cmd_DeletePreviews}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                 </ContextMenu>
@@ -1112,6 +1112,16 @@
                                                     <MenuItem Header="{DynamicResource Str_EditLocalAsset}"
                                                               Command="{Binding Cmd_EditLocalAsset}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviews}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
+                                                              Command="{Binding Cmd_ImportSelectedItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                 </ContextMenu>
                                             </ListView.ContextMenu>
 
@@ -1145,6 +1155,20 @@
                                                     <TextBlock Text="{Binding FileName}" ToolTip="{Binding FullPath}"/>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
+
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviews}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
+                                                              Command="{Binding Cmd_ImportSelectedItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
                                         </ListBox>
                                     </DockPanel>
                                 </Grid>

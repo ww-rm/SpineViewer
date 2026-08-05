@@ -33,23 +33,6 @@
     <s:String x:Key="Str_ModelPreviewImage">模型预览图</s:String>
     <s:String x:Key="Str_ModelPreviewImageTooltip">在左侧资源列表中添加并选择要查看的模型预览图</s:String>
 
-    <!-- 浏览标签页 -->
-    <s:String x:Key="Str_Filter">筛选</s:String>
-    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">打开目录</s:String>
-    <s:String x:Key="Str_FileDirectory">文件目录</s:String>
-    <s:String x:Key="Str_FileName">文件名</s:String>
-    <s:String x:Key="Str_AddSelectedItems">导入选中项</s:String>
-    <s:String x:Key="Str_GeneratePreviewForSelected">为选中项生成预览图</s:String>
-    <s:String x:Key="Str_DeletePreviewsForSelected">删除选中项的预览图</s:String>
-    <s:String x:Key="Str_FullPath">完整路径</s:String>
-    <s:String x:Key="Str_AddLocalAsset">添加...</s:String>
-    <s:String x:Key="Str_RemoveLocalAsset">移除</s:String>
-    <s:String x:Key="Str_MoveUpLocalAsset">上移</s:String>
-    <s:String x:Key="Str_MoveDownLocalAsset">下移</s:String>
-    <s:String x:Key="Str_RefreshItems">刷新列表项</s:String>
-    <s:String x:Key="Str_OpenLocalAssetInExplorer">在资源管理器中打开...</s:String>
-    <s:String x:Key="Str_EditLocalAsset">编辑...</s:String>
-
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">名称</s:String>
     <s:String x:Key="Str_Show">显示</s:String>
@@ -157,6 +140,20 @@
     <s:String x:Key="Str_BackgroundColor">背景颜色</s:String>
     <s:String x:Key="Str_BackgroundImagePath">背景图片路径</s:String>
     <s:String x:Key="Str_BackgroundImageMode">背景图片模式</s:String>
+
+    <!-- 本地资源标签页 -->
+    <s:String x:Key="Str_Filter">筛选</s:String>
+    <s:String x:Key="Str_FullPath">完整路径</s:String>
+    <s:String x:Key="Str_AddLocalAsset">添加...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">移除</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">上移</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">下移</s:String>
+    <s:String x:Key="Str_RefreshItems">刷新列表项</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">在资源管理器中打开...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">编辑...</s:String>
+    <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
+    <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
+    <s:String x:Key="Str_ImportSelectedItems">导入选中项</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>

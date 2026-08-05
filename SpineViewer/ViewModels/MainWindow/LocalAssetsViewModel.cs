@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
 {
@@ -28,6 +29,32 @@ namespace SpineViewer.ViewModels.MainWindow
         public static readonly string LocalAssetsFilePath = Path.Combine(App.ProcessDataDirectory, "localassets.json");
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// 辅助函数, 从 Command 的传参里获取所有的文件项
+        /// </summary>
+        /// <param name="args">元素类型可以是 <see cref="LocalDirectoryViewModel"/> 或者 <see cref="LocalDirectoryItemViewModel"/></param>
+        private static List<LocalDirectoryItemViewModel> GetDirectoryItems(IList args)
+        {
+            List<LocalDirectoryItemViewModel> items = [];
+            foreach (var it in args!)
+            {
+                switch (it)
+                {
+                    case LocalDirectoryViewModel dvm:
+                        dvm.RefreshItems(); // 需要强制刷新一次文件列表缓存
+                        items.AddRange(dvm.Items);
+                        break;
+                    case LocalDirectoryItemViewModel itm:
+                        items.Add(itm);
+                        break;
+                    default:
+                        _logger.Warn("Invalid type {0}, skip delete it", it.GetType().Name);
+                        break;
+                }
+            }
+            return items;
+        }
 
         private readonly MainWindowViewModel _vmMain;
 
@@ -64,6 +91,24 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
         private string? _filterString;
+
+        /// <summary>
+        /// 预览图的保存质量
+        /// </summary>
+        public int PreviewQuality { get => _previewQuality; set => SetProperty(ref _previewQuality, Math.Clamp(value, 0, 100)); }
+        private int _previewQuality = 80;
+
+        /// <summary>
+        /// 生成预览图边长的最大分辨率
+        /// </summary>
+        public uint PreviewMaxResolution { get => _previewMaxResolution; set => SetProperty(ref _previewMaxResolution, value); }
+        private uint _previewMaxResolution = 1024;
+
+        /// <summary>
+        /// 生成预览图时是否使用预乘 Alpha
+        /// </summary>
+        public bool PreviewPma { get => _previewPma; set => SetProperty(ref _previewPma, value); }
+        private bool _previewPma = false;
 
         /// <summary>
         /// 选中项发生变化命令
@@ -218,27 +263,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private RelayCommand<IList?>? _cmd_RefreshItems;
 
         /// <summary>
-        /// 编辑资源目录信息
-        /// </summary>
-        public RelayCommand<IList?> Cmd_EditLocalAsset => _cmd_EditLocalAsset ??= new(EditLocalAsset_Execute, EditLocalAsset_CanExecute);
-        private RelayCommand<IList?>? _cmd_EditLocalAsset;
-
-        private void EditLocalAsset_Execute(IList? args)
-        {
-            if (!EditLocalAsset_CanExecute(args)) return;
-            var dvm = (LocalDirectoryViewModel)args![0]!;
-
-            _logger.Warn("TODO: EditLocalAsset");
-        }
-
-        private bool EditLocalAsset_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count != 1) return false;
-            return true;
-        }
-
-        /// <summary>
         /// 刷新目录下的文件项, 可以更新文件夹项缓存
         /// </summary>
         private void RefreshItems(bool forceRefreshCache = false)
@@ -261,6 +285,193 @@ namespace SpineViewer.ViewModels.MainWindow
                 }
             }
             OnPropertyChanged(nameof(ShownItems));
+        }
+
+        /// <summary>
+        /// 编辑资源目录信息
+        /// </summary>
+        public RelayCommand<IList?> Cmd_EditLocalAsset => _cmd_EditLocalAsset ??= new(EditLocalAsset_Execute, EditLocalAsset_CanExecute);
+        private RelayCommand<IList?>? _cmd_EditLocalAsset;
+
+        private void EditLocalAsset_Execute(IList? args)
+        {
+            if (!EditLocalAsset_CanExecute(args)) return;
+            var dvm = (LocalDirectoryViewModel)args![0]!;
+
+            _logger.Warn("TODO: EditLocalAsset");
+        }
+
+        private bool EditLocalAsset_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count != 1) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 为选中的目录/文件项生成预览图
+        /// </summary>
+        public RelayCommand<IList?> Cmd_GeneratePreviews => _cmd_GeneratePreviews ??= new(GeneratePreviews_Execute, GeneratePreviews_CanExecute);
+        private RelayCommand<IList?>? _cmd_GeneratePreviews;
+
+        private void GeneratePreviews_Execute(IList? args)
+        {
+            if (!GeneratePreviews_CanExecute(args))
+                return;
+
+            // TODO: 弹出预览图参数对话框并判断用户选择
+
+            var items = GetDirectoryItems(args!);
+            GeneratePreviews(items);
+        }
+
+        private bool GeneratePreviews_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        private void GeneratePreviews(List<LocalDirectoryItemViewModel> items)
+        {
+            if (items.Count == 0)
+                return;
+
+            if (items.Count <= 1)
+            {
+                // TOOD: 生成单张预览图
+            }
+            else
+            {
+                ProgressService.RunAsync(
+                    (pr, ct) => GeneratePreviewsTask(items, pr, ct),
+                    AppResource.Str_GeneratePreviewsTitle
+                );
+            }
+        }
+
+        private void GeneratePreviewsTask(List<LocalDirectoryItemViewModel> items, IProgressReporter reporter, CancellationToken ct)
+        {
+            // 生成多张预览图
+        }
+
+        /// <summary>
+        /// 为选中的目录/文件项删除预览图
+        /// </summary>
+        public RelayCommand<IList?> Cmd_DeletePreviews => _cmd_DeletePreviews ??= new(DeletePreviews_Execute, DeletePreviews_CanExecute);
+        private RelayCommand<IList?>? _cmd_DeletePreviews;
+
+        private void DeletePreviews_Execute(IList? args)
+        {
+            if (!DeletePreviews_CanExecute(args))
+                return;
+
+            var items = GetDirectoryItems(args!);
+
+            if (items.Count <= 0)
+                return;
+
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_DeleteItemsQuest, items.Count))) 
+                return;
+
+            if (args.Count <= 10)
+            {
+                foreach (var it in items)
+                {
+                    try
+                    {
+                        File.Delete(it.PreviewFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex.ToString());
+                        _logger.Error("Failed to delete preview: {0}, {1}", it.PreviewFilePath, ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                ProgressService.RunAsync(
+                    (pr, ct) => DeletePreviewsTask(items, pr, ct),
+                    AppResource.Str_DeletePreviewsTitle
+                );
+            }
+        }
+
+        private bool DeletePreviews_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
+        }
+
+        private void DeletePreviewsTask(List<LocalDirectoryItemViewModel> items, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = items.Count;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var it = items[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {it.FullPath}";
+
+                try
+                {
+                    File.Delete(it.PreviewFilePath);
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to delete preview: {0}, {1}", it.PreviewFilePath, ex.Message);
+                    error++;
+                }
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {it}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Preview deletion {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} previews deleted successfully", success);
+        }
+
+        /// <summary>
+        /// 导入选中的目录/文件项
+        /// </summary>
+        public RelayCommand<IList?> Cmd_ImportSelectedItems => _cmd_ImportSelectedItems ??= new(ImportSelectedItems_Execute, ImportSelectedItems_CanExecute);
+        private RelayCommand<IList?>? _cmd_ImportSelectedItems;
+
+        private void ImportSelectedItems_Execute(IList? args)
+        {
+            if (!ImportSelectedItems_CanExecute(args))
+                return;
+
+            var items = GetDirectoryItems(args!);
+
+            if (items.Count <= 0)
+                return;
+
+            _vmMain.SpineObjectListViewModel.AddSpineObjectFromFileList(items.Select(m => m.FullPath).ToArray());
+        }
+
+        private bool ImportSelectedItems_CanExecute(IList? args)
+        {
+            if (args is null) return false;
+            if (args.Count <= 0) return false;
+            return true;
         }
 
         /// <summary>
