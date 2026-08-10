@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using NLog;
 using Spine;
+using Spine.Exporters;
 using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
@@ -16,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 
@@ -101,7 +103,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// <summary>
         /// 生成预览图边长的最大分辨率
         /// </summary>
-        public uint PreviewMaxResolution { get => _previewMaxResolution; set => SetProperty(ref _previewMaxResolution, value); }
+        public uint PreviewMaxResolution { get => _previewMaxResolution; set => SetProperty(ref _previewMaxResolution, Math.Clamp(value, 16, 4096)); }
         private uint _previewMaxResolution = 1024;
 
         /// <summary>
@@ -334,12 +336,31 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void GeneratePreviews(List<LocalDirectoryItemViewModel> items)
         {
-            if (items.Count == 0)
+            if (items.Count <= 0)
                 return;
 
             if (items.Count <= 1)
             {
-                // TOOD: 生成单张预览图
+                var m = items[0];
+                try
+                {
+                    using var sp = new SpineObject(m.FullPath) { UsePma = PreviewPma };
+                    var bounds = sp.GetCurrentBounds();
+                    using var exporter = new FrameExporter()
+                    {
+                        Format = SkiaSharp.SKEncodedImageFormat.Webp,
+                        Quality = PreviewQuality,
+                        BackgroundColor = SFML.Graphics.Color.Transparent,
+                    };
+                    SetAutoResolution(exporter, bounds);
+                    exporter.Export(m.PreviewFilePath, sp);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to generate preview: {0}, {1}", m.PreviewFilePath, ex.Message);
+                }
+                _logger.LogCurrentProcessMemoryUsage();
             }
             else
             {
@@ -352,7 +373,80 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private void GeneratePreviewsTask(List<LocalDirectoryItemViewModel> items, IProgressReporter reporter, CancellationToken ct)
         {
-            // 生成多张预览图
+            int totalCount = items.Count;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+
+            using var exporter = new FrameExporter()
+            {
+                Format = SkiaSharp.SKEncodedImageFormat.Webp,
+                Quality = PreviewQuality,
+                BackgroundColor = SFML.Graphics.Color.Transparent,
+            };
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var m = items[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {m.FullPath}";
+
+                try
+                {
+                    using var sp = new SpineObject(m.FullPath);
+                    var bounds = sp.GetCurrentBounds();
+                    SetAutoResolution(exporter, bounds);
+                    exporter.Export(m.PreviewFilePath, sp);
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to generate preview: {0}, {1}", m.PreviewFilePath, ex.Message);
+                    error++;
+                }
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {m}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Preview generation {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} previews generated successfully", success);
+
+            _logger.LogCurrentProcessMemoryUsage();
+        }
+
+        /// <summary>
+        /// 使用提供的包围盒设置自动分辨率, 并留有 1 像素的边距
+        /// </summary>
+        private void SetAutoResolution(BaseExporter exporter, Rect bounds)
+        {
+            uint margin = 1;
+            uint maxResolution = _previewMaxResolution - margin * 2;
+            var resolution = bounds.Size.ToVector2u();
+            if (resolution.X >= maxResolution || resolution.Y >= maxResolution)
+            {
+                // 缩小到最大像素限制
+                var scale = Math.Min(maxResolution / bounds.Width, maxResolution / bounds.Height);
+                resolution.X = (uint)(bounds.Width * scale);
+                resolution.Y = (uint)(bounds.Height * scale);
+            }
+            exporter.Resolution = new(resolution.X + margin * 2, resolution.Y + margin * 2);
+
+            var viewBounds = bounds.ToFloatRect().GetCanvasBounds(resolution, 2);
+            exporter.Size = new(viewBounds.Width, -viewBounds.Height);
+            exporter.Center = viewBounds.Position + viewBounds.Size / 2;
+            exporter.Rotation = 0;
         }
 
         /// <summary>
