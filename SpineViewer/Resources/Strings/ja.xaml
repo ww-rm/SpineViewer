@@ -155,6 +155,14 @@
     <s:String x:Key="Str_DeletePreviews">プレビューを削除</s:String>
     <s:String x:Key="Str_ImportSelectedItems">選択した項目をインポート</s:String>
 
+    <!-- 生成预览图弹窗文本 -->
+    <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>
+    <s:String x:Key="Str_PreviewUsePma">アルファチャンネルを事前乗算</s:String>
+    <s:String x:Key="Str_PreviewMaxResolution">最大解像度</s:String>
+    <s:String x:Key="Str_PreviewMaxResolutionTooltip">水平方向と垂直方向の最大解像度を指定します。範囲：16～4096</s:String>
+    <s:String x:Key="Str_PreviewQuality">画質</s:String>
+    <s:String x:Key="Str_PreviewQualityTooltip">範囲：0～100</s:String>
+
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>
     <s:String x:Key="Str_RestartTooltip">最初から再生</s:String>
@@ -173,7 +181,6 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">OK</s:String>
     <s:String x:Key="Str_Cancel">キャンセル</s:String>
-    <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">プレビューを削除</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">一括でスケルトンファイルを追加</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">スケルトンファイルの再読み込み</s:String>

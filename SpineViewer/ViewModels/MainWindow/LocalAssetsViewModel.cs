@@ -321,7 +321,8 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!GeneratePreviews_CanExecute(args))
                 return;
 
-            // TODO: 弹出预览图参数对话框并判断用户选择
+            if (!DialogService.ShowGeneratePreviewsDialog(this))
+                return;
 
             var items = GetDirectoryItems(args!);
             GeneratePreviews(items);

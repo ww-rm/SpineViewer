@@ -154,6 +154,14 @@
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
     <s:String x:Key="Str_ImportSelectedItems">导入选中项</s:String>
+    
+    <!-- 生成预览图弹窗文本 -->
+    <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
+    <s:String x:Key="Str_PreviewUsePma">预乘Alpha通道</s:String>
+    <s:String x:Key="Str_PreviewMaxResolution">最大分辨率</s:String>
+    <s:String x:Key="Str_PreviewMaxResolutionTooltip">控制水平和垂直方向的最大分辨率，取值范围 16-4096</s:String>
+    <s:String x:Key="Str_PreviewQuality">图像质量</s:String>
+    <s:String x:Key="Str_PreviewQualityTooltip">取值范围 0-100</s:String>
 
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>
@@ -173,7 +181,6 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">确认</s:String>
     <s:String x:Key="Str_Cancel">取消</s:String>
-    <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
