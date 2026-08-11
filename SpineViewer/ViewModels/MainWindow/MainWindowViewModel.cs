@@ -7,6 +7,7 @@ using SpineViewer.Services;
 using SpineViewer.Utils;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -86,6 +87,12 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public float ProgressValue { get => _progressValue; set => SetProperty(ref _progressValue, value); }
         private float _progressValue = 0;
+
+        /// <summary>
+        /// 当前显示的预览图对象
+        /// </summary>
+        public ImageSource? PreviewImage { get => _previewImage; set => SetProperty(ref _previewImage, value); }
+        private ImageSource? _previewImage;
 
         /// <summary>
         /// 已加载的 Spine 对象

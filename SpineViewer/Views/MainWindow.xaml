@@ -1059,7 +1059,7 @@
                                                   ItemsSource="{Binding LocalDirectories}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
-                                                    <i:InvokeCommandAction Command="{Binding Cmd_SelectionChanged}"
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsSelectionChanged}"
                                                                            CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -1136,8 +1136,8 @@
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
                                                         <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
-                                                            <Binding Path="Items.Count" ElementName="_localAssetFilesListBox"/>
-                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetFilesListBox"/>
+                                                            <Binding Path="Items.Count" ElementName="_localAssetItemsListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetItemsListBox"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
@@ -1149,7 +1149,13 @@
                                                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
 
                                         <!-- 本地资源目录文件列表 -->
-                                        <ListBox x:Name="_localAssetFilesListBox" ItemsSource="{Binding ShownItems}">
+                                        <ListBox x:Name="_localAssetItemsListBox" ItemsSource="{Binding ShownItems}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsItemSelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetItemsListBox}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding FileName}" ToolTip="{Binding FullPath}"/>
@@ -1268,7 +1274,7 @@
                                     </Grid>
                                 </TabItem>
                                 
-                                <!-- TODO: 预览图查看标签页 -->
+                                <!-- 预览图查看标签页 -->
                                 <TabItem>
                                     <TabItem.Header>
                                         <Border Style="{StaticResource MyTabItemHeaderContainerStyle}" ToolTip="{DynamicResource Str_ModelPreviewImageTooltip}">
@@ -1280,7 +1286,9 @@
                                             </StackPanel>
                                         </Border>
                                     </TabItem.Header>
-                                    <hc:SimplePanel Background="AliceBlue"/>
+                                    <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource DarkDefaultBrush}">
+                                        <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
+                                    </Border>
                                 </TabItem>
 
                             </TabControl>

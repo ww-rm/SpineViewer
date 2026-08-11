@@ -104,7 +104,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 生成预览图边长的最大分辨率
         /// </summary>
         public uint PreviewMaxResolution { get => _previewMaxResolution; set => SetProperty(ref _previewMaxResolution, Math.Clamp(value, 16, 4096)); }
-        private uint _previewMaxResolution = 1024;
+        private uint _previewMaxResolution = 2048;
 
         /// <summary>
         /// 生成预览图时是否使用预乘 Alpha
@@ -113,9 +113,9 @@ namespace SpineViewer.ViewModels.MainWindow
         private bool _previewPma = false;
 
         /// <summary>
-        /// 选中项发生变化命令
+        /// 资源文件夹选中项发生变化命令
         /// </summary>
-        public RelayCommand<IList?> Cmd_SelectionChanged => _cmd_SelectionChanged ??= new(args =>
+        public RelayCommand<IList?> Cmd_AssetsSelectionChanged => _cmd_AssetsSelectionChanged ??= new(args =>
         {
             // 选中单个目录时显示该目录下所有文件项
             if (args is null || args.Count != 1)
@@ -128,7 +128,24 @@ namespace SpineViewer.ViewModels.MainWindow
             }
             RefreshItems();
         });
-        private RelayCommand<IList?>? _cmd_SelectionChanged;
+        private RelayCommand<IList?>? _cmd_AssetsSelectionChanged;
+
+        /// <summary>
+        /// 资源文件选中项发生变化命令
+        /// </summary>
+        public RelayCommand<IList?> Cmd_AssetsItemSelectionChanged => _cmd_AssetsItemSelectionChanged ??= new(args =>
+        {
+            // 选中单个目录时显示该目录下所有文件项
+            if (args is null || args.Count != 1)
+            {
+                _vmMain.PreviewImage = null;
+                return;
+            }
+            
+            var m = (LocalDirectoryItemViewModel)args[0]!;
+            _vmMain.PreviewImage = m.PreviewImage;
+        });
+        private RelayCommand<IList?>? _cmd_AssetsItemSelectionChanged;
 
         /// <summary>
         /// 添加本地资源目录
