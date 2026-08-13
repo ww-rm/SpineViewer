@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,14 @@ namespace SpineViewer.Models
     public class LocalAssetsModel
     {
         public List<LocalDirectoryModel> LocalDirectories { get; set; } = [];
+    }
 
-        public class LocalDirectoryModel
-        {
-            public string FullPath { get; set; } = "";
+    public partial class LocalDirectoryModel : ObservableObject
+    {
+        [ObservableProperty]
+        private string _fullPath = "";
 
-            public string? Name { get; set; }
-        }
+        [ObservableProperty]
+        private string? _name;
     }
 }

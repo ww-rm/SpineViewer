@@ -104,7 +104,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 生成预览图边长的最大分辨率
         /// </summary>
         public uint PreviewMaxResolution { get => _previewMaxResolution; set => SetProperty(ref _previewMaxResolution, Math.Clamp(value, 16, 4096)); }
-        private uint _previewMaxResolution = 2048;
+        private uint _previewMaxResolution = 1024;
 
         /// <summary>
         /// 生成预览图时是否使用预乘 Alpha
@@ -317,7 +317,12 @@ namespace SpineViewer.ViewModels.MainWindow
             if (!EditLocalAsset_CanExecute(args)) return;
             var dvm = (LocalDirectoryViewModel)args![0]!;
 
-            _logger.Warn("TODO: EditLocalAsset");
+            var m = dvm.LocalDirectory;
+            if (!DialogService.ShowLocalAssetEditDialogDialog(m))
+                return;
+
+            dvm.LocalDirectory = m;
+            SaveLocalAssets();
         }
 
         private bool EditLocalAsset_CanExecute(IList? args)
@@ -417,7 +422,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
                 try
                 {
-                    using var sp = new SpineObject(m.FullPath);
+                    using var sp = new SpineObject(m.FullPath) { UsePma = PreviewPma };
                     var bounds = sp.GetCurrentBounds();
                     SetAutoResolution(exporter, bounds);
                     exporter.Export(m.PreviewFilePath, sp);
@@ -600,7 +605,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 foreach (var it in m.LocalDirectories)
                 {
-                    _localDirectories.Add(new(it.FullPath) { Name = it.Name });
+                    _localDirectories.Add(new(it.FullPath) { LocalDirectory = it });
                 }
             }
         }
@@ -614,7 +619,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
             foreach (var dvm in _localDirectories)
             {
-                m.LocalDirectories.Add(new() { FullPath = dvm.FullPath, Name = dvm.Name });
+                m.LocalDirectories.Add(dvm.LocalDirectory);
             }
 
             JsonHelper.Serialize(m, LocalAssetsFilePath);
@@ -656,6 +661,25 @@ namespace SpineViewer.ViewModels.MainWindow
             }
         }
         private string _name;
+
+        /// <summary>
+        /// 获取模型对象
+        /// </summary>
+        public LocalDirectoryModel LocalDirectory
+        {
+            get
+            {
+                return new()
+                {
+                    FullPath = FullPath,
+                    Name = _name,
+                };
+            }
+            set
+            {
+                Name = value.Name;
+            }
+        }
 
         /// <summary>
         /// 该目录下所有的模型文件路径对象缓存, 含递归目录

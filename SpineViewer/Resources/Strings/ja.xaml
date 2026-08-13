@@ -184,6 +184,7 @@
     <s:String x:Key="Str_DeletePreviewsTitle">プレビューを削除</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">一括でスケルトンファイルを追加</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">スケルトンファイルの再読み込み</s:String>
+    <s:String x:Key="Str_EditLocalAssetTitle">ローカルリソースを編集</s:String>
 
     <s:String x:Key="Str_InfoPopup">情報</s:String>
     <s:String x:Key="Str_WarnPopup">警告</s:String>

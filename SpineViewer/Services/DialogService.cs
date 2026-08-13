@@ -35,6 +35,12 @@ namespace SpineViewer.Services
             return dialog.ShowDialog() ?? false;
         }
 
+        public static bool ShowLocalAssetEditDialogDialog(LocalDirectoryModel vm)
+        {
+            var dialog = new LocalAssetEditDialog() { DataContext = vm, Owner = App.Current.MainWindow };
+            return dialog.ShowDialog() ?? false;
+        }
+
         public static bool ShowFrameExporterDialog(FrameExporterViewModel vm)
         {
             var dialog = new FrameExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };

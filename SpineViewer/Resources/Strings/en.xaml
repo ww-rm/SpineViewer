@@ -184,6 +184,7 @@
     <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
+    <s:String x:Key="Str_EditLocalAssetTitle">Edit Local Asset</s:String>
 
     <s:String x:Key="Str_InfoPopup">Information</s:String>
     <s:String x:Key="Str_WarnPopup">Warning</s:String>

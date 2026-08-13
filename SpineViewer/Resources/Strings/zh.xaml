@@ -184,6 +184,7 @@
     <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
+    <s:String x:Key="Str_EditLocalAssetTitle">编辑本地资源</s:String>
 
     <s:String x:Key="Str_InfoPopup">提示信息</s:String>
     <s:String x:Key="Str_WarnPopup">警告信息</s:String>
