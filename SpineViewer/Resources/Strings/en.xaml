@@ -218,10 +218,12 @@
     <s:String x:Key="Str_ExportSingleTooltip">When checked, export selected models in a single frame; output folder is required</s:String>
     <s:String x:Key="Str_OutputDir">Output Folder</s:String>
     <s:String x:Key="Str_OutputDirTooltip">Optional output folder; if specified, all outputs go there; otherwise to individual directories; required for single export</s:String>
+    <s:String x:Key="Str_ExportBackgroundImage">Export Background</s:String>
+    <s:String x:Key="Str_ExportBackgroundImageTooltip" xml:space="preserve">Include the selected background in the exported result.&#x0A;Automatic resolution cannot be used when enabled, and semi-transparent background colors cannot be exported.</s:String>
     <s:String x:Key="Str_Margin">Margin</s:String>
     <s:String x:Key="Str_MarginTooltip">Extra margin around the frame; overflow content appears in this area</s:String>
     <s:String x:Key="Str_AutoResolution">Auto Resolution</s:String>
-    <s:String x:Key="Str_AutoResolutionTooltip">When checked, resolution is based on models' bounding boxes, ignoring preview zoom and other settings</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip" xml:space="preserve">When enabled, the resolution is calculated based on the bounding box of the exported model, ignoring zoom and other parameters in the preview.&#x0A;Background export cannot be used when enabled.</s:String>
     <s:String x:Key="Str_MaxResolution">Max Resolution</s:String>
     <s:String x:Key="Str_MaxResolutionTooltip">Only effective with auto resolution; limits maximum resolution in both directions</s:String>
 

@@ -93,6 +93,16 @@ namespace Spine.Exporters
         protected Color _backgroundColorPma = Color.Black;
 
         /// <summary>
+        /// 背景图片, 可空, 由外部控制生命周期, 仅借用对象
+        /// </summary>
+        public Sprite? BackgroundImageSprite
+        {
+            get => _backgroundImageSprite;
+            set => _backgroundImageSprite = value;
+        }
+        protected Sprite? _backgroundImageSprite = null;
+
+        /// <summary>
         /// 画面分辨率
         /// <inheritdoc cref="RenderTexture.Size"/>
         /// </summary>
@@ -171,6 +181,7 @@ namespace Spine.Exporters
 
             _renderTexture.SetActive(true);
             _renderTexture.Clear(_backgroundColorPma);
+            if (_backgroundImageSprite is not null) _renderTexture.Draw(_backgroundImageSprite);
             foreach (var sp in spines.Reverse()) _renderTexture.Draw(sp);
             _renderTexture.Display();
             var frame = new SFMLImageVideoFrame(_renderTexture.Texture.CopyToImage());

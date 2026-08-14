@@ -58,6 +58,17 @@ namespace SpineViewer.ViewModels.Exporters
                 exporter.Size = bounds.Size;
                 exporter.Center = bounds.Position + bounds.Size / 2;
                 exporter.Rotation = view.Rotation;
+
+                if (_exportBackgroundImage)
+                {
+                    var sprite = _vmMain.SFMLRendererViewModel.BackgroundImageSprite;
+                    if (sprite != null)
+                    {
+                        // 设置背景图像并且使背景颜色为不透明颜色
+                        exporter.BackgroundImageSprite = sprite;
+                        exporter.BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B);
+                    }
+                }
             }
 
             // BUG: FFmpeg 导出时对 RenderTexture 的频繁资源申请释放似乎使 SFML 库内部出现问题, 会卡死所有使用 SFML 的地方, 包括渲染线程

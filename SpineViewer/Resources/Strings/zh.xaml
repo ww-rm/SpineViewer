@@ -218,10 +218,12 @@
     <s:String x:Key="Str_ExportSingleTooltip">勾选后将所选模型在同一个画面上进行导出，且必须提供输出文件夹</s:String>
     <s:String x:Key="Str_OutputDir">输出文件夹</s:String>
     <s:String x:Key="Str_OutputDirTooltip">可选参数输出文件夹，如填写则将所有产物导出到输出文件夹，否则导出到各自的目录下，导出单个时必须提供输出文件夹</s:String>
+    <s:String x:Key="Str_ExportBackgroundImage">导出背景</s:String>
+    <s:String x:Key="Str_ExportBackgroundImageTooltip" xml:space="preserve">在导出结果中包含所选背景&#x0A;开启后无法使用自动分辨率，且无法导出半透明背景色</s:String>
     <s:String x:Key="Str_Margin">四周边距</s:String>
     <s:String x:Key="Str_MarginTooltip">在分辨率的基础上，增加四周距离，如果有溢出的内容会显示在这部分区域</s:String>
     <s:String x:Key="Str_AutoResolution">自动分辨率</s:String>
-    <s:String x:Key="Str_AutoResolutionTooltip">勾选后将会基于导出模型的包围盒计算应该使用的分辨率，忽略预览画面中的缩放等参数项</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip" xml:space="preserve">勾选后将会基于导出模型的包围盒计算应该使用的分辨率，忽略预览画面中的缩放等参数项&#x0A;开启后无法同时导出背景</s:String>
     <s:String x:Key="Str_MaxResolution">最大分辨率</s:String>
     <s:String x:Key="Str_MaxResolutionTooltip">仅在使用自动分辨率时有效，限制两个方向上的分辨率最大值</s:String>
 

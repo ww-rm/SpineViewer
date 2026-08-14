@@ -78,6 +78,11 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly object _bgLock = new();
 
         /// <summary>
+        /// 用于导出时可选包含背景, 不可长期持有或释放该对象
+        /// </summary>
+        internal SFML.Graphics.Sprite? BackgroundImageSprite { get => _backgroundImageSprite; }
+
+        /// <summary>
         /// 临时变量, 记录拖放世界源点
         /// </summary>
         private SFML.System.Vector2f? _draggingSrc = null;

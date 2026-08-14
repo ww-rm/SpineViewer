@@ -12,7 +12,7 @@
         Title="{DynamicResource Str_CustomFFmpegExporterTitle}"
         Background="{DynamicResource RegionBrush}"
         Width="450"
-        Height="800"
+        Height="750"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <DockPanel>
@@ -120,6 +120,16 @@
                                     </Border>
                                     <TextBox Text="{Binding BackgroundColor}" ToolTip="#AARRGGBB"/>
                                 </DockPanel>
+                            </Grid>
+
+                            <!-- 导出背景 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_ExportBackgroundImage}" ToolTip="{DynamicResource Str_ExportBackgroundImageTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding ExportBackgroundImage}" ToolTip="{DynamicResource Str_ExportBackgroundImageTooltip}"/>
                             </Grid>
 
                             <!-- 四周边距 -->

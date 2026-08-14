@@ -218,10 +218,12 @@
     <s:String x:Key="Str_ExportSingleTooltip">チェックすると、選択モデルを同一画面でエクスポートし、出力フォルダーの指定が必要になります</s:String>
     <s:String x:Key="Str_OutputDir">出力フォルダー</s:String>
     <s:String x:Key="Str_OutputDirTooltip">オプションの出力フォルダー。入力すると、すべての成果物が指定フォルダーに出力されます。指定しない場合、各ディレクトリに出力されます。単一エクスポート時は指定が必要です</s:String>
+    <s:String x:Key="Str_ExportBackgroundImage">背景をエクスポート</s:String>
+    <s:String x:Key="Str_ExportBackgroundImageTooltip" xml:space="preserve">選択した背景をエクスポート結果に含めます。&#x0A;有効にすると、自動解像度は使用できません。</s:String>
     <s:String x:Key="Str_Margin">マージン</s:String>
     <s:String x:Key="Str_MarginTooltip">解像度に追加する四辺の余白。もしはみ出したコンテンツがある場合、この領域に表示されます</s:String>
     <s:String x:Key="Str_AutoResolution">自動解像度</s:String>
-    <s:String x:Key="Str_AutoResolutionTooltip">チェックすると、エクスポートモデルのバウンディングボックスに基づいて解像度が計算され、プレビュー画面のスケールなどのパラメーターは無視されます</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip" xml:space="preserve">有効にすると、エクスポートするモデルのバウンディングボックスに基づいて解像度を計算し、プレビュー画面のズームなどの設定を無視します。&#x0A;有効にすると、自動解像度は使用できず、半透明の背景色もエクスポートできません。</s:String>
     <s:String x:Key="Str_MaxResolution">最大解像度</s:String>
     <s:String x:Key="Str_MaxResolutionTooltip">自動解像度使用時のみ有効で、二方向の最大解像度を制限します</s:String>
 
