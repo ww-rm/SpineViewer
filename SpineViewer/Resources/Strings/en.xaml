@@ -33,16 +33,6 @@
     <s:String x:Key="Str_ModelPreviewImage">Model Preview Image</s:String>
     <s:String x:Key="Str_ModelPreviewImageTooltip">Add and select a model preview image to view from the asset list on the left</s:String>
 
-    <!-- 浏览标签页 -->
-    <s:String x:Key="Str_Filter">Filter</s:String>
-    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">Open Directory</s:String>
-    <s:String x:Key="Str_RefreshItemsTooltip">Refresh Items</s:String>
-    <s:String x:Key="Str_FileDirectory">File Directory</s:String>
-    <s:String x:Key="Str_FileName">File Name</s:String>
-    <s:String x:Key="Str_AddSelectedItems">Import Selected Items</s:String>
-    <s:String x:Key="Str_GeneratePreviewForSelected">Generate Preview for Selected</s:String>
-    <s:String x:Key="Str_DeletePreviewsForSelected">Delete Previews for Selected</s:String>
-
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">Name</s:String>
     <s:String x:Key="Str_Show">Show</s:String>
@@ -151,6 +141,28 @@
     <s:String x:Key="Str_BackgroundImagePath">Background Image Path</s:String>
     <s:String x:Key="Str_BackgroundImageMode">Background Image Mode</s:String>
 
+    <!-- 本地资源标签页 -->
+    <s:String x:Key="Str_Filter">Filter</s:String>
+    <s:String x:Key="Str_FullPath">Full Path</s:String>
+    <s:String x:Key="Str_AddLocalAsset">Add...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">Remove</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">Move Up</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">Move Down</s:String>
+    <s:String x:Key="Str_RefreshItems">Refresh Item List</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">Open in File Explorer...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">Edit...</s:String>
+    <s:String x:Key="Str_GeneratePreviews">Generate Previews...</s:String>
+    <s:String x:Key="Str_DeletePreviews">Delete Previews</s:String>
+    <s:String x:Key="Str_ImportSelectedItems">Import Selected Items</s:String>
+
+    <!-- 生成预览图弹窗文本 -->
+    <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
+    <s:String x:Key="Str_PreviewUsePma">Premultiplied Alpha</s:String>
+    <s:String x:Key="Str_PreviewMaxResolution">Maximum Resolution</s:String>
+    <s:String x:Key="Str_PreviewMaxResolutionTooltip">Controls the maximum resolution in both horizontal and vertical directions. Range: 16-4096</s:String>
+    <s:String x:Key="Str_PreviewQuality">Image Quality</s:String>
+    <s:String x:Key="Str_PreviewQualityTooltip">Range: 0-100</s:String>
+
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">Stop</s:String>
     <s:String x:Key="Str_RestartTooltip">Restart Playback</s:String>
@@ -169,10 +181,10 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">OK</s:String>
     <s:String x:Key="Str_Cancel">Cancel</s:String>
-    <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
+    <s:String x:Key="Str_EditLocalAssetTitle">Edit Local Asset</s:String>
 
     <s:String x:Key="Str_InfoPopup">Information</s:String>
     <s:String x:Key="Str_WarnPopup">Warning</s:String>
@@ -206,10 +218,12 @@
     <s:String x:Key="Str_ExportSingleTooltip">When checked, export selected models in a single frame; output folder is required</s:String>
     <s:String x:Key="Str_OutputDir">Output Folder</s:String>
     <s:String x:Key="Str_OutputDirTooltip">Optional output folder; if specified, all outputs go there; otherwise to individual directories; required for single export</s:String>
+    <s:String x:Key="Str_ExportBackgroundImage">Export Background</s:String>
+    <s:String x:Key="Str_ExportBackgroundImageTooltip" xml:space="preserve">Include the selected background in the exported result.&#x0A;Automatic resolution cannot be used when enabled, and semi-transparent background colors cannot be exported.</s:String>
     <s:String x:Key="Str_Margin">Margin</s:String>
     <s:String x:Key="Str_MarginTooltip">Extra margin around the frame; overflow content appears in this area</s:String>
     <s:String x:Key="Str_AutoResolution">Auto Resolution</s:String>
-    <s:String x:Key="Str_AutoResolutionTooltip">When checked, resolution is based on models' bounding boxes, ignoring preview zoom and other settings</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip" xml:space="preserve">When enabled, the resolution is calculated based on the bounding box of the exported model, ignoring zoom and other parameters in the preview.&#x0A;Background export cannot be used when enabled.</s:String>
     <s:String x:Key="Str_MaxResolution">Max Resolution</s:String>
     <s:String x:Key="Str_MaxResolutionTooltip">Only effective with auto resolution; limits maximum resolution in both directions</s:String>
 

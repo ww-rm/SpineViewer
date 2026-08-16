@@ -122,6 +122,16 @@
                                 </DockPanel>
                             </Grid>
 
+                            <!-- 导出背景 -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_ExportBackgroundImage}" ToolTip="{DynamicResource Str_ExportBackgroundImageTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding ExportBackgroundImage}" ToolTip="{DynamicResource Str_ExportBackgroundImageTooltip}"/>
+                            </Grid>
+
                             <!-- 四周边距 -->
                             <Grid>
                                 <Grid.ColumnDefinitions>

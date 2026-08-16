@@ -71,6 +71,17 @@ namespace SpineViewer.ViewModels.Exporters
                 exporter.Size = bounds.Size;
                 exporter.Center = bounds.Position + bounds.Size / 2;
                 exporter.Rotation = view.Rotation;
+
+                if (_exportBackgroundImage)
+                {
+                    var sprite = _vmMain.SFMLRendererViewModel.BackgroundImageSprite;
+                    if (sprite != null)
+                    {
+                        // 设置背景图像并且使背景颜色为不透明颜色
+                        exporter.BackgroundImageSprite = sprite;
+                        exporter.BackgroundColor = new(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B);
+                    }
+                }
             }
 
             if (_exportSingle)

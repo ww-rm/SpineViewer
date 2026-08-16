@@ -183,6 +183,9 @@ public partial class MainWindow : Window
         // 加载首选项
         _vm.PreferenceViewModel.LoadPreference();
 
+        // 加载资源列表
+        _vm.LocalAssetsViewModel.LoadLocalAssets();
+
         // 还原上一次用户历史状态并开启监听器
         LoadUserState();
         AddUserStateListeners();
@@ -270,13 +273,11 @@ public partial class MainWindow : Window
             _modelListGrid.RowDefinitions[0].Height = new(m.ModelListRow0Height, GridUnitType.Star);
             _modelListGrid.RowDefinitions[2].Height = new(m.ModelListRow2Height, GridUnitType.Star);
 
-            _explorerGrid.RowDefinitions[0].Height = new(m.ExplorerGridRow0Height, GridUnitType.Star);
-            _explorerGrid.RowDefinitions[2].Height = new(m.ExplorerGridRow2Height, GridUnitType.Star);
+            _localAssetsGrid.RowDefinitions[0].Height = new(m.LocalAssetsGridRow0Height, GridUnitType.Star);
+            _localAssetsGrid.RowDefinitions[2].Height = new(m.LocalAssetsGridRow2Height, GridUnitType.Star);
 
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
             _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
-
-            _vm.ExplorerListViewModel.CurrentDirectory = m.ExploringDirectory;
 
             _vm.SFMLRendererViewModel.SetResolution(m.ResolutionX, m.ResolutionY);
             _vm.SFMLRendererViewModel.Speed = m.Speed;
@@ -304,13 +305,11 @@ public partial class MainWindow : Window
             ModelListRow0Height = _modelListGrid.RowDefinitions[0].Height.Value,
             ModelListRow2Height = _modelListGrid.RowDefinitions[2].Height.Value,
 
-            ExplorerGridRow0Height = _explorerGrid.RowDefinitions[0].Height.Value,
-            ExplorerGridRow2Height = _explorerGrid.RowDefinitions[2].Height.Value,
+            LocalAssetsGridRow0Height = _localAssetsGrid.RowDefinitions[0].Height.Value,
+            LocalAssetsGridRow2Height = _localAssetsGrid.RowDefinitions[2].Height.Value,
 
             RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
             RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,
-
-            ExploringDirectory = _vm.ExplorerListViewModel.CurrentDirectory,
 
             ResolutionX = _vm.SFMLRendererViewModel.ResolutionX,
             ResolutionY = _vm.SFMLRendererViewModel.ResolutionY,
@@ -365,8 +364,8 @@ public partial class MainWindow : Window
         _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
         _userStateWatchers.Add(PropertyWatcher.Watch(_modelListGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
 
-        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
-        _userStateWatchers.Add(PropertyWatcher.Watch(_explorerGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_localAssetsGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
+        _userStateWatchers.Add(PropertyWatcher.Watch(_localAssetsGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
 
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));

@@ -7,6 +7,7 @@ using SpineViewer.Services;
 using SpineViewer.Utils;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.MainWindow
@@ -24,6 +25,7 @@ namespace SpineViewer.ViewModels.MainWindow
             _wallpaperRenderer = wallpaperRenderer;
             _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
+            _localAssetsViewModel = new(this);
             _sfmlRendererViewModel = new(this);
             _preferenceViewModel = new(this);
         }
@@ -87,6 +89,12 @@ namespace SpineViewer.ViewModels.MainWindow
         private float _progressValue = 0;
 
         /// <summary>
+        /// 当前显示的预览图对象
+        /// </summary>
+        public ImageSource? PreviewImage { get => _previewImage; set => SetProperty(ref _previewImage, value); }
+        private ImageSource? _previewImage;
+
+        /// <summary>
         /// 已加载的 Spine 对象
         /// </summary>
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
@@ -115,6 +123,12 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public SpineObjectTabViewModel SpineObjectTabViewModel => _spineObjectTabViewModel;
         private readonly SpineObjectTabViewModel _spineObjectTabViewModel = new();
+
+        /// <summary>
+        /// 本地资源 ViewModel
+        /// </summary>
+        public LocalAssetsViewModel LocalAssetsViewModel => _localAssetsViewModel;
+        private readonly LocalAssetsViewModel _localAssetsViewModel;
 
         /// <summary>
         /// SFML 渲染 ViewModel

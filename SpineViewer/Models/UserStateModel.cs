@@ -14,28 +14,22 @@ namespace SpineViewer.Models
 
         public double WindowLeft { get; set; }
         public double WindowTop { get; set; }
-        public double WindowWidth { get; set; }
-        public double WindowHeight { get; set; }
+        public double WindowWidth { get; set; } = 1280;
+        public double WindowHeight { get; set; } = 720;
         public WindowState WindowState { get; set; }
         
         public bool RootGridCol0Folded { get; set; }
-        public double RootGridCol0Width { get; set; }
-        public double RootGridCol2Width { get; set; }
+        public double RootGridCol0Width { get; set; } = 100;
+        public double RootGridCol2Width { get; set; } = 100;
 
-        public double ModelListRow0Height { get; set; }
-        public double ModelListRow2Height { get; set; }
+        public double ModelListRow0Height { get; set; } = 100;
+        public double ModelListRow2Height { get; set; } = 100;
 
-        public double ExplorerGridRow0Height { get; set; }
-        public double ExplorerGridRow2Height { get; set; }
+        public double LocalAssetsGridRow0Height { get; set; } = 100;
+        public double LocalAssetsGridRow2Height { get; set; } = 100;
 
-        public double RightPanelGridRow0Height { get; set; }
-        public double RightPanelGridRow2Height { get; set; }
-
-        #endregion
-
-        #region 浏览页面状态
-
-        public string? ExploringDirectory { get; set; }
+        public double RightPanelGridRow0Height { get; set; } = 100;
+        public double RightPanelGridRow2Height { get; set; } = 100;
 
         #endregion
 

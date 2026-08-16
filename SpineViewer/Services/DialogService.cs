@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using SpineViewer.Models;
 using SpineViewer.ViewModels.Exporters;
+using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using SpineViewer.Views.ExporterDialogs;
 using System;
@@ -25,6 +26,18 @@ namespace SpineViewer.Services
         public static bool ShowAboutDialog()
         {
             var dialog = new AboutDialog() { Owner = App.Current.MainWindow };
+            return dialog.ShowDialog() ?? false;
+        }
+
+        public static bool ShowGeneratePreviewsDialog(LocalAssetsViewModel vm)
+        {
+            var dialog = new GeneratePreviewsDialog() { DataContext = vm, Owner = App.Current.MainWindow };
+            return dialog.ShowDialog() ?? false;
+        }
+
+        public static bool ShowLocalAssetEditDialogDialog(LocalDirectoryModel vm)
+        {
+            var dialog = new LocalAssetEditDialog() { DataContext = vm, Owner = App.Current.MainWindow };
             return dialog.ShowDialog() ?? false;
         }
 

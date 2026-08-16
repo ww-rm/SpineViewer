@@ -33,16 +33,6 @@
     <s:String x:Key="Str_ModelPreviewImage">模型预览图</s:String>
     <s:String x:Key="Str_ModelPreviewImageTooltip">在左侧资源列表中添加并选择要查看的模型预览图</s:String>
 
-    <!-- 浏览标签页 -->
-    <s:String x:Key="Str_Filter">筛选</s:String>
-    <s:String x:Key="Str_ChangeCurrentDirectoryTooltip">打开目录</s:String>
-    <s:String x:Key="Str_RefreshItemsTooltip">刷新列表项</s:String>
-    <s:String x:Key="Str_FileDirectory">文件目录</s:String>
-    <s:String x:Key="Str_FileName">文件名</s:String>
-    <s:String x:Key="Str_AddSelectedItems">导入选中项</s:String>
-    <s:String x:Key="Str_GeneratePreviewForSelected">为选中项生成预览图</s:String>
-    <s:String x:Key="Str_DeletePreviewsForSelected">删除选中项的预览图</s:String>
-
     <!-- 模型列表 -->
     <s:String x:Key="Str_Name">名称</s:String>
     <s:String x:Key="Str_Show">显示</s:String>
@@ -151,6 +141,28 @@
     <s:String x:Key="Str_BackgroundImagePath">背景图片路径</s:String>
     <s:String x:Key="Str_BackgroundImageMode">背景图片模式</s:String>
 
+    <!-- 本地资源标签页 -->
+    <s:String x:Key="Str_Filter">筛选</s:String>
+    <s:String x:Key="Str_FullPath">完整路径</s:String>
+    <s:String x:Key="Str_AddLocalAsset">添加...</s:String>
+    <s:String x:Key="Str_RemoveLocalAsset">移除</s:String>
+    <s:String x:Key="Str_MoveUpLocalAsset">上移</s:String>
+    <s:String x:Key="Str_MoveDownLocalAsset">下移</s:String>
+    <s:String x:Key="Str_RefreshItems">刷新列表项</s:String>
+    <s:String x:Key="Str_OpenLocalAssetInExplorer">在资源管理器中打开...</s:String>
+    <s:String x:Key="Str_EditLocalAsset">编辑...</s:String>
+    <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
+    <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
+    <s:String x:Key="Str_ImportSelectedItems">导入选中项</s:String>
+    
+    <!-- 生成预览图弹窗文本 -->
+    <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
+    <s:String x:Key="Str_PreviewUsePma">预乘Alpha通道</s:String>
+    <s:String x:Key="Str_PreviewMaxResolution">最大分辨率</s:String>
+    <s:String x:Key="Str_PreviewMaxResolutionTooltip">控制水平和垂直方向的最大分辨率，取值范围 16-4096</s:String>
+    <s:String x:Key="Str_PreviewQuality">图像质量</s:String>
+    <s:String x:Key="Str_PreviewQualityTooltip">取值范围 0-100</s:String>
+
     <!-- 渲染画面按钮组 -->
     <s:String x:Key="Str_StopTooltip">停止</s:String>
     <s:String x:Key="Str_RestartTooltip">重头开始播放</s:String>
@@ -169,10 +181,10 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">确认</s:String>
     <s:String x:Key="Str_Cancel">取消</s:String>
-    <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
     <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
+    <s:String x:Key="Str_EditLocalAssetTitle">编辑本地资源</s:String>
 
     <s:String x:Key="Str_InfoPopup">提示信息</s:String>
     <s:String x:Key="Str_WarnPopup">警告信息</s:String>
@@ -206,10 +218,12 @@
     <s:String x:Key="Str_ExportSingleTooltip">勾选后将所选模型在同一个画面上进行导出，且必须提供输出文件夹</s:String>
     <s:String x:Key="Str_OutputDir">输出文件夹</s:String>
     <s:String x:Key="Str_OutputDirTooltip">可选参数输出文件夹，如填写则将所有产物导出到输出文件夹，否则导出到各自的目录下，导出单个时必须提供输出文件夹</s:String>
+    <s:String x:Key="Str_ExportBackgroundImage">导出背景</s:String>
+    <s:String x:Key="Str_ExportBackgroundImageTooltip" xml:space="preserve">在导出结果中包含所选背景&#x0A;开启后无法使用自动分辨率，且无法导出半透明背景色</s:String>
     <s:String x:Key="Str_Margin">四周边距</s:String>
     <s:String x:Key="Str_MarginTooltip">在分辨率的基础上，增加四周距离，如果有溢出的内容会显示在这部分区域</s:String>
     <s:String x:Key="Str_AutoResolution">自动分辨率</s:String>
-    <s:String x:Key="Str_AutoResolutionTooltip">勾选后将会基于导出模型的包围盒计算应该使用的分辨率，忽略预览画面中的缩放等参数项</s:String>
+    <s:String x:Key="Str_AutoResolutionTooltip" xml:space="preserve">勾选后将会基于导出模型的包围盒计算应该使用的分辨率，忽略预览画面中的缩放等参数项&#x0A;开启后无法同时导出背景</s:String>
     <s:String x:Key="Str_MaxResolution">最大分辨率</s:String>
     <s:String x:Key="Str_MaxResolutionTooltip">仅在使用自动分辨率时有效，限制两个方向上的分辨率最大值</s:String>
 

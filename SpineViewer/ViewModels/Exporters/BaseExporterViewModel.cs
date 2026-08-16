@@ -60,6 +60,22 @@ namespace SpineViewer.ViewModels.Exporters
         protected Color _backgroundColor = Color.FromArgb(255, 0, 0, 0);
 
         /// <summary>
+        /// 是否导出背景
+        /// </summary>
+        public bool ExportBackgroundImage
+        {
+            get => _exportBackgroundImage;
+            set
+            {
+                if (!SetProperty(ref _exportBackgroundImage, value))
+                    return;
+                if (value)
+                    AutoResolution = false;
+            }
+        }
+        protected bool _exportBackgroundImage = false;
+
+        /// <summary>
         /// 四周边缘距离
         /// </summary>
         public uint Margin { get => _margin; set => SetProperty(ref _margin, value); }
@@ -68,7 +84,17 @@ namespace SpineViewer.ViewModels.Exporters
         /// <summary>
         /// 使用自动分辨率
         /// </summary>
-        public bool AutoResolution { get => _autoResolution; set => SetProperty(ref _autoResolution, value); }
+        public bool AutoResolution 
+        {
+            get => _autoResolution;
+            set
+            {
+                if (!SetProperty(ref _autoResolution, value))
+                    return;
+                if (value)
+                    ExportBackgroundImage = false;
+            }
+        }
         protected bool _autoResolution = false;
 
         /// <summary>

@@ -33,6 +33,8 @@ namespace Spine
         protected readonly SpineObjectData _data;
         protected readonly ISkeleton _skeleton;
         protected readonly IAnimationState _animationState;
+        protected readonly ISkeletonClipping _clippingForTexDraw;
+        protected readonly ISkeletonClipping _clippingForIterDraw;
 
         /// <summary>
         /// 皮肤加载情况, 不含 default 皮肤
@@ -125,6 +127,8 @@ namespace Spine
             // 创建状态实例
             _skeleton = _data.CreateSkeleton();
             _animationState = _data.CreateAnimationState();
+            _clippingForTexDraw = _data.CreateSkeletonClipping();
+            _clippingForIterDraw = _data.CreateSkeletonClipping();
 
             // 挂载一个空皮肤
             _skeleton.Skin = _data.CreateSkin(Guid.NewGuid().ToString());
@@ -155,6 +159,8 @@ namespace Spine
             // 新的实例
             _skeleton = _data.CreateSkeleton();
             _animationState = _data.CreateAnimationState();
+            _clippingForTexDraw = _data.CreateSkeletonClipping();
+            _clippingForIterDraw = _data.CreateSkeletonClipping();
 
             // 挂载一个空皮肤
             _skeleton.Skin = _data.CreateSkin(Guid.NewGuid().ToString());
@@ -482,16 +488,16 @@ namespace Spine
         /// </summary>
         protected void DrawTexture(SFML.Graphics.RenderTarget target, SFML.Graphics.RenderStates states)
         {
-            _triangleVertices.Clear();
             states.Texture = null;
             states.Shader = UsePma ? SFMLShader.VertexAlphaPma : SFMLShader.VertexAlpha;
 
-            var clipping = _data.CreateSkeletonClipping();
+            _triangleVertices.Clear();
+            _clippingForTexDraw.ClipEnd();
             foreach (var slot in _skeleton.IterDrawOrder())
             {
                 if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
                 {
-                    clipping.ClipEnd(slot);
+                    _clippingForTexDraw.ClipEnd(slot);
                     continue;
                 }
 
@@ -539,10 +545,10 @@ namespace Spine
                         texture = meshAttachment.RendererObject;
                         break;
                     case IClippingAttachment clippingAttachment:
-                        clipping.ClipStart(slot, clippingAttachment);
+                        _clippingForTexDraw.ClipStart(slot, clippingAttachment);
                         continue;
                     default:
-                        clipping.ClipEnd(slot);
+                        _clippingForTexDraw.ClipEnd(slot);
                         continue;
                 }
 
@@ -556,14 +562,14 @@ namespace Spine
                     states.Texture = texture;
                 }
 
-                if (clipping.IsClipping)
+                if (_clippingForTexDraw.IsClipping)
                 {
-                    clipping.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
-                    worldVertices = clipping.ClippedVertices;
-                    worldVerticesLength = clipping.ClippedVerticesLength;
-                    triangles = clipping.ClippedTriangles;
-                    trianglesLength = clipping.ClippedTrianglesLength;
-                    uvs = clipping.ClippedUVs;
+                    _clippingForTexDraw.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
+                    worldVertices = _clippingForTexDraw.ClippedVertices;
+                    worldVerticesLength = _clippingForTexDraw.ClippedVerticesLength;
+                    triangles = _clippingForTexDraw.ClippedTriangles;
+                    trianglesLength = _clippingForTexDraw.ClippedTrianglesLength;
+                    uvs = _clippingForTexDraw.ClippedUVs;
                 }
 
                 var texW = texture.Size.X;
@@ -589,9 +595,8 @@ namespace Spine
                     _triangleVertices.AddVertex(vt);
                 }
 
-                clipping.ClipEnd(slot);
+                _clippingForTexDraw.ClipEnd(slot);
             }
-            clipping.ClipEnd();
 
             target.Draw(_triangleVertices, states);
         }
@@ -861,12 +866,12 @@ namespace Spine
             states.Texture = null;
             states.Shader = UsePma ? SFMLShader.VertexAlphaPma : SFMLShader.VertexAlpha;
 
-            var clipping = _data.CreateSkeletonClipping();
+            _clippingForIterDraw.ClipEnd();
             foreach (var slot in _skeleton.IterDrawOrder())
             {
                 if (slot.A <= 0 || !slot.Bone.Active || slot.Disabled)
                 {
-                    clipping.ClipEnd(slot);
+                    _clippingForIterDraw.ClipEnd(slot);
                     continue;
                 }
 
@@ -912,21 +917,21 @@ namespace Spine
                         states.Texture = meshAttachment.RendererObject;
                         break;
                     case IClippingAttachment clippingAttachment:
-                        clipping.ClipStart(slot, clippingAttachment);
+                        _clippingForIterDraw.ClipStart(slot, clippingAttachment);
                         continue;
                     default:
-                        clipping.ClipEnd(slot);
+                        _clippingForIterDraw.ClipEnd(slot);
                         continue;
                 }
 
-                if (clipping.IsClipping)
+                if (_clippingForIterDraw.IsClipping)
                 {
-                    clipping.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
-                    worldVertices = clipping.ClippedVertices;
-                    worldVerticesLength = clipping.ClippedVerticesLength;
-                    triangles = clipping.ClippedTriangles;
-                    trianglesLength = clipping.ClippedTrianglesLength;
-                    uvs = clipping.ClippedUVs;
+                    _clippingForIterDraw.ClipTriangles(worldVertices, worldVerticesLength, triangles, trianglesLength, uvs);
+                    worldVertices = _clippingForIterDraw.ClippedVertices;
+                    worldVerticesLength = _clippingForIterDraw.ClippedVerticesLength;
+                    triangles = _clippingForIterDraw.ClippedTriangles;
+                    trianglesLength = _clippingForIterDraw.ClippedTrianglesLength;
+                    uvs = _clippingForIterDraw.ClippedUVs;
                 }
 
                 // 清空之前的内容
@@ -952,14 +957,14 @@ namespace Spine
                     _triangleVertices.AddVertex(vt);
                 }
 
-                clipping.ClipEnd(slot);
+                _clippingForIterDraw.ClipEnd(slot);
 
                 target.Draw(_triangleVertices, states);
                 target.Display();
                 var img = target.Texture.CopyToImage();
                 yield return (slot, img);
             }
-            clipping.ClipEnd();
+
         }
 
         #endregion
