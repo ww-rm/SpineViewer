@@ -2,6 +2,7 @@
 using Spectre.Console;
 using Spine;
 using Spine.Exporters;
+using Spine.Implementations;
 using Spine.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,16 @@ namespace SpineViewerCLI
         public Option<FileInfo> OptAtlas { get; } = new("--atlas")
         {
             Description = "Path to the atlas file that matches the skel file.",
+        };
+
+        public Option<bool> OptForcePremul { get; } = new("--force-premul")
+        {
+            Description = "Premultiplies texture pixels when loading, which can help fix black edges between adjacent regions in some cases.",
+        };
+
+        public Option<bool> OptForceMipmap { get; } = new("--force-mipmap")
+        {
+            Description = "Generates mipmaps to help reduce aliasing when textures are scaled down, at the cost of slightly increased VRAM usage.",
         };
 
         public Option<float> OptScale { get; } = new("--scale")
@@ -308,6 +319,10 @@ namespace SpineViewerCLI
 
         private void ExportAction(ParseResult result)
         {
+            // 设置纹理加载参数
+            TextureLoader.DefaultLoader.ForcePremul = result.GetValue(OptForcePremul);
+            TextureLoader.DefaultLoader.ForceMipmap = result.GetValue(OptForceMipmap);
+
             // 读取模型
             using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName);
 
