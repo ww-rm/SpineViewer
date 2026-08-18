@@ -59,7 +59,6 @@ namespace Spine.Implementations
             using var codec = SKCodec.Create(path, out var result);
             if (codec is null || result != SKCodecResult.Success)
             {
-                _logger.Error("Failed to create codec '{0}', {1}", path, result);
                 throw new InvalidOperationException($"Failed to create codec '{path}', {result}");
             }
 
@@ -73,7 +72,6 @@ namespace Spine.Implementations
             result = codec.GetPixels(info, out var pixels);
             if (result != SKCodecResult.Success)
             {
-                _logger.Error("Failed to decode image '{0}', {1}", path, result);
                 throw new InvalidOperationException($"Failed to decode image '{path}', {result}");
             }
 
