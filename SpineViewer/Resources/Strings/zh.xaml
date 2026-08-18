@@ -279,6 +279,8 @@
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">纹理加载选项</s:String>
+    <s:String x:Key="Str_DisableAtlasLoading">禁用 atlas 加载</s:String>
+    <s:String x:Key="Str_DisableAtlasLoadingTooltip">开启后, 将忽略 atlas 文件, 不加载纹理资源</s:String>
     <s:String x:Key="Str_ForcePremul">强制预乘通道</s:String>
     <s:String x:Key="Str_ForcePremulTooltip">开启后，会在加载纹理时对像素进行预乘操作，有助于解决某些情况下的连接处黑边问题</s:String>
     <s:String x:Key="Str_ForceNearest">强制使用 Nearest 插值</s:String>

@@ -62,8 +62,8 @@ namespace SpineViewer.Models
                 DebugClippings = _loadOptions.DebugClippings
             };
 
-            // 如果纹理未能加载, 则覆盖首选项, 强制开启调试输出
-            if (!_spineObject.IsAtlasLoaded)
+            // 如果纹理加载未被禁用且未能加载, 则覆盖首选项, 强制开启调试输出
+            if (!SpineObjectData.DisableAtlasLoading && !_spineObject.IsAtlasLoaded)
             {
                 _spineObject.DebugTexture = false;
                 _spineObject.DebugBounds = true;

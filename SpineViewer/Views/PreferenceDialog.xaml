@@ -58,6 +58,15 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_DisableAtlasLoading}" ToolTip="{DynamicResource Str_DisableAtlasLoadingTooltip}"/>
+                                <ToggleButton Grid.Column="1" IsChecked="{Binding DisableAtlasLoading}" ToolTip="{DynamicResource Str_DisableAtlasLoadingTooltip}"/>
+                            </Grid>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
                                 <ToggleButton Grid.Column="1" IsChecked="{Binding ForcePremul}" ToolTip="{DynamicResource Str_ForcePremulTooltip}"/>
                             </Grid>
