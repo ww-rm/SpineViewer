@@ -24,11 +24,6 @@ namespace SpineViewerCLI
             Description = "Path of skel file.",
         };
 
-        public Option<FileInfo> OptAtlas { get; } = new("--atlas")
-        {
-            Description = "Path to the atlas file that matches the skel file.",
-        };
-
         public Option<bool> OptAll { get; } = new("--all")
         {
             Description = "Print all information",
@@ -58,7 +53,7 @@ namespace SpineViewerCLI
         private void QueryAction(ParseResult result)
         {
             // 读取模型
-            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName);
+            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, null);
 
             var all = result.GetValue(OptAll);
 
