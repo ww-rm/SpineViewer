@@ -45,18 +45,20 @@ namespace Spine.Implementations
         /// </summary>
         public bool ForceMipmap { get; set; }
 
-        private Texture ReadTexture(string path)
+        /// <summary>
+        /// 读取纹理, 如果文件不存在则返回 null
+        /// </summary>
+        private Texture? ReadTexture(string path)
         {
             if (!File.Exists(path))
             {
-                _logger.Error($"Texture file not found, {path}");
-                throw new FileNotFoundException("Texture file not found", path);
+                _logger.Error("Texture file not found, '{0}'", path);
+                return null;
             }
 
             using var codec = SKCodec.Create(path, out var result);
             if (codec is null || result != SKCodecResult.Success)
             {
-                _logger.Error($"Failed to create codec '{path}', {result}");
                 throw new InvalidOperationException($"Failed to create codec '{path}', {result}");
             }
 
@@ -70,7 +72,6 @@ namespace Spine.Implementations
             result = codec.GetPixels(info, out var pixels);
             if (result != SKCodecResult.Success)
             {
-                _logger.Error($"Failed to decode image '{path}', {result}");
                 throw new InvalidOperationException($"Failed to decode image '{path}', {result}");
             }
 
@@ -82,6 +83,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime21.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime21.TextureFilter.Linear)
             {
@@ -125,6 +128,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime34.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime34.TextureFilter.Linear)
             {
@@ -168,6 +173,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime35.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime35.TextureFilter.Linear)
             {
@@ -211,6 +218,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime36.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime36.TextureFilter.Linear)
             {
@@ -254,6 +263,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime37.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime37.TextureFilter.Linear)
             {
@@ -297,6 +308,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime38.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime38.TextureFilter.Linear)
             {
@@ -340,6 +353,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime40.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime40.TextureFilter.Linear)
             {
@@ -383,6 +398,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime41.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime41.TextureFilter.Linear)
             {
@@ -426,6 +443,8 @@ namespace Spine.Implementations
         public virtual void Load(SpineRuntime42.AtlasPage page, string path)
         {
             var texture = ReadTexture(path);
+            if (texture == null)
+                return;
 
             if (page.magFilter == SpineRuntime42.TextureFilter.Linear)
             {
@@ -466,9 +485,10 @@ namespace Spine.Implementations
             }
         }
 
-        public virtual void Unload(object texture)
+        public virtual void Unload(object? texture)
         {
-            ((Texture)texture).Dispose();
+            if (texture is Texture tex)
+                tex.Dispose();
         }
     }
 }

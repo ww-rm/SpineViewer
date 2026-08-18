@@ -279,6 +279,8 @@
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">テクスチャ読み込みオプション</s:String>
+    <s:String x:Key="Str_DisableAtlasLoading">Atlasの読み込みを無効化</s:String>
+    <s:String x:Key="Str_DisableAtlasLoadingTooltip">有効にすると、Atlasファイルを無視し、テクスチャリソースを読み込みません。</s:String>
     <s:String x:Key="Str_ForcePremul">強制プリマルチチャンネル</s:String>
     <s:String x:Key="Str_ForcePremulTooltip">有効にすると、テクスチャ読み込み時にピクセルにプリマルチ処理を適用し、一部の接続部分で発生する黒い縁の問題を解決します。</s:String>
     <s:String x:Key="Str_ForceNearest">Nearest補間を強制使用</s:String>

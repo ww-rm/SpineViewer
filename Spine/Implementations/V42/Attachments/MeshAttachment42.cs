@@ -35,9 +35,9 @@ namespace Spine.Implementations.V42.Attachments
         public float B { get => _o.B; set => _o.B = value; }
         public float A { get => _o.A; set => _o.A = value; }
 
-        public SFML.Graphics.Texture RendererObject => (SFML.Graphics.Texture)((AtlasRegion)_o.Region).page.rendererObject;
+        public SFML.Graphics.Texture? RendererObject => (_o.Region as AtlasRegion)?.page?.rendererObject as SFML.Graphics.Texture;
 
-        public float[] UVs => _o.UVs;
+        public float[] UVs => _o.UVs ?? _o.RegionUVs;
 
         public int[] Triangles => _o.Triangles;
 

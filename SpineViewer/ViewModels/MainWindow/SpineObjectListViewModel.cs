@@ -210,7 +210,7 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 安全地在列表头添加一个模型, 发生错误会输出日志
         /// </summary>
         /// <returns>是否添加成功</returns>
-        private bool InsertSpineObject(string skelPath, string? atlasPath = null)
+        private bool InsertSpineObject(string skelPath, string? atlasPath = "")
         {
             try
             {

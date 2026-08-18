@@ -45,9 +45,9 @@ namespace Spine
         /// 构造 Spine 对象实例, 构造失败会抛出异常
         /// </summary>
         /// <param name="skelPath">skel 文件路径</param>
-        /// <param name="atlasPath">atlas 文件路径, 为空时会根据 <paramref name="skelPath"/> 进行自动检测</param>
+        /// <param name="atlasPath">atlas 文件路径, 为空字符串时会根据 <paramref name="skelPath"/> 进行自动检测, 为 <c>null</c> 则不加载纹理</param>
         /// <param name="version">要使用的运行时版本, 为空时会自动检测</param>
-        public SpineObject(string skelPath, string? atlasPath = null, SpineVersion? version = null, TextureLoader? textureLoader = null)
+        public SpineObject(string skelPath, string? atlasPath = "", SpineVersion? version = null, TextureLoader? textureLoader = null)
         {
             if (string.IsNullOrWhiteSpace(skelPath)) throw new ArgumentException(skelPath, nameof(skelPath));
             if (!File.Exists(skelPath)) throw new FileNotFoundException($"{nameof(skelPath)} not found", skelPath);
@@ -57,22 +57,23 @@ namespace Spine
             AssetsDir = Directory.GetParent(skelPath).FullName;
             Name = Path.GetFileNameWithoutExtension(skelPath);
 
-            if (string.IsNullOrWhiteSpace(atlasPath))
+            if (atlasPath is not null)
             {
-                try
+                if (string.IsNullOrWhiteSpace(atlasPath))
                 {
-                    var (skelSuffix, atlasSuffix) = PossibleSuffixMapping.First(kv => skelPath.EndsWith(kv.Key, StringComparison.OrdinalIgnoreCase));
-                    var basePath = skelPath.Substring(0, skelPath.Length - skelSuffix.Length);
-                    atlasPath = basePath + atlasSuffix;
-                    if (!File.Exists(atlasPath)) throw new FileNotFoundException("Matching atlas file not found", atlasPath);
+                    try
+                    {
+                        var (skelSuffix, atlasSuffix) = PossibleSuffixMapping.First(kv => skelPath.EndsWith(kv.Key, StringComparison.OrdinalIgnoreCase));
+                        var basePath = skelPath.Substring(0, skelPath.Length - skelSuffix.Length);
+                        atlasPath = basePath + atlasSuffix;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new KeyNotFoundException($"Unrecognized skel file suffix");
+                    }
                 }
-                catch (InvalidOperationException)
-                {
-                    throw new KeyNotFoundException($"Unrecognized skel file suffix");
-                }
+                AtlasPath = Path.GetFullPath(atlasPath);
             }
-            else if (!File.Exists(atlasPath)) throw new FileNotFoundException($"{nameof(atlasPath)} not found", atlasPath);
-            AtlasPath = Path.GetFullPath(atlasPath);
 
             // 自动检测版本, 可能会抛出异常
             if (version is null)
@@ -119,8 +120,9 @@ namespace Spine
                 }
                 catch (Exception ex)
                 {
-                    _logger.Debug(ex.ToString());
-                    throw new InvalidDataException($"Failed to load spine with version '{version}'");
+                    // 此处要跳过 New 反射的那一层报错
+                    var innerEx = ex.InnerException;
+                    throw new InvalidDataException($"Failed to load spine with version '{version}' --> {innerEx?.Message}", innerEx);
                 }
             }
 
@@ -243,12 +245,17 @@ namespace Spine
         /// <summary>
         /// atlas 文件完整路径
         /// </summary>
-        public string AtlasPath { get; }
+        public string? AtlasPath { get; }
 
         /// <summary>
         /// 名称
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// atlas 是否成功加载
+        /// </summary>
+        public bool IsAtlasLoaded { get => _data.IsAtlasLoaded; }
 
         /// <summary>
         /// 是否使用预乘 Alpha
@@ -514,7 +521,7 @@ namespace Spine
                 float tintB = _skeleton.B * slot.B;
                 float tintA = _skeleton.A * slot.A;
 
-                SFML.Graphics.Texture texture;
+                SFML.Graphics.Texture? texture;
 
                 switch (attachment)
                 {
@@ -572,9 +579,6 @@ namespace Spine
                     uvs = _clippingForTexDraw.ClippedUVs;
                 }
 
-                var texW = texture.Size.X;
-                var texH = texture.Size.Y;
-
                 SFML.Graphics.Vertex vt = new()
                 {
                     Color = new(
@@ -585,14 +589,30 @@ namespace Spine
                     )
                 };
 
-                for (uint i = 0; i < trianglesLength; i++)
+                if (texture?.Size is SFML.System.Vector2u texSize)
                 {
-                    var index = triangles[i] << 1;
-                    vt.Position.X = worldVertices[index];
-                    vt.Position.Y = worldVertices[index + 1];
-                    vt.TexCoords.X = uvs[index] * texW;
-                    vt.TexCoords.Y = uvs[index + 1] * texH;
-                    _triangleVertices.AddVertex(vt);
+                    uint texW = texSize.X;
+                    uint texH = texSize.Y;
+
+                    for (uint i = 0; i < trianglesLength; i++)
+                    {
+                        var index = triangles[i] << 1;
+                        vt.Position.X = worldVertices[index];
+                        vt.Position.Y = worldVertices[index + 1];
+                        vt.TexCoords.X = uvs[index] * texW;
+                        vt.TexCoords.Y = uvs[index + 1] * texH;
+                        _triangleVertices.AddVertex(vt);
+                    }
+                }
+                else
+                {
+                    for (uint i = 0; i < trianglesLength; i++)
+                    {
+                        var index = triangles[i] << 1;
+                        vt.Position.X = worldVertices[index];
+                        vt.Position.Y = worldVertices[index + 1];
+                        _triangleVertices.AddVertex(vt);
+                    }
                 }
 
                 _clippingForTexDraw.ClipEnd(slot);
@@ -938,23 +958,40 @@ namespace Spine
                 target.Clear(SFML.Graphics.Color.Transparent);
                 _triangleVertices.Clear();
 
-                var texW = states.Texture.Size.X;
-                var texH = states.Texture.Size.Y;
-
-                SFML.Graphics.Vertex vt = new();
-                vt.Color.R = (byte)(tintR * 255);
-                vt.Color.G = (byte)(tintG * 255);
-                vt.Color.B = (byte)(tintB * 255);
-                vt.Color.A = (byte)(tintA * 255);
-
-                for (int i = 0; i < trianglesLength; i++)
+                SFML.Graphics.Vertex vt = new()
                 {
-                    var index = triangles[i] << 1;
-                    vt.Position.X = worldVertices[index];
-                    vt.Position.Y = worldVertices[index + 1];
-                    vt.TexCoords.X = uvs[index] * texW;
-                    vt.TexCoords.Y = uvs[index + 1] * texH;
-                    _triangleVertices.AddVertex(vt);
+                    Color = new(
+                        (byte)(tintR * 255),
+                        (byte)(tintG * 255),
+                        (byte)(tintB * 255),
+                        (byte)(tintA * 255)
+                    )
+                };
+
+                if (states.Texture?.Size is SFML.System.Vector2u texSize)
+                {
+                    uint texW = texSize.X;
+                    uint texH = texSize.Y;
+
+                    for (int i = 0; i < trianglesLength; i++)
+                    {
+                        var index = triangles[i] << 1;
+                        vt.Position.X = worldVertices[index];
+                        vt.Position.Y = worldVertices[index + 1];
+                        vt.TexCoords.X = uvs[index] * texW;
+                        vt.TexCoords.Y = uvs[index + 1] * texH;
+                        _triangleVertices.AddVertex(vt);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < trianglesLength; i++)
+                    {
+                        var index = triangles[i] << 1;
+                        vt.Position.X = worldVertices[index];
+                        vt.Position.Y = worldVertices[index + 1];
+                        _triangleVertices.AddVertex(vt);
+                    }
                 }
 
                 _clippingForIterDraw.ClipEnd(slot);

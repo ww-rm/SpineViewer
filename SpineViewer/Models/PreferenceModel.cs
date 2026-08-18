@@ -19,8 +19,10 @@ namespace SpineViewer.Models
     /// </summary>
     public partial class PreferenceModel : ObservableObject
     {
-
         #region 纹理加载首选项
+
+        [ObservableProperty]
+        private bool _disableAtlasLoading;
 
         [ObservableProperty]
         private bool _forcePremul;

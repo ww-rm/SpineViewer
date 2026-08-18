@@ -37,7 +37,7 @@ namespace Spine.Implementations.V21.Attachments
 
         public SFML.Graphics.Texture RendererObject => (SFML.Graphics.Texture)((AtlasRegion)_o.RendererObject).page.rendererObject;
 
-        public float[] UVs => _o.UVs;
+        public float[] UVs => _o.UVs ?? _o.RegionUVs;
 
         public int[] Triangles => _o.Triangles;
 

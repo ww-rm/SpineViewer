@@ -16,7 +16,7 @@ namespace Spine.Implementations.V42
     [SpineImplementation(4, 2)]
     internal sealed class SpineObjectData42 : SpineObjectData
     {
-        private readonly Atlas _atlas;
+        private readonly Atlas? _atlas = null;
         private readonly SkeletonData _skeletonData;
         private readonly AnimationStateData _animationStateData;
 
@@ -26,52 +26,30 @@ namespace Spine.Implementations.V42
         private readonly ImmutableArray<IAnimation> _animations;
         private readonly FrozenDictionary<string, IAnimation> _animationsByName;
 
-        public SpineObjectData42(string skelPath, string atlasPath, TextureLoader textureLoader)
+        public SpineObjectData42(string skelPath, string? atlasPath, TextureLoader textureLoader)
             : base(skelPath, atlasPath, textureLoader)
         {
             // 加载 atlas
             try
             {
-                _atlas = new Atlas(atlasPath, textureLoader);
+                if (!DisableAtlasLoading && atlasPath is not null)
+                    _atlas = new Atlas(atlasPath, textureLoader);
             }
             catch (Exception ex)
             {
                 _logger.Debug(ex.ToString());
-                throw new InvalidDataException($"Failed to load atlas '{atlasPath}'");
+                _logger.Error("Failed to load atlas '{0}'", atlasPath);
             }
 
+            // 加载 skel, 允许上一步 atlas 加载为空
             try
             {
-                if (Utf8Validator.IsUtf8(skelPath))
-                {
-                    try
-                    {
-                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.ToString());
-                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        _skeletonData = new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.ToString());
-                        _skeletonData = new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
-                    }
-                }
+                _skeletonData = ReadSkeletonData(skelPath);
             }
             catch (Exception ex)
             {
-                _atlas.Dispose();
-                _logger.Debug(ex.ToString());
-                throw new InvalidDataException($"Failed to load skeleton file {skelPath}");
+                _atlas?.Dispose();
+                throw new InvalidDataException($"Failed to load skeleton file {skelPath} --> {ex.Message}", ex);
             }
 
             // 加载动画数据
@@ -118,7 +96,49 @@ namespace Spine.Implementations.V42
             _animationsByName = animationsByName.ToFrozenDictionary();
         }
 
+        private SkeletonData ReadSkeletonData(string skelPath)
+        {
+            if (Utf8Validator.IsUtf8(skelPath))
+            {
+                if (_atlas is null)
+                {
+                    var loader = EmptyAttachmentLoader.DefaultLoader;
+                    try { return new SkeletonJson(loader).ReadSkeletonData(skelPath); }
+                    catch (ArgumentException) { throw; }
+                    catch { }
+                    return new SkeletonBinary(loader).ReadSkeletonData(skelPath);
+                }
+                else
+                {
+                    try { return new SkeletonJson(_atlas).ReadSkeletonData(skelPath); }
+                    catch (ArgumentException) { throw; }
+                    catch { }
+                    return new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
+                }
+            }
+            else
+            {
+                if (_atlas is null)
+                {
+                    var loader = EmptyAttachmentLoader.DefaultLoader;
+                    try { return new SkeletonBinary(loader).ReadSkeletonData(skelPath); }
+                    catch (ArgumentException) { throw; }
+                    catch { }
+                    return new SkeletonJson(loader).ReadSkeletonData(skelPath);
+                }
+                else
+                {
+                    try { return new SkeletonBinary(_atlas).ReadSkeletonData(skelPath); }
+                    catch (ArgumentException) { throw; }
+                    catch { }
+                    return new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
+                }
+            }
+        }
+
         public override string SkeletonVersion => _skeletonData.Version;
+
+        public override bool IsAtlasLoaded => _atlas is not null;
 
         public override ImmutableArray<ISkin> Skins => _skins;
 
@@ -130,7 +150,7 @@ namespace Spine.Implementations.V42
 
         public override FrozenDictionary<string, IAnimation> AnimationsByName => _animationsByName;
 
-        protected override void DisposeAtlas() => _atlas.Dispose();
+        protected override void DisposeAtlas() => _atlas?.Dispose();
 
         public override ISkeleton CreateSkeleton() => new Skeleton42(new(_skeletonData), this);
 

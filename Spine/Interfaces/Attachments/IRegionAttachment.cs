@@ -37,7 +37,7 @@ namespace Spine.Interfaces.Attachments
         /// <summary>
         /// 用于渲染的纹理对象
         /// </summary>
-        public SFML.Graphics.Texture RendererObject { get; }
+        public SFML.Graphics.Texture? RendererObject { get; }
 
         /// <summary>
         /// 顶点纹理坐标, 每个坐标有 u 和 v 两个数, 有效长度和 <see cref="IAttachment.ComputeWorldVertices(ISlot, ref float[])"/> 返回值一致

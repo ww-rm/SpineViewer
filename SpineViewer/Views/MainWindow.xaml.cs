@@ -595,9 +595,9 @@ public partial class MainWindow : Window
         var list = (ListView)sender;
         var vm = (SpineObjectListViewModel)list.DataContext;
 
-        if (e.Data.GetDataPresent(typeof(Models.SpineObjectModel)))
+        if (e.Data.GetDataPresent(typeof(SpineObjectModel)))
         {
-            var srcObject = (Models.SpineObjectModel)e.Data.GetData(typeof(Models.SpineObjectModel))!;
+            var srcObject = (SpineObjectModel)e.Data.GetData(typeof(SpineObjectModel))!;
             int srcIdx = list.Items.IndexOf(srcObject);
             if (srcIdx < 0) return;
 
@@ -608,7 +608,7 @@ public partial class MainWindow : Window
             int dstIdx = -1;
             if (dstListViewItem != null)
             {
-                var dstObject = (Models.SpineObjectModel)list.ItemContainerGenerator.ItemFromContainer(dstListViewItem);
+                var dstObject = (SpineObjectModel)list.ItemContainerGenerator.ItemFromContainer(dstListViewItem);
                 dstIdx = list.Items.IndexOf(dstObject);
             }
             if (dstIdx < 0) return;

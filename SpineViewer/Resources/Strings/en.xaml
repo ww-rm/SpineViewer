@@ -279,6 +279,8 @@
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">Texture Loading Options</s:String>
+    <s:String x:Key="Str_DisableAtlasLoading">Disable Atlas Loading</s:String>
+    <s:String x:Key="Str_DisableAtlasLoadingTooltip">When enabled, atlas files will be ignored and texture resources will not be loaded.</s:String>
     <s:String x:Key="Str_ForcePremul">Force Premultiplied Channels</s:String>
     <s:String x:Key="Str_ForcePremulTooltip">When enabled, this applies premultiplied operations to pixels during texture loading, helping to resolve black edge issues at some connections.</s:String>
     <s:String x:Key="Str_ForceNearest">Force Nearest Interpolation</s:String>
