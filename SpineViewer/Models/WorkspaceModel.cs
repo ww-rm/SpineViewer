@@ -48,7 +48,7 @@ namespace SpineViewer.Models
     public class SpineObjectWorkspaceConfigModel
     {
         public string SkelPath { get; set; } = "";
-        public string AtlasPath { get; set; } = "";
+        public string? AtlasPath { get; set; } = "";
         public bool IsShown { get; set; } = true;
         public SpineObjectConfigModel ObjectConfig { get; set; } = new();
     }

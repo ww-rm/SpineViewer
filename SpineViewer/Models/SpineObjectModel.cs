@@ -46,7 +46,7 @@ namespace SpineViewer.Models
         /// <summary>
         /// 构造函数, 可能会抛出异常
         /// </summary>
-        public SpineObjectModel(string skelPath, string? atlasPath = null)
+        public SpineObjectModel(string skelPath, string? atlasPath = "")
         {
             _spineObject = new(skelPath, atlasPath)
             {
@@ -61,6 +61,16 @@ namespace SpineViewer.Models
                 DebugPoints = _loadOptions.DebugPoints,
                 DebugClippings = _loadOptions.DebugClippings
             };
+
+            // 如果纹理未能加载, 则覆盖首选项, 强制开启调试输出
+            if (!_spineObject.IsAtlasLoaded)
+            {
+                _spineObject.DebugTexture = false;
+                _spineObject.DebugBounds = true;
+                _spineObject.DebugRegions = true;
+                _spineObject.DebugMeshes = true;
+            }
+
             _skins = _spineObject.Data.Skins.Select(v => v.Name).ToImmutableArray();
             _slots = _spineObject.Skeleton.Slots.Select(v => v.Name).ToImmutableArray();
             _animations = _spineObject.Data.Animations.Select(v => v.Name).ToImmutableArray();
@@ -91,7 +101,7 @@ namespace SpineViewer.Models
 
         public string SkelPath => _spineObject.SkelPath;
 
-        public string AtlasPath => _spineObject.AtlasPath;
+        public string? AtlasPath => _spineObject.AtlasPath;
 
         public string Name => _spineObject.Name;
 

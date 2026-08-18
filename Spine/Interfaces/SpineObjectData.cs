@@ -22,17 +22,31 @@ namespace Spine.Interfaces
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// 禁用 atlas 加载
+        /// </summary>
+        public static bool DisableAtlasLoading { get; set; }
+
+        /// <summary>
         /// 构建版本对象
         /// </summary>
-        public static SpineObjectData New(SpineVersion version, string skelPath, string atlasPath, TextureLoader textureLoader) 
+        /// <param name="version"></param>
+        /// <param name="skelPath">skel 文件路径</param>
+        /// <param name="atlasPath">atlas 文件路径, 若为 <c>null</c> 则不加载纹理</param>
+        /// <param name="textureLoader">纹理加载器</param>
+        public static SpineObjectData New(SpineVersion version, string skelPath, string? atlasPath, TextureLoader textureLoader) 
             => CreateInstance(version.Tag, skelPath, atlasPath, textureLoader);
 
         /// <summary>
         /// 构造函数, 继承的子类应当实现一个相同签名的构造函数
         /// </summary>
-        public SpineObjectData(string skelPath, string atlasPath, TextureLoader textureLoader) { }
+        /// <param name="skelPath">skel 文件路径</param>
+        /// <param name="atlasPath">atlas 文件路径, 若为 <c>null</c> 则不加载纹理</param>
+        /// <param name="textureLoader">纹理加载器</param>
+        public SpineObjectData(string skelPath, string? atlasPath, TextureLoader textureLoader) { }
 
         public abstract string SkeletonVersion { get; }
+
+        public abstract bool IsAtlasLoaded { get; }
 
         public abstract ImmutableArray<ISkin> Skins { get; }
 

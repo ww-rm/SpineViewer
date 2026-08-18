@@ -20,6 +20,11 @@ namespace Spine.Interfaces
         public string SkeletonVersion { get; }
 
         /// <summary>
+        /// 是否成功加载了纹理对象
+        /// </summary>
+        public bool IsAtlasLoaded { get; }
+
+        /// <summary>
         /// 所有皮肤
         /// </summary>
         public ImmutableArray<ISkin> Skins { get; }
