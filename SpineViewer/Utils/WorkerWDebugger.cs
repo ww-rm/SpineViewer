@@ -181,7 +181,7 @@ namespace SpineViewer.Utils
         private static void PrintFullTree(WndNode node, int depth)
         {
             string prefix = new(' ', depth * 4);
-            _logger.Debug($"{prefix}0x{node.Hwnd.ToInt64():x8}({node.ClassName})");
+            _logger.Debug("{0}0x{1:x8}({2})", prefix, node.Hwnd.ToInt64(), node.ClassName);
 
             foreach (var child in node.Children)
                 PrintFullTree(child, depth + 1);

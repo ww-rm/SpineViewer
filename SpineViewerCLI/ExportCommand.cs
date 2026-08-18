@@ -403,7 +403,7 @@ namespace SpineViewerCLI
                 exporter.Export(output, spine);
             }
 
-            _logger.Info($"{spine.SkelPath} export completed");
+            _logger.Info("{0} export completed", spine.SkelPath);
         }
 
         private BaseExporter GetExporterFilledWithArgs(ParseResult result, SpineObject spine)
