@@ -276,6 +276,7 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">程序版本</s:String>
     <s:String x:Key="Str_ProjectUrl">项目地址</s:String>
+    <s:String x:Key="Str_CheckUpdates">检查更新</s:String>
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">纹理加载选项</s:String>

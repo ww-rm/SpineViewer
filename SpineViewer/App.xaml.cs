@@ -16,13 +16,14 @@ using System.Windows;
 using System.Windows.Interop;
 using SpineViewer.Extensions;
 using SpineViewer.Natives;
+using Octokit;
 
 namespace SpineViewer
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
 #if DEBUG
         public const bool IsDebug = true;
@@ -34,6 +35,9 @@ namespace SpineViewer
         public const string ProgId = "SpineViewer.skel";
 #endif
 
+        public const string GithubOwner = "ww-rm";
+        public const string GithubRepo = "SpineViewer";
+
         public const string AutoRunFlag = "--autorun";
         private const string MutexName = $"__{AppName}_Instance__";
         private const string PipeName = $"_{AppName}_Pipe__";
@@ -42,17 +46,21 @@ namespace SpineViewer
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-
         public static readonly string ProcessDataDirectory = Path.Combine(ProcessDirectory, "data");
 
         private static readonly string AutoRunCommand = $"\"{ProcessPath}\" {AutoRunFlag}";
-
         private static readonly string SkelFileDescription = $"SpineViewer File";
         private static readonly string SkelIconFilePath = Path.Combine(ProcessDirectory, "Resources\\Images\\skel.ico");
         private static readonly string ShellOpenCommand = $"\"{ProcessPath}\" \"%1\"";
 
         private static readonly Logger _logger;
         private static readonly Mutex _instanceMutex;
+        private static readonly GitHubClient _githubClient;
+
+        /// <summary>
+        /// Github Api 连接客户端
+        /// </summary>
+        public static GitHubClient GitHubClient => _githubClient;
 
         static App()
         {
@@ -83,6 +91,9 @@ namespace SpineViewer
                 return;
             }
             StartPipeServer();
+
+            _githubClient = new(new ProductHeaderValue(AppName, Version));
+            _githubClient.SetRequestTimeout(TimeSpan.FromSeconds(30));
         }
 
         private static void InitializeLogConfiguration()

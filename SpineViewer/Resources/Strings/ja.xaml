@@ -276,6 +276,7 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">プログラムバージョン</s:String>
     <s:String x:Key="Str_ProjectUrl">プロジェクトURL</s:String>
+    <s:String x:Key="Str_CheckUpdates">更新を確認</s:String>
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">テクスチャ読み込みオプション</s:String>
