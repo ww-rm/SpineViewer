@@ -251,8 +251,17 @@ namespace SpineViewer.ViewModels.MainWindow
         private void OpenLocalAssetInExplorer_Execute(IList? args)
         {
             if (!OpenLocalAssetInExplorer_CanExecute(args)) return;
-            var dvm = (LocalDirectoryViewModel)args![0]!;
-            dvm.OpenInExplorer();
+            switch (args![0]!)
+            {
+                case LocalDirectoryViewModel dvm:
+                    dvm.OpenInExplorer();
+                    break;
+                case LocalDirectoryItemViewModel divm:
+                    divm.OpenInExplorer();
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private bool OpenLocalAssetInExplorer_CanExecute(IList? args)
@@ -706,7 +715,7 @@ namespace SpineViewer.ViewModels.MainWindow
                 {
                     var lowerPath = file.ToLowerInvariant();
                     if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
-                        _items.Add(new(file));
+                        _items.Add(new(this, file));
                 }
             }
             catch (Exception ex)
@@ -760,9 +769,13 @@ namespace SpineViewer.ViewModels.MainWindow
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public LocalDirectoryItemViewModel(string path)
+        private readonly LocalDirectoryViewModel _dvm;
+
+        public LocalDirectoryItemViewModel(LocalDirectoryViewModel dvm, string path)
         {
+            _dvm = dvm;
             FullPath = Path.GetFullPath(path);
+            RelativePath = Path.GetRelativePath(dvm.FullPath, FullPath);
             FileDirectory = Path.GetDirectoryName(FullPath) ?? "";
             FileName = Path.GetFileName(FullPath);
             PreviewFilePath = Path.Combine(FileDirectory, string.Format(PreviewFileNameFormat, FileName));
@@ -772,6 +785,11 @@ namespace SpineViewer.ViewModels.MainWindow
         /// 完整路径
         /// </summary
         public string FullPath { get; }
+
+        /// <summary>
+        /// 相对路径
+        /// </summary>
+        public string RelativePath { get; }
 
         /// <summary>
         /// 文件所处目录
@@ -810,6 +828,25 @@ namespace SpineViewer.ViewModels.MainWindow
                     return null;
                 }
             }
+        }
+
+        /// <summary>
+        /// 在资源管理器中打开目录
+        /// </summary>
+        public void OpenInExplorer()
+        {
+            if (!Directory.Exists(FileDirectory))
+            {
+                _logger.Error("Directory '{0}' is not existed.", FileDirectory);
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "explorer.exe",
+                Arguments = $"\"{FileDirectory}\"",
+                UseShellExecute = true,
+            });
         }
 
         public override bool Equals(object? obj)

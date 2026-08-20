@@ -1002,7 +1002,7 @@
                                                 <DataTemplate>
                                                     <StackPanel Margin="0 3">
                                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="{Binding FullPath}"/>
+                                                        <TextBlock Text="{Binding FullPath}" Opacity="0.6"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
@@ -1041,6 +1041,11 @@
                                             
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_OpenLocalAssetInExplorer}"
+                                                              InputGestureText="Shift+Alt+E"
+                                                              Command="{Binding Cmd_OpenLocalAssetInExplorer}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
                                                               Command="{Binding Cmd_ImportSelectedItems}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
@@ -1052,12 +1057,26 @@
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                 </ContextMenu>
                                             </ListBox.ContextMenu>
-                                            
+
+                                            <ListBox.InputBindings>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenLocalAssetInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetItemsListBox}"/>
+                                            </ListBox.InputBindings>
+
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
+                                                    <Setter Property="ToolTip" Value="{Binding FullPath}"/>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding FileName}" ToolTip="{Binding FullPath}"/>
+                                                    <StackPanel Margin="0 3">
+                                                        <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{Binding RelativePath}" Opacity="0.6"/>
+                                                    </StackPanel>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
+
                                         </ListBox>
                                     </DockPanel>
                                 </Grid>
