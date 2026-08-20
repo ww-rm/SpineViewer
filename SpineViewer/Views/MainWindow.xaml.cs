@@ -146,7 +146,11 @@ public partial class MainWindow : Window
         rtbTarget.WordColoringRules.Add(new("[F]", "White", "DarkRed"));
 
         LogManager.Configuration.AddTarget(rtbTarget);
+#if DEBUG
+        LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, rtbTarget);
+#else
         LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
+#endif
         LogManager.ReconfigExistingLoggers();
     }
 
@@ -495,7 +499,7 @@ public partial class MainWindow : Window
             return;
 
         // 找到包含这个 Border 的 TabItem
-        var tabItem = fe?.GetParent<ListBoxItem>();
+        var tabItem = fe.GetParent<TabItem>();
         if (tabItem is null) 
             return;
 
