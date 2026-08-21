@@ -493,7 +493,7 @@ namespace SpineViewer.Models
                     SetProperty(_spineObject.AnimationState.TimeScale, m.TimeScale, v => _spineObject.AnimationState.TimeScale = v, nameof(TimeScale));
                 }
 
-                if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.Skin)
+                if (flag.HasFlag(SpineObjectConfigApplyFlag.Skin))
                 {
                     foreach (var name in _spineObject.Data.Skins.Select(v => v.Name).Except(m.LoadedSkins))
                         _spineObject.SetSkinStatus(name, false);
@@ -501,7 +501,7 @@ namespace SpineViewer.Models
                         _spineObject.SetSkinStatus(name, true);
                 }
 
-                if (flag == SpineObjectConfigApplyFlag.All || flag == SpineObjectConfigApplyFlag.SlotVisibility)
+                if (flag.HasFlag(SpineObjectConfigApplyFlag.SlotVisibility))
                 {
                     foreach (var slotName in m.DisabledSlots)
                         _spineObject.SetSlotVisible(slotName, false);
@@ -600,11 +600,12 @@ namespace SpineViewer.Models
     /// <summary>
     /// 可选的应用部分模型参数项
     /// </summary>
+    [Flags]
     public enum SpineObjectConfigApplyFlag
     {
-        All,
-        Skin,
-        SlotVisibility,
+        Skin = 1,
+        SlotVisibility = 2,
+        All = Skin | SlotVisibility,
     }
 
     public class SpineObjectLoadOptions
