@@ -322,14 +322,14 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public AppLanguage AppLanguage
         {
-            get => ((App)App.Current).Language;
-            set => SetProperty(((App)App.Current).Language, value, v => ((App)App.Current).Language = v);
+            get => App.Language;
+            set => SetProperty(App.Language, value, v => App.Language = v);
         }
 
         public AppSkin AppSkin
         {
-            get => ((App)App.Current).Skin;
-            set => SetProperty(((App)App.Current).Skin, value, v => ((App)App.Current).Skin = v);
+            get => App.Skin;
+            set => SetProperty(App.Skin, value, v => App.Skin = v);
         }
 
         public int MaxParallelism
@@ -358,8 +358,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public bool AutoRun
         {
-            get => ((App)App.Current).AutoRun;
-            set => SetProperty(((App)App.Current).AutoRun, value, v => ((App)App.Current).AutoRun = v);
+            get => App.AutoRun;
+            set => SetProperty(App.AutoRun, value, v => App.AutoRun = v);
         }
 
         public string AutoRunWorkspaceConfigPath
@@ -370,8 +370,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public bool AssociateFileSuffix
         {
-            get => ((App)App.Current).AssociateFileSuffix;
-            set => SetProperty(((App)App.Current).AssociateFileSuffix, value, v => ((App)App.Current).AssociateFileSuffix = v);
+            get => App.AssociateFileSuffix;
+            set => SetProperty(App.AssociateFileSuffix, value, v => App.AssociateFileSuffix = v);
         }
 
         #endregion

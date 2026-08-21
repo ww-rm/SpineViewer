@@ -55,12 +55,6 @@ namespace SpineViewer
 
         private static readonly Logger _logger;
         private static readonly Mutex _instanceMutex;
-        private static readonly GitHubClient _githubClient;
-
-        /// <summary>
-        /// Github Api 连接客户端
-        /// </summary>
-        public static GitHubClient GitHubClient => _githubClient;
 
         static App()
         {
@@ -91,9 +85,6 @@ namespace SpineViewer
                 return;
             }
             StartPipeServer();
-
-            _githubClient = new(new ProductHeaderValue(AppName, Version));
-            _githubClient.SetRequestTimeout(TimeSpan.FromSeconds(30));
         }
 
         private static void InitializeLogConfiguration()
@@ -236,7 +227,7 @@ namespace SpineViewer
             MessagePopupService.Error(e.Exception.ToString());
         }
 
-        public bool AutoRun
+        public static bool AutoRun
         {
             get
             {
@@ -284,7 +275,7 @@ namespace SpineViewer
             }
         }
 
-        public bool AssociateFileSuffix
+        public static bool AssociateFileSuffix
         {
             get
             {
@@ -364,15 +355,17 @@ namespace SpineViewer
         /// <summary>
         /// 程序语言
         /// </summary>
-        public AppLanguage Language
+        public static AppLanguage Language
         {
             get => _language;
             set
             {
+                if (Current is not App) return;
+
                 var uri = $"Resources/Strings/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
-                    Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
                     _language = value;
                 }
                 catch (Exception ex)
@@ -382,18 +375,23 @@ namespace SpineViewer
                 }
             }
         }
-        private AppLanguage _language = AppLanguage.ZH;
+        private static AppLanguage _language = AppLanguage.ZH;
 
-        public AppSkin Skin
+        /// <summary>
+        /// 程序外观
+        /// </summary>
+        public static AppSkin Skin
         {
             get => _skin;
             set
             {
+                if (Current is not App) return;
+
                 var uri = $"Resources/Skins/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
-                    Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
-                    Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
                     Current.MainWindow.SetWindowTextColor(AppResource.Color_PrimaryText);
                     Current.MainWindow.SetWindowCaptionColor(AppResource.Color_Region);
                     _skin = value;
@@ -405,7 +403,41 @@ namespace SpineViewer
                 }
             }
         }
-        private AppSkin _skin = AppSkin.Light;
+        private static AppSkin _skin = AppSkin.Light;
+
+        /// <summary>
+        /// 程序网络代理模式
+        /// </summary>
+        public static AppProxyMode ProxyMode { get => _proxyMode; }
+        private static AppProxyMode _proxyMode = AppProxyMode.System;
+
+        /// <summary>
+        /// 程序网络代理地址
+        /// </summary>
+        public static Uri? ProxyUri { get => _proxyUri; }
+        private static Uri? _proxyUri = null;
+
+        /// <summary>
+        /// 设置程序的网络代理
+        /// </summary>
+        /// <param name="proxyUri">例如: http://127.0.0.1:10809</param>
+        public static void SetProxy(AppProxyMode proxyMode, string? proxyUri = null)
+        {
+            switch (proxyMode)
+            {
+                case AppProxyMode.System:
+                    _proxyMode = proxyMode;
+                    _proxyUri = null;
+                    break;
+                case AppProxyMode.Custom:
+                    ArgumentException.ThrowIfNullOrWhiteSpace(proxyUri, nameof(proxyUri));
+                    _proxyMode = proxyMode;
+                    _proxyUri = new(proxyUri);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(proxyMode), proxyMode, null);
+            }
+        }
     }
 
     public enum AppLanguage
@@ -420,5 +452,11 @@ namespace SpineViewer
         Light,
         Dark,
         Violet,
+    }
+
+    public enum AppProxyMode
+    {
+        System,
+        Custom,
     }
 }

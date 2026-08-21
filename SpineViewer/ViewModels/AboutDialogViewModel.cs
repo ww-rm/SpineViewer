@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NLog;
+using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -53,7 +54,8 @@ namespace SpineViewer.ViewModels
             IsCheckingUpdates = true;
             try
             {
-                var res = await App.GitHubClient.Repository.Release.GetLatest(App.GithubOwner, App.GithubRepo);
+                var client = GitHubService.GetClient();
+                var res = await client.Repository.Release.GetLatest(App.GithubOwner, App.GithubRepo);
                 if (res is not null)
                 {
                     LatestReleaseTagName = res.TagName;
