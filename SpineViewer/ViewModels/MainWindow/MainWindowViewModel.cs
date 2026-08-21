@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using NLog;
 using SFMLRenderer;
+using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
@@ -203,6 +204,12 @@ namespace SpineViewer.ViewModels.MainWindow
             WorkerWDebugger.LogWorkerWWindowTree();
         });
         private RelayCommand? _cmd_OutputWorkerWDebugInfo;
+
+        public RelayCommand Cmd_OutputGitHubAPIRateLimit => _cmd_OutputGitHubAPIRateLimit ??= new(() =>
+        {
+            GitHubService.GetClient().LogRateLimit();
+        });
+        private RelayCommand? _cmd_OutputGitHubAPIRateLimit;
 
         /// <summary>
         /// 显示关于对话框
