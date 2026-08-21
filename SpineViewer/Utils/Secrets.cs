@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Utils
 {
-    /// <summary>
-    /// 隐私信息管理工具类
-    /// </summary>
-    public class Secrets
+    public static class Secrets
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static readonly UTF8Encoding _utf8 = new(false, true);
