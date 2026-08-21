@@ -47,7 +47,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="{DynamicResource Str_ProjectUrl}"/>
                 <Label Grid.Column="1">
-                    <Hyperlink NavigateUri="{Binding ProjectUrl}" Command="{Binding Cmd_OpenProjectUrl}">
+                    <Hyperlink NavigateUri="{Binding ProjectUrl}" Command="{Binding Cmd_OpenUrl}" CommandParameter="{Binding ProjectUrl}">
                         <Run Text="{Binding ProjectUrl, Mode=OneWay}"/>
                     </Hyperlink>
                 </Label>
@@ -60,7 +60,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="{DynamicResource Str_CheckUpdates}" Command="{Binding Cmd_CheckUpdates}"/>
-                <Label Grid.Column="1" Content="{Binding LatestReleaseTagName}"/>
+                <Label Grid.Column="1">
+                    <Hyperlink NavigateUri="{Binding LatestReleaseUrl}" Command="{Binding Cmd_OpenUrl}" CommandParameter="{Binding LatestReleaseUrl}">
+                        <Run Text="{Binding LatestReleaseTagName, Mode=OneWay}"/>
+                    </Hyperlink>
+                </Label>
             </Grid>
         </StackPanel>
     </Grid>

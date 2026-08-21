@@ -22,17 +22,22 @@ namespace SpineViewer.ViewModels
         private string _latestReleaseTagName = "";
 
         [ObservableProperty]
+        private string _latestReleaseUrl = "";
+
+        [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(Cmd_CheckUpdates))]
         public bool _isCheckingUpdates = false;
 
         /// <summary>
-        /// 打开项目地址
+        /// 打开指定网址
         /// </summary>
-        public RelayCommand Cmd_OpenProjectUrl => _cmd_OpenProjectUrl ??= new(() =>
+        public RelayCommand<string?> Cmd_OpenUrl => _cmd_OpenUrl ??= new(url =>
         {
-            Process.Start(new ProcessStartInfo(ProjectUrl) { UseShellExecute = true });
+            if (string.IsNullOrEmpty(url))
+                return;
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         });
-        private RelayCommand? _cmd_OpenProjectUrl;
+        private RelayCommand<string?>? _cmd_OpenUrl;
 
         /// <summary>
         /// 检查更新
@@ -43,15 +48,21 @@ namespace SpineViewer.ViewModels
         public async void CheckUpdates_Execute()
         {
             LatestReleaseTagName = "";
+            LatestReleaseUrl = "";
 
             IsCheckingUpdates = true;
             try
             {
                 var res = await App.GitHubClient.Repository.Release.GetLatest(App.GithubOwner, App.GithubRepo);
-                if (res?.TagName is string tagName)
-                    LatestReleaseTagName = tagName;
+                if (res is not null)
+                {
+                    LatestReleaseTagName = res.TagName;
+                    LatestReleaseUrl = res.HtmlUrl;
+                }
                 else
+                {
                     LatestReleaseTagName = "Failed to get tag name.";
+                }
             }
             catch (Exception ex)
             {
