@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Octokit;
 using SFMLRenderer;
 using Spine;
 using SpineViewer.Extensions;
@@ -938,11 +939,8 @@ public partial class MainWindow : Window
     private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        _logger.Debug("Debug");
-        _logger.Info("Info");
-        _logger.Warn("Warn");
-        _logger.Error("Error");
-        _logger.Fatal("Fatal");
+        _logger.Fatal("Debug Clicked!");
+        GitHubService.GetClient().LogRateLimit();
 
         return;
 #endif
