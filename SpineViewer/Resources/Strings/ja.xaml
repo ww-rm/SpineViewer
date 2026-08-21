@@ -293,7 +293,14 @@
 
     <s:String x:Key="Str_RendererPreference">プレビュー画面オプション</s:String>
 
-    <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
+    <s:String x:Key="Str_NetworkPreference">ネットワークオプション</s:String>
+    <s:String x:Key="Str_Proxy">ネットワークプロキシ</s:String>
+    <s:String x:Key="Str_ProxyTooltip">プロキシサーバーのアドレスを任意で指定できます。空欄の場合はシステムのプロキシを使用します。</s:String>
+    <s:String x:Key="Str_ProxyPlaceholder">例：http://127.0.0.1:10809</s:String>
+    <s:String x:Key="Str_GitHubToken">GitHub トークン</s:String>
+    <s:String x:Key="Str_GitHubTokenPlaceholder">GitHub トークンを使用すると、レート制限を緩和できます。</s:String>
+
+    <s:String x:Key="Str_AppPreference">アプリケーションオプション</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
     <s:String x:Key="Str_AppSkin">スキン</s:String>
     <s:String x:Key="Str_MaxParallelism">最大並列数</s:String>

@@ -8,43 +8,47 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.Utils
 {
-    public static class Secrets
+    public class Secrets
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private static readonly UTF8Encoding _utf8 = new(false, true);
+        /// <summary>
+        /// <see cref="DataProtectionScope.CurrentUser"/>
+        /// </summary>
+        public static Secrets User { get; } = new(DataProtectionScope.CurrentUser);
 
         /// <summary>
-        /// 使用本机用户上下文加密数据
+        /// <see cref="DataProtectionScope.LocalMachine"/>
         /// </summary>
-        public static string Encrypt(string data)
+        public static Secrets Local { get; } = new(DataProtectionScope.LocalMachine);
+
+        private static readonly UTF8Encoding _utf8 = new(false, true);
+
+        private readonly DataProtectionScope _scope;
+
+        private Secrets(DataProtectionScope scope)
         {
-            ArgumentNullException.ThrowIfNull(data, nameof(data));
+            _scope = scope;
+        }
+
+        /// <summary>
+        /// 加密数据
+        /// </summary>
+        public string Encrypt(string data)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(data, nameof(data));
             byte[] plainData = _utf8.GetBytes(data);
-            byte[] encryptedData = ProtectedData.Protect(plainData, null, DataProtectionScope.CurrentUser);
+            byte[] encryptedData = ProtectedData.Protect(plainData, null, _scope);
             return Convert.ToBase64String(encryptedData);
         }
 
         /// <summary>
-        /// 使用本机用户上下文解密数据
+        /// 解密数据
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static string? Decrypt(string data)
+        public string Decrypt(string data)
         {
-            ArgumentNullException.ThrowIfNull(data, nameof(data));
-
-            try
-            {
-                byte[] encryptedData = Convert.FromBase64String(data);
-                byte[] plainData = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
-                return _utf8.GetString(plainData);
-            }
-            catch (Exception ex)
-            {
-                _logger.Debug(ex.ToString());
-                _logger.Warn("Failed to decrypt data, {0}", ex.Message);
-            }
-            return null;
+            ArgumentException.ThrowIfNullOrWhiteSpace(data, nameof(data));
+            byte[] encryptedData = Convert.FromBase64String(data);
+            byte[] plainData = ProtectedData.Unprotect(encryptedData, null, _scope);
+            return _utf8.GetString(plainData);
         }
     }
 }

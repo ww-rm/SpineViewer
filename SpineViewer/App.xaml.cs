@@ -406,38 +406,9 @@ namespace SpineViewer
         private static AppSkin _skin = AppSkin.Light;
 
         /// <summary>
-        /// 程序网络代理模式
+        /// 程序网络代理地址, null 则使用系统代理
         /// </summary>
-        public static AppProxyMode ProxyMode { get => _proxyMode; }
-        private static AppProxyMode _proxyMode = AppProxyMode.System;
-
-        /// <summary>
-        /// 程序网络代理地址
-        /// </summary>
-        public static Uri? ProxyUri { get => _proxyUri; }
-        private static Uri? _proxyUri = null;
-
-        /// <summary>
-        /// 设置程序的网络代理
-        /// </summary>
-        /// <param name="proxyUri">例如: http://127.0.0.1:10809</param>
-        public static void SetProxy(AppProxyMode proxyMode, string? proxyUri = null)
-        {
-            switch (proxyMode)
-            {
-                case AppProxyMode.System:
-                    _proxyMode = proxyMode;
-                    _proxyUri = null;
-                    break;
-                case AppProxyMode.Custom:
-                    ArgumentException.ThrowIfNullOrWhiteSpace(proxyUri, nameof(proxyUri));
-                    _proxyMode = proxyMode;
-                    _proxyUri = new(proxyUri);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(proxyMode), proxyMode, null);
-            }
-        }
+        public static Uri? ProxyUri { get; set; }
     }
 
     public enum AppLanguage
@@ -452,11 +423,5 @@ namespace SpineViewer
         Light,
         Dark,
         Violet,
-    }
-
-    public enum AppProxyMode
-    {
-        System,
-        Custom,
     }
 }

@@ -293,6 +293,13 @@
 
     <s:String x:Key="Str_RendererPreference">Preview Options</s:String>
 
+    <s:String x:Key="Str_NetworkPreference">Network Options</s:String>
+    <s:String x:Key="Str_Proxy">Network Proxy</s:String>
+    <s:String x:Key="Str_ProxyTooltip">Optionally specify a proxy server address. Leave empty to use the system proxy.</s:String>
+    <s:String x:Key="Str_ProxyPlaceholder">Example: http://127.0.0.1:10809</s:String>
+    <s:String x:Key="Str_GitHubToken">GitHub Token</s:String>
+    <s:String x:Key="Str_GitHubTokenPlaceholder">Using a GitHub token can effectively improve rate limits.</s:String>
+
     <s:String x:Key="Str_AppPreference">Application Options</s:String>
     <s:String x:Key="Str_Language">Language</s:String>
     <s:String x:Key="Str_AppSkin">Skin</s:String>

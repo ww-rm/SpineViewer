@@ -944,12 +944,6 @@ public partial class MainWindow : Window
         _logger.Error("Error");
         _logger.Fatal("Fatal");
 
-        var a = "12345";
-        var b = Secrets.Encrypt(a);
-        _logger.Debug(b);
-        var c = Secrets.Decrypt(b);
-        _logger.Debug(c);
-
         return;
 #endif
     }

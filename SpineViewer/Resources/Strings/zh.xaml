@@ -293,6 +293,13 @@
 
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
 
+    <s:String x:Key="Str_NetworkPreference">网络连接选项</s:String>
+    <s:String x:Key="Str_Proxy">网络代理</s:String>
+    <s:String x:Key="Str_ProxyTooltip">可选指定代理服务器地址，留空则跟随系统代理</s:String>
+    <s:String x:Key="Str_ProxyPlaceholder">例：http://127.0.0.1:10809</s:String>
+    <s:String x:Key="Str_GitHubToken">GitHub 令牌</s:String>
+    <s:String x:Key="Str_GitHubTokenPlaceholder">使用 GitHub 令牌可以有效改善访问速率限制</s:String>
+
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
     <s:String x:Key="Str_Language">语言</s:String>
     <s:String x:Key="Str_AppSkin">皮肤</s:String>

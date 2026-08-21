@@ -61,21 +61,17 @@ namespace SpineViewer.Services
         /// </summary>
         public static GitHubClient GetClient()
         {
-            // 如果代理模式发生变化就要获取新的连接
-            switch (App.ProxyMode)
+            switch (App.ProxyUri)
             {
-                case AppProxyMode.System:
-                    return _systemClient ??= GetSystemClient();
-                case AppProxyMode.Custom:
-                    ArgumentNullException.ThrowIfNull(App.ProxyUri);
-                    if (_webProxy?.Address != App.ProxyUri)
+                case Uri proxyUri:
+                    // 代理发生变化就要重新创建连接
+                    if (_webProxy?.Address != proxyUri)
                     {
                         _customClient = null;
-                        _webProxy = new(App.ProxyUri);
+                        _webProxy = new(proxyUri);
                     }
                     return _customClient ??= GetCustomClient();
                 default:
-                    _logger.Error("Unknown proxy mode: {0}, return system client.", App.ProxyMode);
                     return _systemClient ??= GetSystemClient();
             }
         }
@@ -89,12 +85,6 @@ namespace SpineViewer.Services
 
         private static GitHubClient GetCustomClient()
         {
-            if (_webProxy is null)
-            {
-                _logger.Error("No proxy set, return system client");
-                return GetSystemClient();
-            }
-
             var httpClient = new HttpClientAdapter(GetProxyMessageHandler);
             var connection = new Connection(_productHeaderValue, httpClient);
             var client = new GitHubClient(connection) { Credentials = _credentials };
