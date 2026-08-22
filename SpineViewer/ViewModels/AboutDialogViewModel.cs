@@ -15,7 +15,7 @@ namespace SpineViewer.ViewModels
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public string ProgramTagName { get; } = $"v{App.Version}";
+        public string ProgramTagName { get; } = App.VersionTag;
 
         public string ProjectUrl { get; } = $"https://github.com/{App.GithubOwner}/{App.GithubRepo}";
 

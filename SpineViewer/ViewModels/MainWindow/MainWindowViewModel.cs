@@ -33,7 +33,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public bool IsDebug => App.IsDebug;
 
-        public string Title => $"{App.AppName} - v{App.Version}";
+        public string Title => $"{App.AppName} - {App.VersionTag}";
 
         public Visibility Visibility
         {

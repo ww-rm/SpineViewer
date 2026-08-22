@@ -16,7 +16,6 @@ using System.Windows;
 using System.Windows.Interop;
 using SpineViewer.Extensions;
 using SpineViewer.Natives;
-using Octokit;
 
 namespace SpineViewer
 {
@@ -46,6 +45,7 @@ namespace SpineViewer
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        public static readonly string VersionTag = $"v{Version}";
         public static readonly string ProcessDataDirectory = Path.Combine(ProcessDirectory, "data");
 
         private static readonly string AutoRunCommand = $"\"{ProcessPath}\" {AutoRunFlag}";
@@ -60,7 +60,7 @@ namespace SpineViewer
         {
             InitializeLogConfiguration();
             _logger = LogManager.GetCurrentClassLogger();
-            _logger.Info("Application Started, v{0}", Version);
+            _logger.Info("Application Started, {0}", VersionTag);
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
