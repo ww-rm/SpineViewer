@@ -19,12 +19,16 @@ namespace SpineViewer.Models.Octokit
             Truncated = treeResponse.Truncated;
         }
 
+        /// <inheritdoc cref="TreeResponse.Sha"/>
         public string? Sha { get; set; }
 
+        /// <inheritdoc cref="TreeResponse.Url"/>
         public string? Url { get; set; }
 
+        /// <inheritdoc cref="TreeResponse.Tree"/>
         public List<TreeItemModel>? Tree { get; set; }
 
+        /// <inheritdoc cref="TreeResponse.Truncated"/>
         public bool Truncated { get; set; }
     }
 }

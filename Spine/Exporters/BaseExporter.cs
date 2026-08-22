@@ -103,8 +103,8 @@ namespace Spine.Exporters
         protected Sprite? _backgroundImageSprite = null;
 
         /// <summary>
-        /// 画面分辨率
         /// <inheritdoc cref="RenderTexture.Size"/>
+        /// <para>画面分辨率</para>
         /// </summary>
         public Vector2u Resolution
         {
@@ -123,36 +123,28 @@ namespace Spine.Exporters
             }
         }
 
-        /// <summary>
         /// <inheritdoc cref="View.Viewport"/>
-        /// </summary>
         public FloatRect Viewport
         {
             get => _renderView.Viewport;
             set => _renderView.Viewport = value;
         }
 
-        /// <summary>
         /// <inheritdoc cref="View.Center"/>
-        /// </summary>
         public Vector2f Center
         {
             get => _renderView.Center;
             set => _renderView.Center = value;
         }
 
-        /// <summary>
         /// <inheritdoc cref="View.Size"/>
-        /// </summary>
         public Vector2f Size
         {
             get => _renderView.Size;
             set => _renderView.Size = value;
         }
 
-        /// <summary>
         /// <inheritdoc cref="View.Rotation"/>
-        /// </summary>
         public float Rotation
         {
             get => _renderView.Rotation;
