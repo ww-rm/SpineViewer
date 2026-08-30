@@ -375,7 +375,6 @@ public partial class MainWindow : Window
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
 
-        _vm.ExplorerListViewModel.PropertyChanged += ExplorerListUserStateChanged;
         _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
     }
 
@@ -383,22 +382,9 @@ public partial class MainWindow : Window
     {
         // 撤除所有状态监听器
         _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
-        _vm.ExplorerListViewModel.PropertyChanged -= ExplorerListUserStateChanged;
         foreach (var w in _userStateWatchers) w.Dispose();
         _userStateWatchers.Clear();
 
-    }
-
-    private void ExplorerListUserStateChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        switch (e.PropertyName)
-        {
-            case nameof(ExplorerListViewModel.CurrentDirectory):
-                DelayedSaveUserState();
-                break;
-            default:
-                break;
-        }
     }
 
     private void SFMLRendererUserStateChanged(object? sender, PropertyChangedEventArgs e)

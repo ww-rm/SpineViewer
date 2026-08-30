@@ -24,7 +24,6 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             _sfmlRenderer = sfmlRenderer;
             _wallpaperRenderer = wallpaperRenderer;
-            _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
             _localAssetsViewModel = new(this);
             _sfmlRendererViewModel = new(this);
@@ -106,12 +105,6 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public PreferenceViewModel PreferenceViewModel => _preferenceViewModel;
         private readonly PreferenceViewModel _preferenceViewModel;
-
-        /// <summary>
-        /// 浏览页列表 ViewModel
-        /// </summary>
-        public ExplorerListViewModel ExplorerListViewModel => _explorerListViewModel;
-        private readonly ExplorerListViewModel _explorerListViewModel;
 
         /// <summary>
         /// 模型列表 ViewModel
