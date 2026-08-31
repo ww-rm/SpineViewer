@@ -45,6 +45,12 @@ namespace SpineViewer.ViewModels.Assets
         /// 刷新该资源库下的模型资源列表 <see cref="Items"/>
         /// </summary>
         public abstract void RefreshItems();
+
+        #region IExplorerOpenable
+
+        string IExplorerOpenable.OpenInExplorerDirectory => LocalDirectory;
+
+        #endregion
     }
 
     /// <summary>

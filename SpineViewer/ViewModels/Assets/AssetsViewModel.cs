@@ -154,7 +154,7 @@ namespace SpineViewer.ViewModels.Assets
             if (!CommandCanExecute.OnlyOne(args)) return;
 
             var obj = (IExplorerOpenable)args[0]!;
-            obj.OpenInExplorer();
+            obj.OpenDirectoryInExplorer();
         }
 
         /// <summary>

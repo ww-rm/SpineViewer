@@ -29,7 +29,10 @@ namespace SpineViewer.ViewModels.Assets
         {
             _vmRepo = vmRepo;
             RelativePath = relativePath;
-            LocalFullPath = Path.Combine(vmRepo.LocalDirectory, RelativePath);
+
+            LocalFullPath = Path.Combine(vmRepo.LocalDirectory, relativePath);
+            FileName = Path.GetFileName(relativePath);
+            LocalDirectory = Path.GetDirectoryName(LocalFullPath) ?? "";
         }
 
         /// <summary>
@@ -45,14 +48,12 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 文件名
         /// </summary>
-        public string FileName { get => _fileName ??= Path.GetFileName(RelativePath); }
-        private string? _fileName;
+        public string FileName { get; }
 
         /// <summary>
         /// 文件所处本地目录
         /// </summary>
-        public string LocalDirectory { get => _localDirectory ??= Path.GetDirectoryName(LocalFullPath) ?? ""; }
-        private string? _localDirectory;
+        public string LocalDirectory { get; }
 
         /// <summary>
         /// 预览图路径
@@ -83,5 +84,11 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
         }
+
+        #region IExplorerOpenable
+
+        string IExplorerOpenable.OpenInExplorerDirectory => LocalDirectory;
+
+        #endregion
     }
 }

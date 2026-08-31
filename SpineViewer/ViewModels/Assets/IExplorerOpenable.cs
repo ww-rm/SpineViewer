@@ -11,6 +11,6 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 本地目录
         /// </summary>
-        public string LocalDirectory { get; }
+        public string OpenInExplorerDirectory { get; }
     }
 }

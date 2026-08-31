@@ -16,18 +16,18 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 在资源管理器中打开目录
         /// </summary>
-        public static void OpenInExplorer(this IExplorerOpenable self)
+        public static void OpenDirectoryInExplorer(this IExplorerOpenable self)
         {
-            if (!Directory.Exists(self.LocalDirectory))
+            if (!Directory.Exists(self.OpenInExplorerDirectory))
             {
-                _logger.Error("Directory '{0}' is not existed.", self.LocalDirectory);
+                _logger.Error("Directory '{0}' is not existed.", self.OpenInExplorerDirectory);
                 return;
             }
 
             Process.Start(new ProcessStartInfo
             {
                 FileName = "explorer.exe",
-                Arguments = $"\"{self.LocalDirectory}\"",
+                Arguments = $"\"{self.OpenInExplorerDirectory}\"",
                 UseShellExecute = true,
             });
         }
