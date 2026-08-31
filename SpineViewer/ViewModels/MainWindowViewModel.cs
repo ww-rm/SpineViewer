@@ -7,12 +7,13 @@ using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
 using SpineViewer.ViewModels.Assets;
+using SpineViewer.ViewModels.Main;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels
 {
     /// <summary>
     /// MainWindow 上下文对象
@@ -142,7 +143,7 @@ namespace SpineViewer.ViewModels.MainWindow
         public RelayCommand Cmd_ExitFromTray => _cmd_ExitFromTray ??= new(() =>
         {
             IsShuttingDownFromTray = true;
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         });
         private RelayCommand? _cmd_ExitFromTray;
 

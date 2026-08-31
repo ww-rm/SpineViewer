@@ -21,7 +21,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels.Main
 {
     public class LocalAssetsViewModel : ObservableObject
     {

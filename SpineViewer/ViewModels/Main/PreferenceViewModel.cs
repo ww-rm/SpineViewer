@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels.Main
 {
     public class PreferenceViewModel : ObservableObject
     {

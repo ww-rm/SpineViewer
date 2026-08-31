@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels.Main
 {
     public class SpineObjectTabViewModel : ObservableObject
     {

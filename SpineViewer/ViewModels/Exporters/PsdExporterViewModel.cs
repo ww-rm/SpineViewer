@@ -3,7 +3,6 @@ using Spine.Exporters;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections.Generic;
 using System.IO;

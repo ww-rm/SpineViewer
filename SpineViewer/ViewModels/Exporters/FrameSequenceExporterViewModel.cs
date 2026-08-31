@@ -4,7 +4,6 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections;
 using System.Collections.Generic;

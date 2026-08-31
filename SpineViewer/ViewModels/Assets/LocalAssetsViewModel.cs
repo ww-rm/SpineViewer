@@ -2,7 +2,6 @@
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
-using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections.Generic;
 using System.IO;
