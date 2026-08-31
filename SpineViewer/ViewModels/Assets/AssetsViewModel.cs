@@ -52,7 +52,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 资源文件夹选中项发生变化命令
         /// </summary>
-        public RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(args =>
+        public AsyncRelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(async args =>
         {
             // 选中单个目录时显示该目录下所有文件项
             if (CommandCanExecute.OnlyOne(args))
@@ -63,9 +63,9 @@ namespace SpineViewer.ViewModels.Assets
             {
                 _selectedAssetsRepo = null;
             }
-            RefreshShownItems();
+            await RefreshShownItemsAsync();
         });
-        private RelayCommand<IList?>? _cmd_AssetsRepoSelectionChanged;
+        private AsyncRelayCommand<IList?>? _cmd_AssetsRepoSelectionChanged;
 
         /// <summary>
         /// 添加资源库
@@ -215,7 +215,7 @@ namespace SpineViewer.ViewModels.Assets
             set
             {
                 if (!SetProperty(ref _filterString, value)) return;
-                RefreshShownItems();
+                _ = RefreshShownItemsAsync();
             }
         }
         private string? _filterString;
@@ -240,27 +240,32 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 强制刷新列表项命令
         /// </summary>
-        public RelayCommand<IList?> Cmd_RefreshShownItems => _cmd_RefreshShownItems ??= new(
-            args =>
+        public AsyncRelayCommand<IList?> Cmd_RefreshShownItems => _cmd_RefreshShownItems ??= new(
+            async args =>
             {
                 if (!CommandCanExecute.OnlyOne(args)) return;
-                RefreshShownItems(true);
+                await RefreshShownItemsAsync(true);
             },
             CommandCanExecute.OnlyOne
         );
-        private RelayCommand<IList?>? _cmd_RefreshShownItems;
+        private AsyncRelayCommand<IList?>? _cmd_RefreshShownItems;
+
+        private bool _isRefreshing = false;
 
         /// <summary>
         /// 刷新 <see cref="ShownItems"/>
         /// </summary>
-        protected void RefreshShownItems(bool refreshRepoItems = false)
+        protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false, CancellationToken ct = default)
         {
+            if (_isRefreshing) return;
+            _isRefreshing= true;
+
             _shownItems = [];
             if (_selectedAssetsRepo is not null)
             {
                 if (_selectedAssetsRepo.Items.Count <= 0 || refreshRepoItems)
                 {
-                    _selectedAssetsRepo.RefreshItems();
+                    await _selectedAssetsRepo.RefreshItemsAsync(ct);
                 }
 
                 if (string.IsNullOrWhiteSpace(_filterString))
@@ -273,6 +278,8 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
             OnPropertyChanged(nameof(ShownItems));
+
+            _isRefreshing = false;
         }
 
         #endregion

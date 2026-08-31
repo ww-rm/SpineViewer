@@ -44,7 +44,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 刷新该资源库下的模型资源列表 <see cref="Items"/>
         /// </summary>
-        public abstract void RefreshItems();
+        public abstract Task RefreshItemsAsync(CancellationToken ct = default);
 
         #region IExplorerOpenable
 

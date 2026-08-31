@@ -37,33 +37,48 @@ namespace SpineViewer.ViewModels.Assets
         public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
         private readonly List<LocalAssetsItemViewModel> _items = [];
 
-        public override void RefreshItems()
+        private bool _isRefreshing = false;
+
+        public override async Task RefreshItemsAsync(CancellationToken ct)
         {
+            if (_isRefreshing) return;
+
+            _isRefreshing = true;
+
             _items.Clear();
 
             if (!Directory.Exists(_localDirectory))
             {
                 _logger.Error("Directory '{0}' is not existed.", _localDirectory);
-                return;
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        foreach (var path in Directory.EnumerateFiles(_localDirectory, "*.*", SearchOption.AllDirectories))
+                        {
+                            if (ct.IsCancellationRequested) break;
+
+                            var lowerPath = path.ToLowerInvariant();
+
+                            if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
+                            {
+                                var relativePath = Path.GetRelativePath(_localDirectory, path);
+                                _items.Add(new(this, relativePath));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex.ToString());
+                        _logger.Error("Failed to enumerate files in dir: {0}, {1}", _localDirectory, ex.Message);
+                    }
+                }, ct);
             }
 
-            try
-            {
-                foreach (var path in Directory.EnumerateFiles(_localDirectory, "*.*", SearchOption.AllDirectories))
-                {
-                    var lowerPath = path.ToLowerInvariant();
-                    if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
-                    {
-                        var relativePath = Path.GetRelativePath(_localDirectory, path);
-                        _items.Add(new(this, relativePath));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Debug(ex.ToString());
-                _logger.Error("Failed to enumerate files in dir: {0}, {1}", _localDirectory, ex.Message);
-            }
+            _isRefreshing = false;
         }
     }
 }
