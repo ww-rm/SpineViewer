@@ -45,7 +45,7 @@ namespace SpineViewer.ViewModels.Assets
         {
             // 先清空列表
             _selectedAssetsRepo = null;
-            RefreshShownItems();
+            RefreshShownItemsAsync().Wait();
             _assetsRepos.Clear();
 
             if (JsonHelper.Deserialize<LocalAssetsModel>(LocalAssetsFilePath, out var assets, true))

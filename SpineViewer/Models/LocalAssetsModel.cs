@@ -9,13 +9,13 @@ namespace SpineViewer.Models
 {
     public class LocalAssetsModel
     {
-        public List<LocalDirectoryModel> LocalDirectories { get; set; } = [];
+        public List<LocalAssetsRepoModel> LocalAssetsRepos { get; set; } = [];
     }
 
-    public partial class LocalDirectoryModel : ObservableObject
+    public partial class LocalAssetsRepoModel : ObservableObject
     {
         [ObservableProperty]
-        private string _fullPath = "";
+        private string _localDirectory = "";
 
         [ObservableProperty]
         private string? _name;

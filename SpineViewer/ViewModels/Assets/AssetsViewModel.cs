@@ -228,12 +228,12 @@ namespace SpineViewer.ViewModels.Assets
             // 选中单个目录时显示该目录下所有文件项
             if (!CommandCanExecute.OnlyOne(args))
             {
-                _vmMain.PreviewImage = null;
+                _vmMain.AssetsPreviewViewModel.PreviewImage = null;
                 return;
             }
 
             var item = (TItem)args[0]!;
-            _vmMain.PreviewImage = item.PreviewImage;
+            _vmMain.AssetsPreviewViewModel.PreviewImage = item.PreviewImage;
         });
         private RelayCommand<IList?>? _cmd_AssetsItemSelectionChanged;
 
@@ -262,6 +262,7 @@ namespace SpineViewer.ViewModels.Assets
 
             if (repo is not null)
             {
+                // XXX: 此处更好的方式时判断 repo.Items 是否已加载而不是看集合大小是否为 0
                 if (repo.Items.Count <= 0 || refreshRepoItems)
                 {
                     await repo.RefreshItemsAsync();
@@ -277,15 +278,157 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
 
+            // 如果此时选择的资源库和之前保存的一致, 则按这个结果更新
             if (ReferenceEquals(repo, _selectedAssetsRepo))
             {
                 _shownItems = shownItems;
                 OnPropertyChanged(nameof(ShownItems));
             }
         }
+
+        /// <summary>
+        /// 导入选中的模型文件或者资源库
+        /// </summary>
+        public RelayCommand<IList?> Cmd_ImportSelectedItems => _cmd_ImportSelectedItems ??= new(ImportSelectedItems_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_ImportSelectedItems;
+
+        private void ImportSelectedItems_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args))
+                return;
+
+            var items = GetItems(args);
+
+            _vmMain.SpineObjectListViewModel.AddSpineObjectFromFileList(items.Select(m => m.LocalFullPath));
         }
 
-            _isRefreshing = false;
+        #endregion
+
+        #region 预览图管理
+
+        /// <summary>
+        /// 为选中的资源库/文件项生成预览图
+        /// </summary>
+        public RelayCommand<IList?> Cmd_GeneratePreviews => _cmd_GeneratePreviews ??= new(GeneratePreviews_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_GeneratePreviews;
+
+        private void GeneratePreviews_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args))
+                return;
+
+            if (!DialogService.ShowGeneratePreviewsDialog(_vmMain.AssetsPreviewViewModel))
+                return;
+
+            var items = GetItems(args);
+            _vmMain.AssetsPreviewViewModel.GeneratePreviews(items);
+        }
+
+        /// <summary>
+        /// 为选中的目录/文件项删除预览图
+        /// </summary>
+        public RelayCommand<IList?> Cmd_DeletePreviews => _cmd_DeletePreviews ??= new(DeletePreviews_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_DeletePreviews;
+
+        private void DeletePreviews_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args))
+                return;
+
+            var items = GetItems(args);
+
+            if (items.Count <= 0)
+                return;
+
+            if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_DeleteItemsQuest, items.Count)))
+                return;
+
+            if (args.Count <= 10)
+            {
+                foreach (var it in items)
+                {
+                    try
+                    {
+                        File.Delete(it.PreviewFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex.ToString());
+                        _logger.Error("Failed to delete preview: {0}, {1}", it.PreviewFilePath, ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                ProgressService.RunAsync(
+                    (pr, ct) => DeletePreviewsTask(items, pr, ct),
+                    AppResource.Str_DeletePreviewsTitle
+                );
+            }
+        }
+
+        private void DeletePreviewsTask(List<TItem> items, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = items.Count;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var it = items[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {it.LocalFullPath}";
+
+                try
+                {
+                    File.Delete(it.PreviewFilePath);
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to delete preview: {0}, {1}", it.PreviewFilePath, ex.Message);
+                    error++;
+                }
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {it}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Preview deletion {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} previews deleted successfully", success);
+        }
+
+        private static List<TItem> GetItems(IList args)
+        {
+            List<TItem> items = [];
+            foreach (var it in args!)
+            {
+                switch (it)
+                {
+                    case TRepo repo:
+                        items.AddRange(repo.Items);
+                        break;
+                    case TItem item:
+                        items.Add(item);
+                        break;
+                    default:
+                        _logger.Warn("Invalid type {0}, skip it", it.GetType().Name);
+                        break;
+                }
+            }
+            return items;
         }
 
         #endregion
