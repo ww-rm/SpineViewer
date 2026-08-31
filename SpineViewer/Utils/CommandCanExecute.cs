@@ -13,7 +13,7 @@ namespace SpineViewer.Utils
         public static bool NotNull([NotNullWhen(true)] object? v)
             => v is not null;
 
-        public static bool MoreThanZero([NotNullWhen(true)] IList? v)
+        public static bool AtLeastOne([NotNullWhen(true)] IList? v)
             => NotNull(v) && v.Count > 0;
 
         public static bool OnlyOne([NotNullWhen(true)] IList? v)

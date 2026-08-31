@@ -85,12 +85,12 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 移除资源库
         /// </summary>
-        public RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.MoreThanZero);
+        public RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?> _cmd_RemoveAssetsRepo;
 
         private void RemoveAssetsRepo_Execute(IList? args)
         {
-            if (!CommandCanExecute.MoreThanZero(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             if (args.Count > 1)
             {
