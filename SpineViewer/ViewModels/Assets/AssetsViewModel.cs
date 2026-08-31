@@ -250,34 +250,40 @@ namespace SpineViewer.ViewModels.Assets
         );
         private AsyncRelayCommand<IList?>? _cmd_RefreshShownItems;
 
-        private bool _isRefreshing = false;
-
         /// <summary>
         /// 刷新 <see cref="ShownItems"/>
         /// </summary>
-        protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false, CancellationToken ct = default)
+        protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false)
         {
-            if (_isRefreshing) return;
-            _isRefreshing= true;
+            List<TItem> shownItems = [];
 
-            _shownItems = [];
-            if (_selectedAssetsRepo is not null)
+            // 保存进入时选择的资源库
+            var repo = _selectedAssetsRepo;
+
+            if (repo is not null)
             {
-                if (_selectedAssetsRepo.Items.Count <= 0 || refreshRepoItems)
+                if (repo.Items.Count <= 0 || refreshRepoItems)
                 {
-                    await _selectedAssetsRepo.RefreshItemsAsync(ct);
+                    await repo.RefreshItemsAsync();
                 }
 
                 if (string.IsNullOrWhiteSpace(_filterString))
                 {
-                    _shownItems.AddRange(_selectedAssetsRepo.Items);
+                    shownItems.AddRange(repo.Items);
                 }
                 else
                 {
-                    _shownItems.AddRange(_selectedAssetsRepo.Items.Where(it => it.FileName.Contains(_filterString, StringComparison.OrdinalIgnoreCase)));
+                    shownItems.AddRange(repo.Items.Where(it => it.FileName.Contains(_filterString, StringComparison.OrdinalIgnoreCase)));
                 }
             }
-            OnPropertyChanged(nameof(ShownItems));
+
+            if (ReferenceEquals(repo, _selectedAssetsRepo))
+            {
+                _shownItems = shownItems;
+                OnPropertyChanged(nameof(ShownItems));
+            }
+        }
+        }
 
             _isRefreshing = false;
         }
