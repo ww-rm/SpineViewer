@@ -37,13 +37,24 @@ namespace SpineViewer.ViewModels.Assets
         public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
         private readonly List<LocalAssetsItemViewModel> _items = [];
 
-        private bool _isRefreshing = false;
+        public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
+        private bool _isItemsRefreshing = false;
 
-        public override async Task RefreshItemsAsync(CancellationToken ct)
+        private Task? _itemsRefreshingTask;
+
+        public override async Task RefreshItemsAsync()
         {
-            if (_isRefreshing) return;
+            if (_itemsRefreshingTask is null || _itemsRefreshingTask.IsCompleted)
+            {
+                _itemsRefreshingTask = Task.Run(RefreshItemsTask);
+            }
+            await _itemsRefreshingTask;
+        }
 
-            _isRefreshing = true;
+        private void RefreshItemsTask()
+        {
+            _isItemsRefreshing = true;
+            OnPropertyChanged(nameof(IsItemsRefreshing));
 
             _items.Clear();
 
@@ -53,32 +64,28 @@ namespace SpineViewer.ViewModels.Assets
             }
             else
             {
-                await Task.Run(() =>
+                try
                 {
-                    try
+                    foreach (var path in Directory.EnumerateFiles(_localDirectory, "*.*", SearchOption.AllDirectories))
                     {
-                        foreach (var path in Directory.EnumerateFiles(_localDirectory, "*.*", SearchOption.AllDirectories))
+                        var lowerPath = path.ToLowerInvariant();
+
+                        if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
                         {
-                            if (ct.IsCancellationRequested) break;
-
-                            var lowerPath = path.ToLowerInvariant();
-
-                            if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
-                            {
-                                var relativePath = Path.GetRelativePath(_localDirectory, path);
-                                _items.Add(new(this, relativePath));
-                            }
+                            var relativePath = Path.GetRelativePath(_localDirectory, path);
+                            _items.Add(new(this, relativePath));
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.ToString());
-                        _logger.Error("Failed to enumerate files in dir: {0}, {1}", _localDirectory, ex.Message);
-                    }
-                }, ct);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to enumerate files in dir: {0}, {1}", _localDirectory, ex.Message);
+                }
             }
 
-            _isRefreshing = false;
+            _isItemsRefreshing = false;
+            OnPropertyChanged(nameof(IsItemsRefreshing));
         }
     }
 }

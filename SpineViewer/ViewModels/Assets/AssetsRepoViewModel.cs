@@ -42,9 +42,14 @@ namespace SpineViewer.ViewModels.Assets
         public abstract IReadOnlyList<AssetsItemViewModel> Items { get; }
 
         /// <summary>
+        /// 资源列表 <see cref="Items"/> 是否正在刷新中
+        /// </summary>
+        public abstract bool IsItemsRefreshing { get; }
+
+        /// <summary>
         /// 刷新该资源库下的模型资源列表 <see cref="Items"/>
         /// </summary>
-        public abstract Task RefreshItemsAsync(CancellationToken ct = default);
+        public abstract Task RefreshItemsAsync();
 
         #region IExplorerOpenable
 
