@@ -35,7 +35,7 @@ namespace SpineViewer.ViewModels.Assets
         private readonly string _defaultName;
 
         public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
-        private readonly List<LocalAssetsItemViewModel> _items = [];
+        private List<LocalAssetsItemViewModel> _items = [];
 
         public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
         private bool _isItemsRefreshing = false;
@@ -56,7 +56,7 @@ namespace SpineViewer.ViewModels.Assets
             _isItemsRefreshing = true;
             OnPropertyChanged(nameof(IsItemsRefreshing));
 
-            _items.Clear();
+            List<LocalAssetsItemViewModel> items = [];
 
             if (!Directory.Exists(_localDirectory))
             {
@@ -73,7 +73,7 @@ namespace SpineViewer.ViewModels.Assets
                         if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
                         {
                             var relativePath = Path.GetRelativePath(_localDirectory, path);
-                            _items.Add(new(this, relativePath));
+                            items.Add(new(this, relativePath));
                         }
                     }
                 }
@@ -83,6 +83,8 @@ namespace SpineViewer.ViewModels.Assets
                     _logger.Error("Failed to enumerate files in dir: {0}, {1}", _localDirectory, ex.Message);
                 }
             }
+
+            _items = items;
 
             _isItemsRefreshing = false;
             OnPropertyChanged(nameof(IsItemsRefreshing));
