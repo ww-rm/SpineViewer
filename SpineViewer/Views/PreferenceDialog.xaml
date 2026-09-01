@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpineViewer.Views"
         xmlns:models="clr-namespace:SpineViewer.Models"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
+        xmlns:res="clr-namespace:SpineViewer.Resources"
         d:DataContext="{d:DesignInstance Type=models:PreferenceModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Preference}"
@@ -241,7 +241,7 @@
                                 <Label Content="{DynamicResource Str_HitTestLevel}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding HitTestLevel}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.HitTestLevelOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_HitTestLevel}"/>
                             </Grid>
 
                             <Grid>
@@ -302,7 +302,7 @@
                                 <Label Content="{DynamicResource Str_Language}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding AppLanguage}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_AppLanguage}"/>
                             </Grid>
 
                             <Grid>
@@ -313,7 +313,7 @@
                                 <Label Content="{DynamicResource Str_AppSkin}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding AppSkin}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_AppSkin}"/>
                             </Grid>
 
                             <Grid>

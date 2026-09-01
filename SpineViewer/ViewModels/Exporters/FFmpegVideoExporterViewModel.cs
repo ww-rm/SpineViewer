@@ -17,10 +17,6 @@ namespace SpineViewer.ViewModels.Exporters
 {
     public class FFmpegVideoExporterViewModel(MainWindowViewModel vmMain) : VideoExporterViewModel(vmMain)
     {
-        public static ImmutableArray<FFmpegVideoExporter.VideoFormat> VideoFormatOptions { get; } = Enum.GetValues<FFmpegVideoExporter.VideoFormat>().ToImmutableArray();
-        public static ImmutableArray<FFmpegVideoExporter.ApngPredMethod> ApngPredMethodOptions { get; } = Enum.GetValues<FFmpegVideoExporter.ApngPredMethod>().ToImmutableArray();
-        public static ImmutableArray<FFmpegVideoExporter.MovProfile> MovProfileOptions { get; } = Enum.GetValues<FFmpegVideoExporter.MovProfile>().ToImmutableArray();
-
         public FFmpegVideoExporter.VideoFormat Format 
         { 
             get => _format;

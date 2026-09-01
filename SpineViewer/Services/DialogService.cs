@@ -2,7 +2,6 @@
 using SpineViewer.Models;
 using SpineViewer.ViewModels.Assets;
 using SpineViewer.ViewModels.Exporters;
-using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using SpineViewer.Views.ExporterDialogs;
 using System;

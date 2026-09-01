@@ -8,8 +8,8 @@ using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
-using SpineViewer.ViewModels.Exporters;
-using SpineViewer.ViewModels.MainWindow;
+using SpineViewer.ViewModels;
+using SpineViewer.ViewModels.Main;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -189,7 +189,7 @@ public partial class MainWindow : Window
         _vm.PreferenceViewModel.LoadPreference();
 
         // 加载资源列表
-        _vm.LocalAssetsViewModel.LoadLocalAssets();
+        _vm.LocalAssetsViewModel.LoadAssetsRepos();
 
         // 还原上一次用户历史状态并开启监听器
         LoadUserState();

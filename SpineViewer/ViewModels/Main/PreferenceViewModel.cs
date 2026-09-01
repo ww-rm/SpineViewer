@@ -302,8 +302,6 @@ namespace SpineViewer.ViewModels.Main
 
         #region 预览画面首选项
 
-        public static ImmutableArray<HitTestLevel> HitTestLevelOptions { get; } = Enum.GetValues<HitTestLevel>().ToImmutableArray();
-
         public bool RenderSelectedOnly
         {
             get => _vmMain.SFMLRendererViewModel.RenderSelectedOnly;
@@ -353,10 +351,6 @@ namespace SpineViewer.ViewModels.Main
         #endregion
 
         #region 应用程序选项
-
-        public static ImmutableArray<AppLanguage> AppLanguageOptions { get; } = Enum.GetValues<AppLanguage>().ToImmutableArray();
-
-        public static ImmutableArray<AppSkin> AppSkinOptions { get; } = Enum.GetValues<AppSkin>().ToImmutableArray();
 
         public AppLanguage AppLanguage
         {

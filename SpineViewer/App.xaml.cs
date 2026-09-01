@@ -2,7 +2,6 @@
 using NLog;
 using SpineViewer.Resources;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
 using System.Configuration;
@@ -16,6 +15,7 @@ using System.Windows;
 using System.Windows.Interop;
 using SpineViewer.Extensions;
 using SpineViewer.Natives;
+using SpineViewer.ViewModels;
 
 namespace SpineViewer
 {

@@ -5,7 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
+        xmlns:vm="clr-namespace:SpineViewer.ViewModels"
+        xmlns:res="clr-namespace:SpineViewer.Resources"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         x:Name="_mainWindow"
@@ -399,7 +400,7 @@
                                                         <Label Content="{DynamicResource Str_Physics}"/>
                                                         <ComboBox Grid.Column="1" 
                                                               SelectedValue="{Binding Physics}" 
-                                                              ItemsSource="{x:Static vm:SpineObjectTabViewModel.PhysicsOptions}"/>
+                                                              ItemsSource="{x:Static res:EnumValues.Enum_Physics}"/>
                                                     </Grid>
 
                                                     <!-- 时间因子 -->
@@ -897,7 +898,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource Str_BackgroundImageMode}"/>
-                                        <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static vm:SFMLRendererViewModel.StretchOptions}"/>
+                                        <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static res:EnumValues.Enum_Stretch}"/>
                                     </Grid>
                                 </StackPanel>
                                 </ScrollViewer>
