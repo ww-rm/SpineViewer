@@ -95,6 +95,7 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        // XXX: 此处由于 MainWindow 的 DataContext 对象是后赋值, 导致 hc:NotifyIcon 在初始化绑定时会报一次错误信息, 之后正常运行
         InitializeComponent();
         InitializeLogConfiguration();
 
