@@ -51,7 +51,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 资源文件夹选中项发生变化命令
         /// </summary>
-        public AsyncRelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(async args =>
+        public RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(args =>
         {
             // 选中单个目录时显示该目录下所有文件项
             if (CommandCanExecute.OnlyOne(args))
@@ -62,9 +62,9 @@ namespace SpineViewer.ViewModels.Assets
             {
                 _selectedAssetsRepo = null;
             }
-            await RefreshShownItemsAsync();
+            _ = RefreshShownItemsAsync();
         });
-        private AsyncRelayCommand<IList?>? _cmd_AssetsRepoSelectionChanged;
+        private RelayCommand<IList?>? _cmd_AssetsRepoSelectionChanged;
 
         /// <summary>
         /// 添加资源库
@@ -239,15 +239,20 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 强制刷新列表项命令
         /// </summary>
-        public AsyncRelayCommand<IList?> Cmd_RefreshShownItems => _cmd_RefreshShownItems ??= new(
-            async args =>
+        public RelayCommand<IList?> Cmd_RefreshShownItems => _cmd_RefreshShownItems ??= new(
+            args =>
             {
                 if (!CommandCanExecute.OnlyOne(args)) return;
-                await RefreshShownItemsAsync(true);
+                _ = RefreshShownItemsAsync(true);
             },
             CommandCanExecute.OnlyOne
         );
-        private AsyncRelayCommand<IList?>? _cmd_RefreshShownItems;
+        private RelayCommand<IList?>? _cmd_RefreshShownItems;
+
+        /// <summary>
+        /// <see cref="RefreshShownItemsAsync(bool)"/> 异步任务计数器, 用于区分执行先后顺序
+        /// </summary>
+        private long _refreshShownItemsAsyncCounter = 0;
 
         /// <summary>
         /// 刷新 <see cref="ShownItems"/>
@@ -255,9 +260,10 @@ namespace SpineViewer.ViewModels.Assets
         protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false)
         {
             List<TItem> shownItems = [];
-
-            // 保存进入时选择的资源库
             var repo = _selectedAssetsRepo;
+
+            // 保存进入时的计数器
+            var counter1 = Interlocked.Increment(ref _refreshShownItemsAsyncCounter);
 
             if (repo is not null)
             {
@@ -277,8 +283,10 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
 
-            // 如果此时选择的资源库和之前保存的一致, 则按这个结果更新
-            if (ReferenceEquals(repo, _selectedAssetsRepo))
+            var counter2 = Interlocked.Read(ref _refreshShownItemsAsyncCounter);
+
+            // 如果此次运行是最新的, 则按这个结果更新
+            if (counter1 >= counter2)
             {
                 _shownItems = shownItems;
                 OnPropertyChanged(nameof(ShownItems));
