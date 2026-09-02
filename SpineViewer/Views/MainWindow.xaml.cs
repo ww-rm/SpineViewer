@@ -922,13 +922,13 @@ public partial class MainWindow : Window
     #endregion
 
 
-    private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
+    private async void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        _logger.Fatal("Debug Clicked!");
-        GitHubService.GetClient().LogRateLimit();
+        var c = GitHubService.GetClient();
+        var r = await c.Repository.Get("ww-rm", "SpineViewer");
 
-        return;
+
 #endif
     }
 

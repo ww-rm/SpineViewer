@@ -37,7 +37,7 @@ namespace SpineViewer.Services
 
         public static bool ShowLocalAssetEditDialogDialog(LocalAssetsRepoModel vm)
         {
-            var dialog = new LocalAssetEditDialog() { DataContext = vm, Owner = App.Current.MainWindow };
+            var dialog = new LocalAssetsRepoEditDialog() { DataContext = vm, Owner = App.Current.MainWindow };
             return dialog.ShowDialog() ?? false;
         }
 

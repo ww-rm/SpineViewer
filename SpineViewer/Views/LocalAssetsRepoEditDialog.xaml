@@ -1,4 +1,4 @@
-﻿<Window x:Class="SpineViewer.Views.LocalAssetEditDialog"
+﻿<Window x:Class="SpineViewer.Views.LocalAssetsRepoEditDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:SpineViewer.Views"
         xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:models="clr-namespace:SpineViewer.Models"
-        d:DataContext="{d:DesignInstance Type=models:LocalDirectoryModel}"
+        d:DataContext="{d:DesignInstance Type=models:LocalAssetsRepoModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_EditLocalAssetTitle}" 
         Background="{DynamicResource RegionBrush}"
@@ -57,8 +57,8 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="{DynamicResource Str_FullPath}"/>
-                        <TextBox Grid.Column="1" Text="{Binding FullPath}" IsReadOnly="True"/>
+                        <Label Content="{DynamicResource Str_LocalDirectory}"/>
+                        <TextBox Grid.Column="1" Text="{Binding LocalDirectory}" IsReadOnly="True"/>
                     </Grid>
 
                     <!-- 名字 -->

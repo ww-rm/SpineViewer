@@ -104,10 +104,10 @@ namespace SpineViewer.Models
 
         public string? GitHubToken
         {
-            get => _githubToken;
-            set => SetProperty(ref _githubToken, value?.Trim());
+            get => _gitHubToken;
+            set => SetProperty(ref _gitHubToken, value?.Trim());
         }
-        private string? _githubToken;
+        private string? _gitHubToken;
 
         #endregion
 

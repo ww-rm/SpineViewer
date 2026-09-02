@@ -85,7 +85,7 @@ namespace SpineViewer.ViewModels.Assets
         /// 移除资源库
         /// </summary>
         public RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
-        private RelayCommand<IList?> _cmd_RemoveAssetsRepo;
+        private RelayCommand<IList?>? _cmd_RemoveAssetsRepo;
 
         private void RemoveAssetsRepo_Execute(IList? args)
         {
@@ -288,10 +288,10 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 导入选中的模型文件或者资源库
         /// </summary>
-        public RelayCommand<IList?> Cmd_ImportSelectedItems => _cmd_ImportSelectedItems ??= new(ImportSelectedItems_Execute, CommandCanExecute.AtLeastOne);
-        private RelayCommand<IList?>? _cmd_ImportSelectedItems;
+        public RelayCommand<IList?> Cmd_ImportSelectedAssets => _cmd_ImportSelectedAssets ??= new(ImportSelectedAssets_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_ImportSelectedAssets;
 
-        private void ImportSelectedItems_Execute(IList? args)
+        private void ImportSelectedAssets_Execute(IList? args)
         {
             if (!CommandCanExecute.AtLeastOne(args))
                 return;

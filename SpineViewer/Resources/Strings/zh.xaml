@@ -144,17 +144,17 @@
 
     <!-- 本地资源标签页 -->
     <s:String x:Key="Str_Filter">筛选</s:String>
-    <s:String x:Key="Str_FullPath">完整路径</s:String>
-    <s:String x:Key="Str_AddLocalAsset">添加...</s:String>
-    <s:String x:Key="Str_RemoveLocalAsset">移除</s:String>
-    <s:String x:Key="Str_MoveUpLocalAsset">上移</s:String>
-    <s:String x:Key="Str_MoveDownLocalAsset">下移</s:String>
-    <s:String x:Key="Str_RefreshItems">刷新列表项</s:String>
-    <s:String x:Key="Str_OpenLocalAssetInExplorer">在资源管理器中打开...</s:String>
-    <s:String x:Key="Str_EditLocalAsset">编辑...</s:String>
+    <s:String x:Key="Str_LocalDirectory">完整路径</s:String>
+    <s:String x:Key="Str_AddAssetsRepo">添加...</s:String>
+    <s:String x:Key="Str_RemoveAssetsRepo">移除</s:String>
+    <s:String x:Key="Str_MoveUpAssetsRepo">上移</s:String>
+    <s:String x:Key="Str_MoveDownAssetsRepo">下移</s:String>
+    <s:String x:Key="Str_RefreshShownItems">刷新列表项</s:String>
+    <s:String x:Key="Str_OpenAssetsInExplorer">在资源管理器中打开...</s:String>
+    <s:String x:Key="Str_EditAssetsRepo">编辑...</s:String>
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
-    <s:String x:Key="Str_ImportSelectedItems">导入选中项</s:String>
+    <s:String x:Key="Str_ImportSelectedAssets">导入选中项</s:String>
     
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
