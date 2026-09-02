@@ -70,69 +70,43 @@ namespace SFMLRenderer
         /// </summary>
         public bool VerticalSync { get; set; }
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.SetActive(bool)"/>
-        /// </summary>
         public bool SetActive(bool active);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.GetView"/>
-        /// </summary>
         public View GetView();
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.SetView(View)"/>
-        /// </summary>
         public void SetView(View view);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.MapPixelToCoords(Vector2i)"/>
-        /// </summary>
         public Vector2f MapPixelToCoords(Vector2i point);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.MapCoordsToPixel(Vector2f)"/>
-        /// </summary>
         public Vector2i MapCoordsToPixel(Vector2f point);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Clear()"/>
-        /// </summary>
         public void Clear();
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Clear(Color)"/>
-        /// </summary>
         public void Clear(Color color);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Draw(Drawable)"/>
-        /// </summary>
         public void Draw(Drawable drawable);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Draw(Drawable, RenderStates)"/>
-        /// </summary>
         public void Draw(Drawable drawable, RenderStates states);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Draw(Vertex[], PrimitiveType)"/>
-        /// </summary>
         public void Draw(Vertex[] vertices, PrimitiveType type);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Draw(Vertex[], PrimitiveType, RenderStates)"/>
-        /// </summary>
         public void Draw(Vertex[] vertices, PrimitiveType type, RenderStates states);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Draw(Vertex[], uint, uint, PrimitiveType)"/>
-        /// </summary>
         public void Draw(Vertex[] vertices, uint start, uint count, PrimitiveType type);
 
-        /// <summary>
         /// <inheritdoc cref="RenderWindow.Display"/>
-        /// </summary>
         public void Display();
     }
 }

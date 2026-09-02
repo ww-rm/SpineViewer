@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels.Main
 {
     public class SpineObjectTabViewModel : ObservableObject
     {
@@ -17,8 +17,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly ObservableCollection<SkinViewModel> _skins = [];
         private readonly ObservableCollection<SlotViewModel> _slots = [];
         private readonly ObservableCollection<AnimationTrackViewModel> _animationTracks = [];
-
-        public static ImmutableArray<ISkeleton.Physics> PhysicsOptions { get; } = Enum.GetValues<ISkeleton.Physics>().ToImmutableArray();
 
         public SpineObjectModel[] SelectedObjects
         {

@@ -5,6 +5,7 @@ using SpineViewer.Models;
 using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace SpineViewer.Utils
         /// <summary>
         /// 从文件反序列对象, 不会抛出异常
         /// </summary>
-        public static bool Deserialize<T>(string path, out T obj, bool quietForNotExist = false)
+        public static bool Deserialize<T>(string path, [NotNullWhen(true)] out T? obj, bool quietForNotExist = false)
         {
             if (!File.Exists(path))
             {

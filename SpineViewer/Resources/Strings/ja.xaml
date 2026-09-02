@@ -11,6 +11,7 @@
     <s:String x:Key="Str_DiagnosticsTools">診断ツール</s:String>
     <s:String x:Key="Str_SystemInfo">システム情報</s:String>
     <s:String x:Key="Str_DebugWorkerW">WorkerW のデバッグ情報</s:String>
+    <s:String x:Key="Str_GitHubAPIRateLimit">GitHub API レート制限</s:String>
     <s:String x:Key="Str_Abount">バージョン情報</s:String>
     <s:String x:Key="Str_Experiment">実験機能</s:String>
 
@@ -143,17 +144,17 @@
 
     <!-- 本地资源标签页 -->
     <s:String x:Key="Str_Filter">フィルター</s:String>
-    <s:String x:Key="Str_FullPath">フルパス</s:String>
-    <s:String x:Key="Str_AddLocalAsset">追加...</s:String>
-    <s:String x:Key="Str_RemoveLocalAsset">削除</s:String>
-    <s:String x:Key="Str_MoveUpLocalAsset">上へ移動</s:String>
-    <s:String x:Key="Str_MoveDownLocalAsset">下へ移動</s:String>
-    <s:String x:Key="Str_RefreshItems">項目一覧を更新</s:String>
-    <s:String x:Key="Str_OpenLocalAssetInExplorer">エクスプローラーで開く...</s:String>
-    <s:String x:Key="Str_EditLocalAsset">編集...</s:String>
+    <s:String x:Key="Str_LocalDirectory">ローカルディレクトリ</s:String>
+    <s:String x:Key="Str_AddAssetsRepo">追加...</s:String>
+    <s:String x:Key="Str_RemoveAssetsRepo">削除</s:String>
+    <s:String x:Key="Str_MoveUpAssetsRepo">上へ移動</s:String>
+    <s:String x:Key="Str_MoveDownAssetsRepo">下へ移動</s:String>
+    <s:String x:Key="Str_RefreshShownItems">項目一覧を更新</s:String>
+    <s:String x:Key="Str_OpenAssetsInExplorer">エクスプローラーで開く...</s:String>
+    <s:String x:Key="Str_EditAssetsRepo">編集...</s:String>
     <s:String x:Key="Str_GeneratePreviews">プレビューを生成...</s:String>
     <s:String x:Key="Str_DeletePreviews">プレビューを削除</s:String>
-    <s:String x:Key="Str_ImportSelectedItems">選択した項目をインポート</s:String>
+    <s:String x:Key="Str_ImportSelectedAssets">選択した項目をインポート</s:String>
 
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>
@@ -276,6 +277,7 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">プログラムバージョン</s:String>
     <s:String x:Key="Str_ProjectUrl">プロジェクトURL</s:String>
+    <s:String x:Key="Str_CheckUpdates">更新を確認</s:String>
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">テクスチャ読み込みオプション</s:String>
@@ -292,7 +294,14 @@
 
     <s:String x:Key="Str_RendererPreference">プレビュー画面オプション</s:String>
 
-    <s:String x:Key="Str_AppPreference">アプリケーションプション</s:String>
+    <s:String x:Key="Str_NetworkPreference">ネットワークオプション</s:String>
+    <s:String x:Key="Str_Proxy">ネットワークプロキシ</s:String>
+    <s:String x:Key="Str_ProxyTooltip">プロキシサーバーのアドレスを任意で指定できます。空欄の場合はシステムのプロキシを使用します。</s:String>
+    <s:String x:Key="Str_ProxyPlaceholder">例：http://127.0.0.1:10809</s:String>
+    <s:String x:Key="Str_GitHubToken">GitHub トークン</s:String>
+    <s:String x:Key="Str_GitHubTokenPlaceholder">GitHub トークンを使用すると、レート制限を緩和できます。</s:String>
+
+    <s:String x:Key="Str_AppPreference">アプリケーションオプション</s:String>
     <s:String x:Key="Str_Language">言語</s:String>
     <s:String x:Key="Str_AppSkin">スキン</s:String>
     <s:String x:Key="Str_MaxParallelism">最大並列数</s:String>

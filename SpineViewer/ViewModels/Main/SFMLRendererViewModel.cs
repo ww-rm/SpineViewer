@@ -21,12 +21,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels.Main
 {
     public class SFMLRendererViewModel : ObservableObject
     {
-        public static ImmutableArray<Stretch> StretchOptions { get; } = Enum.GetValues<Stretch>().ToImmutableArray();
-
         /// <summary>
         /// 日志器
         /// </summary>
@@ -184,7 +182,7 @@ namespace SpineViewer.ViewModels.MainWindow
             {
                 if (value < 0) value = -1;
                 if (SetProperty(ref _maxParallelism, value))
-                    _maxDegreeOfParallelism = _maxParallelism < 0 ? (Environment.ProcessorCount - 1) : _maxParallelism;
+                    _maxDegreeOfParallelism = _maxParallelism < 0 ? Environment.ProcessorCount - 1 : _maxParallelism;
             }
         }
         private int _maxParallelism = 0;
@@ -383,8 +381,8 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public void CanvasMouseWheelScrolled(object? s, SFML.Window.MouseWheelScrollEventArgs e)
         {
-            float delta = ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) ? 0.1f : 0.01f;
-            var factor = e.Delta > 0 ? (1f + delta) : (1f - delta);
+            float delta = (Keyboard.Modifiers & ModifierKeys.Shift) == 0 ? 0.1f : 0.01f;
+            var factor = e.Delta > 0 ? 1f + delta : 1f - delta;
             if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
             {
                 Zoom = Math.Clamp(Zoom * factor, 0.001f, 1000f); // 滚轮缩放限制一下缩放范围

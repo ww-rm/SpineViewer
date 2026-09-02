@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Octokit;
 using SFMLRenderer;
 using Spine;
 using SpineViewer.Extensions;
@@ -7,8 +8,8 @@ using SpineViewer.Natives;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.Utils;
-using SpineViewer.ViewModels.Exporters;
-using SpineViewer.ViewModels.MainWindow;
+using SpineViewer.ViewModels;
+using SpineViewer.ViewModels.Main;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -94,6 +95,7 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        // XXX: 此处由于 MainWindow 的 DataContext 对象是后赋值, 导致 hc:NotifyIcon 在初始化绑定时会报一次错误信息, 之后正常运行
         InitializeComponent();
         InitializeLogConfiguration();
 
@@ -188,7 +190,7 @@ public partial class MainWindow : Window
         _vm.PreferenceViewModel.LoadPreference();
 
         // 加载资源列表
-        _vm.LocalAssetsViewModel.LoadLocalAssets();
+        _vm.LocalAssetsViewModel.LoadAssetsRepos();
 
         // 还原上一次用户历史状态并开启监听器
         LoadUserState();
@@ -374,7 +376,6 @@ public partial class MainWindow : Window
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[0], RowDefinition.HeightProperty, DelayedSaveUserState));
         _userStateWatchers.Add(PropertyWatcher.Watch(_rightPanelGrid.RowDefinitions[2], RowDefinition.HeightProperty, DelayedSaveUserState));
 
-        _vm.ExplorerListViewModel.PropertyChanged += ExplorerListUserStateChanged;
         _vm.SFMLRendererViewModel.PropertyChanged += SFMLRendererUserStateChanged;
     }
 
@@ -382,22 +383,9 @@ public partial class MainWindow : Window
     {
         // 撤除所有状态监听器
         _vm.SFMLRendererViewModel.PropertyChanged -= SFMLRendererUserStateChanged;
-        _vm.ExplorerListViewModel.PropertyChanged -= ExplorerListUserStateChanged;
         foreach (var w in _userStateWatchers) w.Dispose();
         _userStateWatchers.Clear();
 
-    }
-
-    private void ExplorerListUserStateChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        switch (e.PropertyName)
-        {
-            case nameof(ExplorerListViewModel.CurrentDirectory):
-                DelayedSaveUserState();
-                break;
-            default:
-                break;
-        }
     }
 
     private void SFMLRendererUserStateChanged(object? sender, PropertyChangedEventArgs e)
@@ -935,15 +923,13 @@ public partial class MainWindow : Window
     #endregion
 
 
-    private void DebugMenuItem_Click(object sender, RoutedEventArgs e)
+    private async void DebugMenuItem_Click(object sender, RoutedEventArgs e)
     {
 #if DEBUG
-        _logger.Debug("Debug");
-        _logger.Info("Info");
-        _logger.Warn("Warn");
-        _logger.Error("Error");
-        _logger.Fatal("Fatal");
-        return;
+        var c = GitHubService.GetClient();
+        var r = await c.Repository.Get("ww-rm", "SpineViewer");
+
+
 #endif
     }
 

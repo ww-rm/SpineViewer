@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:SpineViewer.Views.ExporterDialogs"
         xmlns:utils="clr-namespace:SpineViewer.Utils"
         xmlns:vmexp="clr-namespace:SpineViewer.ViewModels.Exporters"
+        xmlns:res="clr-namespace:SpineViewer.Resources"
         d:DataContext="{d:DesignInstance Type=vmexp:FFmpegVideoExporterViewModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_FFmpegVideoExporterTitle}"
@@ -228,7 +229,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource Str_VideoFormat}"/>
-                                <ComboBox Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.VideoFormatOptions}"/>
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding Format}" ItemsSource="{x:Static res:EnumValues.Enum_VideoFormat}"/>
                             </Grid>
 
                             <!-- 动图是否循环 -->
@@ -270,7 +271,7 @@
                                 <Label Content="{DynamicResource Str_PredMethod}" ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding PredMethod}" 
-                                          ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.ApngPredMethodOptions}" 
+                                          ItemsSource="{x:Static res:EnumValues.Enum_ApngPredMethod}" 
                                           ToolTip="{DynamicResource Str_PredMethodTooltip}"/>
                             </Grid>
 
@@ -293,7 +294,7 @@
                                 <Label Content="{DynamicResource Str_ProfileParameter}" ToolTip="{DynamicResource Str_ProfileParameterTooltip}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding Profile}" 
-                                          ItemsSource="{x:Static vmexp:FFmpegVideoExporterViewModel.MovProfileOptions}" 
+                                          ItemsSource="{x:Static res:EnumValues.Enum_MovProfile}" 
                                           ToolTip="{DynamicResource Str_ProfileParameterTooltip}"/>
                             </Grid>
                         </StackPanel>

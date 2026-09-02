@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using NLog;
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using System;
@@ -17,6 +18,8 @@ namespace SpineViewer.ViewModels
 {
     public class SystemInfoDialogViewModel : ObservableObject
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public string CPU => Registry.GetValue(
             @"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", 
             "ProcessorNameString", 
@@ -89,8 +92,16 @@ namespace SpineViewer.ViewModels
                 $"SkiaSharpVersion\t{SkiaSharpVersion}",
                 $"HandyControlVersion\t{HandyControlVersion}",
             ]);
-            Clipboard.SetText(result);
-            MessagePopupService.Info(AppResource.Str_Copied);
+            try
+            {
+                Clipboard.SetText(result);
+                MessagePopupService.Info(AppResource.Str_Copied);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex.ToString());
+                _logger.Error("Failed to copy to clipboard, {0}", ex.Message);
+            }
         });
         private RelayCommand? _cmd_CopyToClipboard;
     }

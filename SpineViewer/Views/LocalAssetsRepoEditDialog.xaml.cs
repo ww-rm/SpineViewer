@@ -19,9 +19,9 @@ namespace SpineViewer.Views
     /// <summary>
     /// LocalAssetEditDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class LocalAssetEditDialog : Window
+    public partial class LocalAssetsRepoEditDialog : Window
     {
-        public LocalAssetEditDialog()
+        public LocalAssetsRepoEditDialog()
         {
             InitializeComponent();
             SourceInitialized += LocalAssetEditDialog_SourceInitialized;

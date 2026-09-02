@@ -2,7 +2,6 @@
 using NLog;
 using SpineViewer.Resources;
 using SpineViewer.Services;
-using SpineViewer.ViewModels.MainWindow;
 using SpineViewer.Views;
 using System.Collections.Frozen;
 using System.Configuration;
@@ -16,13 +15,14 @@ using System.Windows;
 using System.Windows.Interop;
 using SpineViewer.Extensions;
 using SpineViewer.Natives;
+using SpineViewer.ViewModels;
 
 namespace SpineViewer
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
 #if DEBUG
         public const bool IsDebug = true;
@@ -34,6 +34,9 @@ namespace SpineViewer
         public const string ProgId = "SpineViewer.skel";
 #endif
 
+        public const string GithubOwner = "ww-rm";
+        public const string GithubRepo = "SpineViewer";
+
         public const string AutoRunFlag = "--autorun";
         private const string MutexName = $"__{AppName}_Instance__";
         private const string PipeName = $"_{AppName}_Pipe__";
@@ -42,11 +45,10 @@ namespace SpineViewer
         public static readonly string ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath);
         public static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
         public static readonly string Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-
+        public static readonly string VersionTag = $"v{Version}";
         public static readonly string ProcessDataDirectory = Path.Combine(ProcessDirectory, "data");
 
         private static readonly string AutoRunCommand = $"\"{ProcessPath}\" {AutoRunFlag}";
-
         private static readonly string SkelFileDescription = $"SpineViewer File";
         private static readonly string SkelIconFilePath = Path.Combine(ProcessDirectory, "Resources\\Images\\skel.ico");
         private static readonly string ShellOpenCommand = $"\"{ProcessPath}\" \"%1\"";
@@ -58,7 +60,7 @@ namespace SpineViewer
         {
             InitializeLogConfiguration();
             _logger = LogManager.GetCurrentClassLogger();
-            _logger.Info("Application Started, v{0}", Version);
+            _logger.Info("Application Started, {0}", VersionTag);
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
@@ -225,7 +227,7 @@ namespace SpineViewer
             MessagePopupService.Error(e.Exception.ToString());
         }
 
-        public bool AutoRun
+        public static bool AutoRun
         {
             get
             {
@@ -273,7 +275,7 @@ namespace SpineViewer
             }
         }
 
-        public bool AssociateFileSuffix
+        public static bool AssociateFileSuffix
         {
             get
             {
@@ -353,15 +355,17 @@ namespace SpineViewer
         /// <summary>
         /// 程序语言
         /// </summary>
-        public AppLanguage Language
+        public static AppLanguage Language
         {
             get => _language;
             set
             {
+                if (Current is not App) return;
+
                 var uri = $"Resources/Strings/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
-                    Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
                     _language = value;
                 }
                 catch (Exception ex)
@@ -371,18 +375,23 @@ namespace SpineViewer
                 }
             }
         }
-        private AppLanguage _language = AppLanguage.ZH;
+        private static AppLanguage _language = AppLanguage.ZH;
 
-        public AppSkin Skin
+        /// <summary>
+        /// 程序外观
+        /// </summary>
+        public static AppSkin Skin
         {
             get => _skin;
             set
             {
+                if (Current is not App) return;
+
                 var uri = $"Resources/Skins/{value.ToString().ToLowerInvariant()}.xaml";
                 try
                 {
-                    Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
-                    Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new(uri, UriKind.Relative) });
+                    Current.Resources.MergedDictionaries.Add(new() { Source = new("Resources/Theme.xaml", UriKind.Relative) });
                     Current.MainWindow.SetWindowTextColor(AppResource.Color_PrimaryText);
                     Current.MainWindow.SetWindowCaptionColor(AppResource.Color_Region);
                     _skin = value;
@@ -394,7 +403,12 @@ namespace SpineViewer
                 }
             }
         }
-        private AppSkin _skin = AppSkin.Light;
+        private static AppSkin _skin = AppSkin.Light;
+
+        /// <summary>
+        /// 程序网络代理地址, null 则使用系统代理
+        /// </summary>
+        public static Uri? ProxyUri { get; set; }
     }
 
     public enum AppLanguage

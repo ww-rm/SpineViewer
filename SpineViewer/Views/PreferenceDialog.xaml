@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpineViewer.Views"
         xmlns:models="clr-namespace:SpineViewer.Models"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
+        xmlns:res="clr-namespace:SpineViewer.Resources"
         d:DataContext="{d:DesignInstance Type=models:PreferenceModel}"
         mc:Ignorable="d"
         Title="{DynamicResource Str_Preference}"
@@ -241,7 +241,7 @@
                                 <Label Content="{DynamicResource Str_HitTestLevel}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding HitTestLevel}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.HitTestLevelOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_HitTestLevel}"/>
                             </Grid>
 
                             <Grid>
@@ -264,6 +264,34 @@
                         </StackPanel>
                     </GroupBox>
 
+                    <GroupBox Header="{DynamicResource Str_NetworkPreference}">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_Proxy}" ToolTip="{DynamicResource Str_ProxyTooltip}"/>
+                                <hc:TextBox Grid.Column="1" Text="{Binding AppProxyUri}" 
+                                            ToolTip="{DynamicResource Str_ProxyTooltip}" 
+                                            hc:InfoElement.Placeholder="{DynamicResource Str_ProxyPlaceholder}"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_GitHubToken}"/>
+                                <hc:PasswordBox Grid.Column="1"
+                                                IsSafeEnabled="False"
+                                                UnsafePassword="{Binding GitHubToken}" 
+                                                ShowEyeButton="True"
+                                                hc:InfoElement.Placeholder="{DynamicResource Str_GitHubTokenPlaceholder}"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+
                     <GroupBox Header="{DynamicResource Str_AppPreference}">
                         <StackPanel>
                             <Grid>
@@ -274,7 +302,7 @@
                                 <Label Content="{DynamicResource Str_Language}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding AppLanguage}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppLanguageOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_AppLanguage}"/>
                             </Grid>
 
                             <Grid>
@@ -285,7 +313,7 @@
                                 <Label Content="{DynamicResource Str_AppSkin}"/>
                                 <ComboBox Grid.Column="1" 
                                           SelectedItem="{Binding AppSkin}"
-                                          ItemsSource="{x:Static vm:PreferenceViewModel.AppSkinOptions}"/>
+                                          ItemsSource="{x:Static res:EnumValues.Enum_AppSkin}"/>
                             </Grid>
 
                             <Grid>

@@ -5,7 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:vm="clr-namespace:SpineViewer.ViewModels.MainWindow"
+        xmlns:vm="clr-namespace:SpineViewer.ViewModels"
+        xmlns:res="clr-namespace:SpineViewer.Resources"
         xmlns:SFMLRenderer="clr-namespace:SFMLRenderer;assembly=SFMLRenderer"
         mc:Ignorable="d"
         x:Name="_mainWindow"
@@ -71,6 +72,7 @@
                         <MenuItem Header="{DynamicResource Str_DiagnosticsTools}">
                             <MenuItem Header="{DynamicResource Str_SystemInfo}" Command="{Binding Cmd_ShowSystemInfoDialog}"/>
                             <MenuItem Header="{DynamicResource Str_DebugWorkerW}" Command="{Binding Cmd_OutputWorkerWDebugInfo}"/>
+                            <MenuItem Header="{DynamicResource Str_GitHubAPIRateLimit}" Command="{Binding Cmd_OutputGitHubAPIRateLimit}"/>
                         </MenuItem>
                         <MenuItem Header="{DynamicResource Str_Abount}" Command="{Binding Cmd_ShowAboutDialog}"/>
                         <MenuItem Header="{DynamicResource Str_Debug}" Click="DebugMenuItem_Click" Visibility="{Binding IsDebug, Mode=OneWay, Converter={StaticResource Boolean2VisibilityConverter}}"/>
@@ -398,7 +400,7 @@
                                                         <Label Content="{DynamicResource Str_Physics}"/>
                                                         <ComboBox Grid.Column="1" 
                                                               SelectedValue="{Binding Physics}" 
-                                                              ItemsSource="{x:Static vm:SpineObjectTabViewModel.PhysicsOptions}"/>
+                                                              ItemsSource="{x:Static res:EnumValues.Enum_Physics}"/>
                                                     </Grid>
 
                                                     <!-- 时间因子 -->
@@ -896,7 +898,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource Str_BackgroundImageMode}"/>
-                                        <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static vm:SFMLRendererViewModel.StretchOptions}"/>
+                                        <ComboBox Grid.Column="1" SelectedValue="{Binding BackgroundImageMode}" ItemsSource="{x:Static res:EnumValues.Enum_Stretch}"/>
                                     </Grid>
                                 </StackPanel>
                                 </ScrollViewer>
@@ -926,8 +928,8 @@
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
                                                         <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
-                                                            <Binding Path="Items.Count" ElementName="_localAssetRepoListView"/>
-                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetRepoListView"/>
+                                                            <Binding Path="Items.Count" ElementName="_localAssetsRepoListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetsRepoListBox"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
@@ -935,46 +937,45 @@
                                         </StatusBar>
 
                                         <!-- 本地资源文件夹列表 -->
-                                        <ListBox x:Name="_localAssetRepoListView"
-                                                  ItemsSource="{Binding LocalDirectories}">
+                                        <ListBox x:Name="_localAssetsRepoListBox" ItemsSource="{Binding AssetsRepos}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
-                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsSelectionChanged}"
-                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsRepoSelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
 
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddLocalAsset}"
-                                                              Command="{Binding Cmd_AddLocalAsset}"/>
-                                                    <MenuItem Header="{DynamicResource Str_RemoveLocalAsset}"
+                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepo}"
+                                                              Command="{Binding Cmd_AddAssetsRepo}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
                                                               InputGestureText="Delete"
-                                                              Command="{Binding Cmd_RemoveLocalAsset}"
+                                                              Command="{Binding Cmd_RemoveAssetsRepo}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_MoveUpLocalAsset}"
+                                                    <MenuItem Header="{DynamicResource Str_MoveUpAssetsRepo}"
                                                               InputGestureText="Alt+W"
-                                                              Command="{Binding Cmd_MoveUpLocalAsset}"
+                                                              Command="{Binding Cmd_MoveUpAssetsRepo}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_MoveDownLocalAsset}"
+                                                    <MenuItem Header="{DynamicResource Str_MoveDownAssetsRepo}"
                                                               InputGestureText="Alt+S"
-                                                              Command="{Binding Cmd_MoveDownLocalAsset}"
+                                                              Command="{Binding Cmd_MoveDownAssetsRepo}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_OpenLocalAssetInExplorer}"
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInExplorer}"
                                                               InputGestureText="Shift+Alt+E"
-                                                              Command="{Binding Cmd_OpenLocalAssetInExplorer}"
+                                                              Command="{Binding Cmd_OpenAssetsInExplorer}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_RefreshItems}"
-                                                              Command="{Binding Cmd_RefreshItems}"
+                                                    <MenuItem Header="{DynamicResource Str_RefreshShownItems}"
+                                                              Command="{Binding Cmd_RefreshShownItems}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_EditLocalAsset}"
-                                                              Command="{Binding Cmd_EditLocalAsset}"
+                                                    <MenuItem Header="{DynamicResource Str_EditAssetsRepo}"
+                                                              Command="{Binding Cmd_EditAssetsRepo}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
-                                                              Command="{Binding Cmd_ImportSelectedItems}"
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
+                                                              Command="{Binding Cmd_ImportSelectedAssets}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
                                                               Command="{Binding Cmd_GeneratePreviews}"
@@ -986,15 +987,15 @@
                                             </ListBox.ContextMenu>
 
                                             <ListBox.InputBindings>
-                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
-                                                <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
-                                                <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownLocalAsset}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
-                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenLocalAssetInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetRepoListView}"/>
+                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
                                             </ListBox.InputBindings>
 
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
-                                                    <Setter Property="ToolTip" Value="{Binding FullPath}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding LocalDirectory}"/>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
 
@@ -1002,7 +1003,7 @@
                                                 <DataTemplate>
                                                     <StackPanel Margin="0 3">
                                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="{Binding FullPath}" Opacity="0.6"/>
+                                                        <TextBlock Text="{Binding LocalDirectory}" Opacity="0.6"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
@@ -1018,8 +1019,8 @@
                                                 <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
                                                     <TextBlock.Text>
                                                         <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
-                                                            <Binding Path="Items.Count" ElementName="_localAssetItemsListBox"/>
-                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetItemsListBox"/>
+                                                            <Binding Path="Items.Count" ElementName="_localAssetsItemListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_localAssetsItemListBox"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
@@ -1031,23 +1032,23 @@
                                                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
 
                                         <!-- 本地资源目录文件列表 -->
-                                        <ListBox x:Name="_localAssetItemsListBox" ItemsSource="{Binding ShownItems}">
+                                        <ListBox x:Name="_localAssetsItemListBox" ItemsSource="{Binding ShownItems}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
                                                     <i:InvokeCommandAction Command="{Binding Cmd_AssetsItemSelectionChanged}"
-                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetItemsListBox}"/>
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_localAssetsItemListBox}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                             
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_OpenLocalAssetInExplorer}"
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInExplorer}"
                                                               InputGestureText="Shift+Alt+E"
-                                                              Command="{Binding Cmd_OpenLocalAssetInExplorer}"
+                                                              Command="{Binding Cmd_OpenAssetsInExplorer}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
-                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedItems}"
-                                                              Command="{Binding Cmd_ImportSelectedItems}"
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
+                                                              Command="{Binding Cmd_ImportSelectedAssets}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
                                                               Command="{Binding Cmd_GeneratePreviews}"
@@ -1059,12 +1060,12 @@
                                             </ListBox.ContextMenu>
 
                                             <ListBox.InputBindings>
-                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenLocalAssetInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetItemsListBox}"/>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsItemListBox}"/>
                                             </ListBox.InputBindings>
 
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
-                                                    <Setter Property="ToolTip" Value="{Binding FullPath}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding LocalFullPath}"/>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
 
@@ -1082,8 +1083,8 @@
                                 </Grid>
                             </TabItem>
 
-                            <!-- TODO: 在线资源 (Github) -->
-                            <TabItem Visibility="Collapsed">
+                            <!-- GitHub 在线资源 -->
+                            <TabItem>
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
@@ -1093,13 +1094,7 @@
                                         </Viewbox>
                                     </Border>
                                 </TabItem.Header>
-                                <Grid x:Name="_onlineAssets">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                </Grid>
+                                
                             </TabItem>
 
                         </TabControl>
@@ -1189,7 +1184,7 @@
                                         </Border>
                                     </TabItem.Header>
                                     <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource DarkDefaultBrush}">
-                                        <Image Source="{Binding PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
+                                        <Image Source="{Binding AssetsPreviewViewModel.PreviewImage, Mode=OneWay}" Stretch="Uniform"/>
                                     </Border>
                                 </TabItem>
 

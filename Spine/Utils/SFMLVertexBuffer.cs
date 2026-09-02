@@ -20,9 +20,7 @@ namespace Spine.Utils
         private bool _isDirty = false;
         private readonly VertexBuffer _vertexBuffer;
 
-        /// <summary>
         /// <inheritdoc cref="VertexBuffer(uint, PrimitiveType, VertexBuffer.UsageSpecifier)"/>
-        /// </summary>
         public SFMLVertexBuffer(uint vertexCount, PrimitiveType primitiveType, VertexBuffer.UsageSpecifier usageType)
         {
             _vertexArray = new Vertex[vertexCount];

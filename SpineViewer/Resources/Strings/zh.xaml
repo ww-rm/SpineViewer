@@ -11,6 +11,7 @@
     <s:String x:Key="Str_DiagnosticsTools">诊断工具</s:String>
     <s:String x:Key="Str_SystemInfo">系统信息</s:String>
     <s:String x:Key="Str_DebugWorkerW">WorkerW 调试信息</s:String>
+    <s:String x:Key="Str_GitHubAPIRateLimit">GitHub API 速率限制</s:String>
     <s:String x:Key="Str_Abount">关于</s:String>
     <s:String x:Key="Str_Experiment">实验性功能</s:String>
 
@@ -143,17 +144,17 @@
 
     <!-- 本地资源标签页 -->
     <s:String x:Key="Str_Filter">筛选</s:String>
-    <s:String x:Key="Str_FullPath">完整路径</s:String>
-    <s:String x:Key="Str_AddLocalAsset">添加...</s:String>
-    <s:String x:Key="Str_RemoveLocalAsset">移除</s:String>
-    <s:String x:Key="Str_MoveUpLocalAsset">上移</s:String>
-    <s:String x:Key="Str_MoveDownLocalAsset">下移</s:String>
-    <s:String x:Key="Str_RefreshItems">刷新列表项</s:String>
-    <s:String x:Key="Str_OpenLocalAssetInExplorer">在资源管理器中打开...</s:String>
-    <s:String x:Key="Str_EditLocalAsset">编辑...</s:String>
+    <s:String x:Key="Str_LocalDirectory">完整路径</s:String>
+    <s:String x:Key="Str_AddAssetsRepo">添加...</s:String>
+    <s:String x:Key="Str_RemoveAssetsRepo">移除</s:String>
+    <s:String x:Key="Str_MoveUpAssetsRepo">上移</s:String>
+    <s:String x:Key="Str_MoveDownAssetsRepo">下移</s:String>
+    <s:String x:Key="Str_RefreshShownItems">刷新列表项</s:String>
+    <s:String x:Key="Str_OpenAssetsInExplorer">在资源管理器中打开...</s:String>
+    <s:String x:Key="Str_EditAssetsRepo">编辑...</s:String>
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
-    <s:String x:Key="Str_ImportSelectedItems">导入选中项</s:String>
+    <s:String x:Key="Str_ImportSelectedAssets">导入选中项</s:String>
     
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
@@ -276,6 +277,7 @@
     <!-- 关于对话框 -->
     <s:String x:Key="Str_ProgremVersion">程序版本</s:String>
     <s:String x:Key="Str_ProjectUrl">项目地址</s:String>
+    <s:String x:Key="Str_CheckUpdates">检查更新</s:String>
 
     <!-- 首选项对话框 -->
     <s:String x:Key="Str_TextureLoadPreference">纹理加载选项</s:String>
@@ -291,6 +293,13 @@
     <s:String x:Key="Str_AvoidOverlapWhenAdding">添加时避免重叠</s:String>
 
     <s:String x:Key="Str_RendererPreference">预览画面选项</s:String>
+
+    <s:String x:Key="Str_NetworkPreference">网络连接选项</s:String>
+    <s:String x:Key="Str_Proxy">网络代理</s:String>
+    <s:String x:Key="Str_ProxyTooltip">可选指定代理服务器地址，留空则跟随系统代理</s:String>
+    <s:String x:Key="Str_ProxyPlaceholder">例：http://127.0.0.1:10809</s:String>
+    <s:String x:Key="Str_GitHubToken">GitHub 令牌</s:String>
+    <s:String x:Key="Str_GitHubTokenPlaceholder">使用 GitHub 令牌可以有效改善访问速率限制</s:String>
 
     <s:String x:Key="Str_AppPreference">应用程序选项</s:String>
     <s:String x:Key="Str_Language">语言</s:String>

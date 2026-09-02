@@ -2,15 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using NLog;
 using SFMLRenderer;
+using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using SpineViewer.ViewModels.Assets;
+using SpineViewer.ViewModels.Main;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels.MainWindow
+namespace SpineViewer.ViewModels
 {
     /// <summary>
     /// MainWindow 上下文对象
@@ -23,8 +26,8 @@ namespace SpineViewer.ViewModels.MainWindow
         {
             _sfmlRenderer = sfmlRenderer;
             _wallpaperRenderer = wallpaperRenderer;
-            _explorerListViewModel = new(this);
             _spineObjectListViewModel = new(this);
+            _assetsPreviewViewModel = new(this);
             _localAssetsViewModel = new(this);
             _sfmlRendererViewModel = new(this);
             _preferenceViewModel = new(this);
@@ -32,7 +35,7 @@ namespace SpineViewer.ViewModels.MainWindow
 
         public bool IsDebug => App.IsDebug;
 
-        public string Title => $"{App.AppName} - v{App.Version}";
+        public string Title => $"{App.AppName} - {App.VersionTag}";
 
         public Visibility Visibility
         {
@@ -89,12 +92,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private float _progressValue = 0;
 
         /// <summary>
-        /// 当前显示的预览图对象
-        /// </summary>
-        public ImageSource? PreviewImage { get => _previewImage; set => SetProperty(ref _previewImage, value); }
-        private ImageSource? _previewImage;
-
-        /// <summary>
         /// 已加载的 Spine 对象
         /// </summary>
         public ObservableCollectionWithLock<SpineObjectModel> SpineObjects => _spineObjectModels;
@@ -107,12 +104,6 @@ namespace SpineViewer.ViewModels.MainWindow
         private readonly PreferenceViewModel _preferenceViewModel;
 
         /// <summary>
-        /// 浏览页列表 ViewModel
-        /// </summary>
-        public ExplorerListViewModel ExplorerListViewModel => _explorerListViewModel;
-        private readonly ExplorerListViewModel _explorerListViewModel;
-
-        /// <summary>
         /// 模型列表 ViewModel
         /// </summary>
         public SpineObjectListViewModel SpineObjectListViewModel => _spineObjectListViewModel;
@@ -123,6 +114,12 @@ namespace SpineViewer.ViewModels.MainWindow
         /// </summary>
         public SpineObjectTabViewModel SpineObjectTabViewModel => _spineObjectTabViewModel;
         private readonly SpineObjectTabViewModel _spineObjectTabViewModel = new();
+
+        /// <summary>
+        /// 预览图管理 ViewModel
+        /// </summary>
+        public AssetsPreviewViewModel AssetsPreviewViewModel => _assetsPreviewViewModel;
+        private readonly AssetsPreviewViewModel _assetsPreviewViewModel;
 
         /// <summary>
         /// 本地资源 ViewModel
@@ -146,7 +143,7 @@ namespace SpineViewer.ViewModels.MainWindow
         public RelayCommand Cmd_ExitFromTray => _cmd_ExitFromTray ??= new(() =>
         {
             IsShuttingDownFromTray = true;
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         });
         private RelayCommand? _cmd_ExitFromTray;
 
@@ -203,6 +200,12 @@ namespace SpineViewer.ViewModels.MainWindow
             WorkerWDebugger.LogWorkerWWindowTree();
         });
         private RelayCommand? _cmd_OutputWorkerWDebugInfo;
+
+        public RelayCommand Cmd_OutputGitHubAPIRateLimit => _cmd_OutputGitHubAPIRateLimit ??= new(() =>
+        {
+            GitHubService.GetClient().LogRateLimit();
+        });
+        private RelayCommand? _cmd_OutputGitHubAPIRateLimit;
 
         /// <summary>
         /// 显示关于对话框

@@ -2,7 +2,6 @@
 using SpineViewer.Resources;
 using SpineViewer.Services;
 using SpineViewer.ViewModels.Exporters;
-using SpineViewer.ViewModels.MainWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;

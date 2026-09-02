@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NLog;
+using SpineViewer.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,16 +11,68 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.ViewModels
 {
-    public class AboutDialogViewModel : ObservableObject
+    public partial class AboutDialogViewModel : ObservableObject
     {
-        public string ProgramVersion => $"v{App.Version}";
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public string ProjectUrl => "https://github.com/ww-rm/SpineViewer";
+        public string ProgramTagName { get; } = App.VersionTag;
 
-        public RelayCommand Cmd_OpenProjectUrl => _cmd_OpenProjectUrl ??= new(() =>
+        public string ProjectUrl { get; } = $"https://github.com/{App.GithubOwner}/{App.GithubRepo}";
+
+        [ObservableProperty]
+        private string _latestReleaseTagName = "";
+
+        [ObservableProperty]
+        private string _latestReleaseUrl = "";
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(Cmd_CheckUpdates))]
+        public bool _isCheckingUpdates = false;
+
+        /// <summary>
+        /// 打开指定网址
+        /// </summary>
+        public RelayCommand<string?> Cmd_OpenUrl => _cmd_OpenUrl ??= new(url =>
         {
-            Process.Start(new ProcessStartInfo(ProjectUrl) { UseShellExecute = true });
+            if (string.IsNullOrEmpty(url))
+                return;
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         });
-        private RelayCommand? _cmd_OpenProjectUrl;
+        private RelayCommand<string?>? _cmd_OpenUrl;
+
+        /// <summary>
+        /// 检查更新
+        /// </summary>
+        public RelayCommand Cmd_CheckUpdates => _cmd_CheckUpdates ??= new(CheckUpdates_Execute, () => !IsCheckingUpdates);
+        private RelayCommand? _cmd_CheckUpdates;
+
+        public async void CheckUpdates_Execute()
+        {
+            LatestReleaseTagName = "";
+            LatestReleaseUrl = "";
+
+            IsCheckingUpdates = true;
+            try
+            {
+                var client = GitHubService.GetClient();
+                var res = await client.Repository.Release.GetLatest(App.GithubOwner, App.GithubRepo);
+                if (res is not null)
+                {
+                    LatestReleaseTagName = res.TagName;
+                    LatestReleaseUrl = res.HtmlUrl;
+                }
+                else
+                {
+                    LatestReleaseTagName = "Failed to get tag name.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex.ToString());
+                _logger.Error("Failed to check updates, {0}", ex.Message);
+                LatestReleaseTagName = ex.Message;
+            }
+            IsCheckingUpdates = false;
+        }
     }
 }
