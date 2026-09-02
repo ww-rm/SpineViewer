@@ -1084,7 +1084,7 @@
                             </TabItem>
 
                             <!-- GitHub 在线资源 -->
-                            <TabItem>
+                            <TabItem Visibility="Collapsed">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
