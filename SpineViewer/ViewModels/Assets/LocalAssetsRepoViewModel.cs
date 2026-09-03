@@ -34,7 +34,7 @@ namespace SpineViewer.ViewModels.Assets
         public override string DefaultName { get => _defaultName; }
         private readonly string _defaultName;
 
-        public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
+        public override IReadOnlyList<LocalAssetsItemViewModel> Items { get => _items; }
         private List<LocalAssetsItemViewModel> _items = [];
 
         public override bool IsItemsLoaded => _isItemsLoaded;
