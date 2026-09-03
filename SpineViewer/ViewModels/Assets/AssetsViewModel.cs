@@ -271,8 +271,7 @@ namespace SpineViewer.ViewModels.Assets
 
             if (repo is not null)
             {
-                // XXX: 此处更好的方式是判断 repo.Items 是否已加载而不是看集合大小是否为 0
-                if (repo.Items.Count <= 0 || refreshRepoItems)
+                if (!repo.IsItemsLoaded || refreshRepoItems)
                 {
                     await repo.RefreshItemsAsync();
                 }
