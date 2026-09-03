@@ -37,6 +37,9 @@ namespace SpineViewer.ViewModels.Assets
         public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
         private List<LocalAssetsItemViewModel> _items = [];
 
+        public override bool IsItemsLoaded => _isItemsLoaded;
+        private bool _isItemsLoaded = false;
+
         public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
         private bool _isItemsRefreshing = false;
 
@@ -53,8 +56,7 @@ namespace SpineViewer.ViewModels.Assets
 
         private void RefreshItemsTask()
         {
-            _isItemsRefreshing = true;
-            OnPropertyChanged(nameof(IsItemsRefreshing));
+            SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
 
             List<LocalAssetsItemViewModel> items = [];
 
@@ -76,6 +78,7 @@ namespace SpineViewer.ViewModels.Assets
                             items.Add(new(this, relativePath));
                         }
                     }
+                    SetProperty(ref _isItemsLoaded, true, nameof(IsItemsLoaded));
                 }
                 catch (Exception ex)
                 {
@@ -86,8 +89,7 @@ namespace SpineViewer.ViewModels.Assets
 
             _items = items;
 
-            _isItemsRefreshing = false;
-            OnPropertyChanged(nameof(IsItemsRefreshing));
+            SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
     }
 }

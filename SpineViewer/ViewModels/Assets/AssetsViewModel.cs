@@ -260,8 +260,7 @@ namespace SpineViewer.ViewModels.Assets
         protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false)
         {
             // 先清空显示
-            _shownItems = [];
-            OnPropertyChanged(nameof(ShownItems));
+            SetProperty(ref _shownItems, [], nameof(ShownItems));
 
             List<TItem> shownItems = [];
             var repo = _selectedAssetsRepo;
@@ -293,8 +292,7 @@ namespace SpineViewer.ViewModels.Assets
             // 如果此次运行是最新的, 则按这个结果更新
             if (counter1 >= counter2)
             {
-                _shownItems = shownItems;
-                OnPropertyChanged(nameof(ShownItems));
+                SetProperty(ref _shownItems, shownItems, nameof(shownItems));
             }
         }
 

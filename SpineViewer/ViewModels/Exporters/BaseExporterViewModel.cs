@@ -106,8 +106,7 @@ namespace SpineViewer.ViewModels.Exporters
         {
             if (DialogService.ShowOpenFolderDialog(out var selectedPath))
             {
-                _outputDir = selectedPath;
-                OnPropertyChanged(nameof(OutputDir));
+                SetProperty(ref _outputDir, selectedPath, nameof(OutputDir));
             }
         });
         protected RelayCommand? _cmd_SelectOutputDir;

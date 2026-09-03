@@ -42,6 +42,11 @@ namespace SpineViewer.ViewModels.Assets
         public abstract IReadOnlyList<AssetsItemViewModel> Items { get; }
 
         /// <summary>
+        /// 资源列表 <see cref="Items"/> 是否已加载
+        /// </summary>
+        public abstract bool IsItemsLoaded { get; }
+
+        /// <summary>
         /// 资源列表 <see cref="Items"/> 是否正在刷新中
         /// </summary>
         public abstract bool IsItemsRefreshing { get; }
