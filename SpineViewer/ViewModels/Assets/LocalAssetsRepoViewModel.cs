@@ -57,6 +57,7 @@ namespace SpineViewer.ViewModels.Assets
         private void RefreshItemsTask()
         {
             SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
+            SetProperty(ref _isItemsLoaded, false, nameof(IsItemsLoaded));
 
             List<LocalAssetsItemViewModel> items = [];
 
@@ -88,7 +89,6 @@ namespace SpineViewer.ViewModels.Assets
             }
 
             _items = items;
-
             SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
     }
