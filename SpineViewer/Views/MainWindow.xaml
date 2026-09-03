@@ -1001,10 +1001,48 @@
 
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Margin="0 3">
-                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="{Binding LocalDirectory}" Opacity="0.6"/>
-                                                    </StackPanel>
+                                                    <Grid Margin="0 3">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <!-- 左侧状态指示条 -->
+                                                        <UniformGrid Grid.Column="0" Rows="8">
+                                                            <UniformGrid.Resources>
+                                                                <Style TargetType="Rectangle">
+                                                                    <Setter Property="Width" Value="5"/>
+                                                                    <Setter Property="Height" Value="2"/>
+                                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                                                    <Setter Property="Fill" Value="Gray"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsItemsLoaded}" Value="True">
+                                                                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsItemsRefreshing}" Value="True">
+                                                                            <Setter Property="Fill" Value="{StaticResource WarningBrush}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </UniformGrid.Resources>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                        </UniformGrid>
+                                                        
+                                                        <!-- 资源库信息 -->
+                                                        <StackPanel Grid.Column="1" Margin="5 0">
+                                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding LocalDirectory}" Opacity="0.6"/>
+                                                        </StackPanel>
+                                                        
+                                                    </Grid>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
 
