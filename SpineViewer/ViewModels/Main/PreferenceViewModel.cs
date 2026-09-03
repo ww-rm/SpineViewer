@@ -25,7 +25,7 @@ namespace SpineViewer.ViewModels.Main
         /// <summary>
         /// 文件保存路径
         /// </summary>
-        public static readonly string PreferenceFilePath = Path.Combine(App.ProcessDataDirectory, "preference.json");
+        public static readonly string PreferenceFilePath = Path.Combine(App.DataDirectory, "preference.json");
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

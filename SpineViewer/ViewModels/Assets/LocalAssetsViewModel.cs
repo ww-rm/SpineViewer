@@ -16,7 +16,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 文件保存路径
         /// </summary>
-        public static readonly string LocalAssetsFilePath = Path.Combine(App.ProcessDataDirectory, "localassets.json");
+        public static readonly string LocalAssetsFilePath = Path.Combine(App.DataDirectory, "localassets.json");
 
         public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain)
         {
