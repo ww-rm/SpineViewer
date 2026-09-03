@@ -259,27 +259,32 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false)
         {
+            // 先清空显示
+            _shownItems = [];
+            OnPropertyChanged(nameof(ShownItems));
+
             List<TItem> shownItems = [];
             var repo = _selectedAssetsRepo;
+            var filter = _filterString;
 
             // 保存进入时的计数器
             var counter1 = Interlocked.Increment(ref _refreshShownItemsAsyncCounter);
 
             if (repo is not null)
             {
-                // XXX: 此处更好的方式时判断 repo.Items 是否已加载而不是看集合大小是否为 0
+                // XXX: 此处更好的方式是判断 repo.Items 是否已加载而不是看集合大小是否为 0
                 if (repo.Items.Count <= 0 || refreshRepoItems)
                 {
                     await repo.RefreshItemsAsync();
                 }
 
-                if (string.IsNullOrWhiteSpace(_filterString))
+                if (string.IsNullOrWhiteSpace(filter))
                 {
                     shownItems.AddRange(repo.Items);
                 }
                 else
                 {
-                    shownItems.AddRange(repo.Items.Where(it => it.FileName.Contains(_filterString, StringComparison.OrdinalIgnoreCase)));
+                    shownItems.AddRange(repo.Items.Where(it => it.FileName.Contains(filter, StringComparison.OrdinalIgnoreCase)));
                 }
             }
 
