@@ -346,12 +346,12 @@ namespace SpineViewer.ViewModels.Main
         /// <summary>
         /// 移除给定模型
         /// </summary>
-        public RelayCommand<IList?> Cmd_RemoveSpineObject => _cmd_RemoveSpineObject ??= new(RemoveSpineObject_Execute, RemoveSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_RemoveSpineObject => _cmd_RemoveSpineObject ??= new(RemoveSpineObject_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_RemoveSpineObject;
 
         private void RemoveSpineObject_Execute(IList? args)
         {
-            if (!RemoveSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             if (args!.Count > 1)
             {
@@ -370,22 +370,15 @@ namespace SpineViewer.ViewModels.Main
             }
         }
 
-        private bool RemoveSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
-        }
-
         /// <summary>
         /// 移除全部模型
         /// </summary>
-        public RelayCommand<IList?> Cmd_RemoveAllSpineObject => _cmd_RemoveAllSpineObject ??= new(RemoveAllSpineObject_Execute, RemoveAllSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_RemoveAllSpineObject => _cmd_RemoveAllSpineObject ??= new(RemoveAllSpineObject_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_RemoveAllSpineObject;
 
         private void RemoveAllSpineObject_Execute(IList? args)
         {
-            if (!RemoveAllSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             if (!MessagePopupService.OKCancel(string.Format(AppResource.Str_RemoveItemsQuest, args!.Count)))
                 return;
@@ -396,13 +389,6 @@ namespace SpineViewer.ViewModels.Main
                     sp.Dispose();
                 _spineObjectModels.Clear();
             }
-        }
-
-        private bool RemoveAllSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
         }
 
         /// <summary>
@@ -420,12 +406,12 @@ namespace SpineViewer.ViewModels.Main
         /// <summary>
         /// 重新加载模型
         /// </summary>
-        public RelayCommand<IList?> Cmd_ReloadSpineObject => _cmd_ReloadSpineObject ??= new(ReloadSpineObject_Execute, ReloadSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_ReloadSpineObject => _cmd_ReloadSpineObject ??= new(ReloadSpineObject_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_ReloadSpineObject;
 
         private void ReloadSpineObject_Execute(IList? args)
         {
-            if (!ReloadSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             if (args!.Count <= 1)
             {
@@ -458,13 +444,6 @@ namespace SpineViewer.ViewModels.Main
                     AppResource.Str_ReloadSpineObjectsTitle
                 );
             }
-        }
-
-        private bool ReloadSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
         }
 
         private void ReloadSpineObjectsTask(SpineObjectModel[] spines, IProgressReporter reporter, CancellationToken ct)
@@ -530,12 +509,12 @@ namespace SpineViewer.ViewModels.Main
         /// <summary>
         /// 模型上移一位
         /// </summary>
-        public RelayCommand<IList?> Cmd_MoveUpSpineObject => _cmd_MoveUpSpineObject ??= new(MoveUpSpineObject_Execute, MoveUpSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_MoveUpSpineObject => _cmd_MoveUpSpineObject ??= new(MoveUpSpineObject_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_MoveUpSpineObject;
 
         private void MoveUpSpineObject_Execute(IList? args)
         {
-            if (!MoveUpSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.OnlyOne(args)) return;
             var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
@@ -545,22 +524,15 @@ namespace SpineViewer.ViewModels.Main
             }
         }
 
-        private bool MoveUpSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count != 1) return false;
-            return true;
-        }
-
         /// <summary>
         /// 模型下移一位
         /// </summary>
-        public RelayCommand<IList?> Cmd_MoveDownSpineObject => _cmd_MoveDownSpineObject ??= new(MoveDownSpineObject_Execute, MoveDownSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_MoveDownSpineObject => _cmd_MoveDownSpineObject ??= new(MoveDownSpineObject_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_MoveDownSpineObject;
 
         private void MoveDownSpineObject_Execute(IList? args)
         {
-            if (!MoveDownSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.OnlyOne(args)) return;
             var sp = (SpineObjectModel)args![0]!;
             lock (_spineObjectModels.Lock)
             {
@@ -570,13 +542,6 @@ namespace SpineViewer.ViewModels.Main
             }
         }
 
-        private bool MoveDownSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count != 1) return false;
-            return true;
-        }
-
         #endregion
 
         #region 模型属性控制菜单项实现
@@ -584,12 +549,12 @@ namespace SpineViewer.ViewModels.Main
         /// <summary>
         /// 将选中的模型居中显示, 移动到当前视图中心
         /// </summary>
-        public RelayCommand<IList?> Cmd_CenterSpineObject => _cmd_CenterSpineObject ??= new(CenterSpineObject_Execute, CenterSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_CenterSpineObject => _cmd_CenterSpineObject ??= new(CenterSpineObject_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_CenterSpineObject;
 
         private void CenterSpineObject_Execute(IList? args)
         {
-            if (!CenterSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             var spines = args!.Cast<SpineObjectModel>().ToArray();
 
@@ -609,22 +574,15 @@ namespace SpineViewer.ViewModels.Main
             }
         }
 
-        private bool CenterSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
-        }
-
         /// <summary>
         /// 聚焦选中的模型, 将视图移动到选中模型的中心, 并缩放至合适的大小
         /// </summary>
-        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, FocusSpineObject_CanExecute);
+        public RelayCommand<IList?> Cmd_FocusSpineObject => _cmd_FocusSpineObject ??= new(FocusSpineObject_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_FocusSpineObject;
 
         private void FocusSpineObject_Execute(IList? args)
         {
-            if (!FocusSpineObject_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
 
             var spines = args!.Cast<SpineObjectModel>().ToArray();
 
@@ -645,13 +603,6 @@ namespace SpineViewer.ViewModels.Main
             _vmMain.SFMLRendererViewModel.Zoom = zoom;
         }
 
-        private bool FocusSpineObject_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
-        }
-
         #endregion
 
         #region 模型参数管理菜单项实现
@@ -661,7 +612,7 @@ namespace SpineViewer.ViewModels.Main
         /// </summary>
         public RelayCommand<IList?> Cmd_CopySpineObjectConfig => _cmd_CopySpineObjectConfig ??= new(
             args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.All), 
-            CopySpineObjectConfig_CanExecute
+            CommandCanExecute.OnlyOne
         );
         private RelayCommand<IList?>? _cmd_CopySpineObjectConfig;
 
@@ -670,7 +621,7 @@ namespace SpineViewer.ViewModels.Main
         /// </summary>
         public RelayCommand<IList?> Cmd_CopySpineObjectSkinConfig => _cmd_CopySpineObjectSkinConfig ??= new(
             args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.Skin), 
-            CopySpineObjectConfig_CanExecute
+            CommandCanExecute.OnlyOne
         );
         private RelayCommand<IList?>? _cmd_CopySpineObjectSkinConfig;
 
@@ -679,24 +630,17 @@ namespace SpineViewer.ViewModels.Main
         /// </summary>
         public RelayCommand<IList?> Cmd_CopySpineObjectSlotVisibilityConfig => _cmd_CopySpineObjectSlotVisibilityConfig ??= new(
             args => CopySpineObjectConfig_Execute(args, SpineObjectConfigApplyFlag.SlotVisibility), 
-            CopySpineObjectConfig_CanExecute
+            CommandCanExecute.OnlyOne
         );
         private RelayCommand<IList?>? _cmd_CopySpineObjectSlotVisibilityConfig;
 
         private void CopySpineObjectConfig_Execute(IList? args, SpineObjectConfigApplyFlag flag)
         {
-            if (!CopySpineObjectConfig_CanExecute(args)) return;
+            if (!CommandCanExecute.OnlyOne(args)) return;
             var sp = (SpineObjectModel)args![0]!;
             _copiedSpineObjectConfigModel = sp.ObjectConfig;
             _copiedConfigFlag = flag;
             _logger.Info("Copy config[{0}] from model: {1}", flag, sp.Name);
-        }
-
-        private bool CopySpineObjectConfig_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count != 1) return false;
-            return true;
         }
 
         /// <summary>
@@ -718,17 +662,15 @@ namespace SpineViewer.ViewModels.Main
         private bool ApplySpineObjectConfig_CanExecute(IList? args)
         {
             if (_copiedSpineObjectConfigModel is null) return false;
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
+            return CommandCanExecute.AtLeastOne(args);
         }
 
-        public RelayCommand<IList?> Cmd_ApplySpineObjectConfigFromFile => _cmd_ApplySpineObjectConfigFromFile ??= new(ApplySpineObjectConfigFromFile_Execute, ApplySpineObjectConfigFromFile_CanExecute);
+        public RelayCommand<IList?> Cmd_ApplySpineObjectConfigFromFile => _cmd_ApplySpineObjectConfigFromFile ??= new(ApplySpineObjectConfigFromFile_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_ApplySpineObjectConfigFromFile;
 
         private void ApplySpineObjectConfigFromFile_Execute(IList? args)
         {
-            if (!ApplySpineObjectConfigFromFile_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
             if (!DialogService.ShowOpenJsonDialog(out var fileName)) return;
             if (JsonHelper.Deserialize<SpineObjectConfigModel>(fileName, out var config))
             {
@@ -740,31 +682,17 @@ namespace SpineViewer.ViewModels.Main
             }
         }
 
-        private bool ApplySpineObjectConfigFromFile_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count <= 0) return false;
-            return true;
-        }
-
-        public RelayCommand<IList?> Cmd_SaveSpineObjectConfigToFile => _cmd_SaveSpineObjectConfigToFile ??= new(SaveSpineObjectConfigToFile_Execute, SaveSpineObjectConfigToFile_CanExecute);
+        public RelayCommand<IList?> Cmd_SaveSpineObjectConfigToFile => _cmd_SaveSpineObjectConfigToFile ??= new(SaveSpineObjectConfigToFile_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_SaveSpineObjectConfigToFile;
 
         private void SaveSpineObjectConfigToFile_Execute(IList? args)
         {
-            if (!SaveSpineObjectConfigToFile_CanExecute(args)) return;
+            if (!CommandCanExecute.OnlyOne(args)) return;
             var sp = (SpineObjectModel)args![0]!;
 
             string fileName = $"{Path.ChangeExtension(Path.GetFileName(sp.SkelPath), ".jcfg")}";
             if (!DialogService.ShowSaveJsonDialog(ref fileName, sp.AssetsDir)) return;
             JsonHelper.Serialize(sp.ObjectConfig, fileName);
-        }
-
-        private bool SaveSpineObjectConfigToFile_CanExecute(IList? args)
-        {
-            if (args is null) return false;
-            if (args.Count != 1) return false;
-            return true;
         }
 
         #endregion

@@ -8,6 +8,7 @@ using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
 using SpineViewer.Services;
+using SpineViewer.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -172,12 +173,12 @@ namespace SpineViewer.ViewModels.Exporters
             return null;
         }
 
-        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, Export_CanExecute);
+        public RelayCommand<IList?> Cmd_Export => _cmd_Export ??= new(Export_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_Export;
 
         private void Export_Execute(IList? args)
         {
-            if (!Export_CanExecute(args)) return;
+            if (!CommandCanExecute.AtLeastOne(args)) return;
             SpineObjectModel[] selectedItems = args.Cast<SpineObjectModel>().ToArray();
             lock (_vmMain.SpineObjects.Lock)
             {
@@ -185,11 +186,6 @@ namespace SpineViewer.ViewModels.Exporters
                 selectedItems = _vmMain.SpineObjects.Intersect(selectedItems).ToArray();
             }
             Export(selectedItems);
-        }
-
-        private bool Export_CanExecute(IList? args)
-        {
-            return args is not null && args.Count > 0;
         }
 
         protected virtual void Export(SpineObjectModel[] models)
