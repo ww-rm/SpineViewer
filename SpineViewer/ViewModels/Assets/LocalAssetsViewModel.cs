@@ -51,7 +51,7 @@ namespace SpineViewer.ViewModels.Assets
             {
                 foreach (var m in assets.LocalAssetsRepos)
                 {
-                    _assetsRepos.Add(new(m.LocalDirectory) { Model = m });
+                    _assetsRepos.Add(new(m));
                 }
             }
         }

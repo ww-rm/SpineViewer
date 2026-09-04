@@ -19,6 +19,11 @@ namespace SpineViewer.ViewModels.Assets
             _defaultName = Path.GetFileName(_localDirectory);
         }
 
+        public LocalAssetsRepoViewModel(LocalAssetsRepoModel m) : this(m.LocalDirectory)
+        {
+            Name = m.Name;
+        }
+
         /// <summary>
         /// 获取模型对象
         /// </summary>
