@@ -63,15 +63,15 @@ namespace SpineViewer.ViewModels.Assets
         {
             if (_itemsRefreshingTask is null || _itemsRefreshingTask.IsCompleted)
             {
-                _itemsRefreshingTask = Task.Run(RefreshItemsTask);
+                _itemsRefreshingTask = CreateRefreshItemsTask();
             }
             await _itemsRefreshingTask;
         }
 
         /// <summary>
-        /// 刷新该资源库下的模型资源列表 <see cref="Items"/> 任务方法
+        /// 创建刷新列表任务
         /// </summary>
-        protected abstract void RefreshItemsTask();
+        protected abstract Task CreateRefreshItemsTask();
 
         #region IExplorerOpenable
 

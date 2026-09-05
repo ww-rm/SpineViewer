@@ -48,10 +48,14 @@ namespace SpineViewer.ViewModels.Assets
         public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
         private bool _isItemsRefreshing = false;
 
-        protected override void RefreshItemsTask()
+        protected override Task CreateRefreshItemsTask() => Task.Run(RefreshItemsTask);
+
+        private void RefreshItemsTask()
         {
+            // 清空列表并设置状态属性
             SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
             SetProperty(ref _isItemsLoaded, false, nameof(IsItemsLoaded));
+            SetProperty(ref _items, [], nameof(Items));
 
             List<LocalAssetsItemViewModel> items = [];
 
