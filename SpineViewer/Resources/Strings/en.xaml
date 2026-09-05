@@ -149,7 +149,7 @@
     <s:String x:Key="Str_RemoveAssetsRepo">Remove</s:String>
     <s:String x:Key="Str_MoveUpAssetsRepo">Move Up</s:String>
     <s:String x:Key="Str_MoveDownAssetsRepo">Move Down</s:String>
-    <s:String x:Key="Str_RefreshShownItems">Refresh Item List</s:String>
+    <s:String x:Key="Str_RefreshRepoItems">Refresh Item List</s:String>
     <s:String x:Key="Str_OpenAssetsInExplorer">Open in File Explorer...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">Edit...</s:String>
     <s:String x:Key="Str_GeneratePreviews">Generate Previews...</s:String>

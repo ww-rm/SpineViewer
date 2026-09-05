@@ -48,18 +48,7 @@ namespace SpineViewer.ViewModels.Assets
         public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
         private bool _isItemsRefreshing = false;
 
-        private Task? _itemsRefreshingTask;
-
-        public override async Task RefreshItemsAsync()
-        {
-            if (_itemsRefreshingTask is null || _itemsRefreshingTask.IsCompleted)
-            {
-                _itemsRefreshingTask = Task.Run(RefreshItemsTask);
-            }
-            await _itemsRefreshingTask;
-        }
-
-        private void RefreshItemsTask()
+        protected override void RefreshItemsTask()
         {
             SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
             SetProperty(ref _isItemsLoaded, false, nameof(IsItemsLoaded));
@@ -93,7 +82,7 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
 
-            _items = items;
+            SetProperty(ref _items, items, nameof(Items));
             SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
     }

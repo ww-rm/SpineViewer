@@ -149,7 +149,7 @@
     <s:String x:Key="Str_RemoveAssetsRepo">移除</s:String>
     <s:String x:Key="Str_MoveUpAssetsRepo">上移</s:String>
     <s:String x:Key="Str_MoveDownAssetsRepo">下移</s:String>
-    <s:String x:Key="Str_RefreshShownItems">刷新列表项</s:String>
+    <s:String x:Key="Str_RefreshRepoItems">刷新列表项</s:String>
     <s:String x:Key="Str_OpenAssetsInExplorer">在资源管理器中打开...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">编辑...</s:String>
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>

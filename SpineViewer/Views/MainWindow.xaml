@@ -967,8 +967,8 @@
                                                               InputGestureText="Shift+Alt+E"
                                                               Command="{Binding Cmd_OpenAssetsInExplorer}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                    <MenuItem Header="{DynamicResource Str_RefreshShownItems}"
-                                                              Command="{Binding Cmd_RefreshShownItems}"
+                                                    <MenuItem Header="{DynamicResource Str_RefreshRepoItems}"
+                                                              Command="{Binding Cmd_RefreshRepoItems}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_EditAssetsRepo}"
                                                               Command="{Binding Cmd_EditAssetsRepo}"

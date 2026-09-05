@@ -22,10 +22,13 @@ using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.Assets
 {
-    public abstract class AssetsViewModel<TRepo, TItem> : ObservableObject
-        where TRepo : AssetsRepoViewModel<TItem>
-        where TItem : AssetsItemViewModel
+    public abstract class AssetsViewModel : ObservableObject
     {
+        /// <summary>
+        /// 资源相关信息的缓存目录
+        /// </summary>
+        public static readonly string CacheDirectory = Path.Combine(App.CacheDirectory, "assets");
+
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         protected readonly MainWindowViewModel _vmMain;
@@ -40,18 +43,116 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 资源库列表
         /// </summary>
-        public ObservableCollection<TRepo> AssetsRepos { get => _assetsRepos; }
-        protected readonly ObservableCollection<TRepo> _assetsRepos = [];
+        public abstract IReadOnlyList<AssetsRepoViewModel> AssetsRepos { get; }
+
+        /// <summary>
+        /// 资源文件夹选中项发生变化命令
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged { get; }
+
+        /// <summary>
+        /// 添加资源库
+        /// </summary>
+        public abstract RelayCommand Cmd_AddAssetsRepo { get; }
+
+        /// <summary>
+        /// 移除资源库
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_RemoveAssetsRepo { get; }
+
+        /// <summary>
+        /// 资源库上移一位
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_MoveUpAssetsRepo { get; }
+
+        /// <summary>
+        /// 资源库下移一位
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_MoveDownAssetsRepo { get; }
+
+        /// <summary>
+        /// 在资源管理器中打开资源
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_OpenAssetsInExplorer { get; }
+
+        /// <summary>
+        /// 编辑资源库信息
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_EditAssetsRepo { get; }
+
+        /// <summary>
+        /// 保存资源库列表
+        /// </summary>
+        public abstract void SaveAssetsRepos();
+
+        /// <summary>
+        /// 加载资源库列表
+        /// </summary>
+        public abstract void LoadAssetsRepos();
+
+        #endregion
+
+        #region 资源库模型列表管理
+
+        /// <summary>
+        /// 当前被显示的模型文件列表
+        /// </summary>
+        public abstract IReadOnlyList<AssetsItemViewModel> ShownItems { get; }
+
+        /// <summary>
+        /// 模型列表筛选字符串
+        /// </summary>
+        public abstract string? FilterString { get; set; }
+
+        /// <summary>
+        /// 资源文件选中项发生变化命令
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_AssetsItemSelectionChanged { get; }
+
+        /// <summary>
+        /// 强制刷新列表项命令
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_RefreshRepoItems { get; }
+
+        /// <summary>
+        /// 导入选中的模型文件或者资源库
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_ImportSelectedAssets { get; }
+
+        #endregion
+
+        #region 预览图管理
+
+        /// <summary>
+        /// 为选中的资源库/文件项生成预览图
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_GeneratePreviews { get; }
+
+        /// <summary>
+        /// 为选中的目录/文件项删除预览图
+        /// </summary>
+        public abstract RelayCommand<IList?> Cmd_DeletePreviews { get; }
+
+        #endregion
+    }
+
+    public abstract class AssetsViewModel<TRepo, TItem> : AssetsViewModel
+        where TRepo : AssetsRepoViewModel<TItem>
+        where TItem : AssetsItemViewModel
+    {
+        public AssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
+
+        #region 资源库列表管理
 
         /// <summary>
         /// 当前选中的资源库
         /// </summary>
         protected TRepo? _selectedAssetsRepo;
 
-        /// <summary>
-        /// 资源文件夹选中项发生变化命令
-        /// </summary>
-        public RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(args =>
+        public override IReadOnlyList<TRepo> AssetsRepos { get => _assetsRepos; }
+        protected readonly ObservableCollection<TRepo> _assetsRepos = [];
+
+        public override RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(args =>
         {
             // 选中单个目录时显示该目录下所有文件项
             if (CommandCanExecute.OnlyOne(args))
@@ -62,14 +163,11 @@ namespace SpineViewer.ViewModels.Assets
             {
                 _selectedAssetsRepo = null;
             }
-            _ = RefreshShownItemsAsync();
+            _ = UpdateShownItemsAsync();
         });
         private RelayCommand<IList?>? _cmd_AssetsRepoSelectionChanged;
 
-        /// <summary>
-        /// 添加资源库
-        /// </summary>
-        public RelayCommand Cmd_AddAssetsRepo => _cmd_AddAssetsRepo ??= new(AddAssetsRepo_Execute);
+        public override RelayCommand Cmd_AddAssetsRepo => _cmd_AddAssetsRepo ??= new(AddAssetsRepo_Execute);
         private RelayCommand? _cmd_AddAssetsRepo;
 
         private void AddAssetsRepo_Execute()
@@ -81,10 +179,7 @@ namespace SpineViewer.ViewModels.Assets
             SaveAssetsRepos();
         }
 
-        /// <summary>
-        /// 移除资源库
-        /// </summary>
-        public RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
+        public override RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_RemoveAssetsRepo;
 
         private void RemoveAssetsRepo_Execute(IList? args)
@@ -106,10 +201,7 @@ namespace SpineViewer.ViewModels.Assets
             SaveAssetsRepos();
         }
 
-        /// <summary>
-        /// 资源库上移一位
-        /// </summary>
-        public RelayCommand<IList?> Cmd_MoveUpAssetsRepo => _cmd_MoveUpAssetsRepo ??= new(MoveUpAssetsRepo_Execute, CommandCanExecute.OnlyOne);
+        public override RelayCommand<IList?> Cmd_MoveUpAssetsRepo => _cmd_MoveUpAssetsRepo ??= new(MoveUpAssetsRepo_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_MoveUpAssetsRepo;
 
         private void MoveUpAssetsRepo_Execute(IList? args)
@@ -124,10 +216,7 @@ namespace SpineViewer.ViewModels.Assets
             SaveAssetsRepos();
         }
 
-        /// <summary>
-        /// 资源库下移一位
-        /// </summary>
-        public RelayCommand<IList?> Cmd_MoveDownAssetsRepo => _cmd_MoveDownAssetsRepo ??= new(MoveDownAssetsRepo_Execute, CommandCanExecute.OnlyOne);
+        public override RelayCommand<IList?> Cmd_MoveDownAssetsRepo => _cmd_MoveDownAssetsRepo ??= new(MoveDownAssetsRepo_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_MoveDownAssetsRepo;
 
         private void MoveDownAssetsRepo_Execute(IList? args)
@@ -142,10 +231,7 @@ namespace SpineViewer.ViewModels.Assets
             SaveAssetsRepos();
         }
 
-        /// <summary>
-        /// 在资源管理器中打开资源
-        /// </summary>
-        public RelayCommand<IList?> Cmd_OpenAssetsInExplorer => _cmd_OpenAssetsInExplorer ??= new(OpenAssetsInExplorer_Execute, CommandCanExecute.OnlyOne);
+        public override RelayCommand<IList?> Cmd_OpenAssetsInExplorer => _cmd_OpenAssetsInExplorer ??= new(OpenAssetsInExplorer_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_OpenAssetsInExplorer;
 
         private void OpenAssetsInExplorer_Execute(IList? args)
@@ -156,10 +242,7 @@ namespace SpineViewer.ViewModels.Assets
             obj.OpenDirectoryInExplorer();
         }
 
-        /// <summary>
-        /// 编辑资源库信息
-        /// </summary>
-        public RelayCommand<IList?> Cmd_EditAssetsRepo => _cmd_EditAssetsRepo ??= new(EditAssetsRepo_Execute, CommandCanExecute.OnlyOne);
+        public override RelayCommand<IList?> Cmd_EditAssetsRepo => _cmd_EditAssetsRepo ??= new(EditAssetsRepo_Execute, CommandCanExecute.OnlyOne);
         private RelayCommand<IList?>? _cmd_EditAssetsRepo;
 
         private void EditAssetsRepo_Execute(IList? args)
@@ -185,44 +268,25 @@ namespace SpineViewer.ViewModels.Assets
         /// <returns>取消或失败返回 false</returns>
         protected abstract bool EditAssetsRepo(TRepo repo);
 
-        /// <summary>
-        /// 保存资源库列表
-        /// </summary>
-        public abstract void SaveAssetsRepos();
-
-        /// <summary>
-        /// 加载资源库列表
-        /// </summary>
-        public abstract void LoadAssetsRepos();
-
         #endregion
 
         #region 资源库模型列表管理
 
-        /// <summary>
-        /// 当前被显示的模型文件列表
-        /// </summary>
-        public IReadOnlyList<TItem> ShownItems { get => _shownItems; }
+        public override IReadOnlyList<TItem> ShownItems { get => _shownItems; }
         private List<TItem> _shownItems = [];
 
-        /// <summary>
-        /// 模型列表筛选字符串
-        /// </summary>
-        public string? FilterString
+        public override string? FilterString
         {
             get => string.IsNullOrWhiteSpace(_filterString) ? null : _filterString;
             set
             {
                 if (!SetProperty(ref _filterString, value)) return;
-                _ = RefreshShownItemsAsync();
+                _ = UpdateShownItemsAsync();
             }
         }
         private string? _filterString;
 
-        /// <summary>
-        /// 资源文件选中项发生变化命令
-        /// </summary>
-        public RelayCommand<IList?> Cmd_AssetsItemSelectionChanged => _cmd_AssetsItemSelectionChanged ??= new(args =>
+        public override RelayCommand<IList?> Cmd_AssetsItemSelectionChanged => _cmd_AssetsItemSelectionChanged ??= new(args =>
         {
             // 选中单个目录时显示该目录下所有文件项
             if (!CommandCanExecute.OnlyOne(args))
@@ -236,28 +300,38 @@ namespace SpineViewer.ViewModels.Assets
         });
         private RelayCommand<IList?>? _cmd_AssetsItemSelectionChanged;
 
-        /// <summary>
-        /// 强制刷新列表项命令
-        /// </summary>
-        public RelayCommand<IList?> Cmd_RefreshShownItems => _cmd_RefreshShownItems ??= new(
+        public override RelayCommand<IList?> Cmd_RefreshRepoItems => _cmd_RefreshRepoItems ??= new(
             args =>
             {
                 if (!CommandCanExecute.OnlyOne(args)) return;
-                _ = RefreshShownItemsAsync(true);
+                _ = UpdateShownItemsAsync(true);
             },
             CommandCanExecute.OnlyOne
         );
-        private RelayCommand<IList?>? _cmd_RefreshShownItems;
+        private RelayCommand<IList?>? _cmd_RefreshRepoItems;
+
+        public override RelayCommand<IList?> Cmd_ImportSelectedAssets => _cmd_ImportSelectedAssets ??= new(ImportSelectedAssets_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_ImportSelectedAssets;
+
+        private void ImportSelectedAssets_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args))
+                return;
+
+            var items = GetItems(args);
+
+            _vmMain.SpineObjectListViewModel.AddSpineObjectFromFileList(items.Select(m => m.LocalFullPath));
+        }
 
         /// <summary>
-        /// <see cref="RefreshShownItemsAsync(bool)"/> 异步任务计数器, 用于区分执行先后顺序
+        /// <see cref="UpdateShownItemsAsync(bool)"/> 异步任务计数器, 用于区分执行先后顺序
         /// </summary>
-        private long _refreshShownItemsAsyncCounter = 0;
+        private long _updateShownItemsAsyncCounter = 0;
 
         /// <summary>
-        /// 刷新 <see cref="ShownItems"/>
+        /// 更新 <see cref="ShownItems"/>
         /// </summary>
-        protected async Task RefreshShownItemsAsync(bool refreshRepoItems = false)
+        protected async Task UpdateShownItemsAsync(bool refreshRepoItems = false)
         {
             // 先清空显示
             SetProperty(ref _shownItems, [], nameof(ShownItems));
@@ -267,7 +341,7 @@ namespace SpineViewer.ViewModels.Assets
             var filter = _filterString;
 
             // 保存进入时的计数器
-            var counter1 = Interlocked.Increment(ref _refreshShownItemsAsyncCounter);
+            var counter1 = Interlocked.Increment(ref _updateShownItemsAsyncCounter);
 
             if (repo is not null)
             {
@@ -286,39 +360,20 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
 
-            var counter2 = Interlocked.Read(ref _refreshShownItemsAsyncCounter);
+            var counter2 = Interlocked.Read(ref _updateShownItemsAsyncCounter);
 
             // 如果此次运行是最新的, 则按这个结果更新
             if (counter1 >= counter2)
             {
-                SetProperty(ref _shownItems, shownItems, nameof(shownItems));
+                SetProperty(ref _shownItems, shownItems, nameof(ShownItems));
             }
-        }
-
-        /// <summary>
-        /// 导入选中的模型文件或者资源库
-        /// </summary>
-        public RelayCommand<IList?> Cmd_ImportSelectedAssets => _cmd_ImportSelectedAssets ??= new(ImportSelectedAssets_Execute, CommandCanExecute.AtLeastOne);
-        private RelayCommand<IList?>? _cmd_ImportSelectedAssets;
-
-        private void ImportSelectedAssets_Execute(IList? args)
-        {
-            if (!CommandCanExecute.AtLeastOne(args))
-                return;
-
-            var items = GetItems(args);
-
-            _vmMain.SpineObjectListViewModel.AddSpineObjectFromFileList(items.Select(m => m.LocalFullPath));
         }
 
         #endregion
 
         #region 预览图管理
 
-        /// <summary>
-        /// 为选中的资源库/文件项生成预览图
-        /// </summary>
-        public RelayCommand<IList?> Cmd_GeneratePreviews => _cmd_GeneratePreviews ??= new(GeneratePreviews_Execute, CommandCanExecute.AtLeastOne);
+        public override RelayCommand<IList?> Cmd_GeneratePreviews => _cmd_GeneratePreviews ??= new(GeneratePreviews_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_GeneratePreviews;
 
         private void GeneratePreviews_Execute(IList? args)
@@ -333,10 +388,7 @@ namespace SpineViewer.ViewModels.Assets
             _vmMain.AssetsPreviewViewModel.GeneratePreviews(items);
         }
 
-        /// <summary>
-        /// 为选中的目录/文件项删除预览图
-        /// </summary>
-        public RelayCommand<IList?> Cmd_DeletePreviews => _cmd_DeletePreviews ??= new(DeletePreviews_Execute, CommandCanExecute.AtLeastOne);
+        public override RelayCommand<IList?> Cmd_DeletePreviews => _cmd_DeletePreviews ??= new(DeletePreviews_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_DeletePreviews;
 
         private void DeletePreviews_Execute(IList? args)
@@ -442,6 +494,4 @@ namespace SpineViewer.ViewModels.Assets
 
         #endregion
     }
-
-
 }

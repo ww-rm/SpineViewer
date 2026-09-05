@@ -149,7 +149,7 @@
     <s:String x:Key="Str_RemoveAssetsRepo">削除</s:String>
     <s:String x:Key="Str_MoveUpAssetsRepo">上へ移動</s:String>
     <s:String x:Key="Str_MoveDownAssetsRepo">下へ移動</s:String>
-    <s:String x:Key="Str_RefreshShownItems">項目一覧を更新</s:String>
+    <s:String x:Key="Str_RefreshRepoItems">項目一覧を更新</s:String>
     <s:String x:Key="Str_OpenAssetsInExplorer">エクスプローラーで開く...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">編集...</s:String>
     <s:String x:Key="Str_GeneratePreviews">プレビューを生成...</s:String>
