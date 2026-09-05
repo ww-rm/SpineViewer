@@ -29,6 +29,7 @@ namespace SpineViewer.ViewModels
             _spineObjectListViewModel = new(this);
             _assetsPreviewViewModel = new(this);
             _localAssetsViewModel = new(this);
+            _gitHubAssetsViewModel = new(this);
             _sfmlRendererViewModel = new(this);
             _preferenceViewModel = new(this);
         }
@@ -126,6 +127,12 @@ namespace SpineViewer.ViewModels
         /// </summary>
         public LocalAssetsViewModel LocalAssetsViewModel => _localAssetsViewModel;
         private readonly LocalAssetsViewModel _localAssetsViewModel;
+
+        /// <summary>
+        /// GitHub 在线资源 ViewModel
+        /// </summary>
+        public GitHubAssetsViewModel GitHubAssetsViewModel => _gitHubAssetsViewModel;
+        private readonly GitHubAssetsViewModel _gitHubAssetsViewModel;
 
         /// <summary>
         /// SFML 渲染 ViewModel

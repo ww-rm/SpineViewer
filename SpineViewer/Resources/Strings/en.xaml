@@ -28,6 +28,7 @@
     <s:String x:Key="Str_Canvas">Canvas</s:String>
     <s:String x:Key="Str_LocalAssets">Local Assets</s:String>
     <s:String x:Key="Str_OnlineAssets">Online Assets</s:String>
+    <s:String x:Key="Str_GitHubAssets">GitHub Assets</s:String>
 
     <s:String x:Key="Str_ModelAnimation">Model Animation</s:String>
     <s:String x:Key="Str_ModelAnimationTooltip">Add and configure model animations in the model list on the left</s:String>

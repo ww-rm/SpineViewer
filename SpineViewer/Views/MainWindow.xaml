@@ -936,7 +936,7 @@
                                             </StatusBarItem>
                                         </StatusBar>
 
-                                        <!-- 本地资源文件夹列表 -->
+                                        <!-- 本地资源库列表 -->
                                         <ListBox x:Name="_localAssetsRepoListBox" ItemsSource="{Binding AssetsRepos}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
@@ -1069,7 +1069,7 @@
                                                     hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
                                                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                        <!-- 本地资源目录文件列表 -->
+                                        <!-- 本地资源库文件列表 -->
                                         <ListBox x:Name="_localAssetsItemListBox" ItemsSource="{Binding ShownItems}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
@@ -1121,18 +1121,221 @@
                                 </Grid>
                             </TabItem>
 
-                            <!-- GitHub 在线资源 -->
-                            <TabItem Visibility="Collapsed">
+                            <!-- GitHub 在线资源 TODO: 保存布局 -->
+                            <TabItem DataContext="{Binding GitHubAssetsViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"
                                             MouseLeftButtonDown="MainTabControlHeader_MouseLeftButtonDown"
-                                            ToolTip="{DynamicResource Str_OnlineAssets}">
+                                            ToolTip="{DynamicResource Str_GitHubAssets}">
                                         <Viewbox Width="24" Height="24">
                                             <Path Data="{StaticResource Geo_CloudArrowDown}" Style="{StaticResource MyTabItemHeaderPathStyle}"/>
                                         </Viewbox>
                                     </Border>
                                 </TabItem.Header>
-                                
+                                <Grid x:Name="_gitHubAssetsGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <DockPanel>
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_gitHubAssetsRepoListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_gitHubAssetsRepoListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+
+                                        <!-- GitHub 资源库列表 -->
+                                        <ListBox x:Name="_gitHubAssetsRepoListBox" ItemsSource="{Binding AssetsRepos}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsRepoSelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepo}"
+                                                              Command="{Binding Cmd_AddAssetsRepo}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
+                                                              InputGestureText="Delete"
+                                                              Command="{Binding Cmd_RemoveAssetsRepo}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_MoveUpAssetsRepo}"
+                                                              InputGestureText="Alt+W"
+                                                              Command="{Binding Cmd_MoveUpAssetsRepo}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_MoveDownAssetsRepo}"
+                                                              InputGestureText="Alt+S"
+                                                              Command="{Binding Cmd_MoveDownAssetsRepo}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInExplorer}"
+                                                              InputGestureText="Shift+Alt+E"
+                                                              Command="{Binding Cmd_OpenAssetsInExplorer}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_RefreshRepoItems}"
+                                                              Command="{Binding Cmd_RefreshRepoItems}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_EditAssetsRepo}"
+                                                              Command="{Binding Cmd_EditAssetsRepo}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
+                                                              Command="{Binding Cmd_ImportSelectedAssets}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviews}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
+
+                                            <ListBox.InputBindings>
+                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                            </ListBox.InputBindings>
+
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
+                                                    <Setter Property="ToolTip" Value="{Binding RepoKey}"/>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0 3">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <!-- 左侧状态指示条 -->
+                                                        <UniformGrid Grid.Column="0" Rows="8">
+                                                            <UniformGrid.Resources>
+                                                                <Style TargetType="Rectangle">
+                                                                    <Setter Property="Width" Value="5"/>
+                                                                    <Setter Property="Height" Value="2"/>
+                                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                                                    <Setter Property="Fill" Value="Gray"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsItemsLoaded}" Value="True">
+                                                                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsItemsRefreshing}" Value="True">
+                                                                            <Setter Property="Fill" Value="{StaticResource WarningBrush}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </UniformGrid.Resources>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                            <Rectangle/>
+                                                        </UniformGrid>
+                                                        
+                                                        <!-- 资源库信息 -->
+                                                        <StackPanel Grid.Column="1" Margin="5 0">
+                                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding RepoKey}" Opacity="0.6"/>
+                                                        </StackPanel>
+                                                        
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+
+                                        </ListBox>
+                                    </DockPanel>
+
+                                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                                    <DockPanel Grid.Row="2">
+                                        <StatusBar DockPanel.Dock="Bottom">
+                                            <StatusBarItem>
+                                                <TextBlock Foreground="{DynamicResource PrimaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource StrFmtCvter}" ConverterParameter="Str_TotalAndSelectedCountStatusBar">
+                                                            <Binding Path="Items.Count" ElementName="_gitHubAssetsItemListBox"/>
+                                                            <Binding Path="SelectedItems.Count" ElementName="_gitHubAssetsItemListBox"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StatusBarItem>
+                                        </StatusBar>
+
+                                        <hc:TextBox DockPanel.Dock="Top"
+                                                    hc:InfoElement.Placeholder="{DynamicResource Str_Filter}"
+                                                    Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <!-- GitHub 资源库文件列表 -->
+                                        <ListBox x:Name="_gitHubAssetsItemListBox" ItemsSource="{Binding ShownItems}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding Cmd_AssetsItemSelectionChanged}"
+                                                                           CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsItemListBox}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInExplorer}"
+                                                              InputGestureText="Shift+Alt+E"
+                                                              Command="{Binding Cmd_OpenAssetsInExplorer}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
+                                                              Command="{Binding Cmd_ImportSelectedAssets}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_GeneratePreviews}"
+                                                              Command="{Binding Cmd_GeneratePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_DeletePreviews}"
+                                                              Command="{Binding Cmd_DeletePreviews}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
+
+                                            <ListBox.InputBindings>
+                                                <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsItemListBox}"/>
+                                            </ListBox.InputBindings>
+
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
+                                                    <Setter Property="ToolTip" Value="{Binding LocalFullPath}"/> <!-- TODO: 显示远程完整路径 -->
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Margin="0 3">
+                                                        <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{Binding RelativePath}" Opacity="0.6"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+
+                                        </ListBox>
+                                    </DockPanel>
+                                </Grid>
                             </TabItem>
 
                         </TabControl>
