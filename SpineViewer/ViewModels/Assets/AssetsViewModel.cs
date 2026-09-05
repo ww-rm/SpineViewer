@@ -147,7 +147,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 当前选中的资源库
         /// </summary>
-        protected TRepo? _selectedAssetsRepo;
+        private TRepo? _selectedAssetsRepo;
 
         public override IReadOnlyList<TRepo> AssetsRepos { get => _assetsRepos; }
         protected readonly ObservableCollection<TRepo> _assetsRepos = [];
@@ -331,7 +331,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 更新 <see cref="ShownItems"/>
         /// </summary>
-        protected async Task UpdateShownItemsAsync(bool refreshRepoItems = false)
+        private async Task UpdateShownItemsAsync(bool refreshRepoItems = false)
         {
             // 先清空显示
             SetProperty(ref _shownItems, [], nameof(ShownItems));

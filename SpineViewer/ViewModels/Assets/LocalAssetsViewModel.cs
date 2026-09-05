@@ -42,11 +42,7 @@ namespace SpineViewer.ViewModels.Assets
 
         public override void LoadAssetsRepos()
         {
-            // 先清空列表
-            _selectedAssetsRepo = null;
-            UpdateShownItemsAsync().Wait();
             _assetsRepos.Clear();
-
             if (JsonHelper.Deserialize<LocalAssetsModel>(LocalAssetsFilePath, out var assets, true))
             {
                 foreach (var m in assets.LocalAssetsRepos)
