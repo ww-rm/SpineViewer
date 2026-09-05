@@ -1,4 +1,5 @@
-﻿using SpineViewer.Models.Octokit;
+﻿using SpineViewer.Models;
+using SpineViewer.Models.Octokit;
 using SpineViewer.Services;
 using SpineViewer.Utils;
 using System;
@@ -17,8 +18,28 @@ namespace SpineViewer.ViewModels.Assets
             _owner = owner;
             _repository = repository;
             _sha = sha;
-            _cacheDirectory = Path.Combine(GitHubAssetsViewModel.CacheDirectory, _owner, _repository);
+            _cacheDirectory = Path.Combine(GitHubAssetsViewModel.GitHubAssetsCacheDirectory, _owner, _repository);
             _treeCachePath = Path.Combine(_cacheDirectory, $"{_sha}.json");
+        }
+
+        public GitHubAssetsRepoViewModel(GitHubAssetsRepoModel m) : this(m.Owner, m.Repository, m.Sha)
+        {
+            Name = m.Name;
+        }
+
+        /// <summary>
+        /// 获取模型对象
+        /// </summary>
+        public GitHubAssetsRepoModel Model
+        {
+            get => new()
+            {
+                Owner = Owner,
+                Repository = Repository,
+                Sha = Sha,
+                Name = Name
+            };
+            set => Name = value.Name;
         }
 
         private readonly string _cacheDirectory;

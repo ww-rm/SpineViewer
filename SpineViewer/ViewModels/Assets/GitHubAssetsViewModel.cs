@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SpineViewer.Models;
+using SpineViewer.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,33 +11,50 @@ namespace SpineViewer.ViewModels.Assets
 {
     public class GitHubAssetsViewModel : AssetsViewModel<GitHubAssetsRepoViewModel, GitHubAssetsItemViewModel>
     {
-        public static new readonly string CacheDirectory = Path.Combine(AssetsViewModel.CacheDirectory, "github");
+        /// <summary>
+        /// 文件保存路径
+        /// </summary>
+        public static readonly string GitHubAssetsFilePath = Path.Combine(App.DataDirectory, "githubassets.json");
 
-        public GitHubAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain)
-        {
-        }
+        public static readonly string GitHubAssetsCacheDirectory = Path.Combine(AssetsCacheDirectory, "github");
+
+        public GitHubAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
         public override void LoadAssetsRepos()
         {
             _assetsRepos.Clear();
-            _assetsRepos.Add(new("ww-rm", "azurlane_char", "82bfb06b815815ef17e5ef21d267d461d1b6d0b7"));
-            _assetsRepos.Add(new("ww-rm", "azurlane_spinepainting", "d37b5bd58b1140c2395bb2d22cf9bc80fda504d5"));
-            _logger.Warn("NotImplemented");
+            if (JsonHelper.Deserialize<GitHubAssetsModel>(GitHubAssetsFilePath, out var assets, true))
+            {
+                foreach (var m in assets.GitHubAssetsRepos)
+                {
+                    _assetsRepos.Add(new(m));
+                }
+            }
         }
 
         public override void SaveAssetsRepos()
         {
-            _logger.Warn("NotImplemented");
+            var m = new GitHubAssetsModel();
+
+            foreach (var repo in _assetsRepos)
+            {
+                m.GitHubAssetsRepos.Add(repo.Model);
+            }
+
+            JsonHelper.Serialize(m, GitHubAssetsFilePath);
         }
 
-        protected override GitHubAssetsRepoViewModel? AddAssetsRepo()
+        protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
         {
+            // TODO: 多行文本解析
+            // 挂 ProgressDialog 前台加载, 仓库提交信息获取完整后才视作有效仓库
             _logger.Warn("NotImplemented");
             return null;
         }
 
         protected override bool EditAssetsRepo(GitHubAssetsRepoViewModel repo)
         {
+            // 编辑名字
             _logger.Warn("NotImplemented");
             return false;
         }

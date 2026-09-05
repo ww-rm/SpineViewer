@@ -18,16 +18,13 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public static readonly string LocalAssetsFilePath = Path.Combine(App.DataDirectory, "localassets.json");
 
-        public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain)
-        {
+        public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
-        }
-
-        protected override LocalAssetsRepoViewModel? AddAssetsRepo()
+        protected override IReadOnlyList<LocalAssetsRepoViewModel> AddAssetsRepos()
         {
             if (!DialogService.ShowOpenFolderDialog(out var selectedPath))
-                return null;
-            return new(selectedPath!);
+                return [];
+            return [new(selectedPath!)];
         }
 
         protected override bool EditAssetsRepo(LocalAssetsRepoViewModel repo)

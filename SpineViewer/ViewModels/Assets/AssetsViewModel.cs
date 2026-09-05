@@ -27,7 +27,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 资源相关信息的缓存目录
         /// </summary>
-        public static readonly string CacheDirectory = Path.Combine(App.CacheDirectory, "assets");
+        public static readonly string AssetsCacheDirectory = Path.Combine(App.CacheDirectory, "assets");
 
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -172,10 +172,9 @@ namespace SpineViewer.ViewModels.Assets
 
         private void AddAssetsRepo_Execute()
         {
-            var repo = AddAssetsRepo();
-            if (repo is null) return;
-
-            _assetsRepos.Add(repo);
+            var repos = AddAssetsRepos();
+            foreach (var r in repos)
+                _assetsRepos.Add(r);
             SaveAssetsRepos();
         }
 
@@ -259,8 +258,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 添加资源库
         /// </summary>
-        /// <returns>添加的资源库, 取消或失败返回 null</returns>
-        protected abstract TRepo? AddAssetsRepo();
+        protected abstract IReadOnlyList<TRepo> AddAssetsRepos();
 
         /// <summary>
         /// 编辑资源库信息
