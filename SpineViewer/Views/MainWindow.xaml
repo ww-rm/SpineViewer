@@ -1184,6 +1184,9 @@
                                                               InputGestureText="Shift+Alt+E"
                                                               Command="{Binding Cmd_OpenAssetsInExplorer}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInBrowser}"
+                                                              Command="{Binding Cmd_OpenAssetsInBrowser}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_RefreshRepoItems}"
                                                               Command="{Binding Cmd_RefreshRepoItems}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
@@ -1300,6 +1303,9 @@
                                                     <MenuItem Header="{DynamicResource Str_OpenAssetsInExplorer}"
                                                               InputGestureText="Shift+Alt+E"
                                                               Command="{Binding Cmd_OpenAssetsInExplorer}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <MenuItem Header="{DynamicResource Str_OpenAssetsInBrowser}"
+                                                              Command="{Binding Cmd_OpenAssetsInBrowser}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"

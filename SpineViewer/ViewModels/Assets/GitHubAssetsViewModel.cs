@@ -1,6 +1,8 @@
-﻿using SpineViewer.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using SpineViewer.Models;
 using SpineViewer.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +24,20 @@ namespace SpineViewer.ViewModels.Assets
         public static readonly string GitHubAssetsCacheDirectory = Path.Combine(AssetsCacheDirectory, "github");
 
         public GitHubAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
+
+        /// <summary>
+        /// 在浏览器中打开资源库或资源文件
+        /// </summary>
+        public RelayCommand<IList?> Cmd_OpenAssetsInBrowser => _cmd_OpenAssetsInBrowser ??= new(OpenAssetsInBrowser_Execute, CommandCanExecute.OnlyOne);
+        private RelayCommand<IList?>? _cmd_OpenAssetsInBrowser;
+
+        private void OpenAssetsInBrowser_Execute(IList? args)
+        {
+            if (!CommandCanExecute.OnlyOne(args)) return;
+
+            var obj = (IBrowserOpenable)args[0]!;
+            obj.OpenUrlInBroswer();
+        }
 
         public override void LoadAssetsRepos()
         {

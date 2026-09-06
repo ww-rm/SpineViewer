@@ -152,6 +152,7 @@
     <s:String x:Key="Str_MoveDownAssetsRepo">下移</s:String>
     <s:String x:Key="Str_RefreshRepoItems">刷新列表项</s:String>
     <s:String x:Key="Str_OpenAssetsInExplorer">在资源管理器中打开...</s:String>
+    <s:String x:Key="Str_OpenAssetsInBrowser">在浏览器中打开...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">编辑...</s:String>
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
