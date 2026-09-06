@@ -11,6 +11,9 @@ namespace SpineViewer.ViewModels.Assets
 {
     public class GitHubAssetsViewModel : AssetsViewModel<GitHubAssetsRepoViewModel, GitHubAssetsItemViewModel>
     {
+        public const string GitHubUrlHost = "github.com";
+        public const string GitHubRawUrlHost = "raw.githubusercontent.com";
+
         /// <summary>
         /// 文件保存路径
         /// </summary>

@@ -9,25 +9,29 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.ViewModels.Assets
 {
-    public static class AssetsExtension
+    public interface IBrowserOpenable
+    {
+        /// <summary>
+        /// 浏览器打开网址
+        /// </summary>
+        public string OpenInBrowserUrl { get; }
+    }
+
+    public static class IBrowserOpenableExtension
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// 在资源管理器中打开目录
+        /// 在浏览器中打开网址
         /// </summary>
-        public static void OpenDirectoryInExplorer(this IExplorerOpenable self)
+        public static void OpenUrlInBroswer(this IBrowserOpenable self)
         {
-            if (!Directory.Exists(self.OpenInExplorerDirectory))
-            {
-                _logger.Error("Directory '{0}' is not existed.", self.OpenInExplorerDirectory);
+            if (self.OpenInBrowserUrl is null)
                 return;
-            }
 
             Process.Start(new ProcessStartInfo
             {
-                FileName = "explorer.exe",
-                Arguments = $"\"{self.OpenInExplorerDirectory}\"",
+                FileName = $"\"{self.OpenInBrowserUrl}\"",
                 UseShellExecute = true,
             });
         }

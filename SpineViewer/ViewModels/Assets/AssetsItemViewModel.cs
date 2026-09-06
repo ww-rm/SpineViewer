@@ -30,7 +30,7 @@ namespace SpineViewer.ViewModels.Assets
         public AssetsItemViewModel(AssetsRepoViewModel vmRepo, string relativePath)
         {
             _vmRepo = vmRepo;
-            _relativePath = relativePath;
+            _relativePath = relativePath.Replace("/", "\\");
             _fileName = Path.GetFileName(_relativePath);
         }
 
@@ -71,6 +71,10 @@ namespace SpineViewer.ViewModels.Assets
                     return WpfExtension.LoadWebpWithAlpha(PreviewFilePath);
                 }
                 catch (FileNotFoundException)
+                {
+                    return null;
+                }
+                catch (DirectoryNotFoundException) 
                 {
                     return null;
                 }

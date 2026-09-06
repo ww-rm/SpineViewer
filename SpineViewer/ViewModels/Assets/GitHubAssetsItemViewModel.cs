@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.ViewModels.Assets
 {
-    public class GitHubAssetsItemViewModel : AssetsItemViewModel
+    public class GitHubAssetsItemViewModel : AssetsItemViewModel, IBrowserOpenable
     {
-        private const string GitHubRawUrlHost = "raw.githubusercontent.com";
-
         private readonly GitHubAssetsRepoViewModel _vmRepo;
 
         public GitHubAssetsItemViewModel(GitHubAssetsRepoViewModel vmRepo, string relativePath) : base(vmRepo, relativePath)
@@ -23,11 +21,26 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public string GitHubRawUrl => string.Format(
             "https://{0}/{1}/{2}/{3}/{4}",
-            GitHubRawUrlHost,
+            GitHubAssetsViewModel.GitHubRawUrlHost,
             _vmRepo.Owner,
             _vmRepo.Repository,
             _vmRepo.Sha,
             _relativePath.Replace("\\", "/")
         );
+
+        public string GitHubUrl => string.Format(
+            "https://{0}/{1}/{2}/blob/{3}/{4}",
+            GitHubAssetsViewModel.GitHubUrlHost,
+            _vmRepo.Owner,
+            _vmRepo.Repository,
+            _vmRepo.Sha,
+            _relativePath.Replace("\\", "/")
+        );
+
+        #region IBrowserOpenable
+
+        string IBrowserOpenable.OpenInBrowserUrl => GitHubUrl;
+
+        #endregion
     }
 }

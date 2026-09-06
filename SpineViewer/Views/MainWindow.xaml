@@ -1320,7 +1320,7 @@
 
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle.Small}">
-                                                    <Setter Property="ToolTip" Value="{Binding LocalFullPath}"/> <!-- TODO: 显示远程完整路径 -->
+                                                    <Setter Property="ToolTip" Value="{Binding GitHubUrl}"/>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
 

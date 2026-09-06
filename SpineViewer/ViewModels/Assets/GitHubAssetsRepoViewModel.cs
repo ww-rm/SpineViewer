@@ -1,4 +1,5 @@
-﻿using SpineViewer.Models;
+﻿using Spine;
+using SpineViewer.Models;
 using SpineViewer.Models.Octokit;
 using SpineViewer.Services;
 using SpineViewer.Utils;
@@ -11,12 +12,13 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.ViewModels.Assets
 {
-    public sealed class GitHubAssetsRepoViewModel : AssetsRepoViewModel<GitHubAssetsItemViewModel>
+    public sealed class GitHubAssetsRepoViewModel : AssetsRepoViewModel<GitHubAssetsItemViewModel>, IBrowserOpenable
     {
         private readonly string _owner;
         private readonly string _repository;
         private readonly string _sha;
         private readonly string _repoKey;
+        private readonly string _githubUrl;
         private readonly string _defaultName;
         private readonly string _cacheDirectory;
         private readonly string _treeCachePath;
@@ -27,6 +29,7 @@ namespace SpineViewer.ViewModels.Assets
             _repository = repository;
             _sha = sha;
             _repoKey = $"{_owner}/{_repository}@{_sha}";
+            _githubUrl = $"https://{GitHubAssetsViewModel.GitHubUrlHost}/{_owner}/{_repository}/tree/{_sha}";
             _defaultName = $"{_owner}/{_repository}@{_sha[..7]}";
             _cacheDirectory = Path.Combine(GitHubAssetsViewModel.GitHubAssetsCacheDirectory, _owner, _repository);
             _treeCachePath = Path.Combine(_cacheDirectory, $"{_sha}.json");
@@ -57,7 +60,12 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public string RepoKey => _repoKey;
 
-        public override string LocalDirectory => throw new NotImplementedException(); // TODO: 也许可以自定义下载文件夹
+        /// <summary>
+        /// GitHub 浏览器访问链接
+        /// </summary>
+        public string GitHubUrl => _githubUrl;
+
+        public override string LocalDirectory => "__TODO__"; // TODO: 也许可以自定义下载文件夹
 
         public override string DefaultName => _defaultName;
 
@@ -80,34 +88,10 @@ namespace SpineViewer.ViewModels.Assets
         private List<GitHubAssetsItemViewModel> _items = [];
 
         /// <summary>
-        /// 仓库内所有文件
+        /// 仓库内所有文件, 键是 <see cref="AssetsItemViewModel.RelativePath"/>
         /// </summary>
-        private readonly List<GitHubAssetsItemViewModel> _allItems = [];
-
-        /// <summary>
-        /// 关联文件映射表, 用于记录主模型文件关联的图集/纹理文件集合
-        /// </summary>
-        private readonly Dictionary<GitHubAssetsItemViewModel, List<GitHubAssetsItemViewModel>> _associatedItems = [];
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public IReadOnlyList<GitHubAssetsItemViewModel> GetAssociatedItems(GitHubAssetsItemViewModel item)
-        {
-            if (!_associatedItems.TryGetValue(item, out var items))
-                return [];
-            return items;
-        }
-
-        private void AddAssociatedItem(GitHubAssetsItemViewModel item, GitHubAssetsItemViewModel associatedItem)
-        {
-            if (!_associatedItems.ContainsKey(item))
-                _associatedItems[item] = [];
-            _associatedItems[item].Add(associatedItem);
-
-        }
+        public IReadOnlyDictionary<string, GitHubAssetsItemViewModel> AllItems => _allItems;
+        private Dictionary<string, GitHubAssetsItemViewModel> _allItems = [];
 
         public override bool IsItemsLoaded => _isItemsLoaded;
         private bool _isItemsLoaded = false;
@@ -125,16 +109,27 @@ namespace SpineViewer.ViewModels.Assets
             SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
             SetProperty(ref _isItemsLoaded, false, nameof(IsItemsLoaded));
             SetProperty(ref _items, [], nameof(Items));
+            SetProperty(ref _allItems, [], nameof(AllItems));
 
             var tree = await GetTreeDataCacheAsync();
             if (tree is null)
                 return;
 
             List<GitHubAssetsItemViewModel> items = [];
+            Dictionary<string, GitHubAssetsItemViewModel> allItems = [];
 
             try
             {
-                // TODO: 构造列表
+                foreach (var tim in tree.Tree.Where(v => v.Type == Octokit.TreeType.Blob))
+                {
+                    var item = new GitHubAssetsItemViewModel(this, tim.Path!);
+                    allItems[item.RelativePath] = item;
+
+                    var lowerPath = item.RelativePath.ToLowerInvariant();
+                    if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
+                        items.Add(item);
+                }
+
                 SetProperty(ref _isItemsLoaded, true, nameof(IsItemsLoaded));
             }
             catch (Exception ex)
@@ -143,6 +138,7 @@ namespace SpineViewer.ViewModels.Assets
                 _logger.Error("Failed to refresh repo '{0}', {1}", Name, ex.Message);
             }
 
+            SetProperty(ref _allItems, allItems, nameof(AllItems));
             SetProperty(ref _items, items, nameof(Items));
             SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
@@ -183,5 +179,11 @@ namespace SpineViewer.ViewModels.Assets
             }
             return null;
         }
+
+        #region IBrowserOpenable
+
+        string IBrowserOpenable.OpenInBrowserUrl => GitHubUrl;
+
+        #endregion
     }
 }
