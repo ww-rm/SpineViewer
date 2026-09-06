@@ -29,6 +29,11 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public static readonly string AssetsCacheDirectory = Path.Combine(App.CacheDirectory, "assets");
 
+        /// <summary>
+        /// 资源下载目录
+        /// </summary>
+        public static string AssetsDownloadDirectory { get => Path.Combine(App.ProcessDirectory, "assets"); }
+
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         protected readonly MainWindowViewModel _vmMain;

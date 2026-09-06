@@ -65,7 +65,7 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public string GitHubUrl => _githubUrl;
 
-        public override string LocalDirectory => "__TODO__"; // TODO: 也许可以自定义下载文件夹
+        public override string LocalDirectory => Path.Combine(GitHubAssetsViewModel.GitHubAssetsDownloadDirectory, _owner, _repository, _sha);
 
         public override string DefaultName => _defaultName;
 

@@ -23,6 +23,8 @@ namespace SpineViewer.ViewModels.Assets
 
         public static readonly string GitHubAssetsCacheDirectory = Path.Combine(AssetsCacheDirectory, "github");
 
+        public static string GitHubAssetsDownloadDirectory => Path.Combine(AssetsDownloadDirectory, "github");
+
         public GitHubAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
         /// <summary>
