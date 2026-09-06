@@ -46,6 +46,7 @@ namespace SpineViewer.Services
                 }
                 else
                 {
+                    value = value.Trim();
                     if (_credentials.Password == value)
                         return;
 

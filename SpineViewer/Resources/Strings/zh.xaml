@@ -313,5 +313,6 @@
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">自启动加载工作区文件</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">设置程序开机自启后自动加载的工作区配置文件，仅在启用开机自启时生效</s:String>
     <s:String x:Key="Str_AssociateFileSuffix">关联文件后缀</s:String>
+    <s:String x:Key="Str_AssetsDownloadDirectory">资源下载目录</s:String>
 
 </ResourceDictionary>

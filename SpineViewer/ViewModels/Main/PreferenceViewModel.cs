@@ -8,6 +8,7 @@ using Spine.Interfaces;
 using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
+using SpineViewer.ViewModels.Assets;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -49,21 +50,20 @@ namespace SpineViewer.ViewModels.Main
                 return;
 
             Preference = m;
-            SavePreference(m);
-        }
-
-        private static void SavePreference(PreferenceModel m)
-        {
-            // 此处要加密 token
-            if (!string.IsNullOrWhiteSpace(m.GitHubToken))
-                m.GitHubToken = Secrets.User.Encrypt(m.GitHubToken);
-            JsonHelper.Serialize(m, PreferenceFilePath);
+            SavePreference();
         }
 
         /// <summary>
         /// 保存首选项, 保存失败会有日志提示
         /// </summary>
-        public void SavePreference() => SavePreference(Preference);
+        public void SavePreference()
+        {
+            var m = Preference;
+            // 此处要加密 token
+            if (!string.IsNullOrWhiteSpace(m.GitHubToken))
+                m.GitHubToken = Secrets.User.Encrypt(m.GitHubToken);
+            JsonHelper.Serialize(m, PreferenceFilePath);
+        }
 
         /// <summary>
         /// 加载首选项, 加载失败会有日志提示
@@ -145,6 +145,7 @@ namespace SpineViewer.ViewModels.Main
                     AutoRun = AutoRun,
                     AutoRunWorkspaceConfigPath = AutoRunWorkspaceConfigPath,
                     AssociateFileSuffix = AssociateFileSuffix,
+                    AssetsDownloadDirectory = AssetsDownloadDirectory,
                 };
             }
             set
@@ -187,6 +188,7 @@ namespace SpineViewer.ViewModels.Main
                 AutoRun = value.AutoRun;
                 AutoRunWorkspaceConfigPath = value.AutoRunWorkspaceConfigPath;
                 AssociateFileSuffix = value.AssociateFileSuffix;
+                AssetsDownloadDirectory = value.AssetsDownloadDirectory;
             }
         }
 
@@ -345,7 +347,7 @@ namespace SpineViewer.ViewModels.Main
         public string? GitHubToken
         {
             get => GitHubService.Token;
-            set => SetProperty(GitHubService.Token, value?.Trim(), v => GitHubService.Token = v);
+            set => SetProperty(GitHubService.Token, value, v => GitHubService.Token = v);
         }
 
         #endregion
@@ -404,6 +406,12 @@ namespace SpineViewer.ViewModels.Main
         {
             get => App.AssociateFileSuffix;
             set => SetProperty(App.AssociateFileSuffix, value, v => App.AssociateFileSuffix = v);
+        }
+
+        public string AssetsDownloadDirectory
+        {
+            get => AssetsViewModel.AssetsDownloadDirectory;
+            set => SetProperty(AssetsViewModel.AssetsDownloadDirectory, value, v => AssetsViewModel.AssetsDownloadDirectory = v);
         }
 
         #endregion

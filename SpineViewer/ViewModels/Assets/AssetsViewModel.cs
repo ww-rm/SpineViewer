@@ -29,10 +29,17 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public static readonly string AssetsCacheDirectory = Path.Combine(App.CacheDirectory, "assets");
 
+        private static readonly string DefaultAssetsDownloadDirectory = Path.Combine(App.ProcessDirectory, "assets");
+
         /// <summary>
         /// 资源下载目录
         /// </summary>
-        public static string AssetsDownloadDirectory { get => Path.Combine(App.ProcessDirectory, "assets"); }
+        public static string AssetsDownloadDirectory 
+        { 
+            get => string.IsNullOrWhiteSpace(_assetsDownloadDirectory) ? DefaultAssetsDownloadDirectory : _assetsDownloadDirectory; 
+            set => _assetsDownloadDirectory = value; 
+        }
+        private static string? _assetsDownloadDirectory;
 
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

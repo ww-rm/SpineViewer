@@ -313,5 +313,6 @@
     <s:String x:Key="Str_AutoRunWorkspaceConfigPath">Auto-load Workspace File on Startup</s:String>
     <s:String x:Key="Str_AutoRunWorkspaceConfigPathTooltip">Specifies the workspace configuration file to be automatically loaded when the program starts with Windows startup. This takes effect only if auto-startup is enabled.</s:String>
     <s:String x:Key="Str_AssociateFileSuffix">Associate File Extension</s:String>
+    <s:String x:Key="Str_AssetsDownloadDirectory">Assets Download Directory</s:String>
 
 </ResourceDictionary>

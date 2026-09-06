@@ -386,6 +386,21 @@
                                 <Label Content="{DynamicResource Str_AssociateFileSuffix}"/>
                                 <ToggleButton Grid.Column="1" IsChecked="{Binding AssociateFileSuffix}"/>
                             </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource Str_AssetsDownloadDirectory}"/>
+                                <DockPanel Grid.Column="1">
+                                    <Button DockPanel.Dock="Right"
+                                            Content="..."
+                                            Command="{Binding Cmd_SelectAssetsDownloadDirectory}"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding AssetsDownloadDirectory}"/>
+                                </DockPanel>
+                            </Grid>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
