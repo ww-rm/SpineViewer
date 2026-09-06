@@ -19,47 +19,45 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 缩略图文件名格式字符串, 需要一个参数
         /// </summary>
-        public static string PreviewFileNameFormat => ".{0}.preview.webp";
+        private const string PreviewFileNameFormat = ".{0}.preview.webp";
 
         protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly AssetsRepoViewModel _vmRepo;
+        protected readonly string _relativePath;
+        protected readonly string _fileName;
 
         public AssetsItemViewModel(AssetsRepoViewModel vmRepo, string relativePath)
         {
             _vmRepo = vmRepo;
-            RelativePath = relativePath;
-
-            LocalFullPath = Path.Combine(vmRepo.LocalDirectory, relativePath);
-            FileName = Path.GetFileName(relativePath);
-            LocalDirectory = Path.GetDirectoryName(LocalFullPath) ?? "";
+            _relativePath = relativePath;
+            _fileName = Path.GetFileName(_relativePath);
         }
 
         /// <summary>
         /// 相对资源库的相对路径
         /// </summary>
-        public string RelativePath { get; }
-
-        /// <summary>
-        /// 本地存储完整路径
-        /// </summary
-        public string LocalFullPath { get; }
+        public string RelativePath => _relativePath;
 
         /// <summary>
         /// 文件名
         /// </summary>
-        public string FileName { get; }
+        public string FileName => _fileName;
+
+        /// <summary>
+        /// 本地存储完整路径
+        /// </summary
+        public string LocalFullPath => Path.Combine(_vmRepo.LocalDirectory, _relativePath);
 
         /// <summary>
         /// 文件所处本地目录
         /// </summary>
-        public string LocalDirectory { get; }
+        public string LocalDirectory => Path.GetDirectoryName(LocalFullPath) ?? "";
 
         /// <summary>
         /// 预览图路径
         /// </summary>
-        public string PreviewFilePath { get => _previewFilePath ??= Path.Combine(LocalDirectory, string.Format(PreviewFileNameFormat, FileName)); }
-        private string? _previewFilePath;
+        public string PreviewFilePath => Path.Combine(LocalDirectory, string.Format(PreviewFileNameFormat, _fileName));
 
         /// <summary>
         /// 预览图

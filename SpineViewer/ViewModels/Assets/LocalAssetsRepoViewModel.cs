@@ -11,6 +11,9 @@ namespace SpineViewer.ViewModels.Assets
 {
     public sealed class LocalAssetsRepoViewModel : AssetsRepoViewModel<LocalAssetsItemViewModel>
     {
+        private readonly string _localDirectory;
+        private readonly string _defaultName;
+
         public LocalAssetsRepoViewModel(string localDirectory)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(localDirectory);
@@ -29,23 +32,21 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         public LocalAssetsRepoModel Model
         {
-            get => new() { LocalDirectory = LocalDirectory, Name = Name };
+            get => new() { LocalDirectory = _localDirectory, Name = Name };
             set => Name = value.Name;
         }
 
-        public override string LocalDirectory { get => _localDirectory; }
-        private readonly string _localDirectory;
+        public override string LocalDirectory => _localDirectory;
 
-        public override string DefaultName { get => _defaultName; }
-        private readonly string _defaultName;
+        public override string DefaultName => _defaultName;
 
-        public override IReadOnlyList<LocalAssetsItemViewModel> Items { get => _items; }
+        public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
         private List<LocalAssetsItemViewModel> _items = [];
 
         public override bool IsItemsLoaded => _isItemsLoaded;
         private bool _isItemsLoaded = false;
 
-        public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
+        public override bool IsItemsRefreshing => _isItemsRefreshing;
         private bool _isItemsRefreshing = false;
 
         protected override Task CreateRefreshItemsTask() => Task.Run(RefreshItemsTask);

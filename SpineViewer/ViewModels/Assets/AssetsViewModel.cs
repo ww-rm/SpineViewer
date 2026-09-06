@@ -149,7 +149,7 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         private TRepo? _selectedAssetsRepo;
 
-        public override IReadOnlyList<TRepo> AssetsRepos { get => _assetsRepos; }
+        public override IReadOnlyList<TRepo> AssetsRepos => _assetsRepos;
         protected readonly ObservableCollection<TRepo> _assetsRepos = [];
 
         public override RelayCommand<IList?> Cmd_AssetsRepoSelectionChanged => _cmd_AssetsRepoSelectionChanged ??= new(args =>
@@ -270,7 +270,7 @@ namespace SpineViewer.ViewModels.Assets
 
         #region 资源库模型列表管理
 
-        public override IReadOnlyList<TItem> ShownItems { get => _shownItems; }
+        public override IReadOnlyList<TItem> ShownItems => _shownItems;
         private List<TItem> _shownItems = [];
 
         public override string? FilterString
@@ -336,7 +336,7 @@ namespace SpineViewer.ViewModels.Assets
 
             List<TItem> shownItems = [];
             var repo = _selectedAssetsRepo;
-            var filter = _filterString;
+            var filter = FilterString;
 
             // 保存进入时的计数器
             var counter1 = Interlocked.Increment(ref _updateShownItemsAsyncCounter);

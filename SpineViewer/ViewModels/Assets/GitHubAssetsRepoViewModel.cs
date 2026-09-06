@@ -13,11 +13,21 @@ namespace SpineViewer.ViewModels.Assets
 {
     public sealed class GitHubAssetsRepoViewModel : AssetsRepoViewModel<GitHubAssetsItemViewModel>
     {
+        private readonly string _owner;
+        private readonly string _repository;
+        private readonly string _sha;
+        private readonly string _repoKey;
+        private readonly string _defaultName;
+        private readonly string _cacheDirectory;
+        private readonly string _treeCachePath;
+
         public GitHubAssetsRepoViewModel(string owner, string repository, string sha)
         {
             _owner = owner;
             _repository = repository;
             _sha = sha;
+            _repoKey = $"{_owner}/{_repository}@{_sha}";
+            _defaultName = $"{_owner}/{_repository}@{_sha[..7]}";
             _cacheDirectory = Path.Combine(GitHubAssetsViewModel.GitHubAssetsCacheDirectory, _owner, _repository);
             _treeCachePath = Path.Combine(_cacheDirectory, $"{_sha}.json");
         }
@@ -28,48 +38,81 @@ namespace SpineViewer.ViewModels.Assets
         }
 
         /// <summary>
+        /// 仓库所有者
+        /// </summary>
+        public string Owner => _owner;
+
+        /// <summary>
+        /// 仓库名
+        /// </summary>
+        public string Repository => _repository;
+
+        /// <summary>
+        /// 仓库 SHA 值
+        /// </summary>
+        public string Sha => _sha;
+
+        /// <summary>
+        /// <c>&lt;owner&gt;/&lt;repo&gt;@&lt;sha&gt;</c> 格式标识字符串
+        /// </summary>
+        public string RepoKey => _repoKey;
+
+        public override string LocalDirectory => throw new NotImplementedException(); // TODO: 也许可以自定义下载文件夹
+
+        public override string DefaultName => _defaultName;
+
+        /// <summary>
         /// 获取模型对象
         /// </summary>
         public GitHubAssetsRepoModel Model
         {
             get => new()
             {
-                Owner = Owner,
-                Repository = Repository,
-                Sha = Sha,
+                Owner = _owner,
+                Repository = _repository,
+                Sha = _sha,
                 Name = Name
             };
             set => Name = value.Name;
         }
 
-        private readonly string _cacheDirectory;
-        private readonly string _treeCachePath;
-
-        public string Owner { get => _owner; }
-        private readonly string _owner;
-
-        public string Repository { get => _repository; }
-        private readonly string _repository;
-
-        public string Sha { get => _sha; }
-        private readonly string _sha;
-
-        public override string LocalDirectory => throw new NotImplementedException();
-
-        public override string DefaultName => $"{_owner}/{_repository}@{_sha[..7]}";
-
-        /// <summary>
-        /// <c>owner/repo@sha</c> 格式标识字符串
-        /// </summary>
-        public string RepoKey { get => $"{_owner}/{_repository}@{_sha}"; }
-
-        public override IReadOnlyList<GitHubAssetsItemViewModel> Items { get => _items; }
+        public override IReadOnlyList<GitHubAssetsItemViewModel> Items => _items;
         private List<GitHubAssetsItemViewModel> _items = [];
 
-        public override bool IsItemsLoaded { get => _isItemsLoaded; }
+        /// <summary>
+        /// 仓库内所有文件
+        /// </summary>
+        private readonly List<GitHubAssetsItemViewModel> _allItems = [];
+
+        /// <summary>
+        /// 关联文件映射表, 用于记录主模型文件关联的图集/纹理文件集合
+        /// </summary>
+        private readonly Dictionary<GitHubAssetsItemViewModel, List<GitHubAssetsItemViewModel>> _associatedItems = [];
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public IReadOnlyList<GitHubAssetsItemViewModel> GetAssociatedItems(GitHubAssetsItemViewModel item)
+        {
+            if (!_associatedItems.TryGetValue(item, out var items))
+                return [];
+            return items;
+        }
+
+        private void AddAssociatedItem(GitHubAssetsItemViewModel item, GitHubAssetsItemViewModel associatedItem)
+        {
+            if (!_associatedItems.ContainsKey(item))
+                _associatedItems[item] = [];
+            _associatedItems[item].Add(associatedItem);
+
+        }
+
+        public override bool IsItemsLoaded => _isItemsLoaded;
         private bool _isItemsLoaded = false;
 
-        public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
+        public override bool IsItemsRefreshing => _isItemsRefreshing;
         private bool _isItemsRefreshing = false;
 
         protected override async Task CreateRefreshItemsTask()
