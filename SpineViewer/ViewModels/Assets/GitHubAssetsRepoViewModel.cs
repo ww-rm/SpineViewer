@@ -123,10 +123,11 @@ namespace SpineViewer.ViewModels.Assets
                 foreach (var tim in tree.Tree.Where(v => v.Type == Octokit.TreeType.Blob))
                 {
                     var item = new GitHubAssetsItemViewModel(this, tim.Path!);
-                    allItems[item.RelativePath] = item;
+                    var relativePath = item.RelativePath;
+                    allItems[relativePath] = item;
 
-                    var lowerPath = item.RelativePath.ToLowerInvariant();
-                    if (SpineObject.PossibleSuffixMapping.Keys.Any(lowerPath.EndsWith))
+                    // 此处严格区分大小写, 因为 GitHub 上文件名是区分大小写的
+                    if (SpineObject.PossibleSuffixMapping.Keys.Any(relativePath.EndsWith))
                         items.Add(item);
                 }
 

@@ -20,11 +20,12 @@ namespace SpineViewer.ViewModels.Assets
 
         public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
-        protected override IReadOnlyList<LocalAssetsRepoViewModel> AddAssetsRepos()
+        protected override void AddAssetsRepo_Execute()
         {
             if (!DialogService.ShowOpenFolderDialog(out var selectedPath))
-                return [];
-            return [new(selectedPath!)];
+                return;
+            _assetsRepos.Add(new(selectedPath!));
+            SaveAssetsRepos();
         }
 
         protected override bool EditAssetsRepo(LocalAssetsRepoViewModel repo)

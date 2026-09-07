@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using SpineViewer.Extensions;
 using SpineViewer.Models;
+using SpineViewer.Resources;
+using SpineViewer.Services;
 using SpineViewer.Utils;
 using System;
 using System.Collections;
@@ -7,11 +10,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.Assets
 {
-    public class GitHubAssetsViewModel : AssetsViewModel<GitHubAssetsRepoViewModel, GitHubAssetsItemViewModel>
+    public partial class GitHubAssetsViewModel : AssetsViewModel<GitHubAssetsRepoViewModel, GitHubAssetsItemViewModel>
     {
         public const string GitHubUrlHost = "github.com";
         public const string GitHubRawUrlHost = "raw.githubusercontent.com";
@@ -65,12 +70,102 @@ namespace SpineViewer.ViewModels.Assets
             JsonHelper.Serialize(m, GitHubAssetsFilePath);
         }
 
-        protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
+        protected override void AddAssetsRepo_Execute()
         {
-            // TODO: 多行文本解析
+            // TODO: 添加对话框
+            var lines = "";
+
+            var records = GetGitHubRepositoryRecords(lines);
+            if (records.Count <= 0)
+                return;
+
             // 挂 ProgressDialog 前台加载, 仓库提交信息获取完整后才视作有效仓库
-            _logger.Warn("NotImplemented");
-            return null;
+            ProgressService.RunAsync(
+                (pr, ct) => AddAssetsRepoTask(records, pr, ct),
+                "获取仓库信息"
+            );
+        }
+
+        private async void AddAssetsRepoTask(List<GitHubRepositoryRecord> records, IProgressReporter reporter, CancellationToken ct)
+        {
+            int totalCount = records.Count;
+            int success = 0;
+            int error = 0;
+
+            _vmMain.ProgressState = TaskbarItemProgressState.Normal;
+            _vmMain.ProgressValue = 0;
+
+            reporter.Total = totalCount;
+            reporter.Done = 0;
+            reporter.ProgressText = $"[0/{totalCount}]";
+
+            var client = GitHubService.GetClient();
+            for (int i = 0; i < totalCount; i++)
+            {
+                if (ct.IsCancellationRequested) break;
+
+                var r = records[i];
+                reporter.ProgressText = $"[{i}/{totalCount}] {r}";
+
+                try
+                {
+                    // TODO: 获取仓库信息
+                    var res = await client.Repository.Get(r.Owner, r.Repository);
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.ToString());
+                    _logger.Error("Failed to get repository info '{0}', {1}", r, ex.Message);
+                    error++;
+                }
+
+                reporter.Done = i + 1;
+                reporter.ProgressText = $"[{i + 1}/{totalCount}] {r}";
+                _vmMain.ProgressValue = (i + 1f) / totalCount;
+            }
+            _vmMain.ProgressState = TaskbarItemProgressState.None;
+
+            if (error > 0)
+                _logger.Warn("Add GitHub repos {0} successfully, {1} failed", success, error);
+            else
+                _logger.Info("{0} GitHub repos added successfully", success);
+
+            client.LogRateLimit();
+
+            SaveAssetsRepos();
+        }
+
+        [GeneratedRegex(@"^(?<owner>[\w.-]+)/(?<repository>[\w.-]+)(?:@(?<ref>\S+))?$")]
+        private static partial Regex GitHubRepositoryRecordRegex();
+
+        private record GitHubRepositoryRecord(string Owner, string Repository, string? Ref)
+        {
+            public override string ToString() => string.IsNullOrWhiteSpace(Ref) ? $"{Owner}/{Repository}" : $"{Owner}/{Repository}@{Ref}";
+        }
+
+        private static List<GitHubRepositoryRecord> GetGitHubRepositoryRecords(string lines)
+        {
+            List<GitHubRepositoryRecord> records = [];
+
+            foreach (var line in lines.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Select(v => v.Trim()))
+            {
+                var match = GitHubRepositoryRecordRegex().Match(line);
+
+                if (!match.Success)
+                {
+                    _logger.Info("Ignore input line: '{0}'", line);
+                    continue;
+                }
+
+                records.Add(new(
+                    match.Groups["owner"].Value,
+                    match.Groups["repository"].Value,
+                    match.Groups["ref"].Success ? match.Groups["ref"].Value : null
+                ));
+            }
+
+            return records;
         }
 
         protected override bool EditAssetsRepo(GitHubAssetsRepoViewModel repo)
@@ -79,5 +174,7 @@ namespace SpineViewer.ViewModels.Assets
             _logger.Warn("NotImplemented");
             return false;
         }
+
+        // TODO: 下载资源
     }
 }

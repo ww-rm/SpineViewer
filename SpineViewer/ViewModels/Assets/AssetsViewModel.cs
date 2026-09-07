@@ -182,13 +182,7 @@ namespace SpineViewer.ViewModels.Assets
         public override RelayCommand Cmd_AddAssetsRepo => _cmd_AddAssetsRepo ??= new(AddAssetsRepo_Execute);
         private RelayCommand? _cmd_AddAssetsRepo;
 
-        private void AddAssetsRepo_Execute()
-        {
-            var repos = AddAssetsRepos();
-            foreach (var r in repos)
-                _assetsRepos.Add(r);
-            SaveAssetsRepos();
-        }
+        protected abstract void AddAssetsRepo_Execute();
 
         public override RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
         private RelayCommand<IList?>? _cmd_RemoveAssetsRepo;
@@ -266,11 +260,6 @@ namespace SpineViewer.ViewModels.Assets
 
             SaveAssetsRepos();
         }
-
-        /// <summary>
-        /// 添加资源库
-        /// </summary>
-        protected abstract IReadOnlyList<TRepo> AddAssetsRepos();
 
         /// <summary>
         /// 编辑资源库信息
