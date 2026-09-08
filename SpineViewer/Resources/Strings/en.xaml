@@ -146,7 +146,7 @@
     <!-- 本地资源标签页 -->
     <s:String x:Key="Str_Filter">Filter</s:String>
     <s:String x:Key="Str_LocalDirectory">Local Directory</s:String>
-    <s:String x:Key="Str_AddAssetsRepo">Add...</s:String>
+    <s:String x:Key="Str_AddAssetsRepos">Add...</s:String>
     <s:String x:Key="Str_RemoveAssetsRepo">Remove</s:String>
     <s:String x:Key="Str_MoveUpAssetsRepo">Move Up</s:String>
     <s:String x:Key="Str_MoveDownAssetsRepo">Move Down</s:String>
@@ -157,6 +157,9 @@
     <s:String x:Key="Str_GeneratePreviews">Generate Previews...</s:String>
     <s:String x:Key="Str_DeletePreviews">Delete Previews</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">Import Selected Items</s:String>
+
+    <!-- GitHub 资源添加资源库弹窗文本 -->
+    <s:String x:Key="Str_AddGitHubAssetsReposTitle">Add Asset Repository</s:String>
 
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>

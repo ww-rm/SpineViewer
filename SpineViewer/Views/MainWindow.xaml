@@ -193,9 +193,6 @@
                                                         <MenuItem Header="{DynamicResource Str_CopySpineObjectSkinConfig}"
                                                               Command="{Binding Cmd_CopySpineObjectSkinConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
-                                                        <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotAttachmentConfig}"
-                                                              Command="{Binding Cmd_CopySpineObjectSlotAttachmentConfig}"
-                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                         <MenuItem Header="{DynamicResource Str_CopySpineObjectSlotVisibilityConfig}"
                                                               Command="{Binding Cmd_CopySpineObjectSlotVisibilityConfig}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
@@ -947,8 +944,8 @@
 
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepo}"
-                                                              Command="{Binding Cmd_AddAssetsRepo}"/>
+                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepos}"
+                                                              Command="{Binding Cmd_AddAssetsRepos}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
                                                               InputGestureText="Delete"
                                                               Command="{Binding Cmd_RemoveAssetsRepo}"
@@ -1164,8 +1161,8 @@
 
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepo}"
-                                                              Command="{Binding Cmd_AddAssetsRepo}"/>
+                                                    <MenuItem Header="{DynamicResource Str_AddAssetsRepos}"
+                                                              Command="{Binding Cmd_AddAssetsRepos}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
                                                               InputGestureText="Delete"
                                                               Command="{Binding Cmd_RemoveAssetsRepo}"

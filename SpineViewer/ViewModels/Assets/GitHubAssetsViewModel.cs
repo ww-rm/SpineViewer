@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Shell;
@@ -70,23 +71,24 @@ namespace SpineViewer.ViewModels.Assets
             JsonHelper.Serialize(m, GitHubAssetsFilePath);
         }
 
-        protected override void AddAssetsRepo_Execute()
+        protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
         {
-            // TODO: 添加对话框
-            var lines = "";
+            var lines = "ww-rm/azurlane_spinepainting@d37b5bd58b1140c2395bb2d22cf9bc80fda504d5\nww-rm/azurlane_char\n";
+            lines = string.Concat(Enumerable.Repeat(lines, 20));
 
             var records = GetGitHubRepositoryRecords(lines);
             if (records.Count <= 0)
-                return;
+                return [];
 
-            // 挂 ProgressDialog 前台加载, 仓库提交信息获取完整后才视作有效仓库
-            ProgressService.RunAsync(
-                (pr, ct) => AddAssetsRepoTask(records, pr, ct),
-                "获取仓库信息"
+            // 使用进度对话框前台添加, 仓库提交信息获取完整后才视作有效仓库
+            var result = ProgressService.RunAsync(
+                (pr, ct) => GetAssetsRepoTask(records, pr, ct).Result,
+                AppResource.Str_AddGitHubAssetsReposTitle
             );
+            return result ?? [];
         }
 
-        private async void AddAssetsRepoTask(List<GitHubRepositoryRecord> records, IProgressReporter reporter, CancellationToken ct)
+        private async Task<List<GitHubAssetsRepoViewModel>> GetAssetsRepoTask(List<GitHubRepositoryRecord> records, IProgressReporter reporter, CancellationToken ct)
         {
             int totalCount = records.Count;
             int success = 0;
@@ -100,6 +102,8 @@ namespace SpineViewer.ViewModels.Assets
             reporter.ProgressText = $"[0/{totalCount}]";
 
             var client = GitHubService.GetClient();
+            List<GitHubAssetsRepoViewModel> repos = [];
+
             for (int i = 0; i < totalCount; i++)
             {
                 if (ct.IsCancellationRequested) break;
@@ -109,8 +113,18 @@ namespace SpineViewer.ViewModels.Assets
 
                 try
                 {
-                    // TODO: 获取仓库信息
-                    var res = await client.Repository.Get(r.Owner, r.Repository);
+                    var @ref = r.Ref;
+                    if (string.IsNullOrWhiteSpace(@ref))
+                    {
+                        var repoInfo = await client.Repository.Get(r.Owner, r.Repository);
+                        @ref = repoInfo.DefaultBranch;
+                    }
+
+                    var commitInfo = await client.Repository.Commit.Get(r.Owner, r.Repository, @ref);
+                    var sha = commitInfo.Sha;
+
+                    repos.Add(new(r.Owner, r.Repository, sha));
+
                     success++;
                 }
                 catch (Exception ex)
@@ -127,13 +141,13 @@ namespace SpineViewer.ViewModels.Assets
             _vmMain.ProgressState = TaskbarItemProgressState.None;
 
             if (error > 0)
-                _logger.Warn("Add GitHub repos {0} successfully, {1} failed", success, error);
+                _logger.Warn("Get GitHub repos {0} successfully, {1} failed", success, error);
             else
-                _logger.Info("{0} GitHub repos added successfully", success);
+                _logger.Info("Get GitHub repos {0} successfully", success);
 
             client.LogRateLimit();
 
-            SaveAssetsRepos();
+            return repos;
         }
 
         [GeneratedRegex(@"^(?<owner>[\w.-]+)/(?<repository>[\w.-]+)(?:@(?<ref>\S+))?$")]
@@ -148,13 +162,13 @@ namespace SpineViewer.ViewModels.Assets
         {
             List<GitHubRepositoryRecord> records = [];
 
-            foreach (var line in lines.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Select(v => v.Trim()))
+            foreach (var line in lines.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(v => v.Trim()))
             {
                 var match = GitHubRepositoryRecordRegex().Match(line);
 
                 if (!match.Success)
                 {
-                    _logger.Info("Ignore input line: '{0}'", line);
+                    _logger.Info("Ignore input line: '{0}'", JsonSerializer.Serialize(line));
                     continue;
                 }
 
