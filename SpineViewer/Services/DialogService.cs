@@ -3,6 +3,7 @@ using SpineViewer.Models;
 using SpineViewer.ViewModels.Assets;
 using SpineViewer.ViewModels.Exporters;
 using SpineViewer.Views;
+using SpineViewer.Views.AssetsDialogs;
 using SpineViewer.Views.ExporterDialogs;
 using System;
 using System.Collections.Generic;

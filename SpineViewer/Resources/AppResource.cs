@@ -112,6 +112,7 @@ namespace SpineViewer.Resources
         #region Strings
 
         public static string Str_AddGitHubAssetsReposTitle => Get<string>("Str_AddGitHubAssetsReposTitle");
+        public static string Str_GetGitHubAssetsReposTitle => Get<string>("Str_GetGitHubAssetsReposTitle");
         public static string Str_GeneratePreviewsTitle => Get<string>("Str_GeneratePreviewsTitle");
         public static string Str_DeletePreviewsTitle => Get<string>("Str_DeletePreviewsTitle");
         public static string Str_AddSpineObjectsTitle => Get<string>("Str_AddSpineObjectsTitle");

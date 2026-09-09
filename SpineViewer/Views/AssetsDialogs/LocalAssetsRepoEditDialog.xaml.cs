@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SpineViewer.Views
+namespace SpineViewer.Views.AssetsDialogs
 {
     /// <summary>
     /// LocalAssetEditDialog.xaml 的交互逻辑
