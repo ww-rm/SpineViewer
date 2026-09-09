@@ -30,7 +30,7 @@ namespace SpineViewer.ViewModels.Assets.Local
         protected override bool EditAssetsRepo(LocalAssetsRepoViewModel repo)
         {
             var m = repo.Model;
-            if (!DialogService.ShowLocalAssetEditDialogDialog(m))
+            if (!DialogService.ShowLocalsAssetEditDialogDialog(m))
                 return false;
 
             repo.Model = m;

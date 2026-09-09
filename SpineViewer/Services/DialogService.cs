@@ -1,6 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Win32;
 using SpineViewer.Models;
 using SpineViewer.ViewModels.Assets;
+using SpineViewer.ViewModels.Assets.GitHub;
 using SpineViewer.ViewModels.Exporters;
 using SpineViewer.Views;
 using SpineViewer.Views.AssetsDialogs;
@@ -10,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SpineViewer.Services
 {
@@ -18,69 +21,40 @@ namespace SpineViewer.Services
     /// </summary>
     public static class DialogService
     {
-        public static bool ShowSystemInfoDialog()
+        private static bool ShowDialog<TDialog>(object? dc = null) 
+            where TDialog : Window, new() 
         {
-            var dialog = new SystemInfoDialog() { Owner = App.Current.MainWindow };
+            var dialog = new TDialog() { Owner = App.Current.MainWindow };
+            if (dc is not null) dialog.DataContext = dc;
             return dialog.ShowDialog() ?? false;
         }
 
-        public static bool ShowAboutDialog()
-        {
-            var dialog = new AboutDialog() { Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowSystemInfoDialog() => ShowDialog<SystemInfoDialog>();
 
-        public static bool ShowGeneratePreviewsDialog(AssetsPreviewViewModel vm)
-        {
-            var dialog = new GeneratePreviewsDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowAboutDialog() => ShowDialog<AboutDialog>();
 
-        public static bool ShowLocalAssetEditDialogDialog(LocalAssetsRepoModel vm)
-        {
-            var dialog = new LocalAssetsRepoEditDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowGeneratePreviewsDialog(AssetsPreviewViewModel vm) => ShowDialog<GeneratePreviewsDialog>(vm);
 
-        public static bool ShowFrameExporterDialog(FrameExporterViewModel vm)
-        {
-            var dialog = new FrameExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowLocalsAssetEditDialogDialog(LocalAssetsRepoModel vm) => ShowDialog<LocalAssetsRepoEditDialog>(vm);
 
-        public static bool ShowPsdExporterDialog(PsdExporterViewModel vm)
-        {
-            var dialog = new PsdExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowGitHubAddAssetsReposDialog(GitHubAssetsViewModel vm) => ShowDialog<GitHubAddAssetsReposDialog>(vm);
 
-        public static bool ShowFrameSequenceExporterDialog(FrameSequenceExporterViewModel vm)
-        {
-            var dialog = new FrameSequenceExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowFrameExporterDialog(FrameExporterViewModel vm) => ShowDialog<FrameExporterDialog>(vm);
 
-        public static bool ShowFFmpegVideoExporterDialog(FFmpegVideoExporterViewModel vm)
-        {
-            var dialog = new FFmpegVideoExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowPsdExporterDialog(PsdExporterViewModel vm) => ShowDialog<PsdExporterDialog>(vm);
 
-        public static bool ShowCustomFFmpegExporterDialog(CustomFFmpegExporterViewModel vm)
-        {
-            var dialog = new CustomFFmpegExporterDialog() { DataContext = vm, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
+        public static bool ShowFrameSequenceExporterDialog(FrameSequenceExporterViewModel vm) => ShowDialog<FrameSequenceExporterDialog>(vm);
+
+        public static bool ShowFFmpegVideoExporterDialog(FFmpegVideoExporterViewModel vm) => ShowDialog<FFmpegVideoExporterDialog>(vm);
+
+        public static bool ShowCustomFFmpegExporterDialog(CustomFFmpegExporterViewModel vm) => ShowDialog<CustomFFmpegExporterDialog>(vm);
+
+        public static bool ShowPreferenceDialog(PreferenceModel m) => ShowDialog<PreferenceDialog>(m);
 
         /// <summary>
-        /// 将给定的首选项参数在对话框上进行显示, 返回值表示是否确认修改
+        /// 获取用户选择的文件
         /// </summary>
-        public static bool ShowPreferenceDialog(PreferenceModel m)
-        {
-            var dialog = new PreferenceDialog() { DataContext = m, Owner = App.Current.MainWindow };
-            return dialog.ShowDialog() ?? false;
-        }
-
+        /// <returns>是否确认了选择</returns>
         public static bool ShowOpenFileDialog(out string? fileName, string title = null, string filter = "")
         {
             var dialog = new OpenFileDialog() { Title = title, Filter = filter };
@@ -96,7 +70,6 @@ namespace SpineViewer.Services
         /// <summary>
         /// 获取用户选择的文件夹
         /// </summary>
-        /// <param name="folderName"></param>
         /// <returns>是否确认了选择</returns>
         public static bool ShowOpenFolderDialog(out string? folderName)
         {
