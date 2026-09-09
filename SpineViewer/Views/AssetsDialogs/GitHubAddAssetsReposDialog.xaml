@@ -1,0 +1,53 @@
+﻿<Window x:Class="SpineViewer.Views.AssetsDialogs.GitHubAddAssetsReposDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:SpineViewer.Views" 
+        xmlns:vmGitHub="clr-namespace:SpineViewer.ViewModels.Assets.GitHub" 
+        d:DataContext="{d:DesignInstance Type=vmGitHub:GitHubAssetsViewModel}"
+        mc:Ignorable="d"
+        Title="{DynamicResource Str_AddGitHubAssetsReposTitle}"
+        Background="{DynamicResource RegionBrush}"
+        Width="640"
+        Height="420"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom">
+            <WrapPanel HorizontalAlignment="Center">
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonDefault}">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Width" Value="100"/>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button Content="{DynamicResource Str_OK}" Click="ButtonOK_Click"/>
+                <Button Content="{DynamicResource Str_Cancel}" Click="ButtonCancel_Click"/>
+            </WrapPanel>
+        </Border>
+
+        <Border>
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="5 5 5 10"
+                           Foreground="{DynamicResource PrimaryTextBrush}" 
+                           TextWrapping="Wrap" 
+                           Text="{DynamicResource Str_AddGitHubAssetsReposHint}"/>
+                <hc:TextBox Grid.Row="1"
+                            AcceptsReturn="True"
+                            Padding="5"
+                            VerticalContentAlignment="Top"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Auto"
+                            TextWrapping="NoWrap"
+                            hc:InfoElement.Placeholder="{DynamicResource Str_AddGitHubAssetsReposPlaceholder}"
+                            Text="{Binding AddAssetsReposUserInput}"/>
+            </Grid>
+        </Border>
+    </DockPanel>
+</Window>

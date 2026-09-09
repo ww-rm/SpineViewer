@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SpineViewer.Extensions;
 using SpineViewer.Models;
 using SpineViewer.Resources;
@@ -71,13 +72,19 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             JsonHelper.Serialize(m, GitHubAssetsFilePath);
         }
 
+        [ObservableProperty]
+        private string? _addAssetsReposUserInput;
+
         protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
         {
-            // TODO: 添加对话框和复制导出命令
-            var lines = "ww-rm/azurlane_spinepainting@d37b5bd58b1140c2395bb2d22cf9bc80fda504d5\nww-rm/azurlane_char\n";
-            lines = string.Concat(Enumerable.Repeat(lines, 20));
+            AddAssetsReposUserInput = null;
+            if (!DialogService.ShowGitHubAddAssetsReposDialog(this))
+                return [];
 
-            var records = GetGitHubRepositoryRecords(lines);
+            if (string.IsNullOrWhiteSpace(AddAssetsReposUserInput))
+                return [];
+
+            var records = GetGitHubRepositoryRecords(AddAssetsReposUserInput);
             if (records.Count <= 0)
                 return [];
 
@@ -202,6 +209,7 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             return false;
         }
 
+        // TODO: 添加复制导出命令
         // TODO: 下载资源
     }
 }
