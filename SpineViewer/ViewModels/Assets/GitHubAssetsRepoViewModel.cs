@@ -181,14 +181,11 @@ namespace SpineViewer.ViewModels.Assets
             return null;
         }
 
-        public override string ToString() => $"GitHubRepo[{_repoKey}]";
+        public sealed override string ToString() => $"GitHubRepo[{_repoKey}]";
 
-        public override bool Equals(object? obj)
-            => obj is GitHubAssetsRepoViewModel other
-            && GetType() == other.GetType()
-            && _repoKey == other._repoKey;
+        public sealed override bool Equals(object? obj) => obj is GitHubAssetsRepoViewModel other && _repoKey == other._repoKey;
 
-        public override int GetHashCode() => HashCode.Combine(GetType(), _repoKey);
+        public sealed override int GetHashCode() => HashCode.Combine(GetType(), _repoKey);
 
         #region IBrowserOpenable
 

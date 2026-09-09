@@ -91,13 +91,10 @@ namespace SpineViewer.ViewModels.Assets
             SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
 
-        public override string ToString() => $"LocalRepo[{_localDirectory}]";
+        public sealed override string ToString() => $"LocalRepo[{_localDirectory}]";
 
-        public override bool Equals(object? obj) 
-            => obj is LocalAssetsRepoViewModel other 
-            && GetType() == other.GetType() 
-            && _localDirectory == other._localDirectory;
+        public sealed override bool Equals(object? obj) => obj is LocalAssetsRepoViewModel other && _localDirectory == other._localDirectory;
 
-        public override int GetHashCode() => HashCode.Combine(GetType(), _localDirectory);
+        public sealed override int GetHashCode() => HashCode.Combine(GetType(), _localDirectory);
     }
 }
