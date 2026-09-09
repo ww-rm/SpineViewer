@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.ViewModels.Assets
+namespace SpineViewer.ViewModels.Assets.GitHub
 {
     public class GitHubAssetsItemViewModel : AssetsItemViewModel, IBrowserOpenable
     {

@@ -7,6 +7,8 @@ using SpineViewer.Models;
 using SpineViewer.Services;
 using SpineViewer.Utils;
 using SpineViewer.ViewModels.Assets;
+using SpineViewer.ViewModels.Assets.GitHub;
+using SpineViewer.ViewModels.Assets.Local;
 using SpineViewer.ViewModels.Main;
 using System.Diagnostics;
 using System.Windows;

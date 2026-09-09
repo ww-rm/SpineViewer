@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Shell;
 
-namespace SpineViewer.ViewModels.Assets
+namespace SpineViewer.ViewModels.Assets.GitHub
 {
     public partial class GitHubAssetsViewModel : AssetsViewModel<GitHubAssetsRepoViewModel, GitHubAssetsItemViewModel>
     {
@@ -73,6 +73,7 @@ namespace SpineViewer.ViewModels.Assets
 
         protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
         {
+            // TODO: 添加对话框和复制导出命令
             var lines = "ww-rm/azurlane_spinepainting@d37b5bd58b1140c2395bb2d22cf9bc80fda504d5\nww-rm/azurlane_char\n";
             lines = string.Concat(Enumerable.Repeat(lines, 20));
 
