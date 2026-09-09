@@ -82,13 +82,16 @@ namespace SpineViewer.ViewModels.Assets
 
             // 使用进度对话框前台添加, 仓库提交信息获取完整后才视作有效仓库
             var result = ProgressService.RunAsync(
-                (pr, ct) => GetAssetsRepoTask(records, pr, ct).Result,
-                AppResource.Str_AddGitHubAssetsReposTitle
+                (pr, ct) => GetAssetsReposTask(records, pr, ct).Result,
+                AppResource.Str_GetGitHubAssetsReposTitle
             );
             return result ?? [];
         }
 
-        private async Task<List<GitHubAssetsRepoViewModel>> GetAssetsRepoTask(List<GitHubRepositoryRecord> records, IProgressReporter reporter, CancellationToken ct)
+        /// <summary>
+        /// 验证并获取存在的 GitHub 仓库列表
+        /// </summary>
+        private async Task<List<GitHubAssetsRepoViewModel>> GetAssetsReposTask(List<GitHubRepositoryRecord> records, IProgressReporter reporter, CancellationToken ct)
         {
             int totalCount = records.Count;
             int success = 0;
@@ -150,14 +153,23 @@ namespace SpineViewer.ViewModels.Assets
             return repos;
         }
 
+        /// <summary>
+        /// 用于匹配资源库输入每一行的正则表达式
+        /// </summary>
         [GeneratedRegex(@"^(?<owner>[\w.-]+)/(?<repository>[\w.-]+)(?:@(?<ref>\S+))?$")]
         private static partial Regex GitHubRepositoryRecordRegex();
 
+        /// <summary>
+        /// 辅助记录类
+        /// </summary>
         private record GitHubRepositoryRecord(string Owner, string Repository, string? Ref)
         {
             public override string ToString() => string.IsNullOrWhiteSpace(Ref) ? $"{Owner}/{Repository}" : $"{Owner}/{Repository}@{Ref}";
         }
 
+        /// <summary>
+        /// 解析并获取用户输入的多行资源库列表
+        /// </summary>
         private static List<GitHubRepositoryRecord> GetGitHubRepositoryRecords(string lines)
         {
             List<GitHubRepositoryRecord> records = [];

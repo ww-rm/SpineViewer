@@ -73,6 +73,12 @@ namespace SpineViewer.ViewModels.Assets
         /// </summary>
         protected abstract Task CreateRefreshItemsTask();
 
+        public abstract override string ToString();
+
+        public abstract override bool Equals(object? obj);
+
+        public abstract override int GetHashCode();
+
         #region IExplorerOpenable
 
         string IExplorerOpenable.OpenInExplorerDirectory => LocalDirectory;

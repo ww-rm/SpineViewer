@@ -185,9 +185,23 @@ namespace SpineViewer.ViewModels.Assets
         private void AddAssetsRepos_Execute()
         {
             var repos = AddAssetsRepos();
+            var duplicated = 0;
             foreach (var r in repos)
+            {
+                if (_assetsRepos.Contains(r))
+                {
+                    _logger.Info("Ignore existed repo: {0}", r);
+                    duplicated++;
+                    continue;
+                }
                 _assetsRepos.Add(r);
+            }
             SaveAssetsRepos();
+
+            if (duplicated > 0)
+            {
+                _logger.Info("{0} new repos added, {1} existed repos ignored", repos.Count - duplicated, duplicated);
+            }
         }
 
         public override RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);

@@ -159,7 +159,8 @@
     <s:String x:Key="Str_ImportSelectedAssets">Import Selected Items</s:String>
 
     <!-- GitHub 资源添加资源库弹窗文本 -->
-    <s:String x:Key="Str_AddGitHubAssetsReposTitle">Add Asset Repository</s:String>
+    <s:String x:Key="Str_AddGitHubAssetsReposTitle">Add Assets Repositories</s:String>
+    <s:String x:Key="Str_GetGitHubAssetsReposTitle">Get Assets Repositories</s:String>
 
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
