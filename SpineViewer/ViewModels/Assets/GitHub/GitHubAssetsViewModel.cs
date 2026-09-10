@@ -104,6 +104,7 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             int totalCount = records.Count;
             int success = 0;
             int error = 0;
+            int ignored = 0;
 
             _vmMain.ProgressState = TaskbarItemProgressState.Normal;
             _vmMain.ProgressValue = 0;
@@ -131,12 +132,27 @@ namespace SpineViewer.ViewModels.Assets.GitHub
                         @ref = repoInfo.DefaultBranch;
                     }
 
-                    var commitInfo = await client.Repository.Commit.Get(r.Owner, r.Repository, @ref);
-                    var sha = commitInfo.Sha;
+                    // 提前检查去重, 减少 API 调用
+                    var isExisted = false;
+                    if ((@ref.Length is 40 or 64) && @ref.All(char.IsAsciiHexDigit))
+                    {
+                        var tmpRepo = new GitHubAssetsRepoViewModel(r.Owner, r.Repository, @ref);
+                        isExisted = _assetsRepos.Contains(tmpRepo);
 
-                    repos.Add(new(r.Owner, r.Repository, sha));
+                        if (isExisted)
+                        {
+                            _logger.Info("Ignore existed github repo '{0}", tmpRepo.RepoKey);
+                            ignored++;
+                        }
+                    }
 
-                    success++;
+                    if (!isExisted)
+                    { 
+                        var commitInfo = await client.Repository.Commit.Get(r.Owner, r.Repository, @ref);
+                        var sha = commitInfo.Sha;
+                        repos.Add(new(r.Owner, r.Repository, sha));
+                        success++;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -151,10 +167,12 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             }
             _vmMain.ProgressState = TaskbarItemProgressState.None;
 
-            if (error > 0)
-                _logger.Warn("Get GitHub repos {0} successfully, {1} failed", success, error);
-            else
-                _logger.Info("Get GitHub repos {0} successfully", success);
+            var logMsg = $"Get {totalCount} GitHub repos: {success} successfully";
+            if (error > 0) logMsg += $", {error} failed";
+            if (ignored > 0) logMsg += $", {ignored} ignored";
+
+            if (error > 0) _logger.Warn(logMsg);
+            else _logger.Info(logMsg);
 
             client.LogRateLimit();
 

@@ -27,7 +27,7 @@ namespace SpineViewer.ViewModels.Assets.GitHub
         {
             _owner = owner;
             _repository = repository;
-            _sha = sha;
+            _sha = sha.ToLowerInvariant();
             _repoKey = $"{_owner}/{_repository}@{_sha}";
             _githubUrl = $"https://{GitHubAssetsViewModel.GitHubUrlHost}/{_owner}/{_repository}/tree/{_sha}";
             _defaultName = $"{_owner}/{_repository}@{_sha[..7]}";
@@ -169,6 +169,9 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             {
                 var client = GitHubService.GetClient();
                 var res = await client.Git.Tree.GetRecursive(_owner, _repository, _sha);
+                if (res.Truncated)
+                    _logger.Warn("GitHub repo '{0}' tree response truncated", _repoKey);
+
                 var model = new TreeResponseModel(res);
                 JsonHelper.Serialize(model, _treeCachePath);
                 return model;
