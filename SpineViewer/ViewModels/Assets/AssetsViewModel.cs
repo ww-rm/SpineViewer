@@ -70,7 +70,7 @@ namespace SpineViewer.ViewModels.Assets
         /// <summary>
         /// 移除资源库
         /// </summary>
-        public abstract RelayCommand<IList?> Cmd_RemoveAssetsRepo { get; }
+        public abstract RelayCommand<IList?> Cmd_RemoveAssetsRepos { get; }
 
         /// <summary>
         /// 资源库上移一位
@@ -204,10 +204,10 @@ namespace SpineViewer.ViewModels.Assets
             }
         }
 
-        public override RelayCommand<IList?> Cmd_RemoveAssetsRepo => _cmd_RemoveAssetsRepo ??= new(RemoveAssetsRepo_Execute, CommandCanExecute.AtLeastOne);
-        private RelayCommand<IList?>? _cmd_RemoveAssetsRepo;
+        public override RelayCommand<IList?> Cmd_RemoveAssetsRepos => _cmd_RemoveAssetsRepos ??= new(RemoveAssetsRepos_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_RemoveAssetsRepos;
 
-        private void RemoveAssetsRepo_Execute(IList? args)
+        private void RemoveAssetsRepos_Execute(IList? args)
         {
             if (!CommandCanExecute.AtLeastOne(args)) return;
 

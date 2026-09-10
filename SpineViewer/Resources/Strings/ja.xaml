@@ -166,6 +166,7 @@
     <s:String x:Key="Str_AddGitHubAssetsReposHint">1 行に 1 つのリポジトリ URL を指定します。ブランチ、タグ、SHA を指定できます。省略した場合は、デフォルトブランチの最新コミットが使用されます。</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">例：&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
     <s:String x:Key="Str_GetGitHubAssetsReposTitle">リポジトリを取得</s:String>
+    <s:String x:Key="Str_CopyGitHubAssetsRepos">クリップボードにコピー</s:String>
 
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">プレビューを生成</s:String>

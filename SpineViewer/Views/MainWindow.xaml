@@ -948,7 +948,7 @@
                                                               Command="{Binding Cmd_AddAssetsRepos}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
                                                               InputGestureText="Delete"
-                                                              Command="{Binding Cmd_RemoveAssetsRepo}"
+                                                              Command="{Binding Cmd_RemoveAssetsRepos}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_MoveUpAssetsRepo}"
@@ -984,7 +984,7 @@
                                             </ListBox.ContextMenu>
 
                                             <ListBox.InputBindings>
-                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepos}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_localAssetsRepoListBox}"/>
@@ -1163,9 +1163,13 @@
                                                 <ContextMenu>
                                                     <MenuItem Header="{DynamicResource Str_AddAssetsRepos}"
                                                               Command="{Binding Cmd_AddAssetsRepos}"/>
+                                                    <MenuItem Header="{DynamicResource Str_CopyGitHubAssetsRepos}"
+                                                              InputGestureText="Ctrl+C"
+                                                              Command="{Binding Cmd_CopyAssetsRepos}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_RemoveAssetsRepo}"
                                                               InputGestureText="Delete"
-                                                              Command="{Binding Cmd_RemoveAssetsRepo}"
+                                                              Command="{Binding Cmd_RemoveAssetsRepos}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_MoveUpAssetsRepo}"
@@ -1204,7 +1208,8 @@
                                             </ListBox.ContextMenu>
 
                                             <ListBox.InputBindings>
-                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Ctrl+C" Command="{Binding Cmd_CopyAssetsRepos}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
+                                                <KeyBinding Gesture="Delete" Command="{Binding Cmd_RemoveAssetsRepos}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Alt+W" Command="{Binding Cmd_MoveUpAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Alt+S" Command="{Binding Cmd_MoveDownAssetsRepo}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>
                                                 <KeyBinding Gesture="Shift+Alt+E" Command="{Binding Cmd_OpenAssetsInExplorer}" CommandParameter="{Binding SelectedItems, ElementName=_gitHubAssetsRepoListBox}"/>

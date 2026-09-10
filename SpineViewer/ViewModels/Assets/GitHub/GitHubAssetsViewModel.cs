@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Shell;
 
 namespace SpineViewer.ViewModels.Assets.GitHub
@@ -46,6 +47,28 @@ namespace SpineViewer.ViewModels.Assets.GitHub
 
             var obj = (IBrowserOpenable)args[0]!;
             obj.OpenUrlInBroswer();
+        }
+
+        public RelayCommand<IList?> Cmd_CopyAssetsRepos => _cmd_CopyAssetsRepos ??= new(CopyAssetsRepos_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_CopyAssetsRepos;
+
+        private void CopyAssetsRepos_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args)) return;
+
+            var repos = args.Cast<GitHubAssetsRepoViewModel>().Select(v => v.RepoKey).ToArray();
+            var content = string.Join(Environment.NewLine, repos);
+
+            try
+            {
+                Clipboard.SetText(content);
+                _logger.Info("{0} repos copied", repos.Length);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex.ToString());
+                _logger.Error("Failed to copy to clipboard, {0}", ex.Message);
+            }
         }
 
         public override void LoadAssetsRepos()
@@ -230,7 +253,6 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             return true;
         }
 
-        // TODO: 添加复制导出命令
         // TODO: 下载资源
     }
 }
