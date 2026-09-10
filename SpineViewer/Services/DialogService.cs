@@ -35,9 +35,11 @@ namespace SpineViewer.Services
 
         public static bool ShowGeneratePreviewsDialog(AssetsPreviewViewModel vm) => ShowDialog<GeneratePreviewsDialog>(vm);
 
-        public static bool ShowLocalsAssetEditDialogDialog(LocalAssetsRepoModel vm) => ShowDialog<LocalAssetsRepoEditDialog>(vm);
+        public static bool ShowEditLocalAssetsRepoDialog(LocalAssetsRepoModel vm) => ShowDialog<EditLocalAssetsRepoDialog>(vm);
 
-        public static bool ShowGitHubAddAssetsReposDialog(GitHubAssetsViewModel vm) => ShowDialog<GitHubAddAssetsReposDialog>(vm);
+        public static bool ShowEditGitHubAssetsRepoDialog(GitHubAssetsRepoModel vm) => ShowDialog<EditGitHubAssetsRepoDialog>(vm);
+
+        public static bool ShowAddGitHubAssetsReposDialog(GitHubAssetsViewModel vm) => ShowDialog<AddGitHubAssetsReposDialog>(vm);
 
         public static bool ShowFrameExporterDialog(FrameExporterViewModel vm) => ShowDialog<FrameExporterDialog>(vm);
 

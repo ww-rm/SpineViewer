@@ -158,7 +158,10 @@
     <s:String x:Key="Str_DeletePreviews">Delete Previews</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">Import Selected Items</s:String>
 
-    <!-- GitHub 资源添加资源库弹窗文本 -->
+    <!-- GitHub 资源标签页 -->
+    <s:String x:Key="Str_Owner">Owner</s:String>
+    <s:String x:Key="Str_Repository">Repository</s:String>
+    <s:String x:Key="Str_CommitSha">SHA</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposTitle">Add Assets Repositories</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposHint">One repository address per line. You can specify a branch, tag, or SHA; if omitted, the latest commit on the default branch is used.</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">Example:&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
@@ -193,7 +196,8 @@
     <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
-    <s:String x:Key="Str_EditLocalAssetTitle">Edit Local Asset</s:String>
+    <s:String x:Key="Str_EditLocalAssetsRepoTitle">Edit Local Assets Repository Information</s:String>
+    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">Edit GitHub Assets Repository Information</s:String>
 
     <s:String x:Key="Str_InfoPopup">Information</s:String>
     <s:String x:Key="Str_WarnPopup">Warning</s:String>

@@ -158,7 +158,10 @@
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">导入选中项</s:String>
     
-    <!-- GitHub 资源添加资源库弹窗文本 -->
+    <!-- GitHub 资源标签页 -->
+    <s:String x:Key="Str_Owner">所有者</s:String>
+    <s:String x:Key="Str_Repository">仓库</s:String>
+    <s:String x:Key="Str_CommitSha">SHA</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposTitle">添加资源库</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposHint">每行一个仓库地址，支持指定分支、标签、SHA，缺省则使用默认分支的最新提交</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">例：&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
@@ -193,7 +196,8 @@
     <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
-    <s:String x:Key="Str_EditLocalAssetTitle">编辑本地资源</s:String>
+    <s:String x:Key="Str_EditLocalAssetsRepoTitle">编辑本地资源库信息</s:String>
+    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">编辑 GitHub 资源库信息</s:String>
 
     <s:String x:Key="Str_InfoPopup">提示信息</s:String>
     <s:String x:Key="Str_WarnPopup">警告信息</s:String>

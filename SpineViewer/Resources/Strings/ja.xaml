@@ -158,7 +158,10 @@
     <s:String x:Key="Str_DeletePreviews">プレビューを削除</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">選択した項目をインポート</s:String>
 
-    <!-- GitHub 资源添加资源库弹窗文本 -->
+    <!-- GitHub 资源标签页 -->
+    <s:String x:Key="Str_Owner">所有者</s:String>
+    <s:String x:Key="Str_Repository">リポジトリ</s:String>
+    <s:String x:Key="Str_CommitSha">SHA</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposTitle">リポジトリを追加</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposHint">1 行に 1 つのリポジトリ URL を指定します。ブランチ、タグ、SHA を指定できます。省略した場合は、デフォルトブランチの最新コミットが使用されます。</s:String>
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">例：&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
@@ -193,7 +196,8 @@
     <s:String x:Key="Str_DeletePreviewsTitle">プレビューを削除</s:String>
     <s:String x:Key="Str_AddSpineObjectsTitle">一括でスケルトンファイルを追加</s:String>
     <s:String x:Key="Str_ReloadSpineObjectsTitle">スケルトンファイルの再読み込み</s:String>
-    <s:String x:Key="Str_EditLocalAssetTitle">ローカルリソースを編集</s:String>
+    <s:String x:Key="Str_EditLocalAssetsRepoTitle">ローカルリソースリポジトリ情報を編集</s:String>
+    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">GitHubリソースリポジトリ情報を編集</s:String>
 
     <s:String x:Key="Str_InfoPopup">情報</s:String>
     <s:String x:Key="Str_WarnPopup">警告</s:String>

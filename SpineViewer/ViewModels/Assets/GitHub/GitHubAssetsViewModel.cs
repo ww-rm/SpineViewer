@@ -78,7 +78,7 @@ namespace SpineViewer.ViewModels.Assets.GitHub
         protected override IReadOnlyList<GitHubAssetsRepoViewModel> AddAssetsRepos()
         {
             AddAssetsReposUserInput = null;
-            if (!DialogService.ShowGitHubAddAssetsReposDialog(this))
+            if (!DialogService.ShowAddGitHubAssetsReposDialog(this))
                 return [];
 
             if (string.IsNullOrWhiteSpace(AddAssetsReposUserInput))
@@ -222,9 +222,12 @@ namespace SpineViewer.ViewModels.Assets.GitHub
 
         protected override bool EditAssetsRepo(GitHubAssetsRepoViewModel repo)
         {
-            // 编辑名字
-            _logger.Warn("NotImplemented");
-            return false;
+            var m = repo.Model;
+            if (!DialogService.ShowEditGitHubAssetsRepoDialog(m))
+                return false;
+
+            repo.Model = m;
+            return true;
         }
 
         // TODO: 添加复制导出命令

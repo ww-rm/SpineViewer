@@ -17,17 +17,17 @@ using System.Windows.Shapes;
 namespace SpineViewer.Views.AssetsDialogs
 {
     /// <summary>
-    /// GitHubAddAssetsReposDialog.xaml 的交互逻辑
+    /// LocalAssetEditDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class GitHubAddAssetsReposDialog : Window
+    public partial class EditLocalAssetsRepoDialog : Window
     {
-        public GitHubAddAssetsReposDialog()
+        public EditLocalAssetsRepoDialog()
         {
             InitializeComponent();
-            SourceInitialized += GitHubAddAssetsReposDialog_SourceInitialized;
+            SourceInitialized += LocalAssetsRepoEditDialog_SourceInitialized;
         }
 
-        private void GitHubAddAssetsReposDialog_SourceInitialized(object? sender, EventArgs e)
+        private void LocalAssetsRepoEditDialog_SourceInitialized(object? sender, EventArgs e)
         {
             this.SetWindowTextColor(AppResource.Color_PrimaryText);
             this.SetWindowCaptionColor(AppResource.Color_Region);
