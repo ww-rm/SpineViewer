@@ -28,6 +28,11 @@ namespace SpineViewer.Services
         private static GitHubClient? _customClient;
 
         /// <summary>
+        /// 客户端是否认证
+        /// </summary>
+        public static bool IsAuthenticated => _credentials.AuthenticationType != AuthenticationType.Anonymous;
+
+        /// <summary>
         /// 设置客户端的访问令牌, 使用空值清除访问令牌
         /// </summary>
         public static string? Token

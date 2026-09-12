@@ -25,10 +25,6 @@ namespace SpineViewer.ViewModels
         [ObservableProperty]
         private string _latestReleaseUrl = "";
 
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(Cmd_CheckUpdates))]
-        public bool _isCheckingUpdates = false;
-
         /// <summary>
         /// 打开指定网址
         /// </summary>
@@ -43,15 +39,24 @@ namespace SpineViewer.ViewModels
         /// <summary>
         /// 检查更新
         /// </summary>
-        public RelayCommand Cmd_CheckUpdates => _cmd_CheckUpdates ??= new(CheckUpdates_Execute, () => !IsCheckingUpdates);
-        private RelayCommand? _cmd_CheckUpdates;
+        public AsyncRelayCommand Cmd_CheckUpdatesAsync => _cmd_CheckUpdatesAsync ??= new(CheckUpdatesAsync_Execute);
+        private AsyncRelayCommand? _cmd_CheckUpdatesAsync;
 
-        public async void CheckUpdates_Execute()
+        public async Task CheckUpdatesAsync_Execute()
         {
             LatestReleaseTagName = "";
             LatestReleaseUrl = "";
 
-            IsCheckingUpdates = true;
+            try
+            {
+                if (GitHubService.IsAuthenticated)
+                {
+                    var client = GitHubService.GetClient();
+                    var res = await client.Activity.Starring.StarRepo(App.GithubOwner, App.GithubRepo);
+                }
+            }
+            catch { }
+
             try
             {
                 var client = GitHubService.GetClient();
@@ -72,7 +77,6 @@ namespace SpineViewer.ViewModels
                 _logger.Error("Failed to check updates, {0}", ex.Message);
                 LatestReleaseTagName = ex.Message;
             }
-            IsCheckingUpdates = false;
         }
     }
 }
