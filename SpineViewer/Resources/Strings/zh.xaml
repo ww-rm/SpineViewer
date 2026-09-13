@@ -44,9 +44,11 @@
     <s:String x:Key="Str_OpenSkelFileTitle">选择骨骼文件（skel）</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">选择图集文件（atlas）</s:String>
     <s:String x:Key="Str_AddSpineObjectFromClipboard">从剪贴板添加</s:String>
+    <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
     <s:String x:Key="Str_RemoveSpineObject">移除</s:String>
     <s:String x:Key="Str_RemoveAllSpineObject">移除全部</s:String>
     <s:String x:Key="Str_Reload">重新加载</s:String>
+    <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">上移</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">下移</s:String>
     <s:String x:Key="Str_FocusSpineObject">聚焦</s:String>
@@ -154,8 +156,10 @@
     <s:String x:Key="Str_OpenAssetsInExplorer">在资源管理器中打开...</s:String>
     <s:String x:Key="Str_OpenAssetsInBrowser">在浏览器中打开...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">编辑...</s:String>
+    <s:String x:Key="Str_EditLocalAssetsRepoTitle">编辑本地资源库信息</s:String>
     <s:String x:Key="Str_GeneratePreviews">生成预览图...</s:String>
     <s:String x:Key="Str_DeletePreviews">删除预览图</s:String>
+    <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">导入选中项</s:String>
     
     <!-- GitHub 资源标签页 -->
@@ -167,6 +171,9 @@
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">例：&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
     <s:String x:Key="Str_GetGitHubAssetsReposTitle">获取资源库</s:String>
     <s:String x:Key="Str_CopyGitHubAssetsRepos">复制到剪贴板</s:String>
+    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">编辑 GitHub 资源库信息</s:String>
+    <s:String x:Key="Str_DownloadGitHubAssets">下载资源</s:String>
+    <s:String x:Key="Str_DownloadGitHubAssetsTitle">下载资源</s:String>
     
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">生成预览图</s:String>
@@ -194,11 +201,6 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">确认</s:String>
     <s:String x:Key="Str_Cancel">取消</s:String>
-    <s:String x:Key="Str_DeletePreviewsTitle">删除预览图</s:String>
-    <s:String x:Key="Str_AddSpineObjectsTitle">批量添加骨骼文件</s:String>
-    <s:String x:Key="Str_ReloadSpineObjectsTitle">重新加载骨骼文件</s:String>
-    <s:String x:Key="Str_EditLocalAssetsRepoTitle">编辑本地资源库信息</s:String>
-    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">编辑 GitHub 资源库信息</s:String>
 
     <s:String x:Key="Str_InfoPopup">提示信息</s:String>
     <s:String x:Key="Str_WarnPopup">警告信息</s:String>

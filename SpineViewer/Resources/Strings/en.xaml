@@ -44,9 +44,11 @@
     <s:String x:Key="Str_OpenSkelFileTitle">Select Skeleton File (skel)</s:String>
     <s:String x:Key="Str_OpenAtlasFileTitle">Select Atlas File (atlas)</s:String>
     <s:String x:Key="Str_AddSpineObjectFromClipboard">Add from Clipboard</s:String>
+    <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
     <s:String x:Key="Str_RemoveSpineObject">Remove</s:String>
     <s:String x:Key="Str_RemoveAllSpineObject">Remove All</s:String>
     <s:String x:Key="Str_Reload">Reload</s:String>
+    <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
     <s:String x:Key="Str_MoveUpSpineObject">Move Up</s:String>
     <s:String x:Key="Str_MoveDownSpineObject">Move Down</s:String>
     <s:String x:Key="Str_FocusSpineObject">Focus Model</s:String>
@@ -154,8 +156,10 @@
     <s:String x:Key="Str_OpenAssetsInExplorer">Open in File Explorer...</s:String>
     <s:String x:Key="Str_OpenAssetsInBrowser">Open in Browser...</s:String>
     <s:String x:Key="Str_EditAssetsRepo">Edit...</s:String>
+    <s:String x:Key="Str_EditLocalAssetsRepoTitle">Edit Local Assets Repository Information</s:String>
     <s:String x:Key="Str_GeneratePreviews">Generate Previews...</s:String>
     <s:String x:Key="Str_DeletePreviews">Delete Previews</s:String>
+    <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
     <s:String x:Key="Str_ImportSelectedAssets">Import Selected Items</s:String>
 
     <!-- GitHub 资源标签页 -->
@@ -167,6 +171,9 @@
     <s:String x:Key="Str_AddGitHubAssetsReposPlaceholder" xml:space="preserve">Example:&#x0A;owner/repository&#x0A;owner/repository@branch&#x0A;owner/repository@tag&#x0A;owner/repository@da39a3ee5e6b4b0d3255bfef95601890afd80709</s:String>
     <s:String x:Key="Str_GetGitHubAssetsReposTitle">Get Assets Repositories</s:String>
     <s:String x:Key="Str_CopyGitHubAssetsRepos">Copy to Clipboard</s:String>
+    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">Edit GitHub Assets Repository Information</s:String>
+    <s:String x:Key="Str_DownloadGitHubAssets">Download Assets</s:String>
+    <s:String x:Key="Str_DownloadGitHubAssetsTitle">Download Assets</s:String>
 
     <!-- 生成预览图弹窗文本 -->
     <s:String x:Key="Str_GeneratePreviewsTitle">Generate Previews</s:String>
@@ -194,11 +201,6 @@
     <!-- 弹窗文本 -->
     <s:String x:Key="Str_OK">OK</s:String>
     <s:String x:Key="Str_Cancel">Cancel</s:String>
-    <s:String x:Key="Str_DeletePreviewsTitle">Delete Previews</s:String>
-    <s:String x:Key="Str_AddSpineObjectsTitle">Batch Add Spine Files</s:String>
-    <s:String x:Key="Str_ReloadSpineObjectsTitle">Reload Spine Files</s:String>
-    <s:String x:Key="Str_EditLocalAssetsRepoTitle">Edit Local Assets Repository Information</s:String>
-    <s:String x:Key="Str_EditGitHubAssetsRepoTitle">Edit GitHub Assets Repository Information</s:String>
 
     <s:String x:Key="Str_InfoPopup">Information</s:String>
     <s:String x:Key="Str_WarnPopup">Warning</s:String>

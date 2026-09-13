@@ -111,15 +111,16 @@ namespace SpineViewer.Resources
 
         #region Strings
 
-        public static string Str_AddGitHubAssetsReposTitle => Get<string>("Str_AddGitHubAssetsReposTitle");
-        public static string Str_GetGitHubAssetsReposTitle => Get<string>("Str_GetGitHubAssetsReposTitle");
-        public static string Str_GeneratePreviewsTitle => Get<string>("Str_GeneratePreviewsTitle");
-        public static string Str_DeletePreviewsTitle => Get<string>("Str_DeletePreviewsTitle");
         public static string Str_AddSpineObjectsTitle => Get<string>("Str_AddSpineObjectsTitle");
         public static string Str_OpenSkelFileTitle => Get<string>("Str_OpenSkelFileTitle");
         public static string Str_OpenAtlasFileTitle => Get<string>("Str_OpenAtlasFileTitle");
         public static string Str_ReloadSpineObjectsTitle => Get<string>("Str_ReloadSpineObjectsTitle");
-        public static string Str_CustomFFmpegExporterTitle => Get<string>("Str_CustomFFmpegExporterTitle");
+
+        public static string Str_AddGitHubAssetsReposTitle => Get<string>("Str_AddGitHubAssetsReposTitle");
+        public static string Str_GetGitHubAssetsReposTitle => Get<string>("Str_GetGitHubAssetsReposTitle");
+        public static string Str_GeneratePreviewsTitle => Get<string>("Str_GeneratePreviewsTitle");
+        public static string Str_DeletePreviewsTitle => Get<string>("Str_DeletePreviewsTitle");
+        public static string Str_DownloadGitHubAssetsTitle => Get<string>("Str_DownloadGitHubAssetsTitle");
 
         public static string Str_InfoPopup => Get<string>("Str_InfoPopup");
         public static string Str_WarnPopup => Get<string>("Str_WarnPopup");
@@ -136,6 +137,7 @@ namespace SpineViewer.Resources
         public static string Str_PsdExporterTitle => Get<string>("Str_PsdExporterTitle");
         public static string Str_FrameSequenceExporterTitle => Get<string>("Str_FrameSequenceExporterTitle");
         public static string Str_FFmpegVideoExporterTitle => Get<string>("Str_FFmpegVideoExporterTitle");
+        public static string Str_CustomFFmpegExporterTitle => Get<string>("Str_CustomFFmpegExporterTitle");
 
         public static string Str_InvalidOutputDir => Get<string>("Str_InvalidOutputDir");
         public static string Str_OutputDirNotFound => Get<string>("Str_OutputDirNotFound");

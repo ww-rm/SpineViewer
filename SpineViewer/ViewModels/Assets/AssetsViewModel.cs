@@ -152,6 +152,30 @@ namespace SpineViewer.ViewModels.Assets
         where TRepo : AssetsRepoViewModel<TItem>
         where TItem : AssetsItemViewModel
     {
+        /// <summary>
+        /// 辅助函数, 获取 <see cref="TItem"/> 对象列表
+        /// </summary>
+        protected static List<TItem> GetItems(IList args)
+        {
+            List<TItem> items = [];
+            foreach (var it in args!)
+            {
+                switch (it)
+                {
+                    case TRepo repo:
+                        items.AddRange(repo.Items);
+                        break;
+                    case TItem item:
+                        items.Add(item);
+                        break;
+                    default:
+                        _logger.Warn("Invalid type {0}, skip it", it.GetType().Name);
+                        break;
+                }
+            }
+            return items;
+        }
+
         public AssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
         #region 资源库列表管理
@@ -493,27 +517,6 @@ namespace SpineViewer.ViewModels.Assets
                 _logger.Warn("Preview deletion {0} successfully, {1} failed", success, error);
             else
                 _logger.Info("{0} previews deleted successfully", success);
-        }
-
-        private static List<TItem> GetItems(IList args)
-        {
-            List<TItem> items = [];
-            foreach (var it in args!)
-            {
-                switch (it)
-                {
-                    case TRepo repo:
-                        items.AddRange(repo.Items);
-                        break;
-                    case TItem item:
-                        items.Add(item);
-                        break;
-                    default:
-                        _logger.Warn("Invalid type {0}, skip it", it.GetType().Name);
-                        break;
-                }
-            }
-            return items;
         }
 
         #endregion

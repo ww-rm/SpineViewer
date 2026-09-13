@@ -17,6 +17,11 @@ namespace SpineViewer.ViewModels.Assets.GitHub
         }
 
         /// <summary>
+        /// 所属资源库
+        /// </summary>
+        public GitHubAssetsRepoViewModel Repo => _vmRepo;
+
+        /// <summary>
         /// 原始数据下载地址
         /// </summary>
         public string GitHubRawUrl => string.Format(

@@ -253,6 +253,31 @@ namespace SpineViewer.ViewModels.Assets.GitHub
             return true;
         }
 
-        // TODO: 下载资源
+        /// <summary>
+        /// 下载资源库或资源文件
+        /// </summary>
+        public RelayCommand<IList?> Cmd_DownloadAssets => _cmd_DownloadAssets ??= new(DownloadAssets_Execute, CommandCanExecute.AtLeastOne);
+        private RelayCommand<IList?>? _cmd_DownloadAssets;
+
+        private void DownloadAssets_Execute(IList? args)
+        {
+            if (!CommandCanExecute.AtLeastOne(args))
+                return;
+
+            var items = GetItems(args);
+            if (items.Count <= 0)
+                return;
+
+            ProgressService.RunAsync(
+                (pr, ct) => DownloadAssetsTask(items, pr, ct),
+                AppResource.Str_DownloadGitHubAssetsTitle
+            );
+
+        }
+
+        private void DownloadAssetsTask(List<GitHubAssetsItemViewModel> items, IProgressReporter reporter, CancellationToken ct)
+        {
+            _logger.Error("TODO: download {0} items", items.Count);
+        }
     }
 }

@@ -1195,6 +1195,10 @@
                                                               Command="{Binding Cmd_EditAssetsRepo}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_DownloadGitHubAssets}"
+                                                              Command="{Binding Cmd_DownloadAssets}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
                                                               Command="{Binding Cmd_ImportSelectedAssets}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
@@ -1308,6 +1312,10 @@
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <MenuItem Header="{DynamicResource Str_OpenAssetsInBrowser}"
                                                               Command="{Binding Cmd_OpenAssetsInBrowser}"
+                                                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                                                    <Separator/>
+                                                    <MenuItem Header="{DynamicResource Str_DownloadGitHubAssets}"
+                                                              Command="{Binding Cmd_DownloadAssets}"
                                                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
                                                     <Separator/>
                                                     <MenuItem Header="{DynamicResource Str_ImportSelectedAssets}"
