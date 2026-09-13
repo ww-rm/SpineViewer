@@ -1118,7 +1118,7 @@
                                 </Grid>
                             </TabItem>
 
-                            <!-- GitHub 在线资源 TODO: 保存布局 -->
+                            <!-- GitHub 在线资源 -->
                             <TabItem DataContext="{Binding GitHubAssetsViewModel}">
                                 <TabItem.Header>
                                     <Border Style="{StaticResource MyTabItemHeaderContainerStyle}"

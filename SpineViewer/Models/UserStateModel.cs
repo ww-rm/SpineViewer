@@ -28,6 +28,9 @@ namespace SpineViewer.Models
         public double LocalAssetsGridRow0Height { get; set; } = 100;
         public double LocalAssetsGridRow2Height { get; set; } = 100;
 
+        public double GitHubAssetsGridRow0Height { get; set; } = 100;
+        public double GitHubAssetsGridRow2Height { get; set; } = 100;
+
         public double RightPanelGridRow0Height { get; set; } = 100;
         public double RightPanelGridRow2Height { get; set; } = 100;
 
