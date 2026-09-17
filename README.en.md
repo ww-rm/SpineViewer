@@ -166,4 +166,4 @@ Report issues or bugs via [GitHub Issues](https://github.com/ww-rm/SpineViewer/i
 
 *If you like this project, please give it a :star: and share it with others! :\)*
 
-[![Stargazers over time](https://starchart.cc/ww-rm/SpineViewer.svg?variant=adaptive)](https://starchart.cc/ww-rm/SpineViewer)
+[![Star History Chart](https://api.star-history.com/chart?repos=ww-rm/spineviewer&type=date&legend=bottom-right)](https://www.star-history.com/?repos=ww-rm%2Fspineviewer&type=date&legend=bottom-right)
