@@ -325,9 +325,7 @@ namespace SpineViewer.ViewModels.Main
             get => _isUpdating;
             private set
             {
-                if (value == _isUpdating) return;
-                _isUpdating = value;
-                OnPropertyChanged();
+                if (!SetProperty(ref _isUpdating, value)) return;
                 OnPropertyChanged(nameof(Geo_PlayPause));
             }
         }

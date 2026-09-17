@@ -7,10 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.ViewModels.Assets
+namespace SpineViewer.ViewModels.Assets.Local
 {
     public sealed class LocalAssetsRepoViewModel : AssetsRepoViewModel<LocalAssetsItemViewModel>
     {
+        private readonly string _localDirectory;
+        private readonly string _defaultName;
+
         public LocalAssetsRepoViewModel(string localDirectory)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(localDirectory);
@@ -19,42 +22,41 @@ namespace SpineViewer.ViewModels.Assets
             _defaultName = Path.GetFileName(_localDirectory);
         }
 
+        public LocalAssetsRepoViewModel(LocalAssetsRepoModel m) : this(m.LocalDirectory)
+        {
+            Name = m.Name;
+        }
+
         /// <summary>
         /// 获取模型对象
         /// </summary>
         public LocalAssetsRepoModel Model
         {
-            get => new() { LocalDirectory = LocalDirectory, Name = Name };
+            get => new() { LocalDirectory = _localDirectory, Name = Name };
             set => Name = value.Name;
         }
 
-        public override string LocalDirectory { get => _localDirectory; }
-        private readonly string _localDirectory;
+        public override string LocalDirectory => _localDirectory;
 
-        public override string DefaultName { get => _defaultName; }
-        private readonly string _defaultName;
+        public override string DefaultName => _defaultName;
 
         public override IReadOnlyList<LocalAssetsItemViewModel> Items => _items;
         private List<LocalAssetsItemViewModel> _items = [];
 
-        public override bool IsItemsRefreshing { get => _isItemsRefreshing; }
+        public override bool IsItemsLoaded => _isItemsLoaded;
+        private bool _isItemsLoaded = false;
+
+        public override bool IsItemsRefreshing => _isItemsRefreshing;
         private bool _isItemsRefreshing = false;
 
-        private Task? _itemsRefreshingTask;
-
-        public override async Task RefreshItemsAsync()
-        {
-            if (_itemsRefreshingTask is null || _itemsRefreshingTask.IsCompleted)
-            {
-                _itemsRefreshingTask = Task.Run(RefreshItemsTask);
-            }
-            await _itemsRefreshingTask;
-        }
+        protected override Task CreateRefreshItemsTask() => Task.Run(RefreshItemsTask);
 
         private void RefreshItemsTask()
         {
-            _isItemsRefreshing = true;
-            OnPropertyChanged(nameof(IsItemsRefreshing));
+            // 清空列表并设置状态属性
+            SetProperty(ref _isItemsRefreshing, true, nameof(IsItemsRefreshing));
+            SetProperty(ref _isItemsLoaded, false, nameof(IsItemsLoaded));
+            SetProperty(ref _items, [], nameof(Items));
 
             List<LocalAssetsItemViewModel> items = [];
 
@@ -76,6 +78,7 @@ namespace SpineViewer.ViewModels.Assets
                             items.Add(new(this, relativePath));
                         }
                     }
+                    SetProperty(ref _isItemsLoaded, true, nameof(IsItemsLoaded));
                 }
                 catch (Exception ex)
                 {
@@ -84,10 +87,14 @@ namespace SpineViewer.ViewModels.Assets
                 }
             }
 
-            _items = items;
-
-            _isItemsRefreshing = false;
-            OnPropertyChanged(nameof(IsItemsRefreshing));
+            SetProperty(ref _items, items, nameof(Items));
+            SetProperty(ref _isItemsRefreshing, false, nameof(IsItemsRefreshing));
         }
+
+        public sealed override string ToString() => $"LocalRepo[{_localDirectory}]";
+
+        public sealed override bool Equals(object? obj) => obj is LocalAssetsRepoViewModel other && _localDirectory == other._localDirectory;
+
+        public sealed override int GetHashCode() => HashCode.Combine(GetType(), _localDirectory);
     }
 }

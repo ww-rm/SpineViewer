@@ -9,31 +9,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpineViewer.ViewModels.Assets
+namespace SpineViewer.ViewModels.Assets.Local
 {
     public sealed class LocalAssetsViewModel : AssetsViewModel<LocalAssetsRepoViewModel, LocalAssetsItemViewModel>
     {
         /// <summary>
         /// 文件保存路径
         /// </summary>
-        public static readonly string LocalAssetsFilePath = Path.Combine(App.ProcessDataDirectory, "localassets.json");
+        public static readonly string LocalAssetsFilePath = Path.Combine(App.DataDirectory, "localassets.json");
 
-        public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain)
-        {
+        public LocalAssetsViewModel(MainWindowViewModel vmMain) : base(vmMain) { }
 
-        }
-
-        protected override LocalAssetsRepoViewModel? AddAssetsRepo()
+        protected override IReadOnlyList<LocalAssetsRepoViewModel> AddAssetsRepos()
         {
             if (!DialogService.ShowOpenFolderDialog(out var selectedPath))
-                return null;
-            return new(selectedPath!);
+                return [];
+            return [new(selectedPath!)];
         }
 
         protected override bool EditAssetsRepo(LocalAssetsRepoViewModel repo)
         {
             var m = repo.Model;
-            if (!DialogService.ShowLocalAssetEditDialogDialog(m))
+            if (!DialogService.ShowEditLocalAssetsRepoDialog(m))
                 return false;
 
             repo.Model = m;
@@ -42,16 +39,12 @@ namespace SpineViewer.ViewModels.Assets
 
         public override void LoadAssetsRepos()
         {
-            // 先清空列表
-            _selectedAssetsRepo = null;
-            RefreshShownItemsAsync().Wait();
             _assetsRepos.Clear();
-
             if (JsonHelper.Deserialize<LocalAssetsModel>(LocalAssetsFilePath, out var assets, true))
             {
                 foreach (var m in assets.LocalAssetsRepos)
                 {
-                    _assetsRepos.Add(new(m.LocalDirectory) { Model = m });
+                    _assetsRepos.Add(new(m));
                 }
             }
         }

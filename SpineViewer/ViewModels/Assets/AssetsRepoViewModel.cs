@@ -42,14 +42,42 @@ namespace SpineViewer.ViewModels.Assets
         public abstract IReadOnlyList<AssetsItemViewModel> Items { get; }
 
         /// <summary>
+        /// 资源列表 <see cref="Items"/> 是否已加载
+        /// </summary>
+        public abstract bool IsItemsLoaded { get; }
+
+        /// <summary>
         /// 资源列表 <see cref="Items"/> 是否正在刷新中
         /// </summary>
         public abstract bool IsItemsRefreshing { get; }
 
         /// <summary>
+        /// 列表刷新唯一任务
+        /// </summary>
+        private Task? _itemsRefreshingTask;
+
+        /// <summary>
         /// 刷新该资源库下的模型资源列表 <see cref="Items"/>
         /// </summary>
-        public abstract Task RefreshItemsAsync();
+        public async Task RefreshItemsAsync()
+        {
+            if (_itemsRefreshingTask is null || _itemsRefreshingTask.IsCompleted)
+            {
+                _itemsRefreshingTask = CreateRefreshItemsTask();
+            }
+            await _itemsRefreshingTask;
+        }
+
+        /// <summary>
+        /// 创建刷新列表任务
+        /// </summary>
+        protected abstract Task CreateRefreshItemsTask();
+
+        public abstract override string ToString();
+
+        public abstract override bool Equals(object? obj);
+
+        public abstract override int GetHashCode();
 
         #region IExplorerOpenable
 

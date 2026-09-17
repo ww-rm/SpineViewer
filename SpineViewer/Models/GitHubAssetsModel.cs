@@ -18,7 +18,7 @@ namespace SpineViewer.Models
         private string _owner = "";
 
         [ObservableProperty]
-        private string _repo = "";
+        private string _repository = "";
 
         [ObservableProperty]
         private string _sha = "";

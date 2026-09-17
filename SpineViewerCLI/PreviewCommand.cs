@@ -73,7 +73,7 @@ namespace SpineViewerCLI
         private void PreviewAction(ParseResult result)
         {
             // 读取模型
-            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName);
+            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName ?? "");
 
             spine.UsePma = result.GetValue(OptPma);
 

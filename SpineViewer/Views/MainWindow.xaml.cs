@@ -37,7 +37,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 上一次状态文件保存路径
     /// </summary>
-    public static readonly string UserStateFilePath = Path.Combine(App.ProcessDataDirectory, "userstate.json");
+    public static readonly string UserStateFilePath = Path.Combine(App.DataDirectory, "userstate.json");
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -191,6 +191,7 @@ public partial class MainWindow : Window
 
         // 加载资源列表
         _vm.LocalAssetsViewModel.LoadAssetsRepos();
+        _vm.GitHubAssetsViewModel.LoadAssetsRepos();
 
         // 还原上一次用户历史状态并开启监听器
         LoadUserState();
@@ -282,6 +283,9 @@ public partial class MainWindow : Window
             _localAssetsGrid.RowDefinitions[0].Height = new(m.LocalAssetsGridRow0Height, GridUnitType.Star);
             _localAssetsGrid.RowDefinitions[2].Height = new(m.LocalAssetsGridRow2Height, GridUnitType.Star);
 
+            _gitHubAssetsGrid.RowDefinitions[0].Height = new(m.GitHubAssetsGridRow0Height, GridUnitType.Star);
+            _gitHubAssetsGrid.RowDefinitions[2].Height = new(m.GitHubAssetsGridRow2Height, GridUnitType.Star);
+
             _rightPanelGrid.RowDefinitions[0].Height = new(m.RightPanelGridRow0Height, GridUnitType.Star);
             _rightPanelGrid.RowDefinitions[2].Height = new(m.RightPanelGridRow2Height, GridUnitType.Star);
 
@@ -313,6 +317,9 @@ public partial class MainWindow : Window
 
             LocalAssetsGridRow0Height = _localAssetsGrid.RowDefinitions[0].Height.Value,
             LocalAssetsGridRow2Height = _localAssetsGrid.RowDefinitions[2].Height.Value,
+
+            GitHubAssetsGridRow0Height = _gitHubAssetsGrid.RowDefinitions[0].Height.Value,
+            GitHubAssetsGridRow2Height = _gitHubAssetsGrid.RowDefinitions[2].Height.Value,
 
             RightPanelGridRow0Height = _rightPanelGrid.RowDefinitions[0].Height.Value,
             RightPanelGridRow2Height = _rightPanelGrid.RowDefinitions[2].Height.Value,

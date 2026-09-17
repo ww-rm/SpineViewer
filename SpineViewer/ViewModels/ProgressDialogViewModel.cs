@@ -12,39 +12,48 @@ using System.Threading.Tasks;
 
 namespace SpineViewer.ViewModels
 {
-    public partial class ProgressDialogViewModel : ObservableObject, IProgressReporter, IDisposable
+    public abstract partial class ProgressDialogViewModel : ObservableObject, IProgressReporter, IDisposable
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        protected static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly CancellationTokenSource _cts = new();
         private readonly Task _task;
 
-        public ProgressDialogViewModel(Action<IProgressReporter, CancellationToken> work)
+        public ProgressDialogViewModel()
         {
             _task = new(() =>
             {
                 try
                 {
-                    work(this, _cts.Token);
-                    WorkFinished?.Invoke(this, true);
+                    DoWork(_cts.Token);
+                    OnCompleted(true);
                 }
                 catch (OperationCanceledException)
                 {
-                    _logger.Info("Work cancelled by user: {0}", _title);
-                    WorkFinished?.Invoke(this, false);
+                    _logger.Info("Work cancelled by user: {0}", Title);
+                    OnCompleted(false);
                 }
                 catch (Exception ex)
                 {
                     _logger.Debug(ex.ToString());
-                    _logger.Error("Failed to finish work: {0}, {1}", _title, ex.Message);
-                    WorkFinished?.Invoke(this, false);
+                    _logger.Error("Failed to finish work: {0}, {1}", Title, ex.Message);
+                    OnCompleted(false);
                 }
             });
         }
 
+        public event EventHandler<bool>? Completed;
+
         public void Start() => _task.Start();
 
-        public event EventHandler<bool>? WorkFinished;
+        protected abstract void DoWork(CancellationToken ct);
+
+        protected virtual void OnCompleted(bool isCompletedSuccessfully)
+        {
+            IsCompleted = true;
+            IsCompletedSuccessfully = isCompletedSuccessfully;
+            Completed?.Invoke(this, isCompletedSuccessfully);
+        }
 
         [ObservableProperty]
         private string _title = "Progress";
@@ -57,6 +66,12 @@ namespace SpineViewer.ViewModels
 
         [ObservableProperty]
         private string _progressText = "Working...";
+
+        [ObservableProperty]
+        private bool _isCompleted = false;
+
+        [ObservableProperty]
+        private bool _isCompletedSuccessfully = false;
 
         public RelayCommand Cmd_Cancel => _cmd_Cancel ??= new(Cancel_Execute, Cancel_CanExecute);
         private RelayCommand? _cmd_Cancel;
@@ -101,5 +116,37 @@ namespace SpineViewer.ViewModels
         }
 
         #endregion
+    }
+
+    public partial class ProgressDialogViewModelAction : ProgressDialogViewModel
+    {
+        private readonly Action<IProgressReporter, CancellationToken> _work;
+
+        public ProgressDialogViewModelAction(Action<IProgressReporter, CancellationToken> work)
+        {
+            _work = work;
+        }
+
+        protected override void DoWork(CancellationToken ct)
+        {
+            _work.Invoke(this, ct);
+        }
+    }
+
+    public partial class ProgressDialogViewModelFunc<TResult> : ProgressDialogViewModel
+    {
+        private readonly Func<IProgressReporter, CancellationToken, TResult?> _work;
+
+        public ProgressDialogViewModelFunc(Func<IProgressReporter, CancellationToken, TResult?> work)
+        {
+            _work = work;
+        }
+
+        protected override void DoWork(CancellationToken ct)
+        {
+            Result = _work.Invoke(this, ct);
+        }
+
+        public TResult? Result { get; private set; }
     }
 }

@@ -59,7 +59,7 @@
                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelCol"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="{DynamicResource Str_CheckUpdates}" Command="{Binding Cmd_CheckUpdates}"/>
+                <Button Content="{DynamicResource Str_CheckUpdates}" Command="{Binding Cmd_CheckUpdatesAsync}"/>
                 <Label Grid.Column="1">
                     <Hyperlink NavigateUri="{Binding LatestReleaseUrl}" Command="{Binding Cmd_OpenUrl}" CommandParameter="{Binding LatestReleaseUrl}">
                         <Run Text="{Binding LatestReleaseTagName, Mode=OneWay}"/>

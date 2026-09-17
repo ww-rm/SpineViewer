@@ -14,20 +14,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SpineViewer.Views
+namespace SpineViewer.Views.AssetsDialogs
 {
     /// <summary>
     /// LocalAssetEditDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class LocalAssetsRepoEditDialog : Window
+    public partial class EditLocalAssetsRepoDialog : Window
     {
-        public LocalAssetsRepoEditDialog()
+        public EditLocalAssetsRepoDialog()
         {
             InitializeComponent();
-            SourceInitialized += LocalAssetEditDialog_SourceInitialized;
+            SourceInitialized += LocalAssetsRepoEditDialog_SourceInitialized;
         }
 
-        private void LocalAssetEditDialog_SourceInitialized(object? sender, EventArgs e)
+        private void LocalAssetsRepoEditDialog_SourceInitialized(object? sender, EventArgs e)
         {
             this.SetWindowTextColor(AppResource.Color_PrimaryText);
             this.SetWindowCaptionColor(AppResource.Color_Region);

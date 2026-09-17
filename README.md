@@ -143,4 +143,4 @@ Commands:
 
 *如果你觉得这个项目不错请给个 :star:, 并分享给更多人知道! :\)*
 
-[![Stargazers over time](https://starchart.cc/ww-rm/SpineViewer.svg?variant=adaptive)](https://starchart.cc/ww-rm/SpineViewer)
+[![Star History Chart](https://api.star-history.com/chart?repos=ww-rm/spineviewer&type=date&legend=bottom-right)](https://www.star-history.com/?repos=ww-rm%2Fspineviewer&type=date&legend=bottom-right)

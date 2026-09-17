@@ -45,7 +45,7 @@ namespace SpineViewer.Views
             User32.SetWindowLong(hwnd, User32.GWL_STYLE, currentStyle & ~User32.WS_SYSMENU);
 
             var vm = (ProgressDialogViewModel)DataContext;
-            vm.WorkFinished += (s, e) => Dispatcher.Invoke(() => { DialogResult = e; });
+            vm.Completed += (s, e) => Dispatcher.Invoke(() => { DialogResult = e; });
             vm.Start();
         }
     }

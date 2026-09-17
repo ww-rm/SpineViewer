@@ -19,11 +19,6 @@ namespace SpineViewer.Models.Octokit
             Truncated = treeResponse.Truncated;
         }
 
-        /// <summary>
-        /// 获取响应的时间
-        /// </summary>
-        public DateTime DateTime { get; set; }
-
         /// <inheritdoc cref="TreeResponse.Sha"/>
         public string? Sha { get; set; }
 

@@ -324,7 +324,7 @@ namespace SpineViewerCLI
             TextureLoader.DefaultLoader.ForceMipmap = result.GetValue(OptForceMipmap);
 
             // 读取模型
-            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName);
+            using var spine = new SpineObject(result.GetValue(ArgSkel)!.FullName, result.GetValue(OptAtlas)?.FullName ?? "");
 
             // 设置模型参数
             spine.Skeleton.ScaleX = spine.Skeleton.ScaleY = result.GetValue(OptScale);

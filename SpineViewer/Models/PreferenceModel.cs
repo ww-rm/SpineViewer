@@ -121,6 +121,15 @@ namespace SpineViewer.Models
         });
         private RelayCommand? _cmd_SelectAutoRunWorkspaceConfigPath;
 
+        public RelayCommand Cmd_SelectAssetsDownloadDirectory => _cmd_SelectAssetsDownloadDirectory ??= new(() =>
+        {
+            if (!DialogService.ShowOpenFolderDialog(out var folderName))
+                return;
+            AssetsDownloadDirectory = folderName;
+
+        });
+        private RelayCommand? _cmd_SelectAssetsDownloadDirectory;
+
         [ObservableProperty]
         private AppLanguage _appLanguage;
 
@@ -147,6 +156,9 @@ namespace SpineViewer.Models
 
         [ObservableProperty]
         private bool _associateFileSuffix;
+
+        [ObservableProperty]
+        private string? _assetsDownloadDirectory;
 
         #endregion
     }

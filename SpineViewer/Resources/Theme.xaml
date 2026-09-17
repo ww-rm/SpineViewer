@@ -120,6 +120,10 @@
         <Setter Property="beh:TextBoxEnterCommitBehavior.Enable" Value="True"/>
     </Style>
 
+    <Style x:Key="MyButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
     <Style TargetType="GridSplitter" BasedOn="{StaticResource MyGridSplitterBaseStyle}"/>
     <Style TargetType="ToggleButton" BasedOn="{StaticResource MyToggleButtonBaseStyle}"/>
     <Style TargetType="ListBox" BasedOn="{StaticResource MyListBoxBaseStyle}"/>
@@ -127,5 +131,6 @@
     <Style TargetType="GroupBox" BasedOn="{StaticResource MyGroupBoxBaseStyle}"/>
     <Style TargetType="Label" BasedOn="{StaticResource MyLabelStyle}"/>
     <Style TargetType="TextBox" BasedOn="{StaticResource MyTextBoxStyle}"/>
+    <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}"/>
 
 </ResourceDictionary>
