@@ -533,7 +533,10 @@ namespace SpineRuntime41 {
 
 				ClippingAttachment clip = attachmentLoader.NewClippingAttachment(skin, name);
 				if (clip == null) return null;
-				clip.EndSlot = skeletonData.slots.Items[endSlotIndex];
+				if (endSlotIndex >= 0 && endSlotIndex < skeletonData.slots.Count)
+					clip.EndSlot = skeletonData.slots.Items[endSlotIndex];
+				else
+					clip.EndSlot = null;
 				clip.worldVerticesLength = vertexCount << 1;
 				clip.vertices = vertices.vertices;
 				clip.bones = vertices.bones;
