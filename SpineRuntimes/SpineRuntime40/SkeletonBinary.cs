@@ -524,6 +524,13 @@ namespace SpineRuntime40 {
 
 				ClippingAttachment clip = attachmentLoader.NewClippingAttachment(skin, name);
 				if (clip == null) return null;
+
+				// NOTE: 根据 https://github.com/ww-rm/SpineViewer/pull/232 描述, 存在某些骨骼文件 endSlotIndex 取值为 -1 表示 null
+				// https://en.esotericsoftware.com/spine-api-reference#ClippingAttachment-endSlot
+				// https://en.esotericsoftware.com/spine-clipping#End-slot
+				// 根据上述官方文档, endSlot 取值为自身或者 null 均表示裁剪至末尾
+				// 故此处补充判断逻辑为 -1 时 endSlot 为自身
+				if (endSlotIndex < 0) endSlotIndex = slotIndex;
 				clip.EndSlot = skeletonData.slots.Items[endSlotIndex];
 				clip.worldVerticesLength = vertexCount << 1;
 				clip.vertices = vertices.vertices;
