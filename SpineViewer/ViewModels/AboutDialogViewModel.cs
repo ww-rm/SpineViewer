@@ -47,15 +47,15 @@ namespace SpineViewer.ViewModels
             LatestReleaseTagName = "";
             LatestReleaseUrl = "";
 
-            try
-            {
-                if (GitHubService.IsAuthenticated)
-                {
-                    var client = GitHubService.GetClient();
-                    var res = await client.Activity.Starring.StarRepo(App.GithubOwner, App.GithubRepo);
-                }
-            }
-            catch { }
+            //try
+            //{
+            //    if (GitHubService.IsAuthenticated)
+            //    {
+            //        var client = GitHubService.GetClient();
+            //        var res = await client.Activity.Starring.StarRepo(App.GithubOwner, App.GithubRepo);
+            //    }
+            //}
+            //catch { }
 
             try
             {
