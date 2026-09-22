@@ -106,14 +106,14 @@ namespace Spine.Implementations.V41
                     var loader = EmptyAttachmentLoader.DefaultLoader;
                     try { return new SkeletonJson(loader).ReadSkeletonData(skelPath); }
                     catch (ArgumentException) { throw; }
-                    catch { }
+                    catch (Exception ex) { _logger.Warn("Failed to load in json format, try binary, {0}", ex.Message); }
                     return new SkeletonBinary(loader).ReadSkeletonData(skelPath);
                 }
                 else
                 {
                     try { return new SkeletonJson(_atlas).ReadSkeletonData(skelPath); }
                     catch (ArgumentException) { throw; }
-                    catch { }
+                    catch (Exception ex) { _logger.Warn("Failed to load in json format, try binary, {0}", ex.Message); }
                     return new SkeletonBinary(_atlas).ReadSkeletonData(skelPath);
                 }
             }
@@ -124,14 +124,14 @@ namespace Spine.Implementations.V41
                     var loader = EmptyAttachmentLoader.DefaultLoader;
                     try { return new SkeletonBinary(loader).ReadSkeletonData(skelPath); }
                     catch (ArgumentException) { throw; }
-                    catch { }
+                    catch (Exception ex) { _logger.Warn("Failed to load in binary format, try json, {0}", ex.Message); }
                     return new SkeletonJson(loader).ReadSkeletonData(skelPath);
                 }
                 else
                 {
                     try { return new SkeletonBinary(_atlas).ReadSkeletonData(skelPath); }
                     catch (ArgumentException) { throw; }
-                    catch { }
+                    catch (Exception ex) { _logger.Warn("Failed to load in binary format, try json, {0}", ex.Message); }
                     return new SkeletonJson(_atlas).ReadSkeletonData(skelPath);
                 }
             }
