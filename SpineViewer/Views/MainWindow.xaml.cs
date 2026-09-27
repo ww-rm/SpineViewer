@@ -151,7 +151,7 @@ public partial class MainWindow : Window
 #if DEBUG
         LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, rtbTarget);
 #else
-        LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Fatal, rtbTarget);
+        LogManager.Configuration.AddRule(LogLevel.Info, LogLevel.Fatal, rtbTarget);
 #endif
         LogManager.ReconfigExistingLoggers();
     }

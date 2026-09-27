@@ -29,15 +29,15 @@ namespace SpineViewer.Utils
 
         public static void LogWorkerWSearchInfo()
         {
-            _logger.Debug("========== Begin outputting WorkerW debug information ==========");
+            _logger.Info("========== Begin outputting WorkerW debug information ==========");
 
             var progman = User32.FindWindow("Progman", null);
             if (progman == IntPtr.Zero)
             {
-                _logger.Debug("Failed to find Progman");
+                _logger.Info("Failed to find Progman");
                 return;
             }
-            _logger.Debug("HWND(Progman): 0x{0:x8}", progman);
+            _logger.Info("HWND(Progman): 0x{0:x8}", progman);
 
 
             // Send 0x052C to Progman. This message directs Progman to spawn a 
@@ -47,15 +47,15 @@ namespace SpineViewer.Utils
             var ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x1, User32.SMTO_NORMAL, 1000, out _);
             var lastErr = Marshal.GetLastPInvokeError();
             var lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
-            _logger.Debug("SendMessageTimeout(lParam=1) returned 0x{0:x8}", ret);
-            _logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
+            _logger.Info("SendMessageTimeout(lParam=1) returned 0x{0:x8}", ret);
+            _logger.Info("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
             //Marshal.SetLastPInvokeError(0);
             //ret = User32.SendMessageTimeout(progman, User32.WM_SPAWN_WORKER, 0xD, 0x0, User32.SMTO_NORMAL, 1000, out _);
             //lastErr = Marshal.GetLastPInvokeError();
             //lastErrMsg = Marshal.GetLastPInvokeErrorMessage();
-            //_logger.Debug("SendMessageTimeout(lParam=0) returned 0x{0:x8}", ret);
-            //_logger.Debug("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
+            //_logger.Info("SendMessageTimeout(lParam=0) returned 0x{0:x8}", ret);
+            //_logger.Info("ErrCode: 0x{0:x8}, ErrMsg: {1}", lastErr, lastErrMsg);
 
             // Spy++ output
             // .....
@@ -77,8 +77,8 @@ namespace SpineViewer.Utils
                 if (shellDefView != IntPtr.Zero)
                 {
                     // Gets the WorkerW Window after the current one.
-                    _logger.Debug("SHELLDLL_DefView found in window 0x{0:x8}", tophandle);
-                    _logger.Debug("HWND(SHELLDLL_DefView): 0x{0:x8}", shellDefView);
+                    _logger.Info("SHELLDLL_DefView found in window 0x{0:x8}", tophandle);
+                    _logger.Info("HWND(SHELLDLL_DefView): 0x{0:x8}", shellDefView);
                     workerw = User32.FindWindowEx(IntPtr.Zero, tophandle, "WorkerW", null);
 
                     // Stop enumeration.
@@ -97,18 +97,18 @@ namespace SpineViewer.Utils
             //   0x00100B8A "" WorkerW       <-- This is the WorkerW instance we are after!
             if (workerw == IntPtr.Zero)
             {
-                _logger.Debug("Try to find WorkerW in progman directly");
+                _logger.Info("Try to find WorkerW in progman directly");
                 workerw = User32.FindWindowEx(progman, IntPtr.Zero, "WorkerW", null);
             }
 
-            _logger.Debug("HWND(WorkerW): 0x{0:x8}", workerw);
+            _logger.Info("HWND(WorkerW): 0x{0:x8}", workerw);
 
-            _logger.Debug("========== End outputting WorkerW debug information ==========");
+            _logger.Info("========== End outputting WorkerW debug information ==========");
         }
 
         public static void LogWorkerWWindowTree()
         {
-            _logger.Debug("========== Begin outputting WorkerW window tree ==========");
+            _logger.Info("========== Begin outputting WorkerW window tree ==========");
 
             // 1. 构建完整窗口树
             var roots = BuildWindowTree();
@@ -120,7 +120,7 @@ namespace SpineViewer.Utils
                     PrintFullTree(root, 0);
             }
 
-            _logger.Debug("========== End outputting WorkerW tree window tree ==========");
+            _logger.Info("========== End outputting WorkerW tree window tree ==========");
         }
 
         private static List<WndNode> BuildWindowTree()
@@ -181,7 +181,7 @@ namespace SpineViewer.Utils
         private static void PrintFullTree(WndNode node, int depth)
         {
             string prefix = new(' ', depth * 4);
-            _logger.Debug("{0}0x{1:x8}({2})", prefix, node.Hwnd.ToInt64(), node.ClassName);
+            _logger.Info("{0}0x{1:x8}({2})", prefix, node.Hwnd.ToInt64(), node.ClassName);
 
             foreach (var child in node.Children)
                 PrintFullTree(child, depth + 1);
